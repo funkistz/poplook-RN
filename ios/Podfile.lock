@@ -81,6 +81,7 @@ PODS:
     - InsiderMobile (>= 12.7.5)
   - InsiderHybrid (1.4.0)
   - InsiderMobile (12.8.3)
+  - InsiderMobileAdvancedNotification (1.2.2)
   - libevent (2.1.12)
   - libwebp (1.2.4):
     - libwebp/demux (= 1.2.4)
@@ -346,8 +347,6 @@ PODS:
   - react-native-atome-paylater (1.0.0):
     - AtomeSDK
     - React-Core
-  - react-native-ionicons (4.6.5):
-    - React
   - react-native-pager-view (6.0.1):
     - React-Core
   - react-native-safe-area-context (4.4.1):
@@ -489,8 +488,6 @@ PODS:
     - React-RCTImage
   - RNSVG (13.4.0):
     - React-Core
-  - RNVectorIcons (9.2.0):
-    - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -530,6 +527,8 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.125.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - InsiderMobile
+  - InsiderMobileAdvancedNotification
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -549,7 +548,6 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-atome-paylater (from `../node_modules/react-native-atome-paylater`)
-  - react-native-ionicons (from `../node_modules/react-native-ionicons`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -574,7 +572,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -594,6 +591,7 @@ SPEC REPOS:
     - InsiderGeofence
     - InsiderHybrid
     - InsiderMobile
+    - InsiderMobileAdvancedNotification
     - libevent
     - libwebp
     - OpenSSL-Universal
@@ -645,8 +643,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-atome-paylater:
     :path: "../node_modules/react-native-atome-paylater"
-  react-native-ionicons:
-    :path: "../node_modules/react-native-ionicons"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -695,8 +691,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -722,6 +716,7 @@ SPEC CHECKSUMS:
   InsiderGeofence: 590a1c1f9b3b5d6bba3d712bddfb7a1fb8d07442
   InsiderHybrid: c03a8ed67b7d8c1deb2dadaa5655d86d6ab3dc33
   InsiderMobile: 7ab011e7b48a417976cc4ba40373d77ead1a6341
+  InsiderMobileAdvancedNotification: 5f6721f0a6a6548f711cef29e0b264e96492c961
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -740,7 +735,6 @@ SPEC CHECKSUMS:
   React-jsinspector: d5ce2ef3eb8fd30c28389d0bc577918c70821bd6
   React-logger: 9332c3e7b4ef007a0211c0a9868253aac3e1da82
   react-native-atome-paylater: d0fc8268e80360e94b9cd5aac39d1cbde6f45fdf
-  react-native-ionicons: 7ce04a8e61c6de2fc3b6798e8b9621b865cb18b1
   react-native-pager-view: 3051346698a0ba0c4e13e40097cc11b00ee03cca
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
@@ -765,13 +759,12 @@ SPEC CHECKSUMS:
   RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNSVG: 07dbd870b0dcdecc99b3a202fa37c8ca163caec2
-  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: ba09b6b11e6139e3df8229238aa794205ca6a02a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e23288b510a38dbcaeecdc395bee04b2372947ba
+PODFILE CHECKSUM: 1e2a2d10fda6c1b0dda8e198c67692b77757345c
 
 COCOAPODS: 1.12.0

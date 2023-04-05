@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { Center, Button, Container, Divider, Flex, Heading, HStack, IconButton, Spacer, Stack, Text, VStack, FormControl, Input, ScrollView, Icon, FlatList, Box, SectionList } from 'native-base';
-import IonIcon from 'react-native-ionicons'
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function FilterModal({ visible, onToggle, submitBtn, sortData, attributeData, colorData, sortClick, attributeClick, clearAllClick, selectedSort, selectedAttribute, selectedColor }:
     {

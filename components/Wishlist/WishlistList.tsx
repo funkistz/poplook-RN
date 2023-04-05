@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getWishList, delWishlist, addToCart } from '../../Redux/Slices/Wishlist';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
-import IonIcon from 'react-native-ionicons'
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const win = Dimensions.get('window');
 

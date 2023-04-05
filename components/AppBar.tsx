@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, HStack, IconButton, Icon, StatusBar, Text, Center, Flex } from 'native-base';
-import IonIcon from 'react-native-ionicons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function AppBar({ navigation }: any) {
 

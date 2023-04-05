@@ -4,7 +4,7 @@ import { Flex, Center, Image, Box, VStack, IconButton, Icon, AspectRatio, Text, 
 // import ProductService from '../../Services/ProductService';
 import { useNavigation } from '@react-navigation/native';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
-import IonIcon from 'react-native-ionicons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function Wishlist({ like = false, size }: { like: any, size: any }) {
 

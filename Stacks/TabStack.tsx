@@ -9,7 +9,7 @@ import { Flex, Center, Image, HStack, StatusBar, Text } from 'native-base';
 import { Themed } from '../Providers/Themed';
 import AppStack from '../Stacks/AppStack';
 import { useSelector, useDispatch } from 'react-redux';
-import Icon from 'react-native-ionicons'
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,7 +62,7 @@ export default function TabStack() {
             }
 
             // You can return any component that you like here!
-            return <Icon name={iconName} size={size} color={color} />;
+            return <IonIcon name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: '#16a34a',
           tabBarInactiveTintColor: '#000000',

@@ -14,6 +14,31 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-poplook-poplookTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-poplook-poplookTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9562491429DDDC0D00A02B0D /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490429DDDC0C00A02B0D /* Ionicons.ttf */; };
+		9562491529DDDC0D00A02B0D /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490529DDDC0C00A02B0D /* MaterialCommunityIcons.ttf */; };
+		9562491629DDDC0D00A02B0D /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490629DDDC0C00A02B0D /* Zocial.ttf */; };
+		9562491729DDDC0D00A02B0D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490729DDDC0C00A02B0D /* MaterialIcons.ttf */; };
+		9562491829DDDC0D00A02B0D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490829DDDC0D00A02B0D /* Octicons.ttf */; };
+		9562491929DDDC0D00A02B0D /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490929DDDC0D00A02B0D /* EvilIcons.ttf */; };
+		9562491A29DDDC0D00A02B0D /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490A29DDDC0D00A02B0D /* Feather.ttf */; };
+		9562491B29DDDC0D00A02B0D /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490B29DDDC0D00A02B0D /* Entypo.ttf */; };
+		9562491C29DDDC0D00A02B0D /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490C29DDDC0D00A02B0D /* SimpleLineIcons.ttf */; };
+		9562491D29DDDC0D00A02B0D /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490D29DDDC0D00A02B0D /* Fontisto.ttf */; };
+		9562491E29DDDC0D00A02B0D /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490E29DDDC0D00A02B0D /* FontAwesome5_Regular.ttf */; };
+		9562491F29DDDC0D00A02B0D /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562490F29DDDC0D00A02B0D /* Foundation.ttf */; };
+		9562492029DDDC0D00A02B0D /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562491029DDDC0D00A02B0D /* AntDesign.ttf */; };
+		9562492129DDDC0D00A02B0D /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562491129DDDC0D00A02B0D /* FontAwesome5_Brands.ttf */; };
+		9562492229DDDC0D00A02B0D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562491229DDDC0D00A02B0D /* FontAwesome.ttf */; };
+		9562492329DDDC0D00A02B0D /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9562491329DDDC0D00A02B0D /* FontAwesome5_Solid.ttf */; };
+		95886D8D29DD66D700AAD8D7 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 95886D8C29DD66D700AAD8D7 /* NotificationService.m */; };
+		95886D9129DD66D700AAD8D7 /* InsiderNotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 95886D8929DD66D700AAD8D7 /* InsiderNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		95886D9C29DD66F200AAD8D7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95886D9B29DD66F200AAD8D7 /* UserNotifications.framework */; };
+		95886D9E29DD66F200AAD8D7 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95886D9D29DD66F200AAD8D7 /* UserNotificationsUI.framework */; };
+		95886DA229DD66F200AAD8D7 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95886DA129DD66F200AAD8D7 /* NotificationViewController.m */; };
+		95886DA529DD66F200AAD8D7 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95886DA329DD66F200AAD8D7 /* MainInterface.storyboard */; };
+		95886DA929DD66F200AAD8D7 /* InsiderNotificationContent.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 95886D9A29DD66F200AAD8D7 /* InsiderNotificationContent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B20AC6DD487CCA30CEA3B906 /* libPods-InsiderNotificationService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E363A3EAACC9AD4FAEE3F70 /* libPods-InsiderNotificationService.a */; };
+		F6E5D37748D8936F2A1090FA /* libPods-InsiderNotificationContent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23493D5EEED4A3CA74F547D0 /* libPods-InsiderNotificationContent.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,7 +49,36 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = poplook;
 		};
+		95886D8F29DD66D700AAD8D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 95886D8829DD66D700AAD8D7;
+			remoteInfo = InsiderNotificationService;
+		};
+		95886DA729DD66F200AAD8D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 95886D9929DD66F200AAD8D7;
+			remoteInfo = InsiderNotificationContent;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		95886D9529DD66D700AAD8D7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				95886DA929DD66F200AAD8D7 /* InsiderNotificationContent.appex in Embed Foundation Extensions */,
+				95886D9129DD66D700AAD8D7 /* InsiderNotificationService.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* poplookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = poplookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,13 +90,49 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = poplook/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = poplook/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = poplook/main.m; sourceTree = "<group>"; };
+		19E9F4D3228BE9FBCAE25613 /* Pods-InsiderNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsiderNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-InsiderNotificationService/Pods-InsiderNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-poplook-poplookTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-poplook-poplookTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23493D5EEED4A3CA74F547D0 /* libPods-InsiderNotificationContent.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InsiderNotificationContent.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E363A3EAACC9AD4FAEE3F70 /* libPods-InsiderNotificationService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InsiderNotificationService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-poplook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-poplook.debug.xcconfig"; path = "Target Support Files/Pods-poplook/Pods-poplook.debug.xcconfig"; sourceTree = "<group>"; };
+		56255D86CA106225AA1B3FB4 /* Pods-InsiderNotificationContent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsiderNotificationContent.debug.xcconfig"; path = "Target Support Files/Pods-InsiderNotificationContent/Pods-InsiderNotificationContent.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-poplook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-poplook.release.xcconfig"; path = "Target Support Files/Pods-poplook/Pods-poplook.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-poplook-poplookTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-poplook-poplookTests.debug.xcconfig"; path = "Target Support Files/Pods-poplook-poplookTests/Pods-poplook-poplookTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-poplook.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-poplook.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = poplook/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		88DEF645B9B2E1687A3B2A8B /* Pods-InsiderNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsiderNotificationService.release.xcconfig"; path = "Target Support Files/Pods-InsiderNotificationService/Pods-InsiderNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-poplook-poplookTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-poplook-poplookTests.release.xcconfig"; path = "Target Support Files/Pods-poplook-poplookTests/Pods-poplook-poplookTests.release.xcconfig"; sourceTree = "<group>"; };
+		9562490429DDDC0C00A02B0D /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		9562490529DDDC0C00A02B0D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		9562490629DDDC0C00A02B0D /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		9562490729DDDC0C00A02B0D /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		9562490829DDDC0D00A02B0D /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		9562490929DDDC0D00A02B0D /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		9562490A29DDDC0D00A02B0D /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		9562490B29DDDC0D00A02B0D /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		9562490C29DDDC0D00A02B0D /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		9562490D29DDDC0D00A02B0D /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		9562490E29DDDC0D00A02B0D /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		9562490F29DDDC0D00A02B0D /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		9562491029DDDC0D00A02B0D /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		9562491129DDDC0D00A02B0D /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		9562491229DDDC0D00A02B0D /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		9562491329DDDC0D00A02B0D /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		95886D8929DD66D700AAD8D7 /* InsiderNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = InsiderNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		95886D8B29DD66D700AAD8D7 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		95886D8C29DD66D700AAD8D7 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		95886D8E29DD66D700AAD8D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		95886D9A29DD66F200AAD8D7 /* InsiderNotificationContent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = InsiderNotificationContent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		95886D9B29DD66F200AAD8D7 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		95886D9D29DD66F200AAD8D7 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		95886DA029DD66F200AAD8D7 /* NotificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
+		95886DA129DD66F200AAD8D7 /* NotificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
+		95886DA429DD66F200AAD8D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		95886DA629DD66F200AAD8D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		95886DAD29DD677A00AAD8D7 /* poplook.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = poplook.entitlements; path = poplook/poplook.entitlements; sourceTree = "<group>"; };
+		95886DAE29DD67C800AAD8D7 /* InsiderNotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InsiderNotificationService.entitlements; sourceTree = "<group>"; };
+		95886DAF29DD67D400AAD8D7 /* InsiderNotificationContent.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InsiderNotificationContent.entitlements; sourceTree = "<group>"; };
+		C742F638A52B73221340E4C1 /* Pods-InsiderNotificationContent.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsiderNotificationContent.release.xcconfig"; path = "Target Support Files/Pods-InsiderNotificationContent/Pods-InsiderNotificationContent.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -60,6 +150,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-poplook.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95886D8629DD66D700AAD8D7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B20AC6DD487CCA30CEA3B906 /* libPods-InsiderNotificationService.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95886D9729DD66F200AAD8D7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95886D9E29DD66F200AAD8D7 /* UserNotificationsUI.framework in Frameworks */,
+				95886D9C29DD66F200AAD8D7 /* UserNotifications.framework in Frameworks */,
+				F6E5D37748D8936F2A1090FA /* libPods-InsiderNotificationContent.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +194,8 @@
 		13B07FAE1A68108700A75B9A /* poplook */ = {
 			isa = PBXGroup;
 			children = (
+				956248E329DDDB4C00A02B0D /* Fonts */,
+				95886DAD29DD677A00AAD8D7 /* poplook.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -102,6 +212,10 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-poplook.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-poplook-poplookTests.a */,
+				95886D9B29DD66F200AAD8D7 /* UserNotifications.framework */,
+				95886D9D29DD66F200AAD8D7 /* UserNotificationsUI.framework */,
+				23493D5EEED4A3CA74F547D0 /* libPods-InsiderNotificationContent.a */,
+				2E363A3EAACC9AD4FAEE3F70 /* libPods-InsiderNotificationService.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -119,6 +233,8 @@
 				13B07FAE1A68108700A75B9A /* poplook */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* poplookTests */,
+				95886D8A29DD66D700AAD8D7 /* InsiderNotificationService */,
+				95886D9F29DD66F200AAD8D7 /* InsiderNotificationContent */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -133,8 +249,56 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* poplook.app */,
 				00E356EE1AD99517003FC87E /* poplookTests.xctest */,
+				95886D8929DD66D700AAD8D7 /* InsiderNotificationService.appex */,
+				95886D9A29DD66F200AAD8D7 /* InsiderNotificationContent.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		956248E329DDDB4C00A02B0D /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				9562491029DDDC0D00A02B0D /* AntDesign.ttf */,
+				9562490B29DDDC0D00A02B0D /* Entypo.ttf */,
+				9562490929DDDC0D00A02B0D /* EvilIcons.ttf */,
+				9562490A29DDDC0D00A02B0D /* Feather.ttf */,
+				9562491229DDDC0D00A02B0D /* FontAwesome.ttf */,
+				9562491129DDDC0D00A02B0D /* FontAwesome5_Brands.ttf */,
+				9562490E29DDDC0D00A02B0D /* FontAwesome5_Regular.ttf */,
+				9562491329DDDC0D00A02B0D /* FontAwesome5_Solid.ttf */,
+				9562490D29DDDC0D00A02B0D /* Fontisto.ttf */,
+				9562490F29DDDC0D00A02B0D /* Foundation.ttf */,
+				9562490429DDDC0C00A02B0D /* Ionicons.ttf */,
+				9562490529DDDC0C00A02B0D /* MaterialCommunityIcons.ttf */,
+				9562490729DDDC0C00A02B0D /* MaterialIcons.ttf */,
+				9562490829DDDC0D00A02B0D /* Octicons.ttf */,
+				9562490C29DDDC0D00A02B0D /* SimpleLineIcons.ttf */,
+				9562490629DDDC0C00A02B0D /* Zocial.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		95886D8A29DD66D700AAD8D7 /* InsiderNotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				95886DAE29DD67C800AAD8D7 /* InsiderNotificationService.entitlements */,
+				95886D8B29DD66D700AAD8D7 /* NotificationService.h */,
+				95886D8C29DD66D700AAD8D7 /* NotificationService.m */,
+				95886D8E29DD66D700AAD8D7 /* Info.plist */,
+			);
+			path = InsiderNotificationService;
+			sourceTree = "<group>";
+		};
+		95886D9F29DD66F200AAD8D7 /* InsiderNotificationContent */ = {
+			isa = PBXGroup;
+			children = (
+				95886DAF29DD67D400AAD8D7 /* InsiderNotificationContent.entitlements */,
+				95886DA029DD66F200AAD8D7 /* NotificationViewController.h */,
+				95886DA129DD66F200AAD8D7 /* NotificationViewController.m */,
+				95886DA329DD66F200AAD8D7 /* MainInterface.storyboard */,
+				95886DA629DD66F200AAD8D7 /* Info.plist */,
+			);
+			path = InsiderNotificationContent;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -144,6 +308,10 @@
 				5709B34CF0A7D63546082F79 /* Pods-poplook.release.xcconfig */,
 				5B7EB9410499542E8C5724F5 /* Pods-poplook-poplookTests.debug.xcconfig */,
 				89C6BE57DB24E9ADA2F236DE /* Pods-poplook-poplookTests.release.xcconfig */,
+				56255D86CA106225AA1B3FB4 /* Pods-InsiderNotificationContent.debug.xcconfig */,
+				C742F638A52B73221340E4C1 /* Pods-InsiderNotificationContent.release.xcconfig */,
+				19E9F4D3228BE9FBCAE25613 /* Pods-InsiderNotificationService.debug.xcconfig */,
+				88DEF645B9B2E1687A3B2A8B /* Pods-InsiderNotificationService.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -184,15 +352,56 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				95886D9529DD66D700AAD8D7 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				95886D9029DD66D700AAD8D7 /* PBXTargetDependency */,
+				95886DA829DD66F200AAD8D7 /* PBXTargetDependency */,
 			);
 			name = poplook;
 			productName = poplook;
 			productReference = 13B07F961A680F5B00A75B9A /* poplook.app */;
 			productType = "com.apple.product-type.application";
+		};
+		95886D8829DD66D700AAD8D7 /* InsiderNotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95886D9229DD66D700AAD8D7 /* Build configuration list for PBXNativeTarget "InsiderNotificationService" */;
+			buildPhases = (
+				F971F30FEFFB3946D83796D8 /* [CP] Check Pods Manifest.lock */,
+				95886D8529DD66D700AAD8D7 /* Sources */,
+				95886D8629DD66D700AAD8D7 /* Frameworks */,
+				95886D8729DD66D700AAD8D7 /* Resources */,
+				D491B29FD9AEA6D7722C524F /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = InsiderNotificationService;
+			productName = InsiderNotificationService;
+			productReference = 95886D8929DD66D700AAD8D7 /* InsiderNotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		95886D9929DD66F200AAD8D7 /* InsiderNotificationContent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95886DAA29DD66F200AAD8D7 /* Build configuration list for PBXNativeTarget "InsiderNotificationContent" */;
+			buildPhases = (
+				AD75A45A386D4495100A0A9B /* [CP] Check Pods Manifest.lock */,
+				95886D9629DD66F200AAD8D7 /* Sources */,
+				95886D9729DD66F200AAD8D7 /* Frameworks */,
+				95886D9829DD66F200AAD8D7 /* Resources */,
+				88E6ED3AE7449232902F8973 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = InsiderNotificationContent;
+			productName = InsiderNotificationContent;
+			productReference = 95886D9A29DD66F200AAD8D7 /* InsiderNotificationContent.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -208,6 +417,12 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					95886D8829DD66D700AAD8D7 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					95886D9929DD66F200AAD8D7 = {
+						CreatedOnToolsVersion = 14.2;
 					};
 				};
 			};
@@ -226,6 +441,8 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* poplook */,
 				00E356ED1AD99517003FC87E /* poplookTests */,
+				95886D8829DD66D700AAD8D7 /* InsiderNotificationService */,
+				95886D9929DD66F200AAD8D7 /* InsiderNotificationContent */,
 			);
 		};
 /* End PBXProject section */
@@ -243,7 +460,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				9562491F29DDDC0D00A02B0D /* Foundation.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				9562491E29DDDC0D00A02B0D /* FontAwesome5_Regular.ttf in Resources */,
+				9562491729DDDC0D00A02B0D /* MaterialIcons.ttf in Resources */,
+				9562491B29DDDC0D00A02B0D /* Entypo.ttf in Resources */,
+				9562491C29DDDC0D00A02B0D /* SimpleLineIcons.ttf in Resources */,
+				9562491829DDDC0D00A02B0D /* Octicons.ttf in Resources */,
+				9562491D29DDDC0D00A02B0D /* Fontisto.ttf in Resources */,
+				9562492129DDDC0D00A02B0D /* FontAwesome5_Brands.ttf in Resources */,
+				9562492029DDDC0D00A02B0D /* AntDesign.ttf in Resources */,
+				9562491629DDDC0D00A02B0D /* Zocial.ttf in Resources */,
+				9562491929DDDC0D00A02B0D /* EvilIcons.ttf in Resources */,
+				9562491529DDDC0D00A02B0D /* MaterialCommunityIcons.ttf in Resources */,
+				9562491429DDDC0D00A02B0D /* Ionicons.ttf in Resources */,
+				9562492329DDDC0D00A02B0D /* FontAwesome5_Solid.ttf in Resources */,
+				9562491A29DDDC0D00A02B0D /* Feather.ttf in Resources */,
+				9562492229DDDC0D00A02B0D /* FontAwesome.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95886D8729DD66D700AAD8D7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95886D9829DD66F200AAD8D7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95886DA529DD66F200AAD8D7 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +531,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-poplook/Pods-poplook-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		88E6ED3AE7449232902F8973 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-InsiderNotificationContent/Pods-InsiderNotificationContent-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-InsiderNotificationContent/Pods-InsiderNotificationContent-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-InsiderNotificationContent/Pods-InsiderNotificationContent-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,6 +564,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-poplook-poplookTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AD75A45A386D4495100A0A9B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-InsiderNotificationContent-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -344,6 +631,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-poplook-poplookTests/Pods-poplook-poplookTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D491B29FD9AEA6D7722C524F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-InsiderNotificationService/Pods-InsiderNotificationService-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-InsiderNotificationService/Pods-InsiderNotificationService-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-InsiderNotificationService/Pods-InsiderNotificationService-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -376,6 +680,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-poplook-poplookTests/Pods-poplook-poplookTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F971F30FEFFB3946D83796D8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-InsiderNotificationService-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -417,6 +743,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95886D8529DD66D700AAD8D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95886D8D29DD66D700AAD8D7 /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95886D9629DD66F200AAD8D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95886DA229DD66F200AAD8D7 /* NotificationViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -425,7 +767,28 @@
 			target = 13B07F861A680F5B00A75B9A /* poplook */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		95886D9029DD66D700AAD8D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 95886D8829DD66D700AAD8D7 /* InsiderNotificationService */;
+			targetProxy = 95886D8F29DD66D700AAD8D7 /* PBXContainerItemProxy */;
+		};
+		95886DA829DD66F200AAD8D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 95886D9929DD66F200AAD8D7 /* InsiderNotificationContent */;
+			targetProxy = 95886DA729DD66F200AAD8D7 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		95886DA329DD66F200AAD8D7 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				95886DA429DD66F200AAD8D7 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
@@ -485,6 +848,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = poplook/poplook.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MFU495H5MV;
 				ENABLE_BITCODE = NO;
@@ -499,7 +863,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tiseno.Poplook.--PRODUCT-NAME-rfc1034identifier-";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.tiseno.Poplook;
 				PRODUCT_NAME = poplook;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -513,6 +878,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = poplook/poplook.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MFU495H5MV;
 				INFOPLIST_FILE = poplook/Info.plist;
@@ -526,7 +892,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tiseno.Poplook.--PRODUCT-NAME-rfc1034identifier-";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.tiseno.Poplook;
 				PRODUCT_NAME = poplook;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -670,6 +1037,154 @@
 			};
 			name = Release;
 		};
+		95886D9329DD66D700AAD8D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19E9F4D3228BE9FBCAE25613 /* Pods-InsiderNotificationService.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = InsiderNotificationService/InsiderNotificationService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = MFU495H5MV;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = InsiderNotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = InsiderNotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tiseno.Poplook.InsiderNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		95886D9429DD66D700AAD8D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88DEF645B9B2E1687A3B2A8B /* Pods-InsiderNotificationService.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = InsiderNotificationService/InsiderNotificationService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = MFU495H5MV;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = InsiderNotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = InsiderNotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tiseno.Poplook.InsiderNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		95886DAB29DD66F200AAD8D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56255D86CA106225AA1B3FB4 /* Pods-InsiderNotificationContent.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = InsiderNotificationContent/InsiderNotificationContent.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = MFU495H5MV;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = InsiderNotificationContent/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = InsiderNotificationContent;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tiseno.Poplook.InsiderNotificationContent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		95886DAC29DD66F200AAD8D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C742F638A52B73221340E4C1 /* Pods-InsiderNotificationContent.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = InsiderNotificationContent/InsiderNotificationContent.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = MFU495H5MV;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = InsiderNotificationContent/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = InsiderNotificationContent;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tiseno.Poplook.InsiderNotificationContent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -696,6 +1211,24 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95886D9229DD66D700AAD8D7 /* Build configuration list for PBXNativeTarget "InsiderNotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95886D9329DD66D700AAD8D7 /* Debug */,
+				95886D9429DD66D700AAD8D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95886DAA29DD66F200AAD8D7 /* Build configuration list for PBXNativeTarget "InsiderNotificationContent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95886DAB29DD66F200AAD8D7 /* Debug */,
+				95886DAC29DD66F200AAD8D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -18,7 +18,7 @@ import ProductCard from '../components/Products/ProductCard';
 import { color } from 'native-base/lib/typescript/theme/styled-system';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { WEB_URL } from "@env"
-import IonIcon from 'react-native-ionicons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const win = Dimensions.get('window');
 

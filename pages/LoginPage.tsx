@@ -76,7 +76,7 @@ export default function LoginPage() {
                                 values={values}
                                 onChangeText={handleChange}
                                 onBlur={setFieldTouched}
-                                icon="email"
+                                icon="mail-outline"
                                 touched={touched}
                                 errors={errors}
                             />
@@ -86,7 +86,7 @@ export default function LoginPage() {
                                 values={values}
                                 onChangeText={handleChange}
                                 onBlur={setFieldTouched}
-                                icon="lock"
+                                icon="lock-closed-outline"
                                 touched={touched}
                                 errors={errors}
                                 type='password'

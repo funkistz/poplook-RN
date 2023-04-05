@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { getSearch, reset } from '../../Redux/Slices/Search';
 import Wishlist from '../wishlist';
-import IonIcon from 'react-native-ionicons'
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function RightHeader({ navigation }: { navigation: any }) {
 

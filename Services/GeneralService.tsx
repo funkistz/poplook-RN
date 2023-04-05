@@ -20,6 +20,7 @@ const GeneralService = {
         Toast.show({
             id: id,
             duration: duration,
+            placement: "top",
             render: () => {
                 var bgcolor = '#000';
 

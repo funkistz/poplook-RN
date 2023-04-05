@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSearch, scroll } from '../Redux/Slices/Search';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import SkeletonLoading from '../components/SkeletonProductList';
-import IonIcon from 'react-native-ionicons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function SearchPage() {
 

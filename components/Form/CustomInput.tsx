@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, Input, Icon, Button, ScrollView } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
-import IonIcon from 'react-native-ionicons'
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function CustomInput({ name, variant = 'underlined', placeholder, values, onChangeText, onBlur, icon, touched, errors, type = 'text' }: any) {
 

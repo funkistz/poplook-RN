@@ -12,7 +12,7 @@ import { userSelector } from '../Redux/Slices/Sessions';
 import { getCountries } from '../Redux/Slices/Infos';
 import StoreCreditPage from './StoreCreditPage';
 import ShippingTo from '../components/ShippingTo';
-import IonIcon from 'react-native-ionicons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -121,7 +121,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                                 <Icon as={IonIcon} name={item.icon} size="6" color={'black'} pr={10} />
                                 <Text color="black" fontSize={16}>{item.title}</Text>
                                 <Spacer />
-                                <IonIcon name="arrow-forward-outline" size={14} color="#aaa" />
+                                <IonIcon name="chevron-forward-outline" size={20} color="#777" />
                             </HStack>
                         </TouchableOpacity>
                     })}

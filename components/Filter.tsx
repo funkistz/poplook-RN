@@ -2,7 +2,7 @@ import { Box, HStack, VStack, Skeleton, IconButton, Text, View, Icon, ScrollView
 import { useEffect } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Chip } from 'react-native-paper';
-import IonIcon from 'react-native-ionicons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function Filter({ clicked, removeItem, product, listSizeColor }: { clicked: any, removeItem: any, product: any, listSizeColor: any }) {
 
