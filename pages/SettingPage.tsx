@@ -118,7 +118,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                     {categories.map((item, index) => {
                         return <TouchableOpacity key={index} onPress={() => goToDetailsPage(item.id, item.key, item.title)}>
                             <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
-                                <Icon as={IonIcon} name={item.icon} size="6" color={'black'} pr={10} />
+                                <Icon as={IonIcon} name={item.icon} size="6" color='black' pr={10} />
                                 <Text color="black" fontSize={16}>{item.title}</Text>
                                 <Spacer />
                                 <IonIcon name="chevron-forward-outline" size={20} color="#777" />
@@ -127,7 +127,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                     })}
                     <TouchableOpacity onPress={() => alertLogout()}>
                         <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
-                            <Icon as={IonIcon} name="log-out-outline" size="6" color={'#FF0000'} pr={10} />
+                            <Icon as={IonIcon} name="log-out-outline" size="6" color='#FF0000' pr={10} />
                             <Text color="#FF0000" fontSize={16}>
                                 Logout
                             </Text>

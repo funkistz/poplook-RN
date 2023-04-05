@@ -47,8 +47,8 @@ export default function LoginPage() {
                 <Text style={styles.title}>Login</Text>
                 <Formik
                     initialValues={{
-                        email: 'funkistzgm@gmail.com',
-                        password: 'ss232098',
+                        email: '',
+                        password: '',
                     }}
                     onSubmit={
 

@@ -23,9 +23,9 @@ export default function CartPage({ route, navigation }: { route: any, navigation
 
         if (isFocused) {
             // persistor.purge().then(() => {
-                dispatch(getCart());
+            dispatch(getCart());
             // });
-            
+
             console.log('cart cart', cart);
         }
 
@@ -39,24 +39,28 @@ export default function CartPage({ route, navigation }: { route: any, navigation
 
     return (
         <>
-        <Center backgroundColor="white">
-            <ScrollView height="100%" mt={10}>
-                {cart && cart.data && cart.data.product_list &&
-                    (cart.data.product_list.map((product: any, index: any) => {
-                        return <CartList key={index} product={product}></CartList>
-                    })
-                    )
-                }
-                {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold}>Your shopping bag is empty.</Text>: null }
+            <Center backgroundColor="white">
+                <ScrollView height="100%" mt={10}>
+                    {cart && cart.data && cart.data.product_list &&
+                        (
+                            (cart.data.product_list.map((product: any, index: any) => {
+                                return <CartList key={index} product={product}></CartList>
+                            })
+                            )
+                        )
+                    }
+                    {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold}>Your shopping bag is empty.</Text> : null}
 
-                <View style={styles.container}>
-                    <Button style={styles.footer} onPress={() => checkoutPage()}>NEXT</Button>
-                </View>
-            </ScrollView>
-        </Center>
-        
+                    {cart && cart.data && cart.data.totalItemInCart != 0 &&
+                        <View style={styles.container}>
+                            <Button style={styles.footer} onPress={() => checkoutPage()}>NEXT</Button>
+                        </View>
+                    }
+                </ScrollView>
+            </Center>
+
         </>
-        
+
     );
 }
 
