@@ -1,10 +1,10 @@
 import { StyleSheet, View, Dimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
-import { Flex, Center, Image, Link } from 'native-base';
+import { Flex, Center, Image, Link, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { ScrollView } from 'native-base';
-import { WEB_URL } from "@env"
+import { WEB_URL, API_KEY } from "@env"
 
 const win = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -23,6 +23,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         const fetchData2 = async () => {
             const response = await BannerService.getBanners();
             const json = await response.json();
+            console.log('banners', json);
             setBanners(json.data);
         }
         fetchData2().catch(console.error);

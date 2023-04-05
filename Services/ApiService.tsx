@@ -45,7 +45,7 @@ const APIService = {
 
         let data: any = {
             ...params,
-            apikey: API_URL,
+            apikey: API_KEY,
             id_lang: 1,
             id_shop: id_shop,
             device_type: 'apps',
