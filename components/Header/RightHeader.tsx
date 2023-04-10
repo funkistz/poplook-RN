@@ -8,11 +8,13 @@ import { ThunkDispatch } from '@reduxjs/toolkit';
 import { getSearch, reset } from '../../Redux/Slices/Search';
 import Wishlist from '../wishlist';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import { Badge } from 'react-native-paper';
 
 export default function RightHeader({ navigation }: { navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.search);
+    const wishlist = useSelector((storeState: any) => storeState.wishlist);
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [keyword, setKeyword] = useState('');
@@ -64,7 +66,16 @@ export default function RightHeader({ navigation }: { navigation: any }) {
                 _pressed={{
                     backgroundColor: "gray"
                 }}
-                icon={<Wishlist like={false} size={24} />}
+                icon={ <>
+                    <Wishlist like={false} size={24} /> 
+                    <Badge
+                        size={18}
+                        style={styles.badge}
+                        visible={true}
+                    >
+                        {wishlist.id_product.length}
+                    </Badge>
+                </>} 
             />
             <IconButton
                 onPress={toggleModal}
@@ -84,5 +95,10 @@ export default function RightHeader({ navigation }: { navigation: any }) {
 }
 
 const styles = StyleSheet.create({
-
+    badge: {
+        position: 'absolute',
+        top: 4,
+        right: 2,
+        backgroundColor: '#1cad48'
+    },
 });

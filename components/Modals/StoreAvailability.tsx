@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, TextInput } from 'react-native';
+import { Modal, View, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, TextInput, Dimensions } from 'react-native';
 import { Center, Button, Container, Divider, Flex, Heading, HStack, IconButton, Spacer, Stack, Text, VStack, FormControl, Input, ScrollView, Icon, FlatList, Box, Badge } from 'native-base';
 import { Chip, List } from 'react-native-paper';
 import ProductService from '../../Services/ProductService';
 import Spinner from '../Spinner';
+import SizeList from '../Products/SizeList';
 
 export default function StoreAvailabilityModal({ visible, onToggle, size, reference, product }: { visible: boolean, onToggle: any, size: any, reference: any, product: any }) {
+
+    const win = Dimensions.get('window');
 
     const [available, setAvailable] = useState<any>([]);
     const [select, setSelect] = useState<any>('');
@@ -50,6 +53,16 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
 
     }
 
+    const getTextColor = (id_product_attribute: any) => {
+
+        return (select != id_product_attribute) ? '#000' : '#fff';
+    }
+
+    useEffect(() => {
+
+        
+    }, [select])
+
     return (
         <>
             <Modal
@@ -85,6 +98,18 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                             </Box>
                         </>
                     }
+
+                    {/* <Flex direction="row" flex={1} flexWrap="wrap" justifyContent="flex-start" bg={'red'}>
+                        {size && size.length > 0 && size.map((res: any, index: any) => {
+                            return <Button onPress={() => chooseSize(res.attribute_name)} key={index} style={styles.chip} variant="outline" size='sm'
+                                backgroundColor={(select == res.id_product_attribute) ? '#000' : '#fff'}
+                                borderColor={(select == res.id_product_attribute) ? '#000' : '#ccc'}
+                                width={(res.attribute_name.includes("Year") ? (win.width / 5) + 2 : (win.width / 6 - 2))}
+                                _text={{ color: getTextColor(res.id_product_attribute), fontSize: 13 }}>
+                                {res.attribute_name}
+                            </Button>
+                        })}
+                    </Flex> */}
 
                     {available &&
                         <>

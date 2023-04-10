@@ -12,7 +12,7 @@ const CartService = {
 
     async addToCart(params: any) {
 
-        console.log('addToCart', params);
+        // console.log('addToCart', params);
         return APIService.putMethod('Carts/add', params);
     },
 

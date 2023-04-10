@@ -7,7 +7,7 @@ import Wishlist from '../wishlist';
 import { useSelector } from 'react-redux';
 import { addToCart } from '../../Redux/Slices/Wishlist';
 
-export default function ProductCard({ product }: any) {
+export default function ProductCard({ product, route }: any) {
 
     const { navigate } = useNavigation<any>();
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
@@ -18,9 +18,13 @@ export default function ProductCard({ product }: any) {
             product_id: product.id_product
         };
 
-        console.log('params: ', params)
-
-        navigate('ProductDetailPage', params);
+        if(route) {
+            route(product.id_product)
+        } else {
+            navigate('ProductDetailPage', params);
+        }
+        
+        
     }
 
     const price = () => {
@@ -37,6 +41,11 @@ export default function ProductCard({ product }: any) {
             return <Text color='black' bold fontSize={12}>RM {product.price}</Text>
         }
     }
+
+    const checkAttribute = () => {
+        console.log(product)
+    }
+
 
     return (
         <TouchableOpacity onPress={() => goToProductPage(product)}>
@@ -58,7 +67,7 @@ export default function ProductCard({ product }: any) {
                         </VStack>
 
                         <Box alignItems="center" style={{ width: 40, height: 30 }} >
-                            <IconButton aria-label="wishlist">
+                            <IconButton aria-label="wishlist" onPress={() =>  product}>
                                 <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
                             </IconButton>
                         </Box>

@@ -62,7 +62,7 @@ const APIService = {
 
         data = await this.injectParams(data, false)
 
-        // console.log('url', config.api_url + url + '?' + new URLSearchParams(data));
+        // console.log('url', API_URL + url + '?' + new URLSearchParams(data));
 
         return await fetch(API_URL + url + '?' + new URLSearchParams(data))
     },
@@ -78,7 +78,7 @@ const APIService = {
             body: injectExtraParams(data)
         };
 
-        console.log('url', API_URL + url, options);
+        // console.log('url', API_URL + url, options);
 
         return await fetch(API_URL + url, options);
     },
@@ -110,7 +110,7 @@ const APIService = {
             body: injectExtraParams(data)
         };
 
-        console.log('url', API_URL + url, options);
+        // console.log('url', API_URL + url, options);
 
         return await fetch(API_URL + url, options);
     },
