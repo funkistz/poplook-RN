@@ -56,7 +56,7 @@ export const addToCart: any = createAsyncThunk(
                 id_customer: user.id_customer.toString(),
             }
 
-            console.log('params: ', params)
+            // console.log('params: ', params)
 
 
             const response = await WishlistService.addToCart(params);
@@ -91,7 +91,7 @@ export const delWishlist: any = createAsyncThunk(
 
             const response = await WishlistService.deleteWishlist(user.id_customer,user.id_wishlist, id_product, id_product_attribute);
             let data = await response.json()
-            console.log("data", data)
+            // console.log("data", data)
 
             if (response.status == 201) {
                 if (data.code == 201) {
@@ -143,7 +143,7 @@ export const wishlistSlice = createSlice({
         .addCase(getWishList.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
-            console.log('payload: ', payload)
+            // console.log('payload: ', payload)
             if(payload.code == 200) {
                 temp.data = payload.data;
                 temp.id_product = payload.data.product_list.map((product:any) => product.id_product);

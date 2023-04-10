@@ -37,9 +37,8 @@ export const getSearch: any = createAsyncThunk(
                 keyword:  keyword,
                 num_page: state.search.page,
                 sort_options: sort ,
-                tier: 1,
             }
-            console.log('params: ', params)
+            // console.log('params: ', params)
 
             const res = await SearchService.getProducts(params);
             let data = await res.json()
@@ -116,7 +115,7 @@ export const searchSlice = createSlice({
             };
             state = {...state, ...temp};
 
-            console.log('Pending State GetList: ', state)
+            // console.log('Pending State GetList: ', state)
             return state;
         
         })
@@ -138,7 +137,7 @@ export const searchSlice = createSlice({
             };
             state = {...state, ...temp};
 
-            console.log('Fulfill State GetList: ', state)
+            // console.log('Fulfill State GetList: ', state)
             return state;
 
         })
