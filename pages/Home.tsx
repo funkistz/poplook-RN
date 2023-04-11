@@ -23,7 +23,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         const fetchData2 = async () => {
             const response = await BannerService.getBanners();
             const json = await response.json();
-            console.log('banners', json);
             setBanners(json.data);
         }
         fetchData2().catch(console.error);

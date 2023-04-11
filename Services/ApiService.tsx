@@ -38,7 +38,6 @@ const APIService = {
         let id_shop = 1;
 
         const state: any = store.getState();
-        console.log('state from api', state.session.country);
         if (state && state.session && state.session.country) {
             id_shop = Number(state.session.country.id_shop);
         }

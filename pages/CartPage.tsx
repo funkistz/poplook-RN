@@ -50,6 +50,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                         )
                     }
                     {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold}>Your shopping bag is empty.</Text> : null}
+                    {cart && !cart.id_cart ? <Text style={styles.bold}>Your shopping bag is empty.</Text> : null}
 
                     {cart && cart.data && cart.data.totalItemInCart != 0 &&
                         <View style={styles.container}>

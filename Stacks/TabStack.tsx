@@ -28,8 +28,6 @@ export default function TabStack() {
 
   const sessions = useSelector((storeState: any) => storeState.session);
 
-  console.log('sessions', sessions);
-
   return (
     <NativeBaseProvider theme={themed}>
       <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
