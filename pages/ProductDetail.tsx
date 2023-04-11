@@ -15,7 +15,7 @@ import StoreAvailabilityModal from '../components/Modals/StoreAvailability';
 import SkeletonProductDetails from '../components/SkeletonProductDetails';
 import SizeList from '../components/Products/SizeList';
 import ProductCard from '../components/Products/ProductCard';
-import { color } from 'native-base/lib/typescript/theme/styled-system';
+import { background, color } from 'native-base/lib/typescript/theme/styled-system';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { WEB_URL } from "@env"
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -25,6 +25,8 @@ const win = Dimensions.get('window');
 
 export default function ProductDetailPage({ route, navigation, product_id }: any) {
 
+
+    // Details
     const [product, setProduct] = useState<any>({});
     const [images, setImages] = useState<any>([]);
     const [attribute, setAttribute] = useState([]);
@@ -32,8 +34,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [shownHere, setShownHere] = useState<any>([]);
     const [imageHeight, setImageHeight] = useState<any>(0);
     const [isLoading, setIsLoading] = useState<any>(false);
-
-    // Details
     const [details, setDetails] = useState<any>('');
     const [measurements, setMeasurements] = useState<any>([]);
     const [care, setCare] = useState<any>('');
@@ -42,13 +42,10 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [styleItWith, setStyleItWith] = useState<any>([]);
     const [motherDaughter, setMotherDaughter] = useState<any>([]);
 
-
     // Webview
-    const [heightDetails, setHeightDetails] = useState<any>(0);
-    const [heightDelivery, setHeightDelivery] = useState<any>(0);
-    const [heightCare, setHeightCare] = useState<any>(0);
-    const [heightMeasurements, setHeightMeasurements] = useState<any>(0);
+    const [heightDetails, setHeightDetails] = useState<any>(0);;
 
+    // Redux
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
 
@@ -59,7 +56,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [isModalCare, setModalCare] = useState(false);
     const [isModalMeasurements, setModalMeasurements] = useState(false);
 
-    //Bottom sheet
+    // Bottom sheet
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ['30%', '50%'], []);
     const handleSheetChanges = useCallback((index: number) => {
@@ -70,7 +67,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [hasSize, setHasSize] = useState<any>(false);
     const [type, setType] = useState<any>();
     const [sizeSelected, setSizeSelected] = useState<any>();
-    const setSizeSelectedModal = async (size: any, qwe: String) => {
+    const setSizeSelectedModal = async (size: any) => {
         bottomSheetRef.current?.close();
         if(type == 'cart') {
             addToCartF(size);
@@ -108,20 +105,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setIsLoading(true)
         await changeProductId(item);
     }
-
-
-    useEffect(() => {
-        setIsLoading(false);
-        dispatch(getCart());
-        setHeightDetails(400)
-
-        fetchData(route.params.product_id).catch(console.error);
-
-        // console.log('route', route)
-
-
-    }, [])
-
 
     const fetchData = async (product_id: any) => {
         // const params = route.params;
@@ -210,6 +193,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         }
 
         dispatch(addToWishlist(params));
+        dispatch(getWishList())
     }
 
     const shareUrl = async () => {
@@ -303,6 +287,15 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setHeightDetails(parseInt(event.nativeEvent.data));
     };
 
+    useEffect(() => {
+        setIsLoading(false);
+        dispatch(getCart());
+        setHeightDetails(400)
+
+        fetchData(route.params.product_id).catch(console.error);
+
+    }, [])
+
 
     return (
         <View style={styles.container}>
@@ -372,7 +365,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             </Box>
                                             <Box width={'10%'} backgroundColor='red'>
                                                 <IonIcon
-                                                    name={'arrow-forward-outline'}
+                                                    name={'chevron-forward-outline'}
                                                     size={30}
                                                     color="#333"
                                                 />
@@ -461,7 +454,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             </Box>
                                             <Box width={'10%'} backgroundColor='red'>
                                                 <IonIcon
-                                                    name={'arrow-forward-outline'}
+                                                    name={'chevron-forward-outline'}
                                                     size={30}
                                                     color="#333"
                                                 />
@@ -503,7 +496,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             </Box>
                                             <Box width={'10%'} backgroundColor='red'>
                                                 <IonIcon
-                                                    name={'arrow-forward-outline'}
+                                                    name={'chevron-forward-outline'}
                                                     size={30}
                                                     color="#333"
                                                 />
@@ -546,7 +539,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             </Box>
                                             <Box width={'10%'} backgroundColor='red'>
                                                 <IonIcon
-                                                    name={'arrow-forward-outline'}
+                                                    name={'chevron-forward-outline'}
                                                     size={30}
                                                     color="#333"
                                                 />
@@ -649,10 +642,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 snapPoints={snapPoints}
                 onChange={handleSheetChanges}
                 enablePanDownToClose
+                backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
             >
                 <View style={styles.contentContainer}>
                     <Text color={'black'} bold mb={2}>Select Size: </Text>
-                    <SizeList attribute={attribute} setSizeSelected={(size:any) => setSizeSelectedModal(size, 'cart')} sizeSelected={sizeSelected}></SizeList>
+                    <SizeList attribute={attribute} setSizeSelected={(size:any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
                 </View>
             </BottomSheet>
         </View>
