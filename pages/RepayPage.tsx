@@ -7,8 +7,8 @@ import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import PaymentMethod from '../components/PaymentMethod';
 import ProductDetail from '../components/ProductDetail';
-// import {isAtomeAppInstalled} from 'react-native-atome-paylater';
-// import {handlePaymentURL} from 'react-native-atome-paylater';
+import {isAtomeAppInstalled} from 'react-native-atome-paylater';
+import {handlePaymentURL} from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
 // import { Pay } from 'react-native-ipay88-integration';
 
@@ -27,6 +27,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [data, setData] = useState<any>({});
     const [paymentType, setPaymentType] = React.useState('');
     const [paymentChild, setPaymentChild] = React.useState('');
+    const [result, setResult] = useState('No');
 
     useEffect(() => {
 
@@ -48,15 +49,21 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const atome = async () => {
 
-        // const installed = await isAtomeAppInstalled();
+        const response = await PaymentService.atome(cartId);
+        const json = await response.json();
 
-        // const response = await PaymentService.atome(cartId);
-        // const json = await response.json();
+        console.log('url', json.data)
 
-        // setUrl(json.data.redirect_url);
-        // handlePaymentURL(url);
+        setUrl(json.data.redirect_url);
+        handlePaymentURL(url)
     }
 
+    const init = async () => {
+        const installed = await isAtomeAppInstalled();
+        console.log(installed);
+        setResult(actualResult => installed ? 'Yes' : 'No')
+    };
+    
 
     const redirectPayment = () => {
         if (shopId == '1') {
