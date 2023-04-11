@@ -26,7 +26,7 @@ export default function CheckoutPage({ route} : { route: any }) {
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
     const address = useSelector((storeState: any) => storeState.checkout.address);
-    const carrier = useSelector((storeState: any) => storeState.checkout.carrier[0]);
+    const carrier = useSelector((storeState: any) => storeState.checkout.address ? storeState.checkout.carrier[0] : '');
     const payment = useSelector((storeState: any) => storeState.checkout.payment);
     const product = useSelector((storeState: any) => storeState.checkout.product);
     const gift_wrap_id = useSelector((storeState: any) => storeState.checkout.id_gift);
@@ -58,10 +58,18 @@ export default function CheckoutPage({ route} : { route: any }) {
         <>
             <ScrollView>
                 <View style={styles.container}>
-                    <TouchableOpacity onPress={toggleModal}>
-                        <Text style={styles.bold} marginY={3}>Please Choose Address</Text>
-                        {/* <Address address={address} title='Shipping'></Address> */}
-                    </TouchableOpacity>
+                    {!address && 
+                        <><TouchableOpacity onPress={toggleModal}>
+                            <Text style={styles.bold} marginY={3}>Please Add Address</Text>
+                        </TouchableOpacity>
+                       </> 
+                    }
+                    {address &&  
+                        <><TouchableOpacity onPress={toggleModal}>
+                            <Address address={address} title='Shipping'></Address>
+                        </TouchableOpacity>
+                        </> 
+                    }
                     <AddressModal 
                         visible={isModalVisible}
                         onToggle={toggleModal}
@@ -69,9 +77,12 @@ export default function CheckoutPage({ route} : { route: any }) {
                     />
                     <Divider/>
 
-                <Text style={styles.bold} mt={2}>Shipping Method</Text>
+                {address && 
+                    <><Text style={styles.bold} mt={2}>Shipping Method</Text>
                     <ShippingMethod carrier={carrier}></ShippingMethod>
-                <Divider/>
+                    <Divider/>
+                    </>
+                }
 
                 <Text style={styles.bold} py={2}>Payment Method</Text>
                 {/* <PaymentMethod payment={payment}></PaymentMethod> */}
