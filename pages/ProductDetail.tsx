@@ -199,15 +199,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     const styleItaddtoWishlist = async (id_product_attribute = null, item:any) => {
 
-        // setAttributeList(item)    
-
-        console.log('item', item)
-        console.log('asdas: ',Array.isArray(item.attribute_list))
-
-        // if() {
-
-        // }
-
         if(Array.isArray(item.attribute_list)) {
             if (item.attribute_list.length > 0) {
                 if (!id_product_attribute) {
@@ -356,6 +347,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                             <VStack px={4} pt={4} backgroundColor={'white'} >
                                 <Text color={'black'} fontSize={18}>{product.name}</Text>
                                 {price()}
+                                {product.discount_text != null &&  <Text px={3} py={1} style={{ color: 'white', fontSize: 10, backgroundColor: 'black', textAlign: 'center' }}>{product.discount_text}</Text>}
                                 {attribute.length > 0 &&
                                     <>
                                         <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>

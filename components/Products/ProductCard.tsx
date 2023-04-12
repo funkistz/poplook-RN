@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Flex, Center, Image, Box, VStack, IconButton, Icon, AspectRatio, Text, HStack, DeleteIcon, } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
@@ -44,13 +44,45 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
         }
     }
 
+    useEffect(() => {
+        console.log('product......', product)
+
+    }, [])
+
     return (
         <TouchableOpacity onPress={() => goToProductPage(product)}>
             <Box p={3} borderRadius={10} >
                 <AspectRatio w="100%" ratio={3 / 4}>
-                    {product && product.image_url && <Image resizeMode="cover" borderRadius={10} source={{
-                        uri: Array.isArray(product.image_url) ? product.image_url[0] : product.image_url
-                    }} alt="image" />}
+                    {product && product.image_url && 
+                        <>
+                            <ImageBackground
+                                source={{  uri: Array.isArray(product.image_url) ? product.image_url[0] : product.image_url }}
+                                style={{ flex: 1 }}
+                                borderRadius={10}
+                                resizeMode="cover">
+                                {product.discount_text != null && 
+                                    <View style={{ 
+                                        flex: 1,
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'center',
+                                        borderRadius: 10,
+                                        overflow: 'hidden',
+                                    }}>
+                                        <Text py={1} 
+                                            style={{ 
+                                                color: 'white',
+                                                fontSize: 10,
+                                                backgroundColor: 'black',
+                                                width: '100%',
+                                                textAlign: 'center',
+                                            }}>{product.discount_text}</Text>
+                                    </View>
+                                }
+                                
+                            </ImageBackground>
+                        </>
+                    }
+                    
                 </AspectRatio>
 
                 <Center>
@@ -70,8 +102,6 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                 </IconButton>
                             </Box>
                         </>}
-
-                        
                     </HStack>
                 </Center>
             </Box>

@@ -160,7 +160,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     }
 
     const clearAll = () => {
-        setSort(0)
+        setSort(6)
         setAttribute([])
         setColor([])
     }
