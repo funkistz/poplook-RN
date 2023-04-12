@@ -1,13 +1,11 @@
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Flex, Center, Image, Box, VStack, IconButton, Icon, AspectRatio, Text, HStack, DeleteIcon, } from 'native-base';
-import ProductService from '../../Services/ProductService';
 import { useNavigation } from '@react-navigation/native';
 import Wishlist from '../wishlist';
 import { useSelector } from 'react-redux';
-import { addToCart } from '../../Redux/Slices/Wishlist';
 
-export default function ProductCard({ product, route }: any) {
+export default function ProductCard({ product, route, openWishlist, hideWishlist = false }: any) {
 
     const { navigate } = useNavigation<any>();
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
@@ -27,6 +25,10 @@ export default function ProductCard({ product, route }: any) {
         
     }
 
+    const clickedWishlist = () => {
+        openWishlist(null, product)
+    }
+
     const price = () => {
         const oldPrice = parseFloat(product.price_without_reduction)
         const newPrice = parseFloat(product.price)
@@ -42,11 +44,6 @@ export default function ProductCard({ product, route }: any) {
         }
     }
 
-    const checkAttribute = () => {
-        console.log(product)
-    }
-
-
     return (
         <TouchableOpacity onPress={() => goToProductPage(product)}>
             <Box p={3} borderRadius={10} >
@@ -58,7 +55,7 @@ export default function ProductCard({ product, route }: any) {
 
                 <Center>
                     <HStack mt={2} py={0} mb={4}>
-                        <VStack style={{ width: 140, height: 30 }}>
+                        <VStack style={{ width: hideWishlist ? 160 : 140, height: 30 }}>
                             {product.collection_name &&
                                 <Text fontWeight={300} color='black' fontSize={11} >{product.collection_name}</Text>
                             }
@@ -66,11 +63,15 @@ export default function ProductCard({ product, route }: any) {
                             {price()}
                         </VStack>
 
-                        <Box alignItems="center" style={{ width: 40, height: 30 }} >
-                            <IconButton aria-label="wishlist" onPress={() =>  product}>
-                                <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
-                            </IconButton>
-                        </Box>
+                        {!hideWishlist && <>
+                            <Box alignItems="center" style={{ width: 40, height: 30 }} >
+                                <IconButton aria-label="wishlist" onPress={() =>  clickedWishlist()}>
+                                    <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
+                                </IconButton>
+                            </Box>
+                        </>}
+
+                        
                     </HStack>
                 </Center>
             </Box>

@@ -70,10 +70,10 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const setSizeSelectedModal = async (size: any) => {
         bottomSheetRef.current?.close();
         if(type == 'cart') {
-            addToCartF(size);
+            await addToCartF(size);
         } else {
-            addtoWishlist(size)
-            dispatch(getWishList())
+            await addtoWishlist(size)
+            await dispatch(getWishList())
         }
         setSizeSelected(size);
     }
@@ -151,6 +151,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setShownHere(json.data.shown_here_with)
         setMeasurements(json.data.measurements)
         setStyleItWith(json.data.style_it_with)
+        console.log('setIt: ', json.data.style_it_with)
         setMotherDaughter(json.data.mother_daughter_with)
         setIsLoading(true)
     }
@@ -175,7 +176,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         dispatch(addToCart(params));
     }
 
-    const addtoWishlist = (id_product_attribute = null) => {
+    const addtoWishlist = async (id_product_attribute = null) => {
 
         setType('wishlist');
 
@@ -192,8 +193,39 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
             quantity: 1
         }
 
-        dispatch(addToWishlist(params));
-        dispatch(getWishList())
+        await dispatch(addToWishlist(params));
+        await dispatch(getWishList())
+    }
+
+    const styleItaddtoWishlist = async (id_product_attribute = null, item:any) => {
+
+        // setAttributeList(item)    
+
+        console.log('item', item)
+        console.log('asdas: ',Array.isArray(item.attribute_list))
+
+        // if() {
+
+        // }
+
+        if(Array.isArray(item.attribute_list)) {
+            if (item.attribute_list.length > 0) {
+                if (!id_product_attribute) {
+                    bottomSheetRef.current?.snapToIndex(0);
+                    return;
+                }
+            }
+        } 
+
+
+        const params = {
+            id_product: item.id_product,
+            id_product_attribute: id_product_attribute ? id_product_attribute : 0,
+            quantity: 1
+        }
+
+        await dispatch(addToWishlist(params));
+        await dispatch(getWishList())
     }
 
     const shareUrl = async () => {
@@ -596,7 +628,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                 {styleItWith && styleItWith.map((res: any, index: any) => {
                                                     return <>
                                                         <Box w={200} key={index}>
-                                                            <ProductCard product={res} route={changeProductId}></ProductCard>
+                                                            <ProductCard product={res} route={changeProductId} openWishlist={styleItaddtoWishlist} hideWishlist={true}></ProductCard>
                                                         </Box>
 
                                                     </>

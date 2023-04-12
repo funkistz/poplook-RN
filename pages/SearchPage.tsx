@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, TextInput, Button, Keyboard } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, ScrollView, View, HStack, Box, Spacer, Icon, FlatList, Center, Select, CheckIcon, VStack } from "native-base";
 import ProductCard from '../components/Products/ProductCard';
 import Spinner from '../components/Spinner';
@@ -8,11 +8,33 @@ import { getSearch, scroll } from '../Redux/Slices/Search';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import SkeletonLoading from '../components/SkeletonProductList';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { addToWishlist, getWishList } from '../Redux/Slices/Wishlist';
+import SizeList from '../components/Products/SizeList';
 
 export default function SearchPage() {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.search);
+
+     // Bottom sheet
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    const snapPoints = useMemo(() => ['30%', '50%'], []);
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+        if(index == -1) {
+            setAttributeList([])
+        }
+    }, []);
+
+    // Size data
+    const [attributeList, setAttributeList] = useState<any>([]);
+    const [sizeSelected, setSizeSelected] = useState<any>();
+    const setSizeSelectedModal = async (size: any) => {
+        bottomSheetRef.current?.close();
+        await addtoWishlist(size,attributeList)
+        await dispatch(getWishList())
+    }
 
     const scrollMore = () => {
         const params = {
@@ -41,6 +63,29 @@ export default function SearchPage() {
             sort: item
         }
         dispatch(getSearch(params))
+    }
+
+    const addtoWishlist = async (id_product_attribute = null, item:any) => {
+
+        setAttributeList(item)    
+
+        if (item.attribute_list.length > 0) {
+            if (!id_product_attribute) {
+                bottomSheetRef.current?.snapToIndex(0);
+                return;
+            }
+        }
+
+        const params = {
+            id_product: item.id_product,
+            id_product_attribute: id_product_attribute ? id_product_attribute : 0,
+            quantity: 1
+        }
+
+        console.log('params: ', params)
+
+        await dispatch(addToWishlist(params));
+        await dispatch(getWishList())
     }
 
     return (
@@ -82,7 +127,7 @@ export default function SearchPage() {
                                 renderItem={({
                                     item
                                 }) => <Box w="50%">
-                                        <ProductCard product={item}></ProductCard>
+                                        <ProductCard product={item} openWishlist={addtoWishlist}></ProductCard>
                                     </Box>}
                                 keyExtractor={(item: any) => item.id_product}
                                 onEndReached={scrollMore}
@@ -119,11 +164,40 @@ export default function SearchPage() {
             {(product.isLoading && product.items.length == 0) &&
                 <SkeletonLoading filter={false} containerOnly={false} />
             }
+
+            <BottomSheet
+                    ref={bottomSheetRef}
+                    index={-1}
+                    snapPoints={snapPoints}
+                    onChange={handleSheetChanges}
+                    enablePanDownToClose
+                    backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
+                >
+
+                    {attributeList.length == 0 && 
+                        <>
+                            <Spinner spin={true} />
+                        </>
+                    }
+
+                    {attributeList.length != 0 && 
+                        <>
+                            <View style={styles.contentContainer}>
+                                <Text color={'black'} bold mb={2}>Select Size: </Text>
+                                <SizeList attribute={attributeList.attribute_list} setSizeSelected={(size:any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
+                            </View>
+                        </>
+                    }
+                    
+            </BottomSheet>
         </>
     )
 }
 
 const styles = StyleSheet.create({
-
+    contentContainer: {
+        flex: 1,
+        padding: 20
+    },
 })
 
