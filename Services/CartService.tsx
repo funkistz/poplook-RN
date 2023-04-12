@@ -12,8 +12,13 @@ const CartService = {
 
     async addToCart(params: any) {
 
-        console.log('addToCart', params);
+        // console.log('addToCart', params);
         return APIService.putMethod('Carts/add', params);
+    },
+
+    async delToCart(params: any) {
+        console.log('delToCart', params);
+        return APIService.deleteMethod('Carts/removeProduct', params);
     },
 
     async cartStep1(cartId: String | Number, giftId: String, giftMesssage: String, gift: Number|String) {

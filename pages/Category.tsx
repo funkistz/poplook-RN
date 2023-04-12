@@ -1,5 +1,5 @@
 import { StyleSheet, View, Dimensions, TouchableOpacity, TouchableHighlight, Animated } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Box, HStack, IconButton, FlatList, ScrollView, VStack, Skeleton, Text, Icon, Select, Button } from 'native-base';
 import ProductService from '../Services/ProductService';
@@ -11,7 +11,9 @@ import FilterModal from '../components/Modals/Filter';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { scroll, reset, getFilterList } from '../Redux/Slices/ProductList';
-import { getWishList } from '../Redux/Slices/Wishlist';
+import { addToWishlist, getWishList } from '../Redux/Slices/Wishlist';
+import BottomSheet from '@gorhom/bottom-sheet';
+import SizeList from '../components/Products/SizeList';
 
 export default function CategoryPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -32,9 +34,26 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     const [color, setColor] = useState<any>([])
     const [combine, setCombine] = useState<any>([])
 
+    // Bottom sheet
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    const snapPoints = useMemo(() => ['30%', '50%'], []);
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+        if(index == -1) {
+            setAttributeList([])
+        }
+    }, []);
+
+    // Size data
+    const [attributeList, setAttributeList] = useState<any>([]);
+    const [sizeSelected, setSizeSelected] = useState<any>();
+    const setSizeSelectedModal = async (size: any) => {
+        bottomSheetRef.current?.close();
+        await addtoWishlist(size,attributeList)
+        await dispatch(getWishList())
+    }
+
     useEffect(() => {
-
-
         // setCombine([...product.attribute, ...product.color]);
 
     }, [])
@@ -141,7 +160,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     }
 
     const clearAll = () => {
-        setSort(0)
+        setSort(6)
         setAttribute([])
         setColor([])
     }
@@ -186,6 +205,27 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
     }
 
+    const addtoWishlist = async (id_product_attribute = null, item:any) => {
+
+        setAttributeList(item)    
+
+        if (item.attribute_list.length > 0) {
+            if (!id_product_attribute) {
+                bottomSheetRef.current?.snapToIndex(0);
+                return;
+            }
+        }
+
+        const params = {
+            id_product: item.id_product,
+            id_product_attribute: id_product_attribute ? id_product_attribute : 0,
+            quantity: 1
+        }
+
+        await dispatch(addToWishlist(params));
+        await dispatch(getWishList())
+    }
+
 
     // useEffect
     useEffect(() => {
@@ -200,7 +240,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         setColor([])
         setCombine([])
 
-        console.log('product:', product)
+        // console.log('product:', product)
 
     }, [])
 
@@ -241,7 +281,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
     }, [combine])  // Important
 
-
     return (
         <>
             <FilterModal
@@ -259,6 +298,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 selectedColor={color}
             />
 
+
             <View style={{ flex: 1, backgroundColor: 'white' }}>
                 {(product.isSuccess && listSizeColor.length > 0) &&
                     <>
@@ -273,7 +313,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                                             data={product.items}
                                             // mb={10}
                                             renderItem={({ item }) => <Box w="50%">
-                                                <ProductCard product={item}></ProductCard>
+                                                <ProductCard product={item} openWishlist={addtoWishlist}></ProductCard>
                                             </Box>}
                                             keyExtractor={(item: any) => item.id_product}
                                             onEndReached={scrollMore}
@@ -325,10 +365,42 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                     </>
                 }
             </View>
+            <BottomSheet
+                    ref={bottomSheetRef}
+                    index={-1}
+                    snapPoints={snapPoints}
+                    onChange={handleSheetChanges}
+                    enablePanDownToClose
+                    backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
+                >
 
+                    {attributeList.length == 0 && 
+                        <>
+                            <Spinner spin={true} />
+                        </>
+                    }
 
+                    {attributeList.length != 0 && 
+                        <>
+                            <View style={styles.contentContainer}>
+                                <Text color={'black'} bold mb={2}>Select Size: </Text>
+                                <SizeList attribute={attributeList.attribute_list} setSizeSelected={(size:any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
+                            </View>
+                        </>
+                    }
+                    
+            </BottomSheet>
+
+        
 
         </>
 
     );
 }
+
+const styles = StyleSheet.create({
+    contentContainer: {
+        flex: 1,
+        padding: 20
+    },
+});

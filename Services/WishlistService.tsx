@@ -54,30 +54,6 @@ const WishlistService = {
 
     },
 
-    // async addToCart(params) {
-
-    //     const url = this.apiService.apiUrl(API_MOVE_TO_CART);
-    
-    //     const options2: HttpOptions = {
-    //       url: url,
-    //       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    //       data: {
-    //         id_customer: params.id_customer,
-    //         id_wishlist: params.id_wishlist,
-    //         id_product: params.id_product,
-    //         id_product_attribute: params.id_product_attribute,
-    //         id_cart: params.id_cart,
-    //         quantity: params.quantity,
-    //         apikey: environment.apiKey
-    //       },
-    //       method: 'PUT'
-    //     };
-    
-    //     const response: HttpResponse = await CapacitorHttp.request(options2);
-    //     return response;
-    //   }
-
-
 }
 
 export default WishlistService;

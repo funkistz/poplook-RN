@@ -61,7 +61,7 @@ const APIService = {
 
         data = await this.injectParams(data, false)
 
-        // console.log('url', config.api_url + url + '?' + new URLSearchParams(data));
+        // console.log('url', API_URL + url + '?' + new URLSearchParams(data));
 
         return await fetch(API_URL + url + '?' + new URLSearchParams(data))
     },
@@ -85,7 +85,7 @@ const APIService = {
     async postMethod(url: any, data: any = {}) {
 
         const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        // myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
         const options = {
             method: 'POST',
@@ -109,7 +109,7 @@ const APIService = {
             body: injectExtraParams(data)
         };
 
-        console.log('url', API_URL + url, options);
+        // console.log('url', API_URL + url, options);
 
         return await fetch(API_URL + url, options);
     },
