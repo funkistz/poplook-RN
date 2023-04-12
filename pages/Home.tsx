@@ -20,12 +20,16 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     useEffect(() => {
 
-        const fetchData2 = async () => {
-            const response = await BannerService.getBanners();
-            const json = await response.json();
-            setBanners(json.data);
-        }
-        fetchData2().catch(console.error);
+        const unsubscribe = navigation.addListener('focus', () => {
+            const fetchData2 = async () => {
+                const response = await BannerService.getBanners();
+                const json = await response.json();
+                setBanners(json.data);
+            }
+            fetchData2().catch(console.error);
+        });
+
+        return unsubscribe;
 
     }, [])
 

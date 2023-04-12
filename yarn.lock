@@ -7994,6 +7994,11 @@
   "resolved" "https://registry.npmjs.org/react-native-insider/-/react-native-insider-5.5.2-nh.tgz"
   "version" "5.5.2-nh"
 
+"react-native-ipay88-integration@^1.0.6":
+  "integrity" "sha512-p/GNyxYF/kFgIaW4HKQbQJMPSNBYLKuMoL8QNG+88YQEUUWKPLnK/Sum6nWwoPxvYyd1YVQKHHzW7npvicEftA=="
+  "resolved" "https://registry.npmjs.org/react-native-ipay88-integration/-/react-native-ipay88-integration-1.0.6.tgz"
+  "version" "1.0.6"
+
 "react-native-pager-view@6.0.1":
   "integrity" "sha512-kOVNu+4JnR3Gpykviy4WbOAnQz8TgP6O2pRvne221oPUDQLYrvEE/FINR0P85TxbMgvKTPlLejGw0ZHQbezK/g=="
   "resolved" "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-6.0.1.tgz"

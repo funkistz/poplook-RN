@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,19 +11,19 @@ export default function CategoriesPage({ route, navigation }: { route: any, navi
 
     useEffect(() => {
 
-        // const unsubscribe = navigation.addListener('focus', () => {
+        const unsubscribe = navigation.addListener('focus', () => {
 
-        const fetchData = async () => {
-            const response = await CategoryService.getCategories();
-            const json = await response.json();
+            const fetchData = async () => {
+                const response = await CategoryService.getCategories();
+                const json = await response.json();
 
-            // console.log('data', json.data);
-            setCategories(json.data);
-        }
-        fetchData().catch(console.error);
-        // });
+                // console.log('data', json.data);
+                setCategories(json.data);
+            }
+            fetchData().catch(console.error);
+        });
 
-        // return unsubscribe;
+        return unsubscribe;
 
     }, [])
 
