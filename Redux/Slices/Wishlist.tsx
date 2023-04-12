@@ -54,6 +54,7 @@ export const addToCart: any = createAsyncThunk(
                 quantity: quantity.toString(),
                 id_wishlist: user.id_wishlist.toString(),
                 id_customer: user.id_customer.toString(),
+                id_cart: user.id_cart
             }
 
             // console.log('params: ', params)
@@ -61,7 +62,7 @@ export const addToCart: any = createAsyncThunk(
 
             const response = await WishlistService.addToCart(params);
             let data = await response.json()
-            console.log("data", data)
+            // console.log("data", data)
 
             if (response.status == 201) {
                 if (data.code == 201) {
@@ -126,7 +127,7 @@ export const delWishlist: any = createAsyncThunk(
             const state: any = getState();
             const user = state.session.user;
 
-            console.log("state before", state)
+            // console.log("state before", state)
 
             const response = await WishlistService.deleteWishlist(user.id_customer,user.id_wishlist, id_product, id_product_attribute);
             let data = await response.json()

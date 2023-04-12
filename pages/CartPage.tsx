@@ -39,8 +39,8 @@ export default function CartPage({ route, navigation }: { route: any, navigation
 
     return (
         <>
-            <Center backgroundColor="white">
-                <ScrollView height="100%" mt={10}>
+            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} >
+                <ScrollView flex={1}  mt={10}>
                     {cart && cart.data && cart.data.product_list &&
                         (
                             (cart.data.product_list.map((product: any, index: any) => {
@@ -49,16 +49,43 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                             )
                         )
                     }
+
                     {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold}>Your shopping bag is empty.</Text> : null}
 
-                    {cart && cart.data && cart.data.totalItemInCart != 0 &&
-                        <View style={styles.container}>
-                            <Button style={styles.footer} onPress={() => checkoutPage()}>NEXT</Button>
-                        </View>
-                    }
-                </ScrollView>
-            </Center>
+                    <HStack px="1" py="2" mt={4}  bg={'white'}  justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+                            <HStack alignItems="center" w="40%">
+                                <Text fontSize="15" color="dark" pl={2} bold> SubTotal</Text>
+                            </HStack>
+                            <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
+                                <Text color='black' bold>RM {cart.data.totalProductsWt}</Text>
+                            </HStack>
+                    </HStack>
+                    <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+                            <HStack alignItems="center" w="40%">
+                                <Text fontSize="15" color="dark" pl={2} bold> Shipping</Text>
+                            </HStack>
+                            <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
+                                <Text color='black' bold>{Number(cart.data.shipping_price) == 0 ? 'Free Shipping': cart.data.shipping_price}</Text>
+                            </HStack>
+                    </HStack>
+                    <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+                            <HStack alignItems="center" w="40%">
+                                <Text fontSize="15" color="dark" pl={2} bold> TOTAL PAYABLE</Text>
+                            </HStack>
+                            <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
+                                <Text color='black' bold>RM {(Number(cart.data.totalProductsWt) + Number(cart.data.shipping_price)).toFixed(2) }</Text>
+                            </HStack>
+                    </HStack>
 
+                </ScrollView>
+                
+                {cart && cart.data && cart.data.totalItemInCart != 0 &&
+                    <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
+                    <Button w={'100%'} style={styles.footer} onPress={() => checkoutPage()}>NEXT</Button>  
+                </HStack>
+                }
+            </Flex>
+            
         </>
 
     );
