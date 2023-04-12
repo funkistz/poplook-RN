@@ -55,7 +55,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='OrderHistoryListPage' component={OrderHistoryListPage} options={{ title: 'Order History' }} />
             <Stack.Screen name='OrderHistoryDetailPage' component={OrderHistoryDetailPage} options={{ title: 'Order Details' }} />
             <Stack.Screen name='PersonalInfoPage' component={PersonalInfoPage} options={{ title: 'Personal Information' }} />
-            <Stack.Screen name='PersonalInfoDetailPage' component={PersonalInfoDetailPage} options={{ title: 'Change Personal Information' }} />
+            <Stack.Screen name='PersonalInfoDetailPage' component={PersonalInfoDetailPage} options={{ title: 'Update Email' }} />
             <Stack.Screen name='AddressListPage' component={AddressListPage} options={{ title: 'My Addresses' }} />
             <Stack.Screen name='AddressDetailPage' component={AddressDetailPage} options={{ title: 'Add New Address' }} />
             <Stack.Screen name='CheckoutPage' component={CheckoutPage} options={{ title: 'Order Confirmation' }} />

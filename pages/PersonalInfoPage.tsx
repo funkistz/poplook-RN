@@ -1,6 +1,8 @@
 import { StyleSheet, TouchableOpacity, Switch } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, ScrollView, View, HStack, Spacer } from "native-base";
+import { Text, ScrollView, View, HStack, Spacer, Flex } from "native-base";
+import IonIcon from 'react-native-vector-icons/Ionicons';
+
 
 export default function PersonalInfoPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -33,39 +35,42 @@ export default function PersonalInfoPage({ route, navigation }: { route: any, na
 
     return (
         <>
-            <ScrollView>
-                <View style={styles.container}>
-                    {infos.map((item, index) => {
-                        return <TouchableOpacity key={index} onPress={() => goToDetailsPage(item.id, item.title, item.key)}>
-                            <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" py="3" >
-                                <Text color="black" fontSize={16}>{item.title}</Text>
-                                <Spacer />
-                            </HStack>
-                        </TouchableOpacity>
-                    })}
-                    <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" py="3" >
-                        <Text color="black" fontSize={16}>Mailing List Preferences</Text>
-                        <Spacer/>
-                        <Switch
-                            trackColor={{false: '#767577', true: '#1cad48'}}
-                            thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
-                        />
-                    </HStack>
-                    <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" py="3" >
-                        <Text color="black" fontSize={16}>Personal Data Protection Notice</Text>
-                        <Spacer/>
-                        <Switch
-                            ios_backgroundColor="#3e3e3e"
-                            value={isProtect}
-                            disabled
-                        />
-                    </HStack>
-                </View>
-                
-            </ScrollView>
+            <Flex flex={1} bg={'white'}>
+                <ScrollView>
+                    <View style={styles.container}>
+                        {infos.map((item, index) => {
+                            return <TouchableOpacity key={index} onPress={() => goToDetailsPage(item.id, item.title, item.key)}>
+                                <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" >
+                                    <Text color="black" fontSize={16}>{item.title}</Text>
+                                    <Spacer />
+                                    <IonIcon name="chevron-forward-outline" size={20} color="#777" />
+                                </HStack>
+                            </TouchableOpacity>
+                        })}
+                        <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" >
+                            <Text color="black" fontSize={16}>Mailing List Preferences</Text>
+                            <Spacer/>
+                            <Switch
+                                trackColor={{false: '#767577', true: '#1cad48'}}
+                                thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                            />
+                        </HStack>
+                        <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" >
+                            <Text color="black" fontSize={16}>Personal Data Protection Notice</Text>
+                            <Spacer/>
+                            <Switch
+                                ios_backgroundColor="#3e3e3e"
+                                value={isProtect}
+                                disabled
+                            />
+                        </HStack>
+                    </View>
+                    
+                </ScrollView>
+            </Flex>
         </>
     )
 }
