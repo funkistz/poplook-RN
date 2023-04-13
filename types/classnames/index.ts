@@ -4,6 +4,7 @@ declare module 'react-native-insider';
 declare module 'react-native-insider/src/InsiderCallbackType';
 declare module 'react-native-searchable-dropdown';
 declare module 'react-native-ipay88-integration';
+declare module 'react-native-eghl';
 declare module 'react-native-vector-icons/Ionicons';
 declare module '@env' {
     export const API_URL: string;
