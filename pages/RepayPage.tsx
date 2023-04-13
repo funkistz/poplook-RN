@@ -7,10 +7,10 @@ import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import PaymentMethod from '../components/PaymentMethod';
 import ProductDetail from '../components/ProductDetail';
-// import {isAtomeAppInstalled} from 'react-native-atome-paylater';
-// import {handlePaymentURL} from 'react-native-atome-paylater';
+import {isAtomeAppInstalled} from 'react-native-atome-paylater';
+import {handlePaymentURL} from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
-// import { Pay } from 'react-native-ipay88-integration';
+import IPay88, { Pay } from "react-native-ipay88-integration";
 
 export default function RepayPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -27,6 +27,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [data, setData] = useState<any>({});
     const [paymentType, setPaymentType] = React.useState('');
     const [paymentChild, setPaymentChild] = React.useState('');
+    const [result, setResult] = useState('No');
 
     useEffect(() => {
 
@@ -48,22 +49,28 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const atome = async () => {
 
-        // const installed = await isAtomeAppInstalled();
+        const response = await PaymentService.atome(cartId);
+        const json = await response.json();
 
-        // const response = await PaymentService.atome(cartId);
-        // const json = await response.json();
+        console.log('url', json.data)
 
-        // setUrl(json.data.redirect_url);
-        // handlePaymentURL(url);
+        setUrl(json.data.redirect_url);
+        handlePaymentURL(url)
     }
 
+    const init = async () => {
+        const installed = await isAtomeAppInstalled();
+        console.log(installed);
+        setResult(actualResult => installed ? 'Yes' : 'No')
+    };
+    
 
     const redirectPayment = () => {
         if (shopId == '1') {
             if (paymentType == '16') {
                 atome()
             } else {
-                // pay(data) // ipay
+                pay(data) // ipay
             }
         } else if (shopId == '2') {
             if (paymentType == '4') {
@@ -82,37 +89,36 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     }
 
-    // const pay = (data: any) => {
-    //     try {
-    //         console.log('masuk pay', data)
-    //         const merchantCode = 'M01333'
-    //         const merchantKey = '4DlpdFR8uP'
+    const pay = (data: any) => {
+        try {
+            console.log('masuk pay', data)
+            const merchantCode = 'M01333'
+            const merchantKey = '4DlpdFR8uP'
 
-    //         const info: any = {
-    //             paymentId: "2", // refer to ipay88 docs
-    //             merchantKey: merchantKey,
-    //             merchantCode: merchantCode,
-    //             referenceNo: data.id_order,
-    //             amount: data.totalPriceWt,
-    //             currency: "MYR",
-    //             productDescription: "Reference No: " +data.id_order,
-    //             userName: session.user.name,
-    //             userEmail: session.user.email,
-    //             userContact: "0123456789",
-    //             remark: "Test",
-    //             utfLang: "UTF-8",
-    //             country: "MY",
-    //             backendUrl: "https://poplook.com/modules/ipay88induxive/backend_response.php",
-    //           };
-    //           console.log(info)
-    //           const errs = Pay(info);
-    //             //   if (errs.length > 0) {
-    //             //     console.log('kenapa' ,info);
-    //         //   }
-    //         } catch (e) {
-    //         console.log(e);
-    //         }
-    //   };
+            const info: any = {
+                paymentId: "2", // refer to ipay88 docs
+                merchantKey: merchantKey,
+                merchantCode: merchantCode,
+                referenceNo: data.id_order,
+                amount: data.totalPriceWt,
+                currency: "MYR",
+                productDescription: "Reference No: " +data.id_order,
+                userName: session.user.name,
+                userEmail: session.user.email,
+                userContact: "0123456789",
+                remark: "Test",
+                utfLang: "UTF-8",
+                country: "MY",
+                backendUrl: "https://poplook.com/modules/ipay88induxive/backend_response.php",
+            };
+                console.log(info)
+                const result = Pay(info);
+                console.log('result' ,result)
+            } catch (e) {
+                console.log(e);
+            }
+    };
+
 
     return (
         <>

@@ -67,82 +67,82 @@ export default function App() {
     }
   }, [])
 
-  // async function requestLocationPermission() {
-  //   try {
-  //     if (Platform.OS != "android") return;
+  async function requestLocationPermission() {
+    try {
+      if (Platform.OS != "android") return;
 
-  //     const fineLocationGranted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //       {
-  //         title: "Application Camera Permission",
-  //         message: "The application requires access to the camera.",
-  //         buttonNeutral: "Ask Later",
-  //         buttonNegative: "Cancel",
-  //         buttonPositive: "OK",
-  //       }
-  //     );
+      const fineLocationGranted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Application Camera Permission",
+          message: "The application requires access to the camera.",
+          buttonNeutral: "Ask Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
+      );
 
-  //     if (fineLocationGranted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       const bgLocationGranted = await PermissionsAndroid.request(
-  //         PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
-  //         {
-  //           title: "Background Location Permission for App",
-  //           message:
-  //             "The app requires background location permission to provide you better service using your location in the background.",
-  //           buttonNeutral: "Ask Me Later",
-  //           buttonNegative: "Deny",
-  //           buttonPositive: "Allow",
-  //         }
-  //       );
+      if (fineLocationGranted === PermissionsAndroid.RESULTS.GRANTED) {
+        const bgLocationGranted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
+          {
+            title: "Background Location Permission for App",
+            message:
+              "The app requires background location permission to provide you better service using your location in the background.",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Deny",
+            buttonPositive: "Allow",
+          }
+        );
 
-  //       if (bgLocationGranted === PermissionsAndroid.RESULTS.GRANTED) {
-  //         console.log("Location permissions successfully granted");
-  //       } else {
-  //         console.log("Background location permission not granted");
-  //       }
-  //     } else {
-  //       console.log("Location permission not granted");
-  //     }
-  //   } catch (err) {
-  //     console.warn(err);
-  //   }
-  // }
+        if (bgLocationGranted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("Location permissions successfully granted");
+        } else {
+          console.log("Background location permission not granted");
+        }
+      } else {
+        console.log("Location permission not granted");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
 
-  // const initInsider = () => {
-  //   // FIXME-INSIDER: Please change with your partner name and app group.
-  //   RNInsider.init(
-  //     "poplook",
-  //     "group.com.useinsider.ReactNativeDemo",
-  //     (type: any, data: any) => {
-  //       switch (type) {
-  //         case InsiderCallbackType.NOTIFICATION_OPEN:
-  //           console.log("[INSIDER][NOTIFICATION_OPEN]: ", data);
-  //           Alert.alert("[INSIDER][NOTIFICATION_OPEN]:", JSON.stringify(data));
-  //           break;
-  //         case InsiderCallbackType.TEMP_STORE_CUSTOM_ACTION:
-  //           console.log("[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ", data);
-  //           Alert.alert(
-  //             "[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ",
-  //             JSON.stringify(data)
-  //           );
-  //           break;
-  //       }
-  //     }
-  //   );
+  const initInsider = () => {
+    // FIXME-INSIDER: Please change with your partner name and app group.
+    RNInsider.init(
+      "poplook",
+      "group.com.tiseno.Poplook",
+      (type: any, data: any) => {
+        switch (type) {
+          case InsiderCallbackType.NOTIFICATION_OPEN:
+            console.log("[INSIDER][NOTIFICATION_OPEN]: ", data);
+            Alert.alert("[INSIDER][NOTIFICATION_OPEN]:", JSON.stringify(data));
+            break;
+          case InsiderCallbackType.TEMP_STORE_CUSTOM_ACTION:
+            console.log("[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ", data);
+            Alert.alert(
+              "[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ",
+              JSON.stringify(data)
+            );
+            break;
+        }
+      }
+    );
 
-  //   RNInsider.registerWithQuietPermission(false);
-  //   RNInsider.setActiveForegroundPushView();
-  //   RNInsider.startTrackingGeofence();
-  //   RNInsider.enableIDFACollection(false);
-  //   RNInsider.enableIpCollection(false);
-  //   RNInsider.enableLocationCollection(false);
-  //   RNInsider.enableCarrierCollection(false);
+    RNInsider.registerWithQuietPermission(false);
+    RNInsider.setActiveForegroundPushView();
+    RNInsider.startTrackingGeofence();
+    RNInsider.enableIDFACollection(false);
+    RNInsider.enableIpCollection(false);
+    RNInsider.enableLocationCollection(false);
+    RNInsider.enableCarrierCollection(false);
 
-  //   console.log("[INSIDER] initialized");
-  // };
+    console.log("[INSIDER] initialized");
+  };
 
-  // requestLocationPermission();
-  // initInsider();
+  requestLocationPermission();
+  initInsider();
 
   return (
     <Provider store={store}>

@@ -51,6 +51,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                     }
 
                     {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold}>Your shopping bag is empty.</Text> : null}
+                    {cart && !cart.id_cart ? <Text style={styles.bold}>Your shopping bag is empty.</Text> : null}
 
                     <HStack px="1" py="2" mt={4}  bg={'white'}  justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                             <HStack alignItems="center" w="40%">
