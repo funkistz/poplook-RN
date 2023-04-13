@@ -25,7 +25,6 @@ export default function WishlistList({ product, currency }: any) {
     }
 
     const addtoCart = async (product: any) => {
-        // console.log('addtocart.....')
         const params = {
             id_product: product.id_product,
             id_product_attribute: product.id_product_attribute,
@@ -107,8 +106,7 @@ export default function WishlistList({ product, currency }: any) {
                                 size={'sm'}
                                 onPress={() => alertDelete(product)}
                                 style={styles.delete}
-                                icon={<IonIcon name="trash-outline" size={22} color="black" />
-                                }
+                                icon={<IonIcon name="trash-outline" size={22} color="black" />}
                             />
                         </Box>
                     </HStack>

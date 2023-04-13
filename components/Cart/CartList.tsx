@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Box, HStack, IconButton, Icon, StatusBar, Text, Center, Flex, VStack, Image, AspectRatio, View } from 'native-base';
-import { StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { delToCart, getCart } from '../../Redux/Slices/Cart';
+import { useDispatch, useSelector } from 'react-redux';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const win = Dimensions.get('window');
 
@@ -9,6 +13,8 @@ export default function CartList({ product }: any) {
 
     // console.log('CartList', product);
     const { navigate } = useNavigation<any>();
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+    const cart = useSelector((storeState: any) => storeState.cart);
 
     const goToProductPage = () => {
 
@@ -18,6 +24,38 @@ export default function CartList({ product }: any) {
 
         navigate('ProductDetailPage', params);
     }
+
+    useEffect(() => {
+        // console.log('product.......', product)
+    }, [])
+
+    const deleteCart = async (product: any) => {
+        console.log('asdasdasdasdasdsad', product);
+
+        const params = {
+            id_cart: cart.id_cart,
+            id_product: product.id_product,
+            id_product_attribute: product.id_product_attribute,
+        }
+
+
+        await dispatch(delToCart(params))
+        await dispatch(getCart())
+    }
+
+
+    const alertDelete = (product: any) => {
+        console.log('Alert Delete.......t', product)
+        Alert.alert('Remove product from  cart?', '', [
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+            {   text: 'OK', 
+            onPress: () => deleteCart(product)},
+        ]);
+    }
+
 
     return (
         <>
@@ -34,14 +72,25 @@ export default function CartList({ product }: any) {
                         <Text color='black' bold fontSize={15}>{product.name}</Text>
                         {product.price_wt > 0 && <Text color='black' bold fontSize={14}>RM {product.price_wt}</Text>}
                         {product.price_wt <= 0 && <Text color='black' bold fontSize={14}>Free</Text>}
-
-                        <View mt={2} width={100}></View>
-                        {product.attributes_small && (
-                            <Text color='black' >Size: {product.attributes_small}</Text>
-                        )}
-                        <Text color='black'>Ref No: {product.reference}</Text>
-                        <Text color='black'>Quantity: {product.quantity}</Text>
-                        <Text color='black'>Total: {product.total_wt}</Text>
+                        
+                        <HStack mt={2}>
+                            <Box w={'70%'}>
+                                {product.attributes_small && (
+                                    <Text color='black' >Size: {product.attributes_small}</Text>
+                                )}
+                                <Text color='black'>Ref No: {product.reference}</Text>
+                                <Text color='black'>Quantity: {product.quantity}</Text>
+                                {/* <Text color='black'>Total: {product.total_wt}</Text> */}
+                            </Box>
+                            <Box w={'30%'} style={{flex: 1, justifyContent: 'flex-end',alignItems: 'center',}}>
+                                <IconButton 
+                                    size={'sm'}
+                                    onPress={() => alertDelete(product)} 
+                                    style={styles.delete}
+                                    icon={<IonIcon name="trash-outline" size={22} color="black" />}
+                                />
+                            </Box>
+                        </HStack>
                     </Box>
                 </Flex>
             </TouchableOpacity>
@@ -56,4 +105,7 @@ const styles = StyleSheet.create({
         width: win.width,
         padding: 10
     },
+    delete : {
+        backgroundColor: 'white',
+    }
 });

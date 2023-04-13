@@ -1,11 +1,5 @@
-//
-//  NotificationService.m
-//  InsiderNotificationService
-//
-//  Created by syimir idris on 05/04/2023.
-//
-
 #import "NotificationService.h"
+#import <InsiderMobileAdvancedNotification/InsiderPushNotification.h>
 
 @interface NotificationService ()
 
@@ -14,21 +8,29 @@
 
 @end
 
+// FIXME-INSIDER: Please change with your app group.
+static NSString *APP_GROUP = @"group.com.tiseno.Poplook";
+
 @implementation NotificationService
 
-- (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
+-(void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
     self.contentHandler = contentHandler;
     self.bestAttemptContent = [request.content mutableCopy];
     
-    // Modify the notification content here...
-    self.bestAttemptContent.title = [NSString stringWithFormat:@"%@ [modified]", self.bestAttemptContent.title];
+    // MARK: You can customize these.
+    NSString *nextButtonText = @">>";
+    NSString *goToAppText = @"Launch App";
     
-    self.contentHandler(self.bestAttemptContent);
+    [InsiderPushNotification showInsiderRichPush:request appGroup:APP_GROUP nextButtonText:nextButtonText goToAppText:goToAppText success:^(UNNotificationAttachment *attachment) {
+        if (attachment) {
+            self.bestAttemptContent.attachments = [NSArray arrayWithObject:attachment];
+        }
+        
+        self.contentHandler(self.bestAttemptContent);
+    }];
 }
 
-- (void)serviceExtensionTimeWillExpire {
-    // Called just before the extension will be terminated by the system.
-    // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
+-(void)serviceExtensionTimeWillExpire {
     self.contentHandler(self.bestAttemptContent);
 }
 

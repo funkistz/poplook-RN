@@ -5,12 +5,35 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import { useColorModeValue, Pressable, Text, ScrollView, HStack } from 'native-base';
 import { Animated, useWindowDimensions, TouchableOpacity, StyleSheet } from 'react-native';
 import FullWidthImage from 'react-native-fullwidth-image'
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
 
   const [index, setIndex] = useState(0);
   const layout = useWindowDimensions();
+  const navigation: any = useNavigation();
+
+  const onIndexChange = (index: any) => {
+
+    console.log('onIndexChange', routes[index]);
+
+    if (routes[index].type == 'link') {
+      goToCategory(routes[index].id, routes[index].title);
+    } else {
+      setIndex(index);
+    }
+
+  }
+
+  const goToCategory = (id: any, title: any) => {
+
+    const params = {
+      category_id: id,
+      category_name: title
+    };
+
+    navigation.navigate('Categories', { screen: 'CategoryPage', params: params });
+  };
 
   const renderTabBar = (props: any) => {
     const inputRange = props.navigationState.routes.map((x: any, i: any) => i);
@@ -19,6 +42,10 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {
           props.navigationState.routes.map((route: any, i: any) => {
+
+            if (route.type == 'link') {
+              // console.log('rendertabbar', route);
+            }
 
             const opacity = props.position.interpolate({
               inputRange,
@@ -34,7 +61,7 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
             }
 
             return (
-              <TouchableOpacity key={i} onPress={() => { setIndex(i); }}>
+              <TouchableOpacity key={i} onPress={() => { onIndexChange(i); }}>
                 <Box p={4} borderBottomWidth="3" borderColor={borderColor} bg="red">
                   <Animated.Text style={{
                     color,
@@ -57,7 +84,8 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
         navigationState={{ index, routes }}
         renderScene={SceneMap(scenes)}
         renderTabBar={renderTabBar}
-        onIndexChange={setIndex}
+        onIndexChange={onIndexChange}
+        // onTabPress={({ route, preventDefault }) => onTabPress(route)}
         initialLayout={{ width: layout.width }}
       />
     </>);

@@ -1,13 +1,11 @@
-import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Flex, Center, Image, Box, VStack, IconButton, Icon, AspectRatio, Text, HStack, DeleteIcon, } from 'native-base';
-import ProductService from '../../Services/ProductService';
 import { useNavigation } from '@react-navigation/native';
 import Wishlist from '../wishlist';
 import { useSelector } from 'react-redux';
-import { addToCart } from '../../Redux/Slices/Wishlist';
 
-export default function ProductCard({ product }: any) {
+export default function ProductCard({ product, route, openWishlist, hideWishlist = false }: any) {
 
     const { navigate } = useNavigation<any>();
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
@@ -18,9 +16,17 @@ export default function ProductCard({ product }: any) {
             product_id: product.id_product
         };
 
-        console.log('params: ', params)
+        if(route) {
+            route(product.id_product)
+        } else {
+            navigate('ProductDetailPage', params);
+        }
+        
+        
+    }
 
-        navigate('ProductDetailPage', params);
+    const clickedWishlist = () => {
+        openWishlist(null, product)
     }
 
     const price = () => {
@@ -38,18 +44,50 @@ export default function ProductCard({ product }: any) {
         }
     }
 
+    useEffect(() => {
+        console.log('product......', product)
+
+    }, [])
+
     return (
         <TouchableOpacity onPress={() => goToProductPage(product)}>
             <Box p={3} borderRadius={10} >
                 <AspectRatio w="100%" ratio={3 / 4}>
-                    {product && product.image_url && <Image resizeMode="cover" borderRadius={10} source={{
-                        uri: Array.isArray(product.image_url) ? product.image_url[0] : product.image_url
-                    }} alt="image" />}
+                    {product && product.image_url && 
+                        <>
+                            <ImageBackground
+                                source={{  uri: Array.isArray(product.image_url) ? product.image_url[0] : product.image_url }}
+                                style={{ flex: 1 }}
+                                borderRadius={10}
+                                resizeMode="cover">
+                                {product.discount_text != null && 
+                                    <View style={{ 
+                                        flex: 1,
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'center',
+                                        borderRadius: 10,
+                                        overflow: 'hidden',
+                                    }}>
+                                        <Text py={1} 
+                                            style={{ 
+                                                color: 'white',
+                                                fontSize: 10,
+                                                backgroundColor: 'black',
+                                                width: '100%',
+                                                textAlign: 'center',
+                                            }}>{product.discount_text}</Text>
+                                    </View>
+                                }
+                                
+                            </ImageBackground>
+                        </>
+                    }
+                    
                 </AspectRatio>
 
                 <Center>
                     <HStack mt={2} py={0} mb={4}>
-                        <VStack style={{ width: 140, height: 30 }}>
+                        <VStack style={{ width: hideWishlist ? 160 : 140, height: 30 }}>
                             {product.collection_name &&
                                 <Text fontWeight={300} color='black' fontSize={11} >{product.collection_name}</Text>
                             }
@@ -57,11 +95,13 @@ export default function ProductCard({ product }: any) {
                             {price()}
                         </VStack>
 
-                        <Box alignItems="center" style={{ width: 40, height: 30 }} >
-                            <IconButton aria-label="wishlist">
-                                <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
-                            </IconButton>
-                        </Box>
+                        {!hideWishlist && <>
+                            <Box alignItems="center" style={{ width: 40, height: 30 }} >
+                                <IconButton aria-label="wishlist" onPress={() =>  clickedWishlist()}>
+                                    <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
+                                </IconButton>
+                            </Box>
+                        </>}
                     </HStack>
                 </Center>
             </Box>

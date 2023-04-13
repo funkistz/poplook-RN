@@ -15,15 +15,18 @@ import StoreAvailabilityModal from '../components/Modals/StoreAvailability';
 import SkeletonProductDetails from '../components/SkeletonProductDetails';
 import SizeList from '../components/Products/SizeList';
 import ProductCard from '../components/Products/ProductCard';
-import { color } from 'native-base/lib/typescript/theme/styled-system';
+import { background, color } from 'native-base/lib/typescript/theme/styled-system';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { WEB_URL } from "@env"
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import { addToWishlist, getWishList } from '../Redux/Slices/Wishlist';
 
 const win = Dimensions.get('window');
 
 export default function ProductDetailPage({ route, navigation, product_id }: any) {
 
+
+    // Details
     const [product, setProduct] = useState<any>({});
     const [images, setImages] = useState<any>([]);
     const [attribute, setAttribute] = useState([]);
@@ -31,22 +34,18 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [shownHere, setShownHere] = useState<any>([]);
     const [imageHeight, setImageHeight] = useState<any>(0);
     const [isLoading, setIsLoading] = useState<any>(false);
-
-    // Details
     const [details, setDetails] = useState<any>('');
     const [measurements, setMeasurements] = useState<any>([]);
     const [care, setCare] = useState<any>('');
     const [delivery, setDelivery] = useState<any>('');
     const [reference, setReference] = useState<any>('');
     const [styleItWith, setStyleItWith] = useState<any>([]);
-
+    const [motherDaughter, setMotherDaughter] = useState<any>([]);
 
     // Webview
-    const [heightDetails, setHeightDetails] = useState<any>(0);
-    const [heightDelivery, setHeightDelivery] = useState<any>(0);
-    const [heightCare, setHeightCare] = useState<any>(0);
-    const [heightMeasurements, setHeightMeasurements] = useState<any>(0);
+    const [heightDetails, setHeightDetails] = useState<any>(0);;
 
+    // Redux
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
 
@@ -57,7 +56,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [isModalCare, setModalCare] = useState(false);
     const [isModalMeasurements, setModalMeasurements] = useState(false);
 
-    //Bottom sheet
+    // Bottom sheet
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ['30%', '50%'], []);
     const handleSheetChanges = useCallback((index: number) => {
@@ -66,11 +65,16 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     // Size data
     const [hasSize, setHasSize] = useState<any>(false);
+    const [type, setType] = useState<any>();
     const [sizeSelected, setSizeSelected] = useState<any>();
-    const setSizeSelectedModal = (size: any) => {
+    const setSizeSelectedModal = async (size: any) => {
         bottomSheetRef.current?.close();
-        console.log('setSizeSelectedModal');
-        addToCartF(size);
+        if(type == 'cart') {
+            await addToCartF(size);
+        } else {
+            await addtoWishlist(size)
+            await dispatch(getWishList())
+        }
         setSizeSelected(size);
     }
 
@@ -91,19 +95,16 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setModalDelivery(!isModalDelivery);
     };
 
+    const changeProductId = (item: any) => {
+        fetchData(item).catch(console.error);
+        setIsLoading(false)
+    }
 
-    useEffect(() => {
-        setIsLoading(false);
-        dispatch(getCart());
-        setHeightDetails(400)
-        setHeightDelivery(400)
-        setHeightCare(400)
-        setHeightMeasurements(400)
-
-        fetchData(route.params.product_id).catch(console.error);
-
-    }, [])
-
+    const selectProductId = async (item:any) => {
+        await setModalDetails(!isModalDetails);
+        setIsLoading(true)
+        await changeProductId(item);
+    }
 
     const fetchData = async (product_id: any) => {
         // const params = route.params;
@@ -128,7 +129,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
         setProduct(json.data);
 
-        console.log('Products: ', json.data)
+        // console.log('Products: ', json.data)
 
         const images: any = json.data.image_url;
 
@@ -149,14 +150,15 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setReference(json.data.reference)
         setShownHere(json.data.shown_here_with)
         setMeasurements(json.data.measurements)
-
-        console.log('.................', json.data.style_it_with)
         setStyleItWith(json.data.style_it_with)
-
+        console.log('setIt: ', json.data.style_it_with)
+        setMotherDaughter(json.data.mother_daughter_with)
         setIsLoading(true)
     }
 
     const addToCartF = (id_product_attribute = null) => {
+
+        setType('cart');
 
         if (hasSize) {
             if (!sizeSelected && !id_product_attribute) {
@@ -172,6 +174,49 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         }
 
         dispatch(addToCart(params));
+    }
+
+    const addtoWishlist = async (id_product_attribute = null) => {
+
+        setType('wishlist');
+
+        if (hasSize) {
+            if (!sizeSelected && !id_product_attribute) {
+                bottomSheetRef.current?.snapToIndex(0);
+                return;
+            }
+        }
+
+        const params = {
+            id_product: product.id,
+            id_product_attribute: id_product_attribute ? id_product_attribute : sizeSelected,
+            quantity: 1
+        }
+
+        await dispatch(addToWishlist(params));
+        await dispatch(getWishList())
+    }
+
+    const styleItaddtoWishlist = async (id_product_attribute = null, item:any) => {
+
+        if(Array.isArray(item.attribute_list)) {
+            if (item.attribute_list.length > 0) {
+                if (!id_product_attribute) {
+                    bottomSheetRef.current?.snapToIndex(0);
+                    return;
+                }
+            }
+        } 
+
+
+        const params = {
+            id_product: item.id_product,
+            id_product_attribute: id_product_attribute ? id_product_attribute : 0,
+            quantity: 1
+        }
+
+        await dispatch(addToWishlist(params));
+        await dispatch(getWishList())
     }
 
     const shareUrl = async () => {
@@ -199,9 +244,80 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         fetchData(item).catch(console.error);
     }
 
-    const INJECTED_JAVASCRIPT = `(function() {
-        window.ReactNativeWebView.postMessage(document.getElementById("test").getBoundingClientRect().height);
-    })();`;
+    const htmlContent = (data: any) => {
+        return `   
+        <!doctype html>
+        <html>
+        <head>
+            <meta charset="utf-8" />
+            <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <style type="text/css">
+                body {
+                    margin: 0;
+                    padding: 0 20px;
+                    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                    // background: red;
+                }
+                ul {
+                    padding: 0;
+
+                }
+                li { 
+                    // font-size: 100; 
+                    list-style: none;
+                } 
+                li:before { 
+                    color: #1cad48; 
+                    content: "\\2022"; 
+                    display: inline-block;
+                    width: 1em; 
+                    font-weight: bold; 
+                    font-size: 40;
+                } 
+                p { 
+                    font-size: 30 ;
+                    // padding-left: 20px;
+                }
+            </style>    
+        </head>
+
+        <body>
+            <div>
+                ` + data +`
+            </div>
+        </body>
+        </html>
+
+    `
+    }
+
+    const injectedJavaScript = `
+        window.ReactNativeWebView.postMessage(
+            Math.max(
+            document.body.scrollHeight, 
+            document.documentElement.scrollHeight, 
+            document.body.offsetHeight, 
+            document.documentElement.offsetHeight, 
+            document.body.clientHeight, 
+            document.documentElement.clientHeight
+            ).toString()
+        );
+        true;
+    `;
+
+    const handleWebViewMessage = (event:any) => {
+        setHeightDetails(parseInt(event.nativeEvent.data));
+    };
+
+    useEffect(() => {
+        setIsLoading(false);
+        dispatch(getCart());
+        setHeightDetails(400)
+
+        fetchData(route.params.product_id).catch(console.error);
+
+    }, [])
 
 
     return (
@@ -231,6 +347,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                             <VStack px={4} pt={4} backgroundColor={'white'} >
                                 <Text color={'black'} fontSize={18}>{product.name}</Text>
                                 {price()}
+                                {product.discount_text != null &&  <Text px={3} py={1} style={{ color: 'white', fontSize: 10, backgroundColor: 'black', textAlign: 'center' }}>{product.discount_text}</Text>}
                                 {attribute.length > 0 &&
                                     <>
                                         <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
@@ -272,7 +389,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             </Box>
                                             <Box width={'10%'} backgroundColor='red'>
                                                 <IonIcon
-                                                    name={'arrow-forward-outline'}
+                                                    name={'chevron-forward-outline'}
                                                     size={30}
                                                     color="#333"
                                                 />
@@ -286,51 +403,69 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         transparent={false}
                                         visible={isModalDetails}
                                         onRequestClose={toggleModalDetails}
-                                        style={{ backgroundColor: 'red' }}
                                     >
-                                        <View style={{ flex: 1, paddingVertical: 20 }}>
+                                        <View style={{ flex: 1, paddingVertical: 20}}>
                                             <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Details</Text>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
                                             {details &&
                                                 <>
-                                                    <HStack pt={2} style={{ height: heightDetails }}>
-                                                        <WebView
-                                                            style={{ height: heightDetails }}
-                                                            originWhitelist={['*']}
-                                                            source={{ html: '<style>li { font-size: 40; padding-top: 10px; list-style: none;} li:before { color: #1cad48; content: "\\2022"; display: inline-block; width: 1em; font-weight: bold; font-size: 40;} p { font-size: 30 ;padding-left: 40px;} </style><div id="test">' + details + '</div>' }}
-                                                            injectedJavaScript={INJECTED_JAVASCRIPT}
-                                                            onMessage={event => {
-                                                                const height = (parseInt(event.nativeEvent.data) / 2);
-                                                                console.log('height Details: ', height)
-                                                                setHeightDetails(height)
-                                                            }}
-                                                        />
-                                                    </HStack>
-                                                    <HStack pl={4}>
-                                                        <View>
-                                                            {shownHere &&
-                                                                <>
-                                                                    <Text fontSize={15} color={'black'}>Shown here with:</Text>
-                                                                    <View style={{ marginVertical: 10 }}>
-                                                                        {shownHere.map((res: any, index: any) => {
-                                                                            return <>
-                                                                                <Chip
-                                                                                    key={index}
-                                                                                    icon={() => null}
-                                                                                    mode='outlined'
-                                                                                    style={styles.shown}
-                                                                                    onPress={() => console.log('asdas')}
-                                                                                >
-                                                                                    <Text style={styles.shownText}>{res.name}</Text>
-                                                                                </Chip>
-                                                                            </>
-                                                                        })}
-                                                                    </View>
-                                                                </>
-                                                            }
-                                                            <Text color={'black'}>Reference Number: {reference}</Text>
-                                                        </View>
-                                                    </HStack>
+                                                    <View>
+                                                        <ScrollView>
+                                                            <WebView 
+                                                                source={{ html: htmlContent(details) }}
+                                                                injectedJavaScript={injectedJavaScript}
+                                                                onMessage={handleWebViewMessage}
+                                                                style={{ height: heightDetails }}
+                                                                startInLoadingState={true}
+                                                            />
+                                                            <HStack pl={4} mb={5}>
+                                                                <View>
+                                                                    {shownHere &&
+                                                                        <>
+                                                                            <Text fontSize={15} color={'black'}>Shown here with:</Text>
+                                                                            <View style={{ marginVertical: 10 }}>
+                                                                                {shownHere.map((res: any, index: any) => {
+                                                                                    return <>
+                                                                                        <Chip
+                                                                                            key={index}
+                                                                                            icon={() => null}
+                                                                                            mode='outlined'
+                                                                                            style={styles.shown}
+                                                                                            onPress={() => selectProductId(res.id_product)}
+                                                                                        >
+                                                                                            <Text style={styles.shownText}>{res.name}</Text>
+                                                                                        </Chip>
+                                                                                    </>
+                                                                                })}
+                                                                            </View>
+                                                                        </>
+                                                                    }
+
+                                                                    {motherDaughter &&
+                                                                        <>
+                                                                            <Text fontSize={15} color={'black'}>Shop Mother & Daughter:</Text>
+                                                                            <View style={{ marginVertical: 10 }}>
+                                                                                {motherDaughter.map((res: any, index: any) => {
+                                                                                    return <>
+                                                                                        <Chip
+                                                                                            key={index}
+                                                                                            icon={() => null}
+                                                                                            mode='outlined'
+                                                                                            style={styles.shown}
+                                                                                            onPress={() => selectProductId(res.id_product)}
+                                                                                        >
+                                                                                            <Text style={styles.shownText}>{res.name}</Text>
+                                                                                        </Chip>
+                                                                                    </>
+                                                                                })}
+                                                                            </View>
+                                                                        </>
+                                                                    }
+                                                                    <Text color={'black'}>Reference Number: {reference}</Text>
+                                                                </View>
+                                                            </HStack>
+                                                        </ScrollView>
+                                                    </View>
                                                 </>
                                             }
                                         </View>
@@ -343,7 +478,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             </Box>
                                             <Box width={'10%'} backgroundColor='red'>
                                                 <IonIcon
-                                                    name={'arrow-forward-outline'}
+                                                    name={'chevron-forward-outline'}
                                                     size={30}
                                                     color="#333"
                                                 />
@@ -356,26 +491,25 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         transparent={false}
                                         visible={isModalMeasurements}
                                         onRequestClose={toggleModalMeasurements}
-                                        style={{ justifyContent: 'flex-end' }}
                                     >
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
                                             <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Measurements</Text>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            <ScrollView>
-                                                <HStack pt={2} style={{ height: heightMeasurements }}>
-                                                    <WebView
-                                                        style={{ height: heightMeasurements }}
-                                                        originWhitelist={['*']}
-                                                        source={{ html: '<div id="test">' + measurements + '</div>' }}
-                                                        injectedJavaScript={INJECTED_JAVASCRIPT}
-                                                        onMessage={event => {
-                                                            const height = (parseInt(event.nativeEvent.data) / 2);
-                                                            console.log('height Delivery: ', height)
-                                                            setHeightMeasurements(height)
-                                                        }}
-                                                    />
-                                                </HStack>
-                                            </ScrollView>
+                                            { measurements &&
+                                                <>
+                                                    <View>
+                                                        <ScrollView>
+                                                            <WebView
+                                                                source={{ html: htmlContent(measurements) }}
+                                                                injectedJavaScript={injectedJavaScript}
+                                                                onMessage={handleWebViewMessage}
+                                                                style={{ height: win.height - 150 }}
+                                                                startInLoadingState={true}
+                                                            />
+                                                        </ScrollView>
+                                                    </View>
+                                                </>
+                                            }
                                         </View>
                                     </Modal>
 
@@ -386,7 +520,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             </Box>
                                             <Box width={'10%'} backgroundColor='red'>
                                                 <IonIcon
-                                                    name={'arrow-forward-outline'}
+                                                    name={'chevron-forward-outline'}
                                                     size={30}
                                                     color="#333"
                                                 />
@@ -404,21 +538,21 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
                                             <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Care</Text>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            <ScrollView>
-                                                <HStack pt={2} style={{ height: heightCare }}>
-                                                    <WebView
-                                                        style={{ height: heightCare }}
-                                                        originWhitelist={['*']}
-                                                        source={{ html: '<style>li { font-size: 40; padding-top: 10px; list-style: none;} li:before { color: #1cad48; content: "\\2022"; display: inline-block; width: 1em; font-weight: bold; font-size: 40;} p { font-size: 30 ;padding-left: 40px;} </style><div id="test">' + care + '</div>' }}
-                                                        injectedJavaScript={INJECTED_JAVASCRIPT}
-                                                        onMessage={event => {
-                                                            const height = (parseInt(event.nativeEvent.data) / 2);
-                                                            console.log('height Delivery: ', height)
-                                                            setHeightCare(height)
-                                                        }}
-                                                    />
-                                                </HStack>
-                                            </ScrollView>
+                                            { care &&
+                                                <>
+                                                    <View>
+                                                        <ScrollView>
+                                                            <WebView
+                                                                source={{ html: htmlContent(care) }}
+                                                                injectedJavaScript={injectedJavaScript}
+                                                                onMessage={handleWebViewMessage}
+                                                                style={{ height: win.height - 150 }}
+                                                                startInLoadingState={true}
+                                                            />
+                                                        </ScrollView>
+                                                    </View>
+                                                </>
+                                            }
                                         </View>
                                     </Modal>
 
@@ -429,7 +563,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             </Box>
                                             <Box width={'10%'} backgroundColor='red'>
                                                 <IonIcon
-                                                    name={'arrow-forward-outline'}
+                                                    name={'chevron-forward-outline'}
                                                     size={30}
                                                     color="#333"
                                                 />
@@ -442,26 +576,25 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         transparent={false}
                                         visible={isModalDelivery}
                                         onRequestClose={toggleModalDelivery}
-                                        style={{ justifyContent: 'flex-end' }}
                                     >
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
                                             <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Delivery & Return</Text>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            <ScrollView>
-                                                <HStack pt={2} style={{ height: heightDelivery }}>
-                                                    <WebView
-                                                        style={{ height: heightDelivery }}
-                                                        originWhitelist={['*']}
-                                                        source={{ html: '<style>li { font-size: 40; padding-top: 10px; list-style: none;} li:before { color: #1cad48; content: "\\2022"; display: inline-block; width: 1em; font-weight: bold; font-size: 40;} p { font-size: 30 ;padding-left: 40px;} </style><div id="test">' + delivery + '</div>' }}
-                                                        injectedJavaScript={INJECTED_JAVASCRIPT}
-                                                        onMessage={event => {
-                                                            const height = (parseInt(event.nativeEvent.data) / 2);
-                                                            console.log('height Delivery: ', height)
-                                                            setHeightDelivery(height)
-                                                        }}
-                                                    />
-                                                </HStack>
-                                            </ScrollView>
+                                            { delivery &&
+                                                <>
+                                                    <View>
+                                                        <ScrollView>
+                                                            <WebView
+                                                                source={{ html: htmlContent(delivery) }}
+                                                                injectedJavaScript={injectedJavaScript}
+                                                                onMessage={handleWebViewMessage}
+                                                                style={{ height: win.height - 150 }}
+                                                                startInLoadingState={true}
+                                                            />
+                                                        </ScrollView>
+                                                    </View>
+                                                </>
+                                            }
                                         </View>
                                     </Modal>
 
@@ -486,8 +619,8 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                             <ScrollView horizontal={true}>
                                                 {styleItWith && styleItWith.map((res: any, index: any) => {
                                                     return <>
-                                                        <Box w={200}>
-                                                            <ProductCard product={res}></ProductCard>
+                                                        <Box w={200} key={index}>
+                                                            <ProductCard product={res} route={changeProductId} openWishlist={styleItaddtoWishlist} hideWishlist={true}></ProductCard>
                                                         </Box>
 
                                                     </>
@@ -503,7 +636,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                         </ScrollView>
 
                         <HStack style={{ height: 60, paddingVertical: 5 }}  >
-                            <IconButton size='lg' variant="ghost" width={win.width / 5} >
+                            <IconButton size='lg' variant="ghost" width={win.width / 5} onPress={() => addtoWishlist()}>
                                 <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={24}></Wishlist>
                             </IconButton>
                             <IconButton size='lg' variant="ghost" width={win.width / 5}
@@ -533,10 +666,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 snapPoints={snapPoints}
                 onChange={handleSheetChanges}
                 enablePanDownToClose
+                backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
             >
                 <View style={styles.contentContainer}>
                     <Text color={'black'} bold mb={2}>Select Size: </Text>
-                    <SizeList attribute={attribute} setSizeSelected={setSizeSelectedModal} sizeSelected={sizeSelected}></SizeList>
+                    <SizeList attribute={attribute} setSizeSelected={(size:any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
                 </View>
             </BottomSheet>
         </View>
