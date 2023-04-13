@@ -53,7 +53,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
         } else if (id == 2) {
             navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage', params: params });
         } else if (id == 7) {
-            // customer service
+            navigation.navigate('CustomerServicePage', { screen: 'CustomerServicePage', params: params });
         } else if (id == 4) {
             navigation.navigate('StoreCreditPage', { screen: 'StoreCreditPage', params: params });
         } else if (id == 5) {

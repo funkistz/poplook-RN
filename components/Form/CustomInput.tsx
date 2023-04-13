@@ -1,11 +1,12 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, Input, Icon, Button, ScrollView, Box } from "native-base";
+import { Text, Input, Icon, Button, ScrollView, Box, Flex } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-export default function CustomInput({ name, variant = 'unstyled', placeholder, values, onChangeText, onBlur, icon, touched, errors, type = 'text' }: any) {
+export default function CustomInput({ name, variant = 'unstyled', placeholder, values, onChangeText, onBlur, icon, touched,
+errors, type = 'text', readOnly = false, showIcon = true }: any) {
 
     useEffect(() => {
 
@@ -23,13 +24,19 @@ export default function CustomInput({ name, variant = 'unstyled', placeholder, v
                         onBlur={() => onBlur(name)}
                         style={styles.input}
                         type={type}
-                        InputLeftElement={<Icon as={<IonIcon name={icon} />} size={5} ml="2" color="muted.900" />}
+                        isReadOnly={readOnly}
+                        InputLeftElement={
+                            showIcon && (
+                                <Icon as={IonIcon} name={icon} size={5} ml="2" color="muted.900" />
+                            )
+                        }
 
                     />
-                    {touched[name] && errors[name] &&
-                        <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors[name]}</Text>
-                    }
-            </Box>
+                        
+                </Box>
+                {touched[name] && errors[name] &&
+                    <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors[name]}</Text>
+                }
         </>
     );
 }

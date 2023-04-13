@@ -2,10 +2,16 @@ import { StyleSheet, TouchableOpacity, Switch } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Text, ScrollView, View, HStack, Spacer, Flex } from "native-base";
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
+import CmsService from '../Services/CmsService';
+import AuthService from '../Services/AuthService';
+import { newsletter } from '../Redux/Slices/Sessions';
 
 
 export default function PersonalInfoPage({ route, navigation }: { route: any, navigation: any }) {
 
+    const dispatch = useDispatch()
+    const details = useSelector((storeState: any) => storeState.session.user);
     const infos = [
         { id: 0, title: "Email Address", key: "email"},
         { id: 1, title: "Password", key: "password"},
@@ -13,12 +19,26 @@ export default function PersonalInfoPage({ route, navigation }: { route: any, na
     ];
 
 
-    const [isEnabled, setIsEnabled] = useState(false);
-    const [isProtect, setIsProtect] = useState(true);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const [isEnabled, setIsEnabled] = useState(details.newsletter == 1 ? true: false);
+    const [isProtect, setIsProtect] = useState(details.optin == 1 ? true: false);
+    const toggleSwitch = async () => {
+        setIsEnabled(!isEnabled)
+        const params: any = {
+            id_customer: details.id_customer,
+            newsletter: !isEnabled ? 1 : 0,
+        };
+
+        const response = await AuthService.updateUserInfo(params);
+        const json = await response.json();
+        if(json.code == 200) {
+            dispatch(newsletter(json.data.newsletter))
+
+        }
+
+    };
+
 
     useEffect(() => {
-
 
     }, [])
 

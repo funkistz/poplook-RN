@@ -120,6 +120,10 @@ export const sessionSlice = createSlice({
             state = { ...state, ...temp }
             return state;
         },
+        newsletter: (state, action) => {
+            state = {...state,  user: {...state.user, newsletter: action.payload,}}
+            return state;
+        },
         logout: (state) => {
 
             console.log('logout');
@@ -166,7 +170,7 @@ export const sessionSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { changeCountry, logout } = sessionSlice.actions
+export const { changeCountry, logout, newsletter } = sessionSlice.actions
 
 export const userSelector = (state: any) => state.session
 
