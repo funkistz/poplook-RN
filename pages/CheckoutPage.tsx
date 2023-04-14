@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon } from "native-base";
+import { StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getCartStep1, getCartStep2 } from '../Redux/Slices/Checkout';
@@ -219,6 +219,7 @@ export default function CheckoutPage({ route} : { route: any }) {
 
     return (
         <>
+        <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0}>
             <ScrollView>
                 <View style={styles.container}>
                     {!address && 
@@ -279,7 +280,6 @@ export default function CheckoutPage({ route} : { route: any }) {
                 </Radio.Group>
                 <Text color={'black'}>{paymentType} {paymentChild}</Text>
                 <Spacer />
-
 
                 <Checkbox value="terms" style={styles.checkbox} marginY={3}>
                     <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }}>Terms of Service</Link> and
@@ -347,14 +347,25 @@ export default function CheckoutPage({ route} : { route: any }) {
                 </HStack>
                 <Divider/>
                 
-
                 <Text style={styles.bold} marginTop={3}>Shopping Bag</Text>  
                 <ScrollView horizontal py={3}>
                     {product.map((item: any, index: any) => {
                         return <>
-                            <Box key={index}>
+                            <Box key={index} marginRight={2}>
                                 <AspectRatio w="100%" ratio={3/4} size={'130px'}>
-                                    <Image resizeMode="cover" borderRadius={10} source={{ uri: item.image_url }} />
+                                    <ImageBackground
+                                        source={{  uri: item.image_url }}
+                                        style={{ flex: 1 }}
+                                        borderRadius={10}
+                                        resizeMode="cover">
+                                            <View style={styles.quantity_view}>
+                                                <Button size='sm' 
+                                                    style={styles.quantity_chip}>
+                                                    <Text 
+                                                    style={styles.bold}>{'x' + item.quantity}</Text>
+                                                </Button>
+                                            </View>
+                                        </ImageBackground>   
                                 </AspectRatio>
                             </Box>
                             <Spacer />
@@ -367,7 +378,7 @@ export default function CheckoutPage({ route} : { route: any }) {
                 <HStack py={1}>
                     <Text style={styles.normal}>Retail Price :</Text>
                     <Spacer/>
-                    <Text style={styles.normal}>{total}</Text>
+                    <Text style={styles.normal}>{currency} {total}</Text>
                 </HStack>
                 <HStack py={1}>
                     <Text style={styles.normal}>Discount :</Text>
@@ -384,14 +395,20 @@ export default function CheckoutPage({ route} : { route: any }) {
                     <Spacer/>
                     <Text style={styles.normal}>-</Text>
                 </HStack>
-                <HStack py={1}>
-                    <Text style={styles.total}>Total :</Text>
-                    <Spacer/>
-                    <Text style={styles.total}>{currency} {total}</Text>
-                </HStack>
-                <Button style={styles.button} onPress={() => cartStep4()}>PLACE ORDER</Button>
                 </View>
             </ScrollView>
+
+            <HStack style={{ marginHorizontal: 20 }}>
+                <Text style={styles.total}>Total :</Text>
+                <Spacer/>
+                <Text style={styles.total}>{currency} {total}</Text>
+            </HStack>
+
+            <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}>
+                <Button w={'100%'} style={styles.footer} onPress={() => cartStep4()}>PLACE ORDER</Button>  
+            </HStack>
+            
+        </Flex>
         </>
     )
 }
@@ -433,8 +450,23 @@ const styles = StyleSheet.create({
     checkbox: {
         borderColor: 'black',
         backgroundColor: 'white'
+    },
+    footer: {
+        backgroundColor: '#1cad48'
+    },
+    quantity_chip: {
+        marginVertical: 3,
+        borderRadius: 30,
+        alignItems: 'center',
+        backgroundColor: 'white'
+    },
+    quantity_view: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        borderRadius: 10,
+        overflow: 'hidden',
     }
-    
 })
 
 
