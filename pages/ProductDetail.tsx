@@ -69,7 +69,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [sizeSelected, setSizeSelected] = useState<any>();
     const setSizeSelectedModal = async (size: any) => {
         bottomSheetRef.current?.close();
-        if(type == 'cart') {
+        if (type == 'cart') {
             await addToCartF(size);
         } else {
             await addtoWishlist(size)
@@ -100,7 +100,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setIsLoading(false)
     }
 
-    const selectProductId = async (item:any) => {
+    const selectProductId = async (item: any) => {
         await setModalDetails(!isModalDetails);
         setIsLoading(true)
         await changeProductId(item);
@@ -197,16 +197,16 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         await dispatch(getWishList())
     }
 
-    const styleItaddtoWishlist = async (id_product_attribute = null, item:any) => {
+    const styleItaddtoWishlist = async (id_product_attribute = null, item: any) => {
 
-        if(Array.isArray(item.attribute_list)) {
+        if (Array.isArray(item.attribute_list)) {
             if (item.attribute_list.length > 0) {
                 if (!id_product_attribute) {
                     bottomSheetRef.current?.snapToIndex(0);
                     return;
                 }
             }
-        } 
+        }
 
 
         const params = {
@@ -284,7 +284,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
         <body>
             <div>
-                ` + data +`
+                ` + data + `
             </div>
         </body>
         </html>
@@ -306,7 +306,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         true;
     `;
 
-    const handleWebViewMessage = (event:any) => {
+    const handleWebViewMessage = (event: any) => {
         setHeightDetails(parseInt(event.nativeEvent.data));
     };
 
@@ -347,7 +347,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                             <VStack px={4} pt={4} backgroundColor={'white'} >
                                 <Text color={'black'} fontSize={18}>{product.name}</Text>
                                 {price()}
-                                {product.discount_text != null &&  <Text px={3} py={1} style={{ color: 'white', fontSize: 10, backgroundColor: 'black', textAlign: 'center' }}>{product.discount_text}</Text>}
+                                {product.discount_text != null && <Text px={3} py={1} style={{ color: 'white', fontSize: 10, backgroundColor: 'black', textAlign: 'center' }}>{product.discount_text}</Text>}
                                 {attribute.length > 0 &&
                                     <>
                                         <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
@@ -365,12 +365,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <ScrollView horizontal={true}>
                                             <HStack mb={4}>
                                                 {colorRelated && colorRelated.map((res: any, index: any) => {
-                                                    return <>
-                                                        <TouchableOpacity onPress={() => chooseColor(res.id_product)} key={index}>
-                                                            <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
-                                                        </TouchableOpacity>
-
-                                                    </>
+                                                    return <TouchableOpacity onPress={() => chooseColor(res.id_product)} key={index}>
+                                                        <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
+                                                    </TouchableOpacity>
                                                 })}
                                             </HStack>
                                         </ScrollView>
@@ -404,14 +401,14 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         visible={isModalDetails}
                                         onRequestClose={toggleModalDetails}
                                     >
-                                        <View style={{ flex: 1, paddingVertical: 20}}>
+                                        <View style={{ flex: 1, paddingVertical: 20 }}>
                                             <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Details</Text>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
                                             {details &&
                                                 <>
                                                     <View>
                                                         <ScrollView>
-                                                            <WebView 
+                                                            <WebView
                                                                 source={{ html: htmlContent(details) }}
                                                                 injectedJavaScript={injectedJavaScript}
                                                                 onMessage={handleWebViewMessage}
@@ -425,17 +422,15 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                                             <Text fontSize={15} color={'black'}>Shown here with:</Text>
                                                                             <View style={{ marginVertical: 10 }}>
                                                                                 {shownHere.map((res: any, index: any) => {
-                                                                                    return <>
-                                                                                        <Chip
-                                                                                            key={index}
-                                                                                            icon={() => null}
-                                                                                            mode='outlined'
-                                                                                            style={styles.shown}
-                                                                                            onPress={() => selectProductId(res.id_product)}
-                                                                                        >
-                                                                                            <Text style={styles.shownText}>{res.name}</Text>
-                                                                                        </Chip>
-                                                                                    </>
+                                                                                    return <Chip
+                                                                                        key={index}
+                                                                                        icon={() => null}
+                                                                                        mode='outlined'
+                                                                                        style={styles.shown}
+                                                                                        onPress={() => selectProductId(res.id_product)}
+                                                                                    >
+                                                                                        <Text style={styles.shownText}>{res.name}</Text>
+                                                                                    </Chip>
                                                                                 })}
                                                                             </View>
                                                                         </>
@@ -446,17 +441,15 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                                             <Text fontSize={15} color={'black'}>Shop Mother & Daughter:</Text>
                                                                             <View style={{ marginVertical: 10 }}>
                                                                                 {motherDaughter.map((res: any, index: any) => {
-                                                                                    return <>
-                                                                                        <Chip
-                                                                                            key={index}
-                                                                                            icon={() => null}
-                                                                                            mode='outlined'
-                                                                                            style={styles.shown}
-                                                                                            onPress={() => selectProductId(res.id_product)}
-                                                                                        >
-                                                                                            <Text style={styles.shownText}>{res.name}</Text>
-                                                                                        </Chip>
-                                                                                    </>
+                                                                                    return <Chip
+                                                                                        key={index}
+                                                                                        icon={() => null}
+                                                                                        mode='outlined'
+                                                                                        style={styles.shown}
+                                                                                        onPress={() => selectProductId(res.id_product)}
+                                                                                    >
+                                                                                        <Text style={styles.shownText}>{res.name}</Text>
+                                                                                    </Chip>
                                                                                 })}
                                                                             </View>
                                                                         </>
@@ -495,7 +488,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
                                             <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Measurements</Text>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            { measurements &&
+                                            {measurements &&
                                                 <>
                                                     <View>
                                                         <ScrollView>
@@ -538,7 +531,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
                                             <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Care</Text>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            { care &&
+                                            {care &&
                                                 <>
                                                     <View>
                                                         <ScrollView>
@@ -580,7 +573,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
                                             <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Delivery & Return</Text>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            { delivery &&
+                                            {delivery &&
                                                 <>
                                                     <View>
                                                         <ScrollView>
@@ -618,12 +611,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <HStack>
                                             <ScrollView horizontal={true}>
                                                 {styleItWith && styleItWith.map((res: any, index: any) => {
-                                                    return <>
-                                                        <Box w={200} key={index}>
-                                                            <ProductCard product={res} route={changeProductId} openWishlist={styleItaddtoWishlist} hideWishlist={true}></ProductCard>
-                                                        </Box>
-
-                                                    </>
+                                                    return <Box w={200} key={index}>
+                                                        <ProductCard product={res} route={changeProductId} openWishlist={styleItaddtoWishlist} hideWishlist={true}></ProductCard>
+                                                    </Box>
                                                 })}
                                             </ScrollView>
                                         </HStack>
@@ -666,11 +656,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 snapPoints={snapPoints}
                 onChange={handleSheetChanges}
                 enablePanDownToClose
-                backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
+                backgroundStyle={{ shadowColor: '#ccc', shadowOpacity: 0.5 }}
             >
                 <View style={styles.contentContainer}>
                     <Text color={'black'} bold mb={2}>Select Size: </Text>
-                    <SizeList attribute={attribute} setSizeSelected={(size:any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
+                    <SizeList attribute={attribute} setSizeSelected={(size: any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
                 </View>
             </BottomSheet>
         </View>
