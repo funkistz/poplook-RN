@@ -13,6 +13,7 @@ import { getCountries } from '../Redux/Slices/Infos';
 import StoreCreditPage from './StoreCreditPage';
 import ShippingTo from '../components/ShippingTo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
 
