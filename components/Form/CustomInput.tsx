@@ -1,11 +1,12 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, Input, Icon, Button, ScrollView } from "native-base";
+import { Text, Input, Icon, Button, ScrollView, Box, Flex } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-export default function CustomInput({ name, variant = 'underlined', placeholder, values, onChangeText, onBlur, icon, touched, errors, type = 'text' }: any) {
+export default function CustomInput({ name, variant = 'unstyled', placeholder, values, onChangeText, onBlur, icon, touched,
+errors, type = 'text', readOnly = false, showIcon = true }: any) {
 
     useEffect(() => {
 
@@ -14,19 +15,28 @@ export default function CustomInput({ name, variant = 'underlined', placeholder,
 
     return (
         <>
-            <Input
-                variant={variant}
-                placeholder={placeholder}
-                value={values[name]}
-                onChangeText={onChangeText(name)}
-                onBlur={() => onBlur(name)}
-                style={styles.input}
-                type={type}
-                InputLeftElement={<Icon as={<IonIcon name={icon} />} size={5} ml="2" color="muted.900" />}
-            />
-            {touched[name] && errors[name] &&
-                <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors[name]}</Text>
-            }
+            <Box w="100%" style={{borderBottomColor: '#dedede', borderBottomWidth: 1}}>
+                <Input
+                        variant={variant}
+                        placeholder={placeholder}
+                        value={values[name]}
+                        onChangeText={onChangeText(name)}
+                        onBlur={() => onBlur(name)}
+                        style={styles.input}
+                        type={type}
+                        isReadOnly={readOnly}
+                        InputLeftElement={
+                            showIcon && (
+                                <Icon as={IonIcon} name={icon} size={5} ml="2" color="muted.900" />
+                            )
+                        }
+
+                    />
+                        
+                </Box>
+                {touched[name] && errors[name] &&
+                    <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors[name]}</Text>
+                }
         </>
     );
 }
@@ -43,7 +53,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 10,
         paddingLeft: 10,
-        color: 'black'
+        color: 'black',
+        height: 45,
     },
     container: {
         padding: 30
@@ -58,7 +69,6 @@ const styles = StyleSheet.create({
     },
     left_section: {
         padding: 15,
-
         color: 'black',
         fontSize: 16,
         fontWeight: '400'

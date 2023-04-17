@@ -93,7 +93,7 @@ const APIService = {
             body: injectExtraParams(data)
         };
 
-        console.log('url', API_URL + url, options);
+        // console.log('url', API_URL + url, options);
 
         return await fetch(API_URL + url, options);
     },

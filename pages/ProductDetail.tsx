@@ -232,7 +232,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         if (oldPrice > newPrice) {
             return <>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ color: 'gray' }} bold strikeThrough fontSize={18}>RM {product.price_without_reduction}</Text><Text style={{ color: 'red' }} bold fontSize={18}> RM {product.price}</Text>
+                    <Text color={'gray.500'} bold strikeThrough fontSize={18}>RM {product.price_without_reduction}</Text><Text style={{ color: 'red' }} bold fontSize={18}> RM {product.price}</Text>
                 </View>
             </>
         } else {
@@ -625,7 +625,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
                         </ScrollView>
 
-                        <HStack style={{ height: 60, paddingVertical: 5 }}  >
+                        <HStack style={{ height: 60, paddingVertical: 5}}  >
                             <IconButton size='lg' variant="ghost" width={win.width / 5} onPress={() => addtoWishlist()}>
                                 <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={24}></Wishlist>
                             </IconButton>

@@ -347,8 +347,6 @@ PODS:
   - react-native-atome-paylater (1.0.0):
     - AtomeSDK
     - React-Core
-  - react-native-ipay88-integration (1.0.0):
-    - React
   - react-native-pager-view (6.0.1):
     - React-Core
   - react-native-safe-area-context (4.4.1):
@@ -550,7 +548,6 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-atome-paylater (from `../node_modules/react-native-atome-paylater`)
-  - react-native-ipay88-integration (from `../node_modules/react-native-ipay88-integration`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -646,8 +643,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-atome-paylater:
     :path: "../node_modules/react-native-atome-paylater"
-  react-native-ipay88-integration:
-    :path: "../node_modules/react-native-ipay88-integration"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -740,7 +735,6 @@ SPEC CHECKSUMS:
   React-jsinspector: d5ce2ef3eb8fd30c28389d0bc577918c70821bd6
   React-logger: 9332c3e7b4ef007a0211c0a9868253aac3e1da82
   react-native-atome-paylater: d0fc8268e80360e94b9cd5aac39d1cbde6f45fdf
-  react-native-ipay88-integration: 37a077e959bcddf315e585c6085c6bb7db833b38
   react-native-pager-view: 3051346698a0ba0c4e13e40097cc11b00ee03cca
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581

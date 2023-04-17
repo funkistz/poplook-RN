@@ -35,7 +35,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
         if (oldPrice > newPrice) {
             return <>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ color: 'gray' }} bold strikeThrough fontSize={12}>RM {product.price_without_reduction}</Text>
+                    <Text color={'gray.500'} bold strikeThrough fontSize={12}>RM {product.price_without_reduction}</Text>
                     <Text style={{ color: 'red' }} bold fontSize={12}> RM {product.price}</Text>
                 </View>
             </>
