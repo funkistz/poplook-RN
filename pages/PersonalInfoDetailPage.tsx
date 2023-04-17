@@ -5,10 +5,14 @@ import CustomInput from '../components/Form/CustomInput';
 import { Formik } from 'formik';
 import * as yup from 'yup'
 import { Alert } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthService from '../Services/AuthService';
+import GeneralService from '../Services/GeneralService';
+import { profile } from '../Redux/Slices/Sessions';
 
 export default function PersonalInfoDetailPage({ route, navigation }: { route: any, navigation: any }) {
 
+    const dispatch = useDispatch()
     const details = useSelector((storeState: any) => storeState.session.user);
     const session = useSelector((storeState: any) => storeState.session);
 
@@ -38,26 +42,28 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
 
     }, [])
 
-    const submit = (values: any) => {
+    const submit = async (values: any, resetForm: any) => {
 
-        
-
-        const result = JSON.stringify(values)
-        console.log('data: ', values.confirm_email)
 
         const params: any = {
-            // firstname: new_name[0],
-            // lastname: new_name[1],
+            firstname: id === 2 ? values.new_name : '',
+            lastname: id === 2 ? values.new_lastname : '',
             email: id === 0 ? values.confirm_email : '',
             password: id === 1 ? values.confirm_password : '',
-            newsletter: details.newsletter,
-            optin: details.optin,
-            // id_lang: this.id_lang,
             id_customer: details.id_customer,
-            birthday: ''
         };
 
-        // Alert.alert(JSON.stringify(params));
+        const response = await AuthService.updateUserInfo(params);
+        const json = await response.json();
+        if(json.code == 200) {
+            GeneralService.toast({ description: json.message });
+            dispatch(profile(json.data))
+            console.log('result: ', details)
+            navigation.goBack();
+            resetForm();
+            
+
+        }
     }
 
 
@@ -71,7 +77,6 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
         new_password: '',
         confirm_password: '',
     }
-
     const name = {
         current_name: details.name,
         new_name: '',
@@ -94,23 +99,24 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
             })
         } else if(id == 1) {
             return yup.object().shape({
-                current_password: yup.string()
-                    .required('Current Password is required'),
+                // current_password: yup.string()
+                //     .required('Current Password is required'),
                 new_password: yup.string()
                     .required('New Password is required')
                     .notOneOf([yup.ref('current_password'), null], 'New password must be different from current email'),
                 confirm_password: yup.string()
                     .required('Confirm password is required')
-                    .oneOf([yup.ref('new_email')], "Confirm Password don't match"),
+                    .oneOf([yup.ref('new_password')], "Confirm Password don't match"),
             })
         } 
 
         return yup.object().shape({
             new_name: yup.string()
-                .required('New Name is required'),
+                .required('New Firstname is required'),
+            new_lastname: yup.string()
+                .required('New Lastname is required'),
         })
     }
-
 
 
     return (
@@ -123,64 +129,153 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                                     id === 0 ? email:
                                     id === 1 ? password : name
                             }
-                            onSubmit={(values) => submit(values)}
+                            onSubmit={(values, { resetForm }) => submit(values,resetForm)}
                             validationSchema={validation}
                         >
                             {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
                                 <>
                                     <Flex direction="row" flex={1} flexWrap="wrap" justifyContent="flex-start">
-                                        <CustomInput
-                                            key={0}
-                                            placeholder={title}
-                                            name={'current_' + key}
-                                            type={id == 1 ? 'password' : 'text'}
-                                            values={values}
-                                            onChangeText={handleChange}
-                                            onBlur={setFieldTouched}
-                                            icon={icon(id)}
-                                            touched={touched}
-                                            errors={errors}
-                                            readOnly={id == 1 ? false : true}
-                                            leftRight={id == 2 ? true : false}
-                                        />
+                                        
+                                        {id == 0 && <>
+                                            <CustomInput
+                                                key={0}
+                                                placeholder={title}
+                                                name={'current_' + key}
+                                                type={id == 1 ? 'password' : 'text'}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                                readOnly={id == 1 ? false : true}
+                                            />
+                                            <CustomInput
+                                                key={1}
+                                                placeholder={title}
+                                                name={'new_' + key}
+                                                type={id == 1 ? 'password' : 'text'}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                            />
+                                            <CustomInput
+                                                key={2}
+                                                placeholder={confirm_title}
+                                                name={'confirm_' + key}
+                                                type={id == 1 ? 'password' : 'text'}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                            />
+                                        </>}
 
-                                        <CustomInput
-                                            key={1}
-                                            placeholder={title}
-                                            name={'new_' + key}
-                                            type={id == 1 ? 'password' : 'text'}
-                                            values={values}
-                                            onChangeText={handleChange}
-                                            onBlur={setFieldTouched}
-                                            icon={icon(id)}
-                                            touched={touched}
-                                            errors={errors}
-                                            leftRight={id == 2 ? true : false}
-                                        />
+                                        {id == 1 && <>
+                                            {/* <CustomInput
+                                                key={0}
+                                                placeholder={title}
+                                                name={'current_' + key}
+                                                type={id == 1 ? 'password' : 'text'}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                                readOnly={id == 1 ? false : true}
+                                            /> */}
+                                            <CustomInput
+                                                key={1}
+                                                placeholder={title}
+                                                name={'new_' + key}
+                                                type={id == 1 ? 'password' : 'text'}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                            />
+                                            <CustomInput
+                                                key={2}
+                                                placeholder={confirm_title}
+                                                name={'confirm_' + key}
+                                                type={id == 1 ? 'password' : 'text'}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                            />
+                                        </>}
 
-                                        {id != 2 && <CustomInput
-                                            key={2}
-                                            placeholder={confirm_title}
-                                            name={'confirm_' + key}
-                                            type={id == 1 ? 'password' : 'text'}
-                                            values={values}
-                                            onChangeText={handleChange}
-                                            onBlur={setFieldTouched}
-                                            icon={icon(id)}
-                                            touched={touched}
-                                            errors={errors}
-                                        />}
+                                        {id == 2 && <>
+                                            <CustomInput
+                                                key={0}
+                                                placeholder={title}
+                                                name={'current_' + key}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                                readOnly={id == 1 ? false : true}
+                                            />
+                                            <CustomInput
+                                                key={1}
+                                                placeholder={'New Firstname'}
+                                                name={'new_' + key}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                            />
+                                            <CustomInput
+                                                key={2}
+                                                placeholder={title}
+                                                name={'last' + key}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                                readOnly={id == 1 ? false : true}
+                                            />
+                                            <CustomInput
+                                                key={3}
+                                                placeholder={'New Lastname'}
+                                                name={'new_last' + key}
+                                                values={values}
+                                                onChangeText={handleChange}
+                                                onBlur={setFieldTouched}
+                                                icon={icon(id)}
+                                                touched={touched}
+                                                errors={errors}
+                                            />
+                                        </>}
+
                                     </Flex>
                                     <Button
-                                            key={3}
-                                            bg={'#1cad48'}
-                                            mb={3}
-                                            mt={5}
-                                            style={styles.button}
-                                            _text={{ fontSize: 14, fontWeight: 600 }}
-                                            // disabled={!isValid}
-                                            onPress={() => handleSubmit()}>SAVE CHANGES
-                                        </Button>
+                                        key={3}
+                                        bg={'#1cad48'}
+                                        mb={3}
+                                        mt={5}
+                                        style={styles.button}
+                                        _text={{ fontSize: 14, fontWeight: 600 }}
+                                        isDisabled={!isValid}
+                                        onPress={() => handleSubmit()}>{id===0 ? 'Save Email Address Changes': id=== 1 ? 'Save Password Changes' : 'Save Name Changes'}
+                                    </Button>
                                 </>
                             )}
                         </Formik>

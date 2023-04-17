@@ -5,7 +5,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import CmsService from '../Services/CmsService';
 import AuthService from '../Services/AuthService';
-import { newsletter } from '../Redux/Slices/Sessions';
+import { profile } from '../Redux/Slices/Sessions';
 
 
 export default function PersonalInfoPage({ route, navigation }: { route: any, navigation: any }) {
@@ -30,9 +30,9 @@ export default function PersonalInfoPage({ route, navigation }: { route: any, na
 
         const response = await AuthService.updateUserInfo(params);
         const json = await response.json();
+        console.log('json: ', json)
         if(json.code == 200) {
-            dispatch(newsletter(json.data.newsletter))
-
+            dispatch(profile(json.data))
         }
 
     };
