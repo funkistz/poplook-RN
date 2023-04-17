@@ -58,46 +58,40 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                         <Text fontSize={16} color={'muted.700'} ml={3} my={3}>{sortData.title} </Text>
                         <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
                             {sortData.data.map((item: any, index: any) => {
-                                return <>
-                                    <Box w={'70%'} px={1} key={index}>
-                                        <Button size='sm' variant="outline"
-                                            style={selectedSort == item.id ? styles.btnClicked : styles.btn}
-                                            onPress={() => sortClick(item.id)}
-                                        >
-                                            <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
-                                        </Button>
-                                    </Box>
-                                </>
+                                return <Box w={'70%'} px={1} key={index}>
+                                    <Button size='sm' variant="outline"
+                                        style={selectedSort == item.id ? styles.btnClicked : styles.btn}
+                                        onPress={() => sortClick(item.id)}
+                                    >
+                                        <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
+                                    </Button>
+                                </Box>
                             })}
                         </View>
 
                         <Text fontSize={16} color={'muted.700'} ml={3} my={3}>Select Size: </Text>
                         <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                             {attributeData.map((item: any, index: any) => {
-                                return <>
-                                    <Box w={'25%'} px={1} key={index}>
-                                        <Button size='sm' variant="outline"
-                                            style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
-                                            onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })}>
-                                            <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
-                                        </Button>
-                                    </Box>
-                                </>
+                                return <Box w={'25%'} px={1} key={index}>
+                                    <Button size='sm' variant="outline"
+                                        style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
+                                        onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })}>
+                                        <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
+                                    </Button>
+                                </Box>
                             })}
                         </View>
 
                         <Text fontSize={16} color={'muted.700'} ml={3} my={3}>Select Color: </Text>
                         <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                             {colorData.map((item: any, index: any) => {
-                                return <>
-                                    <Box w={'25%'} px={1} key={index}>
-                                        <Button size='sm' variant="outline"
-                                            style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
-                                            onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })}>
-                                            <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
-                                        </Button>
-                                    </Box>
-                                </>
+                                return <Box w={'25%'} px={1} key={index}>
+                                    <Button size='sm' variant="outline"
+                                        style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
+                                        onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })}>
+                                        <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
+                                    </Button>
+                                </Box>
 
                             })}
                         </View>
