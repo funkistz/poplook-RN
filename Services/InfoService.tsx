@@ -6,13 +6,22 @@ const InfoService = {
         return APIService.getMethod('preferences/shippingto');
     },
 
-    async countryList() {
-        return APIService.getMethod('infos/countries');
+    async countryList(shopId: any) {
+
+        const param = {
+            shop: shopId
+        };
+        console.log('url' ,APIService.getMethod('infos/countries', param))
+        return APIService.getMethod('infos/countries', param);
     },
 
-    async stateList(code: String) {
+    async stateList(code: String, shopId: any) {
 
-        return APIService.getMethod('infos/countries/' + code);
+        const param = {
+            shop: shopId
+        };
+
+        return APIService.getMethod('infos/countries/' + code, param);
     },
 }
 

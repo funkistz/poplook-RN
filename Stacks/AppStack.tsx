@@ -25,6 +25,7 @@ import LoyaltyPage from '../pages/LoyaltyPage';
 import RewardsPage from '../pages/RewardsPage';
 import FaqPage from '../pages/FaqPage';
 import WishlistPage from '../pages/WishlistPage';
+import OrderSuccessPage from '../pages/OrderSuccessPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,12 +61,12 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='AddressDetailPage' component={AddressDetailPage} options={{ title: 'Add New Address' }} />
             <Stack.Screen name='CheckoutPage' component={CheckoutPage} options={{ title: 'Order Confirmation' }} />
             <Stack.Screen name='RepayPage' component={RepayPage} options={{ title: 'Payment' }} />
-            {/* <Stack.Screen name='IpayPage' component={IpayPage} options={{ title: 'Ipay' }} /> */}
             <Stack.Screen name='StoreCreditPage' component={StoreCreditPage} options={{ title: 'Store Credit' }} />
             <Stack.Screen name='LoyaltyPage' component={LoyaltyPage} options={{ title: 'Loyalty' }} />
             <Stack.Screen name='RewardsPage' component={RewardsPage} options={{ title: 'Reward' }} />
             <Stack.Screen name='FaqPage' component={FaqPage} options={{ title: 'FAQ' }} />
             <Stack.Screen name='WishlistPage' component={WishlistPage} options={{ title: 'Wishlist' }} />
+            <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation' }} />
         </Stack.Navigator>
     )
 }

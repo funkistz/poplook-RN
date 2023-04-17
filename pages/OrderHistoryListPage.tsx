@@ -113,7 +113,8 @@ export default function OrderHistoryListPage() {
 const styles = StyleSheet.create({
     container: {
         paddingStart: 30,
-        paddingEnd: 30
+        paddingEnd: 30,
+        backgroundColor: 'white'
     },
     button: {
         borderRadius: 10,
