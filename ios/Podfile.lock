@@ -347,6 +347,8 @@ PODS:
   - react-native-atome-paylater (1.0.0):
     - AtomeSDK
     - React-Core
+  - react-native-ipay88-integration (1.0.0):
+    - React
   - react-native-pager-view (6.0.1):
     - React-Core
   - react-native-safe-area-context (4.4.1):
@@ -445,6 +447,8 @@ PODS:
     - React-Core
   - RNDateTimePicker (6.5.2):
     - React-Core
+  - RNeGHL (1.0.5):
+    - React
   - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
@@ -548,6 +552,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-atome-paylater (from `../node_modules/react-native-atome-paylater`)
+  - react-native-ipay88-integration (from `../node_modules/react-native-ipay88-integration`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -566,6 +571,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNeGHL (from `../node_modules/react-native-eghl`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNInsider (from `../node_modules/react-native-insider`)
@@ -643,6 +649,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-atome-paylater:
     :path: "../node_modules/react-native-atome-paylater"
+  react-native-ipay88-integration:
+    :path: "../node_modules/react-native-ipay88-integration"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -679,6 +687,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNeGHL:
+    :path: "../node_modules/react-native-eghl"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
@@ -735,6 +745,7 @@ SPEC CHECKSUMS:
   React-jsinspector: d5ce2ef3eb8fd30c28389d0bc577918c70821bd6
   React-logger: 9332c3e7b4ef007a0211c0a9868253aac3e1da82
   react-native-atome-paylater: d0fc8268e80360e94b9cd5aac39d1cbde6f45fdf
+  react-native-ipay88-integration: 37a077e959bcddf315e585c6085c6bb7db833b38
   react-native-pager-view: 3051346698a0ba0c4e13e40097cc11b00ee03cca
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
@@ -753,6 +764,7 @@ SPEC CHECKSUMS:
   ReactCommon: 0c43eaeaaee231d7d8dc24fc5a6e4cf2b75bf196
   RNCAsyncStorage: 09fc8595e6d6f6d5abf16b23a56b257d9c6b7c5b
   RNDateTimePicker: 3f32aa2247836c12618d346113e5e82ea60ddd9c
+  RNeGHL: 376e6d573baea8c8825ffbba0a466bd507676483
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNInsider: 8aeee8eafe88089bd7ec8aaa0dcf9ab93b6d9751
