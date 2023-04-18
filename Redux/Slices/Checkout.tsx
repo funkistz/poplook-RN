@@ -28,17 +28,15 @@ const initialState: CheckoutState = {
 
 export const getCartStep1: any = createAsyncThunk(
     "checkout/step1",
-    async ({ gift }: any, { getState, rejectWithValue , dispatch}) => {
+    async ({ gift, gift_wrap_id, gift_message }: any, { getState, rejectWithValue , dispatch}) => {
         try {
             const state: any = getState();
-            console.log('giftvalue', gift)
             const id_cart = state.cart.id_cart;
-            const id_gift = '22610' //checking if null
-            const message = 'Goodluck'; //checking if null
-            const gift2 = gift ? gift : '';
-            // console.log('giftvalue' ,gift)
+            const id_gift = gift_wrap_id ? gift_wrap_id : '';
+            const message = gift_message ? gift_message : '';
+            const gift_value = gift ? gift : '';
 
-            const response = await CartService.cartStep1(id_cart, id_gift , message, gift2);
+            const response = await CartService.cartStep1(id_cart, id_gift , message, gift_value);
             let data = await response.json()
             console.log("step1result", data)
 
@@ -140,7 +138,7 @@ export const checkoutSlice = createSlice({
             const temp: any = {};
             if (payload.data) {
                 temp.id_cart = payload.data.id_cart;
-                temp.id_gift = Object.keys(payload.data.gift_wrap);
+                temp.id_gift = Object.keys(payload.data.gift_wrap.product_val);
                 temp.address = payload.data.address_delivery;
                 temp.product = payload.data.product_list;
                 temp.carrier = payload.data.carrier_list;

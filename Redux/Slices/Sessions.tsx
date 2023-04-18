@@ -56,8 +56,9 @@ export const loginUser: any = createAsyncThunk(
             const state: any = getState();
             console.log('statelogin', state)
             const id_cart = state.cart.id_cart;
+            const id_shop = state.session.country.id_shop
 
-            const response = await AuthService.login({ email, password, id_cart });
+            const response = await AuthService.login({ email, password, id_cart, id_shop });
             let data = await response.json()
             console.log("response", data)
 
