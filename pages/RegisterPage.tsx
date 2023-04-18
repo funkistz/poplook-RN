@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TextInput } from 'react-native'
-import { Text, Button, ScrollView, Stack, Link, Checkbox , HStack} from "native-base";
+import { StyleSheet, View, TextInput, Modal } from 'react-native'
+import { Text, Button, ScrollView, Stack, Link, Checkbox , HStack, Flex, VStack } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import InputLabel from '../components/Form/InputLabel';
@@ -11,8 +11,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns'
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import CmsModal from '../components/Modals/Cms';
 
-export default function RegisterPage() {
+export default function RegisterPage({ visible, onToggle }: { visible: boolean, onToggle:any }) {
 
     useEffect(() => {
 
@@ -28,6 +29,7 @@ export default function RegisterPage() {
     const [newsletter ,setNewsletter] = useState(false)
     const [optin ,setOptin] = useState(false)
     const [terms ,setTerms] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
 
     const onChange = (event : any, selectedDate: any) => {
         const currentDate = selectedDate || date;
@@ -38,11 +40,11 @@ export default function RegisterPage() {
         setShow(true);
     };
 
-    const toggleModal = async () => {
-        const response = await CmsService.getCmsDetails('privacypolicy');
+    const toggleModal = async (key: any) => {
+        setModalVisible(!isModalVisible);
+        const response = await CmsService.getCmsDetails(key);
         const json = await response.json();
         setCms(json.data[0]);
-        console.log('terms', json);
     };
       
 
@@ -198,9 +200,16 @@ export default function RegisterPage() {
                                 <Checkbox value="newsletter" onChange={setNewsletter} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }}>Yes, sign me up for POPLOOK mailing list.</Checkbox><Stack height={1}></Stack>
                                 <Checkbox value="optin" onChange={setOptin} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }}>Allow POPLOOK to send push notification.</Checkbox><Stack height={1}></Stack>
                                 <Checkbox value="terms" onChange={setTerms} style={styles.checkbox}>
-                                    <Text color={'black'} fontSize={12}>I am accepting and consenting to the practices described in the<Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={toggleModal}> Privacy Policy</Link> &
-                                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={toggleModal}> Personal Data Protection Notice.</Link></Text>
+                                    <Text color={'black'} fontSize={12}>I am accepting and consenting to the practices described in the<Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('privacypolicy')}> Privacy Policy</Link> &
+                                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('career')}> Personal Data Protection Notice.</Link></Text>
                                 </Checkbox>
+
+                                <CmsModal 
+                                    visible={isModalVisible}
+                                    onToggle={toggleModal}
+                                    data={cms}
+                                />
+
             
                                 <Stack height={10}></Stack>
 
@@ -244,6 +253,10 @@ const styles = StyleSheet.create({
     checkbox: {
         borderColor: 'black',
         backgroundColor: 'white'
+    },
+    bold: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black'
     }
-
 })
