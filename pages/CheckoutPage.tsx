@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'react-native';
-import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex } from "native-base";
+import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getCartStep1, getCartStep2 } from '../Redux/Slices/Checkout';
@@ -17,21 +17,27 @@ import PaymentService from '../Services/PaymentService';
 import GeneralService from '../Services/GeneralService';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
+import CmsService from '../Services/CmsService';
+import CmsModal from '../components/Modals/Cms';
 
 export default function CheckoutPage({ route} : { route: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
     const [gift, setGift] = React.useState('');
-    const [message, setMessage] = React.useState('one');
+    const [message, setMessage] = React.useState('');
     const [paymentType, setPaymentType] = React.useState('');
     const [paymentChild, setPaymentChild] = React.useState('');
-    const [isModalVisible, setModalVisible] = useState(false);
+    const [isAddressModalVisible, setAdressModalVisible] = useState(false);
+    const [isCmsModalVisible, setCmsModalVisible] = useState(false);
     const [data, setData] = useState({});
     const [url, setUrl] = useState<any>('');
     const [appUrl, setAppUrl] = useState<any>('');
     const [result, setResult] = useState('');
     const [refId, setRefId] = useState<any>('');
+    const [giftMessage, setGiftMessage] = useState('');
+    const [leaveMessage, setLeaveMessage] = useState('');
+    const [cms, setCms] = useState<any>({});
 
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
@@ -56,9 +62,13 @@ export default function CheckoutPage({ route} : { route: any }) {
         const param = {
             gift: gift
         } 
+
         dispatch(getCartStep1(param))
+        
+
     }, [])
 
+    // Voucher
     const validateVoucher = async () => {
         const params = {
             code: voucher,
@@ -77,7 +87,6 @@ export default function CheckoutPage({ route} : { route: any }) {
             GeneralService.toast({ description: json.message });
         }
     }
-
     const alertDeleteVoucher = (id_cart_rule: any) => {
         Alert.alert('Remove voucher?', '', [
             {
@@ -90,7 +99,6 @@ export default function CheckoutPage({ route} : { route: any }) {
             },
         ]);
     }
-
     const delVoucher = async (id_cart_rule: any) => {
         const params = {
             id_cart: cartId,
@@ -106,15 +114,23 @@ export default function CheckoutPage({ route} : { route: any }) {
         }
     }
 
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
+    const toggleAddressModal = () => {
+        setAdressModalVisible(!isAddressModalVisible);
+    };
+
+    const toggleCmsModal = async (key: any) => {
+        setCmsModalVisible(!isCmsModalVisible);
+        const response = await CmsService.getCmsDetails(key);
+        const json = await response.json();
+        setCms(json.data[0]);
     };
 
     const cartStep4 = async () => {
-        const response = await CartService.cartStep4(cartId, paymentType, 'Test');
+        console.log('param', cartId, paymentType, leaveMessage)
+        const response = await CartService.cartStep4(cartId, paymentType, leaveMessage);
         const json = await response.json();
 
-        console.log('cartstep4', json.data)
+        // console.log('cartstep4', json.data)
 
         if (json.status == 200 && json.data) {
     
@@ -126,7 +142,7 @@ export default function CheckoutPage({ route} : { route: any }) {
                 } if (paymentType == '14') {
                     eghl(data)
                 } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    pay(data) // ipay
+                    ipay(data)
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
@@ -151,8 +167,6 @@ export default function CheckoutPage({ route} : { route: any }) {
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
-        console.log('paymentprocessor', json)
-
         setUrl(json.data.redirect_url);
         setAppUrl(json.data.app_payment_url);
         setRefId(json.data.referenceId);
@@ -161,9 +175,6 @@ export default function CheckoutPage({ route} : { route: any }) {
     }
 
     const paymentId =  () => {
-
-        console.log('parent: ', paymentType)
-        console.log('child: ', paymentChild)
     
         if (shopId == 1) { 
             if (paymentType == '2') {
@@ -193,7 +204,7 @@ export default function CheckoutPage({ route} : { route: any }) {
         
     };
 
-    const pay = (data: any) => {
+    const ipay = (data: any) => {
         try {
             const merchantCode = 'M01333_S0001'
             const merchantKey = 'SSEXcXnvgK'
@@ -216,7 +227,7 @@ export default function CheckoutPage({ route} : { route: any }) {
             };
             
             const response = Pay(request);
-            console.log('result' ,response)
+            // console.log('result' ,response)
 
         } catch (e) {
             console.log(e);
@@ -224,7 +235,7 @@ export default function CheckoutPage({ route} : { route: any }) {
     };
 
     const eghl = (data: any) => {
-        console.log('eghl')
+        // console.log('eghl')
 
         try {
             const request : any = {
@@ -251,9 +262,9 @@ export default function CheckoutPage({ route} : { route: any }) {
     
                 Prod: false,
             }
-            console.log(request)
+            // console.log(request)
             const response = startPayment(request)
-            console.log('response' ,response)
+            // console.log('response' ,response)
 
         } catch (e) {
             console.log('error' ,e)
@@ -266,20 +277,20 @@ export default function CheckoutPage({ route} : { route: any }) {
             <ScrollView>
                 <View style={styles.container}>
                     {!address && 
-                        <><TouchableOpacity onPress={toggleModal}>
+                        <><TouchableOpacity onPress={toggleAddressModal}>
                             <Text style={styles.bold} marginY={3}>Please Add Address</Text>
                         </TouchableOpacity>
                         </> 
                     }
                     {address &&  
-                        <><TouchableOpacity onPress={toggleModal}>
+                        <><TouchableOpacity onPress={toggleAddressModal}>
                             <Address address={address} title='Shipping'></Address>
                         </TouchableOpacity>
                         </> 
                     }
                     <AddressModal 
-                        visible={isModalVisible}
-                        onToggle={toggleModal}
+                        visible={isAddressModalVisible}
+                        onToggle={toggleAddressModal}
                         isCheckout={true}
                     />
                     <Divider/>
@@ -326,10 +337,16 @@ export default function CheckoutPage({ route} : { route: any }) {
                 <Spacer />
 
                 <Checkbox value="terms" style={styles.checkbox} marginY={3}>
-                    <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }}>Terms of Service</Link> and
-                        <Link _text={{ color: '#1cad48', fontSize: 12 }}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
+                    <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}>Terms of Service</Link> and
+                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
                 </Checkbox>
                 <Divider/>
+
+                <CmsModal 
+                    visible={isCmsModalVisible}
+                    onToggle={toggleCmsModal}
+                    data={cms}
+                />
 
                 <Input 
                     marginY={3} 
@@ -371,7 +388,7 @@ export default function CheckoutPage({ route} : { route: any }) {
                 </View>}
                 
                 <HStack py={1}>
-                    <Text style={styles.normal}>Gift Option{gift}</Text>
+                    <Text style={styles.normal}>Gift Option</Text>
                     <Spacer/>
                     <Radio.Group
                     name="giftOption"
@@ -380,7 +397,9 @@ export default function CheckoutPage({ route} : { route: any }) {
                         setGift(nextValue);
 
                         const param = {
-                            gift: gift
+                            gift: gift,
+                            gift_wrap_id: gift_wrap_id,
+                            gift_message: giftMessage
                         } 
 
                         dispatch(getCartStep1(param))
@@ -397,16 +416,17 @@ export default function CheckoutPage({ route} : { route: any }) {
                 <VStack>
                 <Box borderRadius={10}>
                     <HStack>
-                        <AspectRatio w="40%" ratio={3/4}>
-                            <Image resizeMode="cover" borderRadius={10} source={{uri: checkout.gift_wrap[gift_wrap_id].image_url_tumb[0]}}/>
+                        <AspectRatio w="40%" ratio={4/4}>
+                            <Image resizeMode="cover" borderRadius={10} source={{uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0]}}/>
                         </AspectRatio>
                 
                         <VStack m={3} flexShrink={1}>
-                            <Text color='black' fontSize={13}>{checkout.gift_wrap[gift_wrap_id].name}</Text>
-                            <Text color='black' fontSize={13}>{currency} {checkout.gift_wrap[gift_wrap_id].base_price}</Text>
+                            <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
+                            <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
                         </VStack>
                     </HStack>
                 </Box>
+                <TextArea marginY={3} value={giftMessage} onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'}/>
                 </VStack>
                 </>: null}
 
@@ -426,6 +446,13 @@ export default function CheckoutPage({ route} : { route: any }) {
                     </HStack>
                     </Radio.Group>
                 </HStack>
+
+                { message && (message == '1') ? <>
+                <VStack>
+                <TextArea marginY={3} value={leaveMessage} onChangeText={text => setLeaveMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Type something here" color={'black'}/>
+                </VStack>
+                </>: null}
+
                 <Divider/>
                 
                 <Text style={styles.bold} marginTop={3}>Shopping Bag</Text>  
@@ -496,9 +523,9 @@ export default function CheckoutPage({ route} : { route: any }) {
 
 const styles = StyleSheet.create({
     container: {
-       paddingStart: 25,
-       paddingEnd: 25,
-       backgroundColor: 'white'
+        paddingStart: 25,
+        paddingEnd: 25,
+        backgroundColor: 'white'
     },
     button: {
         borderRadius: 10,

@@ -10,6 +10,7 @@ const AuthService = {
             email: data.email,
             password: md5(data.password),
             id_cart: data.id_cart,
+            shop: data.id_shop
         };
 
         const url = 'UserAuth/login';
