@@ -15,6 +15,8 @@ import CartService from '../Services/CartService';
 import Ipay88Container from '../components/Payment/Ipay88Container';
 import GeneralService from '../Services/GeneralService';
 import SkeletonRepay from '../components/SkeletonRepay';
+import CmsModal from '../components/Modals/Cms';
+import CmsService from '../Services/CmsService';
 
 export default function RepayPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -41,7 +43,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [amount, setAmount] = useState<any>('');
     const [transId, setTransId] = useState<any>('');
     const [termAgree, setTermAgree] = useState(false)
-
+    const [isCmsModalVisible, setCmsModalVisible] = useState(false);
+    const [cms, setCms] = useState<any>({});
 
     useEffect(() => {
 
@@ -84,6 +87,13 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             await getPaymentInfo()
         }
     }
+
+    const toggleCmsModal = async (key: any) => {
+        setCmsModalVisible(!isCmsModalVisible);
+        const response = await CmsService.getCmsDetails(key);
+        const json = await response.json();
+        setCms(json.data[0]);
+    };
 
     const paymentId = () => {
 
@@ -151,8 +161,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         console.log('redirecteghl', json)
 
     }
-
-    
 
     const eghl = (data: any) => {
         console.log('eghl')
@@ -343,17 +351,21 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                                     </>
                                 })}
                             </Radio.Group>
-                            {/* <Text color={'black'}>{paymentType} {paymentChild}</Text>
-                    <Spacer /> */}
 
                             <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
                                 <Text color={'black'} fontSize={14} pr={5}>I agree with the
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }}>Terms of Service</Link> and
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }}> Privacy Policy</Link> and
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
                                     {"\n"}
                                     I adhere to them unconditionally.</Text>
                             </Checkbox>
                             <Divider />
+
+                            <CmsModal 
+                                visible={isCmsModalVisible}
+                                onToggle={toggleCmsModal}
+                                data={cms}
+                            />
 
                             <VStack style={styles.border} py={3}>
                                 <Text paddingBottom={3} style={styles.bold}>Order Summary</Text>
