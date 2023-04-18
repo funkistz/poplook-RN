@@ -14,15 +14,20 @@ const PaymentService = {
 
     },
 
+    async eghl(orderId: any, customerId: any) {
+
+        const params: any = {
+            id_order: orderId,
+            id_customer: customerId
+        };
+
+        return APIService.postMethod('PaymentProcessor/repay_sgdcc', params);
+
+    },
+
     async getPaymentInfo(refId: String) {
 
         let base64 = require("base-64"); 
-
-        // const options = {
-        //   url: 'https://api.apaylater.net/v2/payments/' + refId,
-        //   headers: { "Authorization": "Basic " + base64.encode('OOCBRiiB2XjBAw1kQVI6IabtnOcYcE' + ":" + 'bDcyYGGNyir9anCC0mjCzCXIoDft5S') },
-        //   method: 'GET'
-        // };
         
         return fetch('https://api.apaylater.net/v2/payments/' + refId, { 
             method: 'GET', 
