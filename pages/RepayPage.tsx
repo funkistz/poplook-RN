@@ -21,7 +21,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const country = useSelector((storeState: any) => storeState.session.country);
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const user = useSelector((storeState: any) => storeState.session.user);
-    const shopId = useSelector((storeState: any) => storeState.session.user.id_shop);
+    const shopId = useSelector((storeState: any) => storeState.session.id_shop);
     const [address, setAddress] = useState<any>({});
     const [carrier, setCarrier] = useState<any>({});
     const [payment, setPayment] = useState<any>([]);
@@ -50,10 +50,11 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         init().catch(console.error);
 
         const repay = async () => {
+            console.log('cartid' ,cartId)
             const response = await OrderHistoryService.repay(cartId);
             const json = await response.json();
 
-            console.log('repay', json.data)
+            console.log('repay', json)
 
             setAddress(json.data.address_delivery);
             setCarrier(json.data.carrier_list[0]);
@@ -66,20 +67,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         AppState.addEventListener('change', handleAppStateChange);
 
     }, [])
-
-    const atome = async () => {
-
-        const response = await PaymentService.atome(cartId);
-        const json = await response.json();
-
-        console.log('paymentprocessor', json)
-
-        setUrl(json.data.redirect_url);
-        setAppUrl(json.data.app_payment_url);
-        setRefId(json.data.referenceId);
-
-        handlePaymentURL(result == 'No' ? appUrl : url)
-    }
 
     const handleAppStateChange = async (nextAppState: any) => {
         
@@ -154,6 +141,15 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             console.log(e);
         }
     };
+
+    const eghl2 = async () => {
+
+        const response = await PaymentService.eghl(data.id_order, user.id_customer);
+        const json = await response.json();
+
+        console.log('redirecteghl', json)
+
+    }
 
     
     const eghl = (data: any) => {
@@ -250,19 +246,33 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         }
         
     }
+
+    const atome = async () => {
+
+        const response = await PaymentService.atome(cartId);
+        const json = await response.json();
+
+        console.log('paymentprocessor', json)
+
+        setUrl(json.data.redirect_url);
+        setAppUrl(json.data.app_payment_url);
+        setRefId(json.data.referenceId);
+
+        handlePaymentURL(result == 'No' ? appUrl : url)
+    }
     
     const redirectPayment = () => {
         if (shopId == '1') {
             if (paymentType == '16') {
                 atome()
             } if (paymentType == '14') {
-                eghl(data)
+                // eghl(data)
             } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
                 pay(data) // ipay
             }
         } else if (shopId == '2') {
             if (paymentType == '4') {
-                // eghl
+                eghl2()
             } else {
                 //enets
             }
@@ -279,7 +289,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         <>
             <ScrollView>
                 <View style={styles.container}>
-                    <Text color={'black'}>Is Atome App Installed? {result}</Text>
 
                     <Address address={address} title='Shipping'></Address>
                     <Divider />
