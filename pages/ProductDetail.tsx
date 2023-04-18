@@ -194,7 +194,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         }
 
         await dispatch(addToWishlist(params));
-        await dispatch(getWishList())
     }
 
     const styleItaddtoWishlist = async (id_product_attribute = null, item: any) => {

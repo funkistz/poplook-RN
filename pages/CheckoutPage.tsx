@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
@@ -14,12 +14,14 @@ import { Pay } from "react-native-ipay88-integration";
 import { startPayment } from 'react-native-eghl';
 import {handlePaymentURL} from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
+import GeneralService from '../Services/GeneralService';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import VoucherService from '../Services/VoucherService';
 
 export default function CheckoutPage({ route} : { route: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
-    const [show, setShow] = React.useState(false);
     const [gift, setGift] = React.useState('');
     const [message, setMessage] = React.useState('one');
     const [paymentType, setPaymentType] = React.useState('');
@@ -30,8 +32,6 @@ export default function CheckoutPage({ route} : { route: any }) {
     const [appUrl, setAppUrl] = useState<any>('');
     const [result, setResult] = useState('');
     const [refId, setRefId] = useState<any>('');
-
-    const handleClick = () => setShow(!show);
 
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
@@ -46,20 +46,65 @@ export default function CheckoutPage({ route} : { route: any }) {
     const gift_wrap= useSelector((storeState: any) => storeState.checkout.gift_wrap);
     const checkout= useSelector((storeState: any) => storeState.checkout);
     const total = useSelector((storeState: any) => storeState.checkout.total);
+    const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
+
+    // Voucher
+    const [voucher, setVoucher] = React.useState('');
     
 
     useEffect(() => {
-
         const param = {
             gift: gift
         } 
         dispatch(getCartStep1(param))
-        console.log('carrier' ,checkout)
-        console.log('giftid' ,gift_wrap_id)
-        console.log('gift' ,gift_wrap)
-        
-
     }, [])
+
+    const validateVoucher = async () => {
+        const params = {
+            code: voucher,
+            id_cart: cartId,
+            id_shop: user.id_shop,
+        }
+
+        const response = await VoucherService.validateVoucher(params);
+        const json = await response.json();
+        console.log('json: ', json)
+        if(json.code == 200) {
+            setVoucher('');
+            dispatch(getCartStep1({ gift: gift}))
+            GeneralService.toast({ description: json.message });
+        } else {
+            GeneralService.toast({ description: json.message });
+        }
+    }
+
+    const alertDeleteVoucher = (id_cart_rule: any) => {
+        Alert.alert('Remove voucher?', '', [
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+            {
+                text: 'OK',
+                onPress: () => delVoucher(id_cart_rule)
+            },
+        ]);
+    }
+
+    const delVoucher = async (id_cart_rule: any) => {
+        const params = {
+            id_cart: cartId,
+            id_cart_rule: id_cart_rule,
+        }
+
+        const response = await VoucherService.delValidateVoucher(params);
+        const json = await response.json();
+        console.log('json: ', json)
+        if(json.code == 200) {
+            dispatch(getCartStep1({ gift: gift}))
+            GeneralService.toast({ description: json.message });
+        }
+    }
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -96,9 +141,9 @@ export default function CheckoutPage({ route} : { route: any }) {
                     // pay(data) // ipay88
                 }
             }
-          } else {
+        } else {
             // this.generalService.presentToast(response.data.message);
-          }
+        }
     }
 
     const atome = async () => {
@@ -148,7 +193,6 @@ export default function CheckoutPage({ route} : { route: any }) {
         
     };
 
-
     const pay = (data: any) => {
         try {
             const merchantCode = 'M01333_S0001'
@@ -179,7 +223,6 @@ export default function CheckoutPage({ route} : { route: any }) {
         }
     };
 
-    
     const eghl = (data: any) => {
         console.log('eghl')
 
@@ -226,7 +269,7 @@ export default function CheckoutPage({ route} : { route: any }) {
                         <><TouchableOpacity onPress={toggleModal}>
                             <Text style={styles.bold} marginY={3}>Please Add Address</Text>
                         </TouchableOpacity>
-                       </> 
+                        </> 
                     }
                     {address &&  
                         <><TouchableOpacity onPress={toggleModal}>
@@ -242,8 +285,9 @@ export default function CheckoutPage({ route} : { route: any }) {
                     <Divider/>
 
                 {address && 
-                    <><Text style={styles.bold} mt={2}>Shipping Method</Text>
+                    <><Text style={styles.bold} mt={2}>Shipping Method {cartId}</Text>
                     <ShippingMethod carrier={carrier}></ShippingMethod>
+                    
                     <Divider/>
                     </>
                 }
@@ -287,8 +331,45 @@ export default function CheckoutPage({ route} : { route: any }) {
                 </Checkbox>
                 <Divider/>
 
-               
-                <Input marginY={3} placeholder="Enter voucher" InputRightElement={<Button size="sm" rounded="none" w="2/6" h="full" onPress={handleClick} backgroundColor={'#1cad48'}>APPLY</Button>}></Input>
+                <Input 
+                    marginY={3} 
+                    color='black' 
+                    placeholder="Enter code" 
+                    value={voucher}
+                    onChangeText={(props) => setVoucher(props)}
+                    borderColor={'#ccc'}
+                    InputRightElement={
+                        <Button 
+                            size="sm" 
+                            rounded="none" 
+                            w="2/6" 
+                            h="full" 
+                            onPress={validateVoucher} 
+                            backgroundColor={'#1cad48'}>
+                            APPLY
+                        </Button>
+                        } 
+                />
+
+                {voucher_list && <View mb={2}>
+                    <View mt={1} bg={'gray.100'}>
+                        {voucher_list.map((res:any, index:any)=> {
+                            return  <HStack key={index} py={2} px={3} borderRadius={2}>
+                            <Text color='black' mt={2}>{res.code}</Text>
+                            <Spacer/>
+                                
+                            <HStack>
+                                <Text color='black' mt={2} mr={3} bold>RM {res.reduction_amount}</Text>
+                                <TouchableOpacity style={{paddingHorizontal: 8, paddingVertical: 5,}} onPress={() => alertDeleteVoucher(res.id_cart_rule)}>
+                                    <IonIcon name="trash-outline" size={26} color="black" />
+                                </TouchableOpacity>
+                            </HStack>
+                        </HStack>
+                        })}
+                    </View>
+                    
+                </View>}
+                
                 <HStack py={1}>
                     <Text style={styles.normal}>Gift Option{gift}</Text>
                     <Spacer/>
@@ -331,7 +412,7 @@ export default function CheckoutPage({ route} : { route: any }) {
 
                 <HStack py={1}> 
                     <Text style={styles.normal}>Leave Message</Text>
-                     <Spacer/>
+                    <Spacer/>
                     <Radio.Group
                     name="message"
                     value={message}

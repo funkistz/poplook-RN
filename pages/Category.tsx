@@ -217,7 +217,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         }
 
         await dispatch(addToWishlist(params));
-        await dispatch(getWishList())
     }
 
 
