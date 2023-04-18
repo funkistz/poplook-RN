@@ -53,9 +53,11 @@ export default function CheckoutPage({ route} : { route: any }) {
     const checkout= useSelector((storeState: any) => storeState.checkout);
     const total = useSelector((storeState: any) => storeState.checkout.total);
     const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
+    const credit_store_list = useSelector((storeState: any) => storeState.checkout.storeCredit);
 
     // Voucher
     const [voucher, setVoucher] = React.useState('');
+
     
 
     useEffect(() => {
@@ -78,7 +80,7 @@ export default function CheckoutPage({ route} : { route: any }) {
 
         const response = await VoucherService.validateVoucher(params);
         const json = await response.json();
-        console.log('json: ', json)
+        // console.log('json: ', json)
         if(json.code == 200) {
             setVoucher('');
             dispatch(getCartStep1({ gift: gift}))
@@ -362,15 +364,16 @@ export default function CheckoutPage({ route} : { route: any }) {
                             w="2/6" 
                             h="full" 
                             onPress={validateVoucher} 
+                            isDisabled={voucher.length === 0 ? true: false}
                             backgroundColor={'#1cad48'}>
                             APPLY
                         </Button>
                         } 
                 />
 
-                {voucher_list && <View mb={2}>
+                {(voucher_list || credit_store_list) && <View mb={2}>
                     <View mt={1} bg={'gray.100'}>
-                        {voucher_list.map((res:any, index:any)=> {
+                        { voucher_list && voucher_list.map((res:any, index:any)=> {
                             return  <HStack key={index} py={2} px={3} borderRadius={2}>
                             <Text color='black' mt={2}>{res.code}</Text>
                             <Spacer/>
@@ -383,6 +386,21 @@ export default function CheckoutPage({ route} : { route: any }) {
                             </HStack>
                         </HStack>
                         })}
+
+                        {credit_store_list && credit_store_list.map((res:any, index:any)=> {
+                            return  <HStack key={index} py={2} px={3} borderRadius={2}>
+                            <Text color='black' mt={2}>{res.code}</Text>
+                            <Spacer/>
+                                
+                            <HStack>
+                                <Text color='black' mt={2} mr={3} bold>RM {res.reduction_amount}</Text>
+                                <TouchableOpacity style={{paddingHorizontal: 8, paddingVertical: 5,}} onPress={() => alertDeleteVoucher(res.id_cart_rule)}>
+                                    <IonIcon name="trash-outline" size={26} color="black" />
+                                </TouchableOpacity>
+                            </HStack>
+                        </HStack>
+                        })}
+                        
                     </View>
                     
                 </View>}

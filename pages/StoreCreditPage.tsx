@@ -1,84 +1,118 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Image, Linking } from 'react-native';
-import { Text, ScrollView, View, HStack, Button, Spacer, VStack, Box, AspectRatio, Container, FormControl, Radio, Stack, Input, Divider, Checkbox, Link, Select, CheckIcon, Center } from "native-base";
+import { StyleSheet, Image, Linking, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, View, HStack, Button, Spacer, VStack, Flex, FlatList, Badge, useClipboard } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from '../Redux/Slices/Sessions';
 import StoreCreditService from '../Services/StoreCreditService';
 import { useIsFocused } from '@react-navigation/native';
 import Spinner from '../components/Spinner';
+import moment from 'moment';
+import GeneralService from '../Services/GeneralService';
 
 export default function StoreCreditPage({ route } : { route: any }) {
 
 
     const { user } = useSelector(userSelector);
     const isFocused = useIsFocused();
-    const [data, setData] = useState<any>([]);
+    const [list, setList] = useState<any>([]);
+    const [currency, setCurrency] = useState<any>();
+    const { value, onCopy } = useClipboard();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const fetchData = async () => {
 
-        const response = await StoreCreditService.getStoreCredit({id_customer: user.id_customer });
+        const response = await StoreCreditService.getStoreCredit(user.id_customer);
         const json = await response.json();
 
-        console.log('json', json)
 
-        if(json.code == 404) {
-            setData([]);
+        if(json.code == 200) {
+            setList(json.data.lists)
+            setCurrency(json.data.currency)
         } else {
-            setData([...json.data.lists])
+            setList(null)
+            setCurrency(null)
         }
-
         setIsLoading(false)
-        console.log('isLoading: ', isLoading)
+    }
+
+    const clipboard = (code: any) => {
+        onCopy(code);
+        GeneralService.toast({ description: 'Copy to Clipboard' });
     }
 
     useEffect(() => {
-        console.log('isLoading: ', true)
+        setIsLoading(true)
         if(isFocused) {
-            console.log('Enter StoreCreditService......', user)
             fetchData().catch(console.error);
         }
 
     }, [])
 
     return (
-        <>
+        <>  
+            <Flex flex={1} bg={'white'}>
+                { isLoading && <>
+                    <HStack backgroundColor={'white'} h={'100%'}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Spinner spin={isLoading}/>
+                        </View>
+                    </HStack>
+                </>}
 
-            { isLoading && <Spinner spin={!isLoading}/>}
+                { !isLoading && 
+                    <>
+                        {list && currency && list.length > 0 && 
+                            <>
+                                <FlatList 
+                                        numColumns={1}
+                                        data={list}
+                                        px={2}
+                                        mt={4}
+                                        renderItem={
+                                            ({item}:any) => 
+                                            <TouchableOpacity onPress={() => clipboard(item.code)}>
+                                                <HStack _dark={{ borderColor: "#dedede" }} borderColor="muted.100"  pb={4} m={4} alignItems="center" borderBottomWidth={1}>
+                                                    <VStack>
+                                                        <Text color="black" fontSize={16}>{item.code}</Text>
+                                                        <Text color="black" fontSize={16} bold>{currency.sign} {item.reduction_amount}</Text>
+                                                        <Text color={'gray.500'} fontSize={12}>Valid until: {moment(item.date_to ).format('DD MMMM YYYY h:mm:ss a')}</Text>
+                                                    </VStack>
+                                                    <Spacer />
+                                                    {value == item.code &&  <Badge style={styles.badge} size={18} colorScheme="success" variant={'solid'}>Copied</Badge>}
 
-            { !isLoading && 
-                <>
-                    {data && data.length > 0 && 
-                        <>
-                            <Text color={'black'} mt={5}>Ada</Text>
-                        </> 
-                    }
+                                                    {value != item.code &&  <Badge style={styles.badge} size={18}>Copy</Badge>}
+                                                </HStack>
+                                            </TouchableOpacity>
+                                            }
+                                    />
+                            </> 
+                        }
 
-                    {data && data.length == 0 && 
-                        <>
-                            <View style={{flex:1,justifyContent: "center",alignItems: "center", backgroundColor: 'white'}}>
-                                <View style={{flexDirection: 'row', marginBottom: 2}}>
-                                    <Text color='black' bold fontSize={20}>No Result</Text>
+                        {list == null && 
+                            <>
+                                <View style={{flex:1,justifyContent: "center",alignItems: "center", backgroundColor: 'white'}}>
+                                    <View style={{flexDirection: 'row', marginBottom: 2}}>
+                                        <Text color='black' bold fontSize={20}>No Result</Text>
+                                    </View>
+                                    <Text color='black' fontSize={13}>Sorry, you do not have any available </Text>
+                                    <View style={{flexDirection: 'row'}}>
+                                        <Text color='black' fontSize={13}>store credit code.</Text>
+                                    </View>
                                 </View>
-                                <Text color='black' fontSize={13}>Sorry, you do not have any available </Text>
-                                <View style={{flexDirection: 'row'}}>
-                                    <Text color='black' fontSize={13}>store credit code.</Text>
-                                </View>
-                            </View>
-                        </> 
-                    }
-                    
-                </>
-            }
-
-
-            
+                            </> 
+                        }
+                        
+                    </>
+                }
+            </Flex>
         </>
     )
 }
 
 const styles = StyleSheet.create({
-    
+    badge : {
+        borderRadius: 10,
+    }
 })
 
 
