@@ -77,39 +77,21 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                     <Text bold style={{ color: 'black', fontSize: 16 }} mt={2}>{product.name}</Text>
                     {size.length > 0 &&
                         <>
-                            <Box>
-                                <Text color={'black'} mt={4}>Please Select Size: </Text>
-                                <ScrollView horizontal={true} mt={3} showsVerticalScrollIndicator={false}>
-                                    {size.map((res: any) => {
-                                        return <>
-                                            <Chip
-                                                icon={() => null}
-                                                showSelectedOverlay={select == res.attribute_name ? true : false}
-                                                selected={select == res.attribute_name ? true : false}
-                                                mode='outlined'
-                                                style={styles.chip}
-                                                onPress={() => chooseSize(res.attribute_name)}
-                                            >
-                                                <Text style={styles.text}>{res.attribute_name}</Text>
-                                            </Chip>
-                                        </>
-                                    })}
-                                </ScrollView>
-                            </Box>
+                            <Text color={'black'} my={4}>Please Select Size: </Text>
+                            <Flex direction="row" flexWrap="wrap" justifyContent="flex-start" bg={'red'}>
+                                {size && size.length > 0 && size.map((res: any, index: any) => {
+                                    return <Button onPress={() => chooseSize(res.attribute_name)} key={index} style={styles.chip} variant="outline" size='sm'
+                                        bg={(select == res.attribute_name) ? '#000' : '#fff'}
+                                        borderColor={(select == res.attribute_name) ? '#000' : '#ccc'}
+                                        width={(res.attribute_name.includes("Year") ? (win.width / 5) + 2 : (win.width / 6 - 2))}
+                                        _text={{ color: getTextColor(res.attribute_name), fontSize: 13 }}
+                                        >
+                                        {res.attribute_name}
+                                    </Button>
+                                })}
+                            </Flex>
                         </>
                     }
-
-                    {/* <Flex direction="row" flex={1} flexWrap="wrap" justifyContent="flex-start" bg={'red'}>
-                        {size && size.length > 0 && size.map((res: any, index: any) => {
-                            return <Button onPress={() => chooseSize(res.attribute_name)} key={index} style={styles.chip} variant="outline" size='sm'
-                                backgroundColor={(select == res.id_product_attribute) ? '#000' : '#fff'}
-                                borderColor={(select == res.id_product_attribute) ? '#000' : '#ccc'}
-                                width={(res.attribute_name.includes("Year") ? (win.width / 5) + 2 : (win.width / 6 - 2))}
-                                _text={{ color: getTextColor(res.id_product_attribute), fontSize: 13 }}>
-                                {res.attribute_name}
-                            </Button>
-                        })}
-                    </Flex> */}
 
                     {available &&
                         <>
@@ -162,6 +144,7 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
 const styles = StyleSheet.create({
     chip: {
         marginHorizontal: 2,
+        marginBottom: 8,
     },
     text: {
         flexDirection: 'row',

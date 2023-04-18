@@ -260,8 +260,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 color: color,
                 sort_option: sort.toString(),
             }
-
-            // console.log('params', params)
             dispatch(getFilterList(params))
         }
     }, [route])

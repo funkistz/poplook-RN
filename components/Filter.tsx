@@ -9,7 +9,6 @@ export default function Filter({ clicked, removeItem, product, listSizeColor }: 
 
     // action
     const close = (item: any) => {
-        console.log('Item: ', item)
         removeItem(item);
     }
 
