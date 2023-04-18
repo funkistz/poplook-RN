@@ -14,6 +14,8 @@ import { API_URL, API_KEY } from "@env"
 //     axios.defaults.headers.common['Authorization'] = token;
 // }
 
+const api_test = 'https://dev3.poplook.com/webapi/';
+
 const injectExtraParams = (params: any, isString = true) => {
     let data: any = {
         ...params,
@@ -63,7 +65,7 @@ const APIService = {
 
         console.log('url', API_URL + url + '?' + new URLSearchParams(data));
 
-        return await fetch(API_URL + url + '?' + new URLSearchParams(data))
+        return await fetch(api_test + url + '?' + new URLSearchParams(data))
     },
 
     async putMethod(url: any, data: any = {}) {
@@ -77,9 +79,9 @@ const APIService = {
             body: injectExtraParams(data)
         };
 
-        console.log('url', API_URL + url, options);
+        console.log('url', api_test + url, options);
 
-        return await fetch(API_URL + url, options);
+        return await fetch(api_test + url, options);
     },
 
     async postMethod(url: any, data: any = {}) {
@@ -93,9 +95,9 @@ const APIService = {
             body: injectExtraParams(data)
         };
 
-        // console.log('url', API_URL + url, options);
+        // console.log('url', api_test + url, options);
 
-        return await fetch(API_URL + url, options);
+        return await fetch(api_test + url, options);
     },
 
     async deleteMethod(url: any, data: any = {}) {
@@ -109,9 +111,9 @@ const APIService = {
             body: injectExtraParams(data)
         };
 
-        // console.log('url', API_URL + url, options);
+        // console.log('url', api_test + url, options);
 
-        return await fetch(API_URL + url, options);
+        return await fetch(api_test + url, options);
     },
 
 }
