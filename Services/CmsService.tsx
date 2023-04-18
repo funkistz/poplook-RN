@@ -8,7 +8,16 @@ const CmsService = {
 
         return APIService.getMethod(url + data);
 
+    },
+
+    async getCsDetails() {
+
+        const url = 'Infos/contactus_pages';
+
+        return APIService.getMethod(url);
+    
     }
+    
 
 }
 

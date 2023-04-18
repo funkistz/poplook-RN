@@ -42,7 +42,7 @@ export default function AddressListPage({ isCheckout }: any) {
     return (
         <>
             <ScrollView>
-                {address && address.data &&
+                {address && address.data.length > 0 &&
                     (address.data.map((item: any, index: any) => {
                         return <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
                     })

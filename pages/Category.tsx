@@ -53,12 +53,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         await dispatch(getWishList())
     }
 
-    useEffect(() => {
-        // setCombine([...product.attribute, ...product.color]);
-
-    }, [])
-
-
     // Init Function
     const getSort = {
         title: "Sort by: ",

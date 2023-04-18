@@ -41,15 +41,6 @@ const WishlistService = {
 
         const url = 'Wishlists/addProductCart';
 
-        // const params = {
-        //     id_customer: id_customer,
-        //     id_wishlist: id_wishlist,
-        //     id_product: id_product,
-        //     id_product_attribute: id_product_attribute,
-        //     id_cart: id_cart,
-        //     quantity: quantity
-        // };
-
         return APIService.putMethod(url, params);
 
     },
