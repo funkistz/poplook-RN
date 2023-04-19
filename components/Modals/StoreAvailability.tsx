@@ -47,8 +47,9 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
         const json = await response.json();
 
         if (json) {
+            
             setIsLoading(false)
-            setAvailable(json)
+            setAvailable(json.length === 0  ? null : json)
         }
 
     }
@@ -93,10 +94,12 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                         </>
                     }
 
+                    <Text style={{ color: 'gray', fontSize: 12, lineHeight: 16 }} mt={3}>*Availability is as 10 am this morning. Please call store to reserve this item.</Text>
+
                     {available &&
                         <>
                             <Box>
-                                <Text style={{ color: 'gray', fontSize: 12, lineHeight: 16 }} mt={3}>*Availability is as 10 am this morning. Please call store to reserve this item.</Text>
+                                
 
                                 {(!isLoading && available.length > 0) &&
 
@@ -132,9 +135,18 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                                         </Center>
                                     </>
                                 }
+
                             </Box>
                         </>
                     }
+
+                    {!isLoading && available === null &&
+                                    <>
+                                        <Center>
+                                            <Text color='gray.700' mt={4}>Not available in-stores</Text>
+                                        </Center>
+                                    </>
+                                }
                 </View>
             </Modal>
         </>

@@ -1,6 +1,6 @@
 import { StyleSheet, View, Dimensions, Image, TouchableOpacity, Share, PixelRatio, Modal, Animated } from 'react-native';
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { VStack, HStack, Center, Flex, Spacer, Box, ScrollView, Button, IconButton, Text, Divider } from 'native-base';
+import { VStack, HStack, Center, Flex, Spacer, Box, ScrollView, Button, IconButton, Text, Divider, Backdrop } from 'native-base';
 import ProductService from '../Services/ProductService';
 import { SliderBox } from "react-native-image-slider-box";
 import SliderItem from '../components/Products/SliderItem';
@@ -61,14 +61,18 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const snapPoints = useMemo(() => ['30%', '50%'], []);
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
+        if(index == -1) {
+            setBackdropVisible(false)
+        }
     }, []);
+    const [backdropVisible, setBackdropVisible] = useState(false);
 
     // Size data
     const [hasSize, setHasSize] = useState<any>(false);
     const [type, setType] = useState<any>();
     const [sizeSelected, setSizeSelected] = useState<any>();
     const setSizeSelectedModal = async (size: any) => {
-        bottomSheetRef.current?.close();
+        closeSheet();
         if (type == 'cart') {
             await addToCartF(size);
         } else {
@@ -77,6 +81,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         }
         setSizeSelected(size);
     }
+    const closeSheet = () => {
+        bottomSheetRef.current?.close();
+    };
 
     // Toggle
     const toggleModalStore = () => {
@@ -118,7 +125,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         const response = await ProductService.getProduct(params);
         const json = await response.json();
 
-        console.log('jsonn: ', json);
+        // console.log('jsonn: ', json);
 
         const screenWidth = Dimensions.get('window').width;
 
@@ -151,7 +158,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setShownHere(json.data.shown_here_with)
         setMeasurements(json.data.measurements)
         setStyleItWith(json.data.style_it_with)
-        console.log('setIt: ', json.data.style_it_with)
         setMotherDaughter(json.data.mother_daughter_with)
         setIsLoading(true)
     }
@@ -163,6 +169,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         if (hasSize) {
             if (!sizeSelected && !id_product_attribute) {
                 bottomSheetRef.current?.snapToIndex(0);
+                setBackdropVisible(true);
                 return;
             }
         }
@@ -183,6 +190,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         if (hasSize) {
             if (!sizeSelected && !id_product_attribute) {
                 bottomSheetRef.current?.snapToIndex(0);
+                setBackdropVisible(true);
                 return;
             }
         }
@@ -240,7 +248,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     }
 
     const chooseColor = (item: any) => {
-        fetchData(item).catch(console.error);
+        if(item !== route.params.product_id) {
+            fetchData(item).catch(console.error);
+        }
     }
 
     const htmlContent = (data: any) => {
@@ -331,7 +341,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
             {isLoading &&
                 <>
-                    <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0}>
+                    <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} style={{ position: 'relative' }}>
                         <ScrollView flex={1}>
                             <VStack h={500} alignItems="center"  >
                                 <SliderBox
@@ -363,9 +373,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <Text bold color={'black'} alignItems="center" mb={2}> Colours</Text>
                                         <ScrollView horizontal={true}>
                                             <HStack mb={4}>
-                                                {colorRelated && colorRelated.map((res: any, index: any) => {
-                                                    return <TouchableOpacity onPress={() => chooseColor(res.id_product)} key={index}>
-                                                        <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
+                                                {colorRelated && colorRelated.map((res: any) => {
+                                                    return   <TouchableOpacity onPress={() => chooseColor(res.id_product)} key={res.id_color + '_' + 1} disabled={res.id_product === route.params.product_id ? true : false}>
+                                                            <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
                                                     </TouchableOpacity>
                                                 })}
                                             </HStack>
@@ -420,9 +430,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                                         <>
                                                                             <Text fontSize={15} color={'black'}>Shown here with:</Text>
                                                                             <View style={{ marginVertical: 10 }}>
-                                                                                {shownHere.map((res: any, index: any) => {
+                                                                                {shownHere.map((res: any) => {
                                                                                     return <Chip
-                                                                                        key={index}
+                                                                                        key={res.id_product + '_' + 2}
                                                                                         icon={() => null}
                                                                                         mode='outlined'
                                                                                         style={styles.shown}
@@ -439,9 +449,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                                         <>
                                                                             <Text fontSize={15} color={'black'}>Shop Mother & Daughter:</Text>
                                                                             <View style={{ marginVertical: 10 }}>
-                                                                                {motherDaughter.map((res: any, index: any) => {
+                                                                                {motherDaughter.map((res: any) => {
                                                                                     return <Chip
-                                                                                        key={index}
+                                                                                        key={res.id_product + '_' + 3}
                                                                                         icon={() => null}
                                                                                         mode='outlined'
                                                                                         style={styles.shown}
@@ -609,8 +619,8 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         </View>
                                         <HStack>
                                             <ScrollView horizontal={true}>
-                                                {styleItWith && styleItWith.map((res: any, index: any) => {
-                                                    return <Box w={200} key={index}>
+                                                {styleItWith && styleItWith.map((res: any) => {
+                                                    return <Box w={200} key={res.id_product + '_' + 4}>
                                                         <ProductCard product={res} route={changeProductId} openWishlist={styleItaddtoWishlist} hideWishlist={true}></ProductCard>
                                                     </Box>
                                                 })}
@@ -655,7 +665,19 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 snapPoints={snapPoints}
                 onChange={handleSheetChanges}
                 enablePanDownToClose
-                backgroundStyle={{ shadowColor: '#ccc', shadowOpacity: 0.5 }}
+                backdropComponent={() => (
+                    <>
+                        {backdropVisible &&  <Backdrop
+                            onPress={() => {
+                                setBackdropVisible(false);
+                                bottomSheetRef.current?.close();
+                            }}
+                            opacity={0}
+                        />}
+                    </>
+                    
+                )}
+                // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5 }}
             >
                 <View style={styles.contentContainer}>
                     <Text color={'black'} bold mb={2}>Select Size: </Text>
