@@ -189,7 +189,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                             />
 
                             <InputLabel
-                                // placeholder="Enter your address"
+                                placeholder="Line 1"
                                 name="address1"
                                 values={values}
                                 onChangeText={handleChange}
@@ -199,7 +199,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                             />
                             <InputLabel
-                                // placeholder="Enter your address"
+                                placeholder="Line 2"
                                 name="address2"
                                 values={values}
                                 onChangeText={handleChange}
