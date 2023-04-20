@@ -7,10 +7,14 @@ import InfoService from '../../Services/InfoService'
 
 export interface InfoState {
     countries: [],
+    addressCountries: [],
+    states: [],
 }
 
 const initialState: InfoState = {
     countries: [],
+    addressCountries: [],
+    states: [],
 }
 
 export const getCountries: any = createAsyncThunk(
@@ -31,6 +35,62 @@ export const getCountries: any = createAsyncThunk(
             } else {
                 return rejectWithValue(data)
             }
+        } catch (e: any) {
+            console.log("Error", e.response.data)
+            rejectWithValue(e.response.data)
+        }
+    }
+)
+
+export const getAddressCountries: any = createAsyncThunk(
+    "infos/addressCountries",
+    async (id_shop: any, { getState, rejectWithValue, dispatch }) => {
+        try {
+
+            const response = await InfoService.countryList(id_shop);
+            let data = await response.json();
+            // console.log('getAddressCountries', data);
+
+            if (response.status == 200) {
+                if (data.code == 200) {
+                    return data
+
+                } else {
+                    return rejectWithValue(data)
+                }
+            } else {
+                return rejectWithValue(data)
+            }
+
+
+        } catch (e: any) {
+            console.log("Error", e.response.data)
+            rejectWithValue(e.response.data)
+        }
+    }
+)
+
+export const getStates: any = createAsyncThunk(
+    "infos/getStates",
+    async ({ code, id_shop }: any, { getState, rejectWithValue, dispatch }) => {
+        try {
+
+            const response = await InfoService.stateList(code, id_shop);
+            let data = await response.json();
+            // console.log('getStates', JSON.stringify(data));
+
+            if (response.status == 200) {
+                if (data.code == 200) {
+                    return data
+
+                } else {
+                    return rejectWithValue(data)
+                }
+            } else {
+                return rejectWithValue(data)
+            }
+
+
         } catch (e: any) {
             console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
@@ -61,13 +121,41 @@ export const infosSlice = createSlice({
                 state = { ...state, ...temp }
             }
 
-            console.log('stategetcountries', state);
+            // console.log('stategetcountries', state);
             return state;
         }).addCase(getCountries.pending, (state, { payload }) => {
 
         }).addCase(getCountries.rejected, (state, { payload }) => {
-            console.log('payload', payload);
+            // console.log('payload', payload);
             // GeneralService.toast({ description: payload.message });
+        }).addCase(getAddressCountries.fulfilled, (state, { payload }) => {
+
+            const temp: any = {};
+            if (payload.data) {
+                temp.addressCountries = payload.data;
+                state = { ...state, ...temp }
+            }
+
+            return state;
+        }).addCase(getAddressCountries.pending, (state, { payload }) => {
+
+        }).addCase(getAddressCountries.rejected, (state, { payload }) => {
+            // console.log('payload', payload);
+            GeneralService.toast({ description: payload.message });
+        }).addCase(getStates.fulfilled, (state, { payload }) => {
+
+            const temp: any = {};
+            if (payload.data) {
+                temp.states = payload.data.states;
+                state = { ...state, ...temp }
+            }
+
+            return state;
+        }).addCase(getStates.pending, (state, { payload }) => {
+
+        }).addCase(getStates.rejected, (state, { payload }) => {
+            // console.log('payload', payload);
+            GeneralService.toast({ description: payload.message });
         })
     },
 })

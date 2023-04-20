@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
-import { ScrollView, Button } from 'native-base';
+import { ScrollView, Button, Flex } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useIsFocused } from '@react-navigation/native';
@@ -21,7 +21,7 @@ export default function AddressListPage({ isCheckout }: any) {
 
         if (isFocused) {
             dispatch(getAddressList());
-            console.log('addresslistpage', address);
+            // console.log('addresslistpage', address);
         }
 
     }, [isFocused])
@@ -40,26 +40,26 @@ export default function AddressListPage({ isCheckout }: any) {
 
 
     return (
-        <>
-            <ScrollView>
+        <Flex backgroundColor='white' flex={1}>
+            <ScrollView mt={2} flex={1}>
                 {address && address.data.length > 0 &&
                     (address.data.map((item: any, index: any) => {
                         return <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
                     })
                     )
                 }
-                <View style={styles.container}>
-                    <Button
-                        bg={'#1cad48'}
-                        mb={3}
-                        mt={3}
-                        style={styles.button}
-                        _text={{ fontSize: 14, fontWeight: 600 }}
-                        onPress={() => addAddressPage()}>ADD NEW ADDRESS
-                    </Button>
-                </View>
             </ScrollView>
-        </>
+            <View style={styles.container}>
+                <Button
+                    bg={'#1cad48'}
+                    mb={3}
+                    mt={3}
+                    style={styles.button}
+                    _text={{ fontSize: 14, fontWeight: 600 }}
+                    onPress={() => addAddressPage()}>ADD NEW ADDRESS
+                </Button>
+            </View>
+        </Flex>
     );
 }
 

@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, Input } from "native-base";
+import { Text, Input, FormControl, Icon } from "native-base";
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
-export default function InputLabel({ name, variant = 'underlined', placeholder, values, text, onChangeText, onBlur, touched, errors }: any) {
+export default function InputLabel({ name, variant = 'outline', placeholder, values, text, onChangeText, onBlur, touched, errors, icon }: any) {
 
     useEffect(() => {
 
@@ -10,7 +11,8 @@ export default function InputLabel({ name, variant = 'underlined', placeholder, 
     }, [])
 
     return (
-        <>
+        <FormControl mb={1}>
+            {!!text && <FormControl.Label _text={{ color: "#666" }}>{text}</FormControl.Label>}
             <Input
                 variant={variant}
                 placeholder={placeholder}
@@ -18,20 +20,21 @@ export default function InputLabel({ name, variant = 'underlined', placeholder, 
                 onChangeText={onChangeText(name)}
                 onBlur={() => onBlur(name)}
                 style={styles.input}
-                InputLeftElement={<Text color={'black'} fontWeight={'400'} fontSize={15}>{text}</Text>}
+                size="lg"
+                InputLeftElement={icon ? <Icon as={IonIcon} name={icon} ml={2} color='#000' /> : <></>}
             />
             {touched[name] && errors[name] &&
                 <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors[name]}</Text>
             }
-        </>
+        </FormControl>
     );
 }
 
 const styles = StyleSheet.create({
     input: {
-        fontSize: 15,
-        paddingBottom: 10,
-        paddingStart: 30,
+        // fontSize: 15,
+        // marginBottom: 10,
+        // paddingStart: 30,
         color: 'black',
 
     }

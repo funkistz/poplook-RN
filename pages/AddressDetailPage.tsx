@@ -1,7 +1,7 @@
-import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState, useCallback } from 'react';
+import { StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
 import BannerService from '../Services/BannerService';
-import { Flex, Center, Image, Box, HStack, IconButton, Icon, FlatList, ScrollView, Text, VStack, Button, Spacer, Stack } from 'native-base';
+import { Flex, Center, Image, Box, HStack, IconButton, Icon, FlatList, ScrollView, Text, VStack, Button, Spacer, Stack, View, AlertDialog } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useFocusEffect } from '@react-navigation/native';
@@ -10,125 +10,175 @@ import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { Formik } from 'formik';
 import * as yup from 'yup'
 import InputLabel from '../components/Form/InputLabel';
-import { addAddress } from '../Redux/Slices/Address';
+import { addAddress, updateAddress, deleteAddress } from '../Redux/Slices/Address';
 import { clearAddress, getAddressOne } from '../Redux/Slices/AdressSelected';
 import { useNavigation } from '@react-navigation/native';
 import { persistor } from '../Redux/app';
+import { getAddressCountries, getStates } from '../Redux/Slices/Infos';
+import FormSelect from '../components/Form/FormSelect';
 
 export default function AddressDetailPage({ route }: { route: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+    const countries = useSelector((storeState: any) => storeState.infos.addressCountries.map((country: any) => { return { label: country.name, value: country.id_country } }));
+    const states = useSelector((storeState: any) => storeState.infos.states.map((state: any) => { return { label: state.name, value: state.id } }));
+    const country = useSelector((storeState: any) => storeState.session.country);
+
     const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address_selected);
-    
+    console.log('addressx', address);
+
     const isFocused = useIsFocused();
     const addressId = route.params.param.id;
     const isUpdate = route.params.param.is_update;
 
+    const [isOpen, setIsOpen] = useState(false);
+    const onClose = () => {
+        dispatch(deleteAddress(addressId));
+        setIsOpen(false);
+        navigation.navigate('AddressListPage', { screen: 'AddressListPage' });
+    };
+    const cancelRef = useRef(null);
+
     useEffect(() => {
 
-        console.log('routeid' ,addressId);
-        console.log('addresspage' ,address);
+        console.log('addressId addressId', addressId);
+        console.log('addresspage', address);
+        console.log('states', states);
+        console.log('countries', countries);
 
         if (isFocused) {
-            if (addressId){
-                dispatch(clearAddress()).then(() => {
-                    dispatch(getAddressOne(addressId))
-                })
-                
+            if (addressId) {
+                dispatch(getAddressCountries(country.id_shop));
+                dispatch(getStates({ code: country.country_iso_code, id_shop: country.id_shop }));
+                dispatch(clearAddress());
+                dispatch(getAddressOne(addressId))
+
             }
         }
 
     }, [isFocused])
 
-    
-
-
     return (
         <>
-         <ScrollView>
-            <View style={styles.container}>
-                <Text color={'black'}>{addressId}</Text>
-                <Formik
-                    
-                    initialValues={{
-                        firstname: isUpdate ? address.data.firstname : '',
-                        lastname: isUpdate ? address.data.lastname : '',
-                        company: isUpdate ? address.data.company : '',
-                        address1: isUpdate ? address.data.address1 : '',
-                        address2: isUpdate ? address.data.address2 : '',
-                        id_country: isUpdate ? address.data.id_country : '',
-                        id_state: isUpdate ? address.data.id_state : '',
-                        city: isUpdate ? address.data.city : '',
-                        postcode: isUpdate ? address.data.postcode : '',
-                        phone: isUpdate ? address.data.phone : '',
-                    }}
-                    onSubmit={
-                        async (values) => {
-                            console.log('ADD' , JSON.stringify(values))
-                            dispatch(addAddress(values));
-                            navigation.navigate('AddressListPage', { screen: 'AddressListPage' });
-                        }
-                    }
-                    validationSchema={yup.object().shape({
-                        firstname: yup
-                            .string()
-                            .required('Firstname is required'),
-                        lastname: yup
-                            .string()
-                            .required('Surname is required'),
-                        company: yup
-                            .string(),
-                        address1: yup
-                            .string()
-                            .required('Address (Line 1) is required'),
-                        address2: yup
-                            .string()
-                            .required('Address (Line 2) is required'),
-                        id_country: yup
-                            .number()
-                            .required('Country is required'),
-                        id_state: yup   
-                            .number()
-                            .required('State is required'),
-                        city: yup   
-                            .string()
-                            .required('City is required'),
-                        postcode: yup   
-                            .number()
-                            .required('Postcode is required'),
-                        phone: yup   
-                            .number()
-                            .required('Telephone is required'),
+            {address.data && <Formik
 
-                    })}
-                >
-                    {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
-                        <>
+                initialValues={{
+                    firstname: isUpdate ? address.data.firstname : '',
+                    lastname: isUpdate ? address.data.lastname : '',
+                    company: isUpdate ? address.data.company : '',
+                    address1: isUpdate ? address.data.address1 : '',
+                    address2: isUpdate ? address.data.address2 : '',
+                    id_country: isUpdate ? address.data.id_country : '',
+                    id_state: isUpdate ? address.data.id_state : '',
+                    city: isUpdate ? address.data.city : '',
+                    postcode: isUpdate ? address.data.postcode : '',
+                    phone: isUpdate ? address.data.phone : '',
+                }}
+                onSubmit={
+                    async (values) => {
+                        if (isUpdate) {
+                            console.log('UPDATE', JSON.stringify({ ...values, id_address: addressId }))
+                            dispatch(updateAddress({ ...values, id_address: addressId }));
+                        } else {
+                            console.log('ADD', JSON.stringify(values))
+                            dispatch(addAddress(values));
+                        }
+                        navigation.navigate('AddressListPage', { screen: 'AddressListPage' });
+                    }
+                }
+                validationSchema={yup.object().shape({
+                    firstname: yup
+                        .string()
+                        .required('Firstname is required'),
+                    lastname: yup
+                        .string()
+                        .required('Surname is required'),
+                    company: yup
+                        .string(),
+                    address1: yup
+                        .string()
+                        .required('Address (Line 1) is required'),
+                    address2: yup
+                        .string()
+                        .required('Address (Line 2) is required'),
+                    id_country: yup
+                        .number()
+                        .required('Country is required'),
+                    id_state: yup
+                        .number()
+                        .required('State is required'),
+                    city: yup
+                        .string()
+                        .required('City is required'),
+                    postcode: yup
+                        .number()
+                        .required('Postcode is required'),
+                    phone: yup
+                        .number()
+                        .required('Telephone is required'),
+
+                })}
+            >
+                {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
+                    <Flex flex={1} backgroundColor='white'>
+
+                        <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+                            <AlertDialog.Content>
+                                <AlertDialog.CloseButton />
+                                <AlertDialog.Header>Delete Address</AlertDialog.Header>
+                                <AlertDialog.Body>
+                                    This will remove address permanently!
+                                </AlertDialog.Body>
+                                <AlertDialog.Footer>
+                                    <Button.Group space={2}>
+                                        <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+                                            Cancel
+                                        </Button>
+                                        <Button colorScheme="danger" onPress={onClose}>
+                                            Delete
+                                        </Button>
+                                    </Button.Group>
+                                </AlertDialog.Footer>
+                            </AlertDialog.Content>
+                        </AlertDialog>
+
+                        <ScrollView flex={1} style={styles.container}>
                             <InputLabel
-                                placeholder="Enter your firstname"
+                                placeholder="Firstname"
                                 name="firstname"
                                 values={values}
                                 onChangeText={handleChange}
                                 onBlur={setFieldTouched}
-                                text="First Name*"
+                                text="Contact *"
                                 touched={touched}
                                 errors={errors}
                             />
                             <InputLabel
-                                placeholder="Enter your surname"
+                                placeholder="Surname"
                                 name="lastname"
                                 values={values}
                                 onChangeText={handleChange}
                                 onBlur={setFieldTouched}
-                                text="Surname*"
+                                // text="Surname*"
                                 touched={touched}
                                 errors={errors}
                                 secureTextEntry={false}
                             />
+                            <InputLabel
+                                // placeholder="Enter your phone"
+                                name="phone"
+                                values={values}
+                                onChangeText={handleChange}
+                                onBlur={setFieldTouched}
+                                text="Telephone*"
+                                touched={touched}
+                                errors={errors}
+                                icon='call'
+                            />
 
                             <InputLabel
-                                placeholder="Enter your company"
+                                placeholder="Company"
                                 name="company"
                                 values={values}
                                 onChangeText={handleChange}
@@ -137,49 +187,49 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 touched={touched}
                                 errors={errors}
                             />
-                            
+
                             <InputLabel
-                                placeholder="Enter your address"
+                                // placeholder="Enter your address"
                                 name="address1"
                                 values={values}
                                 onChangeText={handleChange}
                                 onBlur={setFieldTouched}
-                                text="Address (Line 1)*"
+                                text="Address *"
                                 touched={touched}
                                 errors={errors}
                             />
                             <InputLabel
-                                placeholder="Enter your address"
+                                // placeholder="Enter your address"
                                 name="address2"
                                 values={values}
                                 onChangeText={handleChange}
                                 onBlur={setFieldTouched}
-                                text="Address (Line 2)*"
+                                // text="Address (Line 2)*"
                                 touched={touched}
                                 errors={errors}
                             />
-                            <InputLabel
-                                placeholder="Enter your country"
+                            <FormSelect
                                 name="id_country"
                                 values={values}
-                                onChangeText={handleChange}
+                                onChange={setFieldValue}
                                 onBlur={setFieldTouched}
                                 text="Country*"
                                 touched={touched}
                                 errors={errors}
+                                data={countries}
                             />
-                            <InputLabel
-                                placeholder="Enter your state"
+                            <FormSelect
                                 name="id_state"
                                 values={values}
-                                onChangeText={handleChange}
+                                onChange={setFieldValue}
                                 onBlur={setFieldTouched}
                                 text="State*"
                                 touched={touched}
                                 errors={errors}
+                                data={states}
                             />
                             <InputLabel
-                                placeholder="Enter your city"
+                                // placeholder="Enter your city"
                                 name="city"
                                 values={values}
                                 onChangeText={handleChange}
@@ -189,7 +239,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                             />
                             <InputLabel
-                                placeholder="Enter your postcode"
+                                // placeholder="Enter your postcode"
                                 name="postcode"
                                 values={values}
                                 onChangeText={handleChange}
@@ -198,38 +248,39 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 touched={touched}
                                 errors={errors}
                             />
-                            <InputLabel
-                                placeholder="Enter your phone"
-                                name="phone"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                text="Telephone*"
-                                touched={touched}
-                                errors={errors}
-                            />
-                            
-                            <Stack height={6}></Stack>
 
+                            <HStack>
+                                <Spacer></Spacer>
+                                <Button
+                                    mt={5}
+                                    mb={10}
+                                    width={150}
+                                    variant='link'
+                                    style={styles.button_delete}
+                                    colorScheme="danger"
+                                    onPress={() => setIsOpen(!isOpen)}
+                                    _text={{ fontSize: 14, fontWeight: 600 }}>DELETE ADDRESS
+                                </Button>
+                            </HStack>
+
+
+                        </ScrollView>
+                        <Stack px={3}>
                             <Button
                                 bg={'#1cad48'}
-                                mb={3}
+                                my={3}
                                 style={styles.button}
                                 _text={{ fontSize: 14, fontWeight: 600 }}
                                 disabled={!isValid}
                                 onPress={() => handleSubmit()}>SAVE ADDRESS
                             </Button>
-                            <Button
-                                mb={3}
-                                style={styles.button_delete}
-                                _text={{ fontSize: 14, fontWeight: 600 }}>DELETE ADDRESS
-                            </Button>
-                        </>
-                    )}
-                </Formik>
-            </View>
-        </ScrollView>
-        </>   
+
+                        </Stack>
+                    </Flex>
+                )}
+            </Formik>
+            }
+        </>
     );
 }
 
@@ -248,13 +299,12 @@ const styles = StyleSheet.create({
     button_delete: {
         borderRadius: 10,
         sizes: 'md',
-        backgroundColor: 'red'
     },
     button: {
         borderRadius: 10,
         sizes: 'md',
     },
     container: {
-        padding: 30
+        padding: 15
     },
 })
