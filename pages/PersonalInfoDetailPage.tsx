@@ -39,7 +39,14 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
         console.log('user:', details)
         console.log('id:', id)
         console.log('session:', details.id_customer)
-
+        if(id == 0) {
+            navigation.setOptions({ title: 'Update ' + route.params.params.title});
+        } else if(id == 1) {
+            navigation.setOptions({ title: 'Update ' + route.params.params.title});
+        } else if(id == 2) {
+            navigation.setOptions({ title: 'Update ' + route.params.params.title});
+        }
+        
     }, [])
 
     const submit = async (values: any, resetForm: any) => {
@@ -78,10 +85,10 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
         confirm_password: '',
     }
     const name = {
-        current_name: details.name,
-        new_name: '',
-        lastname: details.lastname,
-        new_lastname: '',
+        // current_name: details.name,
+        new_name: details.name,
+        // lastname: details.lastname,
+        new_lastname: details.lastname,
     }
 
 
@@ -217,7 +224,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                                         </>}
 
                                         {id == 2 && <>
-                                            <CustomInput
+                                            {/* <CustomInput
                                                 key={0}
                                                 placeholder={title}
                                                 name={'current_' + key}
@@ -228,7 +235,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                                                 touched={touched}
                                                 errors={errors}
                                                 readOnly={id == 1 ? false : true}
-                                            />
+                                            /> */}
                                             <CustomInput
                                                 key={1}
                                                 placeholder={'New Firstname'}
@@ -240,7 +247,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                                                 touched={touched}
                                                 errors={errors}
                                             />
-                                            <CustomInput
+                                            {/* <CustomInput
                                                 key={2}
                                                 placeholder={title}
                                                 name={'last' + key}
@@ -251,7 +258,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                                                 touched={touched}
                                                 errors={errors}
                                                 readOnly={id == 1 ? false : true}
-                                            />
+                                            /> */}
                                             <CustomInput
                                                 key={3}
                                                 placeholder={'New Lastname'}

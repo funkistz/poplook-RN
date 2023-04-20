@@ -15,6 +15,7 @@ export default function CustomerServicePage({ route , navigation} : { route: any
     const fetchData = async () => {
         const response = await CmsService.getCsDetails();
         const json = await response.json();
+        console.log('asdasdsadas....', json)
         setDataCS(json.data)
         setIsLoading(false)
     }
@@ -26,6 +27,8 @@ export default function CustomerServicePage({ route , navigation} : { route: any
             title: title,
             data: data
         };
+
+        console.log('qqq....', title)
 
         navigation.navigate('CustomerServiceDetailsPage', { screen: 'CustomerServiceDetailsPage', params });
 
