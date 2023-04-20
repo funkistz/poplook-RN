@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { Text, ScrollView, View, HStack, Button, VStack, Center } from "native-base";
+import { Text, ScrollView, View, HStack, Button, VStack, Center, Spacer, Flex } from "native-base";
 import OrderHistoryService from '../Services/OrderHistoryService';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,8 @@ export default function OrderHistoryListPage() {
         const getOrderHistoryList = async () => {
             const response = await OrderHistoryService.orderHistoryList(customerId);
             const json = await response.json();
+
+            console.log('order' ,json)
 
             setOrders(json.data.order_histories);
         }

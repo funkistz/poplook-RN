@@ -41,7 +41,7 @@ export default function CheckoutPage({ route} : { route: any }) {
 
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
-    const shopId = useSelector((storeState: any) => storeState.session.user.id_shop);
+    const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
     const country = useSelector((storeState: any) => storeState.session.country);
     const user = useSelector((storeState: any) => storeState.session.user);
     const address = useSelector((storeState: any) => storeState.checkout.address);
@@ -96,7 +96,7 @@ export default function CheckoutPage({ route} : { route: any }) {
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
-                    // eghl
+                    eghl2(data)
                 } else {
                     //enets
                 }
@@ -153,6 +153,15 @@ export default function CheckoutPage({ route} : { route: any }) {
         return paymentType;
         
     };
+
+    const eghl2 = async (data: any) => {
+
+        const response = await PaymentService.eghl(data.id_order, user.id_customer);
+        const json = await response.json();
+
+        console.log('redirecteghl', json)
+
+    }
 
 
     const ipay = (data: any) => {
