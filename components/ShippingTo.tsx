@@ -128,7 +128,7 @@ export default function ShippingTo({ navigation }: any) {
                         // padding: 2,
                     }}
                     searchTextInputStyle={{
-                        color: "#dafdsd",
+                        // color: "#dafdsd",
                         padding: 10,
                     }}
                     containerStyle={{

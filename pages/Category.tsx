@@ -1,7 +1,7 @@
 import { StyleSheet, View, Dimensions, TouchableOpacity, TouchableHighlight, Animated } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import BannerService from '../Services/BannerService';
-import { Flex, Center, Image, Box, HStack, IconButton, FlatList, ScrollView, VStack, Skeleton, Text, Icon, Select, Button } from 'native-base';
+import { Flex, Center, Image, Box, HStack, IconButton, FlatList, ScrollView, VStack, Skeleton, Text, Icon, Select, Button, Backdrop } from 'native-base';
 import ProductService from '../Services/ProductService';
 import ProductCard from '../components/Products/ProductCard';
 import Spinner from '../components/Spinner';
@@ -41,8 +41,10 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         console.log('handleSheetChanges', index);
         if(index == -1) {
             setAttributeList([])
+            setBackdropVisible(false)
         }
     }, []);
+    const [backdropVisible, setBackdropVisible] = useState(false);
 
     // Size data
     const [attributeList, setAttributeList] = useState<any>([]);
@@ -206,6 +208,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         if (item.attribute_list.length > 0) {
             if (!id_product_attribute) {
                 bottomSheetRef.current?.snapToIndex(0);
+                setBackdropVisible(true);
                 return;
             }
         }
@@ -217,7 +220,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         }
 
         await dispatch(addToWishlist(params));
-        await dispatch(getWishList())
     }
 
 
@@ -261,8 +263,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 color: color,
                 sort_option: sort.toString(),
             }
-
-            // console.log('params', params)
             dispatch(getFilterList(params))
         }
     }, [route])
@@ -365,7 +365,19 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                     snapPoints={snapPoints}
                     onChange={handleSheetChanges}
                     enablePanDownToClose
-                    backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
+                    backdropComponent={() => (
+                        <>
+                            {backdropVisible &&  <Backdrop
+                                onPress={() => {
+                                    setBackdropVisible(false);
+                                    bottomSheetRef.current?.close();
+                                }}
+                                opacity={0}
+                            />}
+                        </>
+                        
+                    )}
+                    // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
                 >
 
                     {attributeList.length == 0 && 

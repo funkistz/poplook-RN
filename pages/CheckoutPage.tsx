@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
@@ -12,16 +12,18 @@ import { addressSelectedSelector } from '../Redux/Slices/AdressSelected';
 import CartService from '../Services/CartService';
 import { Pay } from "react-native-ipay88-integration";
 import { startPayment } from 'react-native-eghl';
-import {handlePaymentURL} from 'react-native-atome-paylater';
+import { handlePaymentURL } from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
+import GeneralService from '../Services/GeneralService';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
 
-export default function CheckoutPage({ route} : { route: any }) {
+export default function CheckoutPage({ route }: { route: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
-    const [show, setShow] = React.useState(false);
     const [gift, setGift] = React.useState('');
     const [message, setMessage] = React.useState('');
     const [paymentType, setPaymentType] = React.useState('');
@@ -37,8 +39,6 @@ export default function CheckoutPage({ route} : { route: any }) {
     const [leaveMessage, setLeaveMessage] = useState('');
     const [cms, setCms] = useState<any>({});
 
-    const handleClick = () => setShow(!show);
-
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
@@ -49,20 +49,72 @@ export default function CheckoutPage({ route} : { route: any }) {
     const payment = useSelector((storeState: any) => storeState.checkout.payment);
     const product = useSelector((storeState: any) => storeState.checkout.product);
     const gift_wrap_id = useSelector((storeState: any) => storeState.checkout.id_gift);
-    const gift_wrap= useSelector((storeState: any) => storeState.checkout.gift_wrap);
-    const checkout= useSelector((storeState: any) => storeState.checkout);
+    const gift_wrap = useSelector((storeState: any) => storeState.checkout.gift_wrap);
+    const checkout = useSelector((storeState: any) => storeState.checkout);
     const total = useSelector((storeState: any) => storeState.checkout.total);
+    const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
+    const credit_store_list = useSelector((storeState: any) => storeState.checkout.storeCredit);
+
+    // Voucher
+    const [voucher, setVoucher] = React.useState('');
+
+
 
     useEffect(() => {
-
         const param = {
             gift: gift
-        } 
+        }
 
         dispatch(getCartStep1(param))
-        
+
 
     }, [])
+
+    // Voucher
+    const validateVoucher = async () => {
+        const params = {
+            code: voucher,
+            id_cart: cartId,
+            id_shop: user.id_shop,
+        }
+
+        const response = await VoucherService.validateVoucher(params);
+        const json = await response.json();
+        // console.log('json: ', json)
+        if (json.code == 200) {
+            setVoucher('');
+            dispatch(getCartStep1({ gift: gift }))
+            GeneralService.toast({ description: json.message });
+        } else {
+            GeneralService.toast({ description: json.message });
+        }
+    }
+    const alertDeleteVoucher = (id_cart_rule: any) => {
+        Alert.alert('Remove voucher?', '', [
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+            {
+                text: 'OK',
+                onPress: () => delVoucher(id_cart_rule)
+            },
+        ]);
+    }
+    const delVoucher = async (id_cart_rule: any) => {
+        const params = {
+            id_cart: cartId,
+            id_cart_rule: id_cart_rule,
+        }
+
+        const response = await VoucherService.delValidateVoucher(params);
+        const json = await response.json();
+        console.log('json: ', json)
+        if (json.code == 200) {
+            dispatch(getCartStep1({ gift: gift }))
+            GeneralService.toast({ description: json.message });
+        }
+    }
 
     const toggleAddressModal = () => {
         setAdressModalVisible(!isAddressModalVisible);
@@ -83,9 +135,9 @@ export default function CheckoutPage({ route} : { route: any }) {
         // console.log('cartstep4', json.data)
 
         if (json.status == 200 && json.data) {
-    
+
             setData(json.data);
-            
+
             if (shopId == '1') {
                 if (paymentType == '16') {
                     atome()
@@ -107,9 +159,9 @@ export default function CheckoutPage({ route} : { route: any }) {
                     // pay(data) // ipay88
                 }
             }
-          } else {
+        } else {
             // this.generalService.presentToast(response.data.message);
-          }
+        }
     }
 
     const atome = async () => {
@@ -124,34 +176,34 @@ export default function CheckoutPage({ route} : { route: any }) {
         handlePaymentURL(result == 'No' ? appUrl : url)
     }
 
-    const paymentId =  () => {
-    
-        if (shopId == 1) { 
+    const paymentId = () => {
+
+        if (shopId == 1) {
             if (paymentType == '2') {
                 return paymentChild;
             }
-        
+
             if (paymentType == '8') {
                 return paymentChild;
             }
-    
+
             if (paymentType == '3') { // Credit Card (MYR)
                 return 2;
             }
-    
-        } else if(shopId == 2) { 
-    
-    
-        } else if(shopId == 3) { 
-    
-            if(paymentType == '6') { //Credit Card (USD)
-                return 25 ;
+
+        } else if (shopId == 2) {
+
+
+        } else if (shopId == 3) {
+
+            if (paymentType == '6') { //Credit Card (USD)
+                return 25;
             }
-    
+
         }
-    
+
         return paymentType;
-        
+
     };
 
     const eghl2 = async (data: any) => {
@@ -176,7 +228,7 @@ export default function CheckoutPage({ route} : { route: any }) {
                 referenceNo: data.id_order,
                 amount: data.totalPriceWt,
                 currency: country.currency_iso_code,
-                productDescription: "Reference No: " +data.id_order,
+                productDescription: "Reference No: " + data.id_order,
                 userName: user.name,
                 userEmail: user.email,
                 userContact: "0123456789",
@@ -185,7 +237,7 @@ export default function CheckoutPage({ route} : { route: any }) {
                 country: country.country_iso_code,
                 backendUrl: "https://poplook.com/modules/ipay88induxive/backend_response.php",
             };
-            
+
             const response = Pay(request);
             // console.log('result' ,response)
 
@@ -194,33 +246,32 @@ export default function CheckoutPage({ route} : { route: any }) {
         }
     };
 
-    
     const eghl = (data: any) => {
         // console.log('eghl')
 
         try {
-            const request : any = {
+            const request: any = {
                 TransactionType: 'SALE',
                 Amount: data.totalPriceWt,
                 CurrencyCode: country.currency_iso_code,
                 PaymentID: cartId,
                 OrderNumber: data.id_order,
-                PaymentDesc: 'Reference No: ' +data.id_order,
+                PaymentDesc: 'Reference No: ' + data.id_order,
                 PymtMethod: 'ANY',
-    
+
                 CustEmail: user.email,
                 CustName: user.name,
                 CustPhone: '0123456789',
-    
+
                 MerchantName: 'Poplook',
                 MerchantReturnURL: 'https://pay.e-ghl.com/IPGSG/Payment.aspx ',
-    
+
                 ServiceID: 'sit',
                 Password: 'sit12345',
-    
+
                 LanguageCode: 'EN',
                 PageTimeout: '600',
-    
+
                 Prod: false,
             }
             // console.log(request)
@@ -228,232 +279,286 @@ export default function CheckoutPage({ route} : { route: any }) {
             // console.log('response' ,response)
 
         } catch (e) {
-            console.log('error' ,e)
+            console.log('error', e)
         }
     }
 
     return (
         <>
-        <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0}>
-            <ScrollView>
-                <View style={styles.container}>
-                    {!address && 
-                        <><TouchableOpacity onPress={toggleAddressModal}>
-                            <Text style={styles.bold} marginY={3}>Please Add Address</Text>
-                        </TouchableOpacity>
-                       </> 
-                    }
-                    {address &&  
-                        <><TouchableOpacity onPress={toggleAddressModal}>
-                            <Address address={address} title='Shipping'></Address>
-                        </TouchableOpacity>
-                        </> 
-                    }
-                    <AddressModal 
-                        visible={isAddressModalVisible}
-                        onToggle={toggleAddressModal}
-                        isCheckout={true}
-                    />
-                    <Divider/>
+            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0}>
+                <ScrollView>
+                    <View style={styles.container}>
+                        {!address &&
+                            <><TouchableOpacity onPress={toggleAddressModal}>
+                                <Text style={styles.bold} marginY={3}>Please Add Address</Text>
+                            </TouchableOpacity>
+                            </>
+                        }
+                        {address &&
+                            <><TouchableOpacity onPress={toggleAddressModal}>
+                                <Address address={address} title='Shipping'></Address>
+                            </TouchableOpacity>
+                            </>
+                        }
+                        <AddressModal
+                            visible={isAddressModalVisible}
+                            onToggle={toggleAddressModal}
+                            isCheckout={true}
+                        />
+                        <Divider />
 
-                {address && 
-                    <><Text style={styles.bold} mt={2}>Shipping Method</Text>
-                    <ShippingMethod carrier={carrier}></ShippingMethod>
-                    <Divider/>
-                    </>
-                }
+                        {address &&
+                            <><Text style={styles.bold} mt={2}>Shipping Method {cartId}</Text>
+                                <ShippingMethod carrier={carrier}></ShippingMethod>
 
-                <Text style={styles.bold} py={2}>Payment Method</Text>
-                {/* <PaymentMethod payment={payment}></PaymentMethod> */}
-                <Radio.Group name="paymentMethod" onChange={nextValue => {
-                    setPaymentChild('')
-                    setPaymentType(nextValue);
-                    }}>
-                    { payment.map((item: any) => {
-                        return <>
-                        <HStack>
-                        <Radio value={item.id} my="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
-                            
-                            {item.id == 2 || item.id == 8 ?
-                                <Select selectedValue={paymentChild} minWidth="190" placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
+                                <Divider />
+                            </>
+                        }
 
-                                {item.options.map((option: any) => {
-                                    return (
-                                        <Select.Item value={option.value} label={option.name} />
+                        <Text style={styles.bold} py={2}>Payment Method</Text>
+                        {/* <PaymentMethod payment={payment}></PaymentMethod> */}
+                        <Radio.Group name="paymentMethod" onChange={nextValue => {
+                            setPaymentChild('')
+                            setPaymentType(nextValue);
+                        }}>
+                            {payment.map((item: any) => {
+                                return <>
+                                    <HStack>
+                                        <Radio value={item.id} my="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
 
-                                    );
+                                            {item.id == 2 || item.id == 8 ?
+                                                <Select selectedValue={paymentChild} minWidth="190" placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
+
+                                                    {item.options.map((option: any) => {
+                                                        return (
+                                                            <Select.Item value={option.value} label={option.name} />
+
+                                                        );
+                                                    })}
+                                                </Select>
+
+                                                : ''}
+
+                                        </Box>
+                                    </HStack>
+
+                                </>
+                            })}
+                        </Radio.Group>
+                        <Text color={'black'}>{paymentType} {paymentChild}</Text>
+                        <Spacer />
+
+                        <Checkbox value="terms" style={styles.checkbox} marginY={3}>
+                            <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}>Terms of Service</Link> and
+                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
+                        </Checkbox>
+                        <Divider />
+
+                        <CmsModal
+                            visible={isCmsModalVisible}
+                            onToggle={toggleCmsModal}
+                            data={cms}
+                        />
+
+                        <Input
+                            marginY={3}
+                            color='black'
+                            placeholder="Enter code"
+                            value={voucher}
+                            onChangeText={(props) => setVoucher(props)}
+                            borderColor={'#ccc'}
+                            InputRightElement={
+                                <Button
+                                    size="sm"
+                                    rounded="none"
+                                    w="2/6"
+                                    h="full"
+                                    onPress={validateVoucher}
+                                    isDisabled={voucher.length === 0 ? true : false}
+                                    backgroundColor={'#1cad48'}>
+                                    APPLY
+                                </Button>
+                            }
+                        />
+
+                        {(voucher_list || credit_store_list) && <View mb={2}>
+                            <View mt={1} bg={'gray.100'}>
+                                {voucher_list && voucher_list.map((res: any, index: any) => {
+                                    return <HStack key={index} py={2} px={3} borderRadius={2}>
+                                        <Text color='black' mt={2}>{res.code}</Text>
+                                        <Spacer />
+
+                                        <HStack>
+                                            <Text color='black' mt={2} mr={3} bold>RM {res.reduction_amount}</Text>
+                                            <TouchableOpacity style={{ paddingHorizontal: 8, paddingVertical: 5, }} onPress={() => alertDeleteVoucher(res.id_cart_rule)}>
+                                                <IonIcon name="trash-outline" size={26} color="black" />
+                                            </TouchableOpacity>
+                                        </HStack>
+                                    </HStack>
                                 })}
-                                </Select>
-                                
-                            : ''}
 
-                        </Box>
-                        </HStack>
-                        
-                        </>
-                    })}
-                </Radio.Group>
-                <Text color={'black'}>{paymentType} {paymentChild}</Text>
-                <Spacer />
+                                {credit_store_list && credit_store_list.map((res: any, index: any) => {
+                                    return <HStack key={index} py={2} px={3} borderRadius={2}>
+                                        <Text color='black' mt={2}>{res.code}</Text>
+                                        <Spacer />
 
-                <Checkbox value="terms" style={styles.checkbox} marginY={3}>
-                    <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}>Terms of Service</Link> and
-                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
-                </Checkbox>
-                <Divider/>
+                                        <HStack>
+                                            <Text color='black' mt={2} mr={3} bold>RM {res.reduction_amount}</Text>
+                                            <TouchableOpacity style={{ paddingHorizontal: 8, paddingVertical: 5, }} onPress={() => alertDeleteVoucher(res.id_cart_rule)}>
+                                                <IonIcon name="trash-outline" size={26} color="black" />
+                                            </TouchableOpacity>
+                                        </HStack>
+                                    </HStack>
+                                })}
 
-                <CmsModal 
-                    visible={isCmsModalVisible}
-                    onToggle={toggleCmsModal}
-                    data={cms}
-                />
+                            </View>
 
-               
-                <Input marginY={3} placeholder="Enter voucher" InputRightElement={<Button size="sm" rounded="none" w="2/6" h="full" onPress={handleClick} backgroundColor={'#1cad48'}>APPLY</Button>}></Input>
-                <HStack py={1}>
-                    <Text style={styles.normal}>Gift Option</Text>
-                    <Spacer/>
-                    <Radio.Group
-                    name="giftOption"
-                    value={gift}
-                    onChange={(nextValue) => {
-                        setGift(nextValue);
+                        </View>}
 
-                        const param = {
-                            gift: gift,
-                            gift_wrap_id: gift_wrap_id,
-                            gift_message: giftMessage
-                        } 
-
-                        dispatch(getCartStep1(param))
-                    }}
-                    >
-                    <HStack>
-                    <Radio value="0" backgroundColor={'white'} marginBottom={2}  marginLeft={3} _text={{ color: 'black'}} size="sm">No</Radio>
-                    <Radio value="1" backgroundColor={'white'} marginBottom={2}  marginLeft={3} _text={{ color: 'black'}} size="sm">Yes</Radio>
-                    </HStack>
-                    </Radio.Group>
-                </HStack>
-
-                { gift && (gift == '1') ? <>
-                <VStack>
-                <Box borderRadius={10}>
-                    <HStack>
-                        <AspectRatio w="40%" ratio={4/4}>
-                            <Image resizeMode="cover" borderRadius={10} source={{uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0]}}/>
-                        </AspectRatio>
-                
-                        <VStack m={3} flexShrink={1}>
-                            <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
-                            <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
-                        </VStack>
-                    </HStack>
-                </Box>
-                <TextArea marginY={3} value={giftMessage} onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'}/>
-                </VStack>
-                </>: null}
-
-                <HStack py={1}> 
-                    <Text style={styles.normal}>Leave Message</Text>
-                     <Spacer/>
-                    <Radio.Group
-                    name="message"
-                    value={message}
-                    onChange={(nextValue) => {
-                        setMessage(nextValue);
-                    }}
-                    >
-                    <HStack>
-                    <Radio value="0" backgroundColor={'white'} marginBottom={2}  marginLeft={3} _text={{ color: 'black'}} size="sm">No</Radio>
-                    <Radio value="1" backgroundColor={'white'} marginBottom={2}  marginLeft={3} _text={{ color: 'black'}} size="sm">Yes</Radio>
-                    </HStack>
-                    </Radio.Group>
-                </HStack>
-
-                { message && (message == '1') ? <>
-                <VStack>
-                <TextArea marginY={3} value={leaveMessage} onChangeText={text => setLeaveMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Type something here" color={'black'}/>
-                </VStack>
-                </>: null}
-
-                <Divider/>
-                
-                <Text style={styles.bold} marginTop={3}>Shopping Bag</Text>  
-                <ScrollView horizontal py={3}>
-                    {product.map((item: any, index: any) => {
-                        return <>
-                            <Box key={index} marginRight={2}>
-                                <AspectRatio w="100%" ratio={3/4} size={'130px'}>
-                                    <ImageBackground
-                                        source={{  uri: item.image_url }}
-                                        style={{ flex: 1 }}
-                                        borderRadius={10}
-                                        resizeMode="cover">
-                                            <View style={styles.quantity_view}>
-                                                <Button size='sm' 
-                                                    style={styles.quantity_chip}>
-                                                    <Text 
-                                                    style={styles.bold}>{'x' + item.quantity}</Text>
-                                                </Button>
-                                            </View>
-                                        </ImageBackground>   
-                                </AspectRatio>
-                            </Box>
+                        <HStack py={1}>
+                            <Text style={styles.normal}>Gift Option</Text>
                             <Spacer />
-                            </>;
-                    })}
+                            <Radio.Group
+                                name="giftOption"
+                                value={gift}
+                                onChange={(nextValue) => {
+                                    setGift(nextValue);
+
+                                    const param = {
+                                        gift: gift,
+                                        gift_wrap_id: gift_wrap_id,
+                                        gift_message: giftMessage
+                                    }
+
+                                    dispatch(getCartStep1(param))
+                                }}
+                            >
+                                <HStack>
+                                    <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
+                                    <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
+                                </HStack>
+                            </Radio.Group>
+                        </HStack>
+
+                        {gift && (gift == '1') ? <>
+                            <VStack>
+                                <Box borderRadius={10}>
+                                    <HStack>
+                                        <AspectRatio w="40%" ratio={4 / 4}>
+                                            <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
+                                        </AspectRatio>
+
+                                        <VStack m={3} flexShrink={1}>
+                                            <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
+                                            <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
+                                        </VStack>
+                                    </HStack>
+                                </Box>
+                                <TextArea marginY={3} value={giftMessage} onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
+                            </VStack>
+                        </> : null}
+
+                        <HStack py={1}>
+                            <Text style={styles.normal}>Leave Message</Text>
+                            <Spacer />
+                            <Radio.Group
+                                name="message"
+                                value={message}
+                                onChange={(nextValue) => {
+                                    setMessage(nextValue);
+                                }}
+                            >
+                                <HStack>
+                                    <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
+                                    <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
+                                </HStack>
+                            </Radio.Group>
+                        </HStack>
+
+                        {message && (message == '1') ? <>
+                            <VStack>
+                                <TextArea marginY={3} value={leaveMessage} onChangeText={text => setLeaveMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Type something here" color={'black'} />
+                            </VStack>
+                        </> : null}
+
+                        <Divider />
+
+                        <Text style={styles.bold} marginTop={3}>Shopping Bag</Text>
+                        <ScrollView horizontal py={3}>
+                            {product.map((item: any, index: any) => {
+                                return <>
+                                    <Box key={index} marginRight={2}>
+                                        <AspectRatio w="100%" ratio={3 / 4} size={'130px'}>
+                                            <ImageBackground
+                                                source={{ uri: item.image_url }}
+                                                style={{ flex: 1 }}
+                                                borderRadius={10}
+                                                resizeMode="cover">
+                                                <View style={styles.quantity_view}>
+                                                    <Button size='sm'
+                                                        style={styles.quantity_chip}>
+                                                        <Text
+                                                            style={styles.bold}>{'x' + item.quantity}</Text>
+                                                    </Button>
+                                                </View>
+                                            </ImageBackground>
+                                        </AspectRatio>
+                                    </Box>
+                                    <Spacer />
+                                </>;
+                            })}
+                        </ScrollView>
+                        <Divider />
+
+
+                        <HStack py={1}>
+                            <Text style={styles.normal}>Retail Price :</Text>
+                            <Spacer />
+                            <Text style={styles.normal}>{currency} {total}</Text>
+                        </HStack>
+                        <HStack py={1}>
+                            <Text style={styles.normal}>Discount :</Text>
+                            <Spacer />
+                            <Text style={styles.normal}>-</Text>
+                        </HStack>
+                        <HStack py={1}>
+                            <Text style={styles.normal}>Store Credit :</Text>
+                            <Spacer />
+                            <Text style={styles.normal}>-</Text>
+                        </HStack>
+                        <HStack py={1}>
+                            <Text style={styles.normal}>Shipping fee :</Text>
+                            <Spacer />
+                            <Text style={styles.normal}>-</Text>
+                        </HStack>
+                    </View>
                 </ScrollView>
-                <Divider/>
 
+                <HStack style={{ marginHorizontal: 20 }}>
+                    <Text style={styles.total}>Total :</Text>
+                    <Spacer />
+                    <Text style={styles.total}>{currency} {total}</Text>
+                </HStack>
 
-                <HStack py={1}>
-                    <Text style={styles.normal}>Retail Price :</Text>
-                    <Spacer/>
-                    <Text style={styles.normal}>{currency} {total}</Text>
+                <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}>
+                    <Button w={'100%'} style={styles.footer} onPress={() => cartStep4()}>PLACE ORDER</Button>
                 </HStack>
-                <HStack py={1}>
-                    <Text style={styles.normal}>Discount :</Text>
-                    <Spacer/>
-                    <Text style={styles.normal}>-</Text>
-                </HStack>
-                <HStack py={1}>
-                    <Text style={styles.normal}>Store Credit :</Text>
-                    <Spacer/>
-                    <Text style={styles.normal}>-</Text>
-                </HStack>
-                <HStack py={1}>
-                    <Text style={styles.normal}>Shipping fee :</Text>
-                    <Spacer/>
-                    <Text style={styles.normal}>-</Text>
-                </HStack>
-                </View>
-            </ScrollView>
 
-            <HStack style={{ marginHorizontal: 20 }}>
-                <Text style={styles.total}>Total :</Text>
-                <Spacer/>
-                <Text style={styles.total}>{currency} {total}</Text>
-            </HStack>
-
-            <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}>
-                <Button w={'100%'} style={styles.footer} onPress={() => cartStep4()}>PLACE ORDER</Button>  
-            </HStack>
-            
-        </Flex>
+            </Flex>
         </>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-       paddingStart: 25,
-       paddingEnd: 25,
-       backgroundColor: 'white'
+        paddingStart: 25,
+        paddingEnd: 25,
+        backgroundColor: 'white'
     },
     button: {
         borderRadius: 10,
         padding: 3,
-        sizes: 'md', 
+        sizes: 'md',
         backgroundColor: '#1cad48',
         marginTop: 8,
         marginBottom: 20

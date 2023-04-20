@@ -45,7 +45,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
     }
 
     useEffect(() => {
-        console.log('product......', product)
+        // console.log('product......', product)
 
     }, [])
 

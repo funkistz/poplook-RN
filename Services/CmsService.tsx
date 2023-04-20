@@ -16,7 +16,15 @@ const CmsService = {
 
         return APIService.getMethod(url);
     
-    }
+    },
+
+    async sendEmail(params: any) {
+
+        const url = 'SendEmail/mailto';
+
+        return APIService.getMethod(url, params);
+    
+    },
     
 
 }

@@ -83,7 +83,7 @@ export const addToCart: any = createAsyncThunk(
 
 export const addToWishlist: any = createAsyncThunk(
     "wishlist/addWishlist",
-    async ({ id_product, id_product_attribute }: any, { getState, rejectWithValue }) => {
+    async ({ id_product, id_product_attribute }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const user = state.session.user;
@@ -105,7 +105,7 @@ export const addToWishlist: any = createAsyncThunk(
 
             if (response.status == 201) {
                 if (data.code == 201) {
-
+                    dispatch(getWishList())
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -122,7 +122,7 @@ export const addToWishlist: any = createAsyncThunk(
 
 export const delWishlist: any = createAsyncThunk(
     "wishlist/delete",
-    async ({ id_product, id_product_attribute }: any, { getState, rejectWithValue }) => {
+    async ({ id_product, id_product_attribute }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const user = state.session.user;
@@ -135,7 +135,7 @@ export const delWishlist: any = createAsyncThunk(
 
             if (response.status == 201) {
                 if (data.code == 201) {
-
+                    dispatch(getWishList())
                     return data
                 } else {
                     return rejectWithValue(data)

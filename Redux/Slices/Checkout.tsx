@@ -11,6 +11,8 @@ export interface CheckoutState {
     carrier: Array<any>,
     payment: Array<any>,
     product: Array<any>,
+    voucher: Array<any> | null;
+    storeCredit: Array<any> | null;
     gift_wrap: any,
     total: String
 }
@@ -22,6 +24,8 @@ const initialState: CheckoutState = {
     carrier: [],
     payment: [],
     product: [],
+    voucher: null,
+    storeCredit: null,
     gift_wrap: '',
     total: ''
 }
@@ -143,7 +147,10 @@ export const checkoutSlice = createSlice({
                 temp.product = payload.data.product_list;
                 temp.carrier = payload.data.carrier_list;
                 temp.total = payload.data.totalProducts;
-                temp.gift_wrap = payload.data.gift_wrap
+                temp.voucher = payload.data.voucher_list;
+                temp.storeCredit = payload.data.store_credit_list;
+                temp.gift_wrap = payload.data.gift_wrap;
+
                 state = { ...state, ...temp }
             }
 

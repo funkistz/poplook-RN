@@ -63,7 +63,7 @@ const APIService = {
 
         data = await this.injectParams(data, false)
 
-        // console.log('url', api_test + url + '?' + new URLSearchParams(data));
+        console.log('url', api_test + url + '?' + new URLSearchParams(data));
 
         return await fetch(api_test + url + '?' + new URLSearchParams(data))
     },

@@ -20,7 +20,6 @@ const ProductService = {
 
     async getProduct(data: any) {
 
-        // const url = 'Products/details/id/' + id;
         const url = 'Products/details/id/' + data.product_id + '/shop/' + data.id_shop + '/lang/' + data.lang + '/full/' + data.full;
 
         return APIService.getMethod(url);

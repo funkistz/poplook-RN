@@ -57,7 +57,7 @@ export default function CustomerServicePage({ route , navigation} : { route: any
                             {dataCS.map((item:any, index:any) => {
                             return <TouchableOpacity key={index} onPress={() => goToDetailsPage(item.id_cms, item.meta_title, item)}>
                                 <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
-                                    <Text color="black" fontSize={16}>{item.meta_title}</Text>
+                                    <Text color="black" fontSize={16}>{index == 0 ? 'Contact Us' : item.meta_title}</Text>
                                     <Spacer />
                                     <IonIcon name="chevron-forward-outline" size={20} color="#777" />
                                 </HStack>

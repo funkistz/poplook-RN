@@ -10,7 +10,6 @@ import { clearAddress } from '../Redux/Slices/Address';
 import Barcode from '@kichiyaki/react-native-barcode-generator';
 import { userSelector } from '../Redux/Slices/Sessions';
 import { getCountries } from '../Redux/Slices/Infos';
-import StoreCreditPage from './StoreCreditPage';
 import ShippingTo from '../components/ShippingTo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
@@ -26,7 +25,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
         { id: 0, key: "personal", title: "Personal Information", icon: "person-outline" },
         { id: 1, key: "address", title: "My Addresses", icon: "navigate-outline" },
         { id: 2, key: "order", title: "Order History", icon: "reorder-four-outline" },
-        { id: 3, key: "voucher", title: "My Vouchers", icon: "gift-outline" },
+        // { id: 3, key: "voucher", title: "My Vouchers", icon: "gift-outline" },
         { id: 4, key: "credit", title: "Store Credit", icon: "wallet-outline" },
         { id: 5, key: "loyalty", title: "Loyalty", icon: "card-outline" },
         { id: 6, key: "about", title: "About Us", icon: "information-circle-outline" },
