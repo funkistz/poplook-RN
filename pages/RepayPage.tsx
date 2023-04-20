@@ -17,6 +17,11 @@ import GeneralService from '../Services/GeneralService';
 import SkeletonRepay from '../components/SkeletonRepay';
 import CmsModal from '../components/Modals/Cms';
 import CmsService from '../Services/CmsService';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+import WebView from 'react-native-webview';
+import RenderHtml, { HTMLElementModel, HTMLContentModel } from 'react-native-render-html';
+import { useWindowDimensions } from 'react-native';
+
 
 export default function RepayPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -24,7 +29,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const country = useSelector((storeState: any) => storeState.session.country);
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const user = useSelector((storeState: any) => storeState.session.user);
-    const shopId = useSelector((storeState: any) => storeState.session.id_shop);
+    const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
     const [address, setAddress] = useState<any>({});
     const [carrier, setCarrier] = useState<any>({});
     const [payment, setPayment] = useState<any>([]);
@@ -45,6 +50,12 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [termAgree, setTermAgree] = useState(false)
     const [isCmsModalVisible, setCmsModalVisible] = useState(false);
     const [cms, setCms] = useState<any>({});
+    const [html, setHtml] = useState<any>('');
+    // const { width } = useWindowDimensions();
+    // const source = {
+    //     html: `
+    //     <p><form id=\"sgcc_form\" action=\"https://pay.e-ghl.com/IPGSG/payment.aspx\" method=\"post\">\n\t\t\t<input type=\"hidden\" name=\"TransactionType\" value=\"SALE\">\n\t\t\t<input type=\"hidden\" name=\"PymtMethod\" value=\"CC\">\n\t\t\t<input type=\"hidden\" name=\"ServiceID\" value=\"sit\">\n\t\t\t<input type=\"hidden\" name=\"PaymentID\" value=\"4443447\">\n\t\t\t<input type=\"hidden\" name=\"OrderNumber\" value=\"4443447\">\n\t\t\t<input type=\"hidden\" name=\"PaymentDesc\" value=\"Payment for 4443447\">\n\t\t\t<input type=\"hidden\" name=\"MerchantName\" value=\"Poplook.com\">\n\t\t\t<input type=\"hidden\" name=\"MerchantReturnURL\" value=\"https://dev3.poplook.com/sgd/order-confirmation/sgd_cc\">\n\t\t\t<input type=\"hidden\" name=\"MerchantCallBackURL\" value=\"https://dev3.poplook.com/modules/sgcreditcard/callback.php\">\n\t\t\t<input type=\"hidden\" name=\"Amount\" value=\"30.47\">\n\t\t\t<input type=\"hidden\" name=\"CurrencyCode\" value=\"SGD\">\n\t\t\t<input type=\"hidden\" name=\"CustIP\" value=\"61.6.49.54\">\n\t\t\t<input type=\"hidden\" name=\"CustName\" value=\"fais poplook\">\n\t\t\t<input type=\"hidden\" name=\"CustEmail\" value=\"fais@poplook.com\">\n\t\t\t<input type=\"hidden\" name=\"CustPhone\" value=\"\">\n\t\t\t<input type=\"hidden\" name=\"HashValue\" value=\"dfa470c95f1dcedc090e9cc36543b1821d8075fd56d566be6c9bc1dbdbd28a2e\">\n\t\t\t<input type=\"hidden\" name=\"MerchantTermsURL\" value=\"https://dev3.poplook.com/sgd/content/3-terms-and-conditions-of-use\">\n\t\t\t<input type=\"hidden\" name=\"LanguageCode\" value=\"en\">\n\t\t\t<input type=\"hidden\" name=\"PageTimeout\" value=\"720\">\n\t\t\t<input type=\"hidden\" name=\"Param6\" value=\"GHL-SG6434fb64174755.67926129\"><input type=\"submit\" id=\"submit_button\" value=\"Pay with SG CC\" name=\"Pay with SG CC\">\n\t    </form></p>`
+    //   };
 
     useEffect(() => {
 
@@ -61,7 +72,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             const json = await response.json();
 
             console.log('repay', json.data)
-            console.log('voucher', json.data.voucher_list)
+            // console.log('voucher', json.data.voucher_list)
 
             setAddress(json.data.address_delivery);
             setCarrier(json.data.carrier_list[0]);
@@ -73,6 +84,24 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             }
         }
         repay().catch(console.error);
+
+        const eghl2 = async () => {
+
+            const response = await PaymentService.eghl('1588353', user.id_customer);
+            const json = await response.json();
+    
+            console.log('redirecteghl', json.data.results)
+    
+            setHtml(json.data.results)
+    
+            // let base64 = require("base-64");
+            // const url = json.data.results;
+            // const pageContentUrl = 'data:text/html;base64,' + base64(url);
+            // await openLink(url)
+    
+    
+        }
+        eghl2().catch(console.error);
 
         AppState.addEventListener('change', handleAppStateChange);
 
@@ -152,15 +181,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             console.log(e);
         }
     };
-
-    const eghl2 = async () => {
-
-        const response = await PaymentService.eghl(data.id_order, user.id_customer);
-        const json = await response.json();
-
-        console.log('redirecteghl', json)
-
-    }
 
     const eghl = (data: any) => {
         console.log('eghl')
@@ -270,7 +290,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     }
 
     const redirectPayment = () => {
-
         if (paymentType && termAgree) {
             if (shopId == '1') {
                 if (paymentType == '16') {
@@ -282,7 +301,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
-                    // eghl
+                    // eghl2()
                 } else {
                     //enets
                 }
@@ -321,6 +340,12 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             <Text style={styles.bold} mt={2}>Shipping Method</Text>
                             <ShippingMethod carrier={carrier}></ShippingMethod>
                             <Divider />
+
+        
+                            {/* <RenderHtml
+                            contentWidth={width}
+                            source={source}
+                            /> */}
 
                             <Text style={styles.bold} py={2}>Choose your payment</Text>
                             {/* <PaymentMethod payment={payment}></PaymentMethod> */}
