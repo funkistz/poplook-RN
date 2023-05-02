@@ -1,9 +1,12 @@
 import IPay88, { Pay } from "react-native-ipay88-integration";
 import { Platform, Alert } from "react-native";
 import GeneralService from "../../Services/GeneralService";
+import { useNavigation } from '@react-navigation/native';
 
 
-function Ipay88Container() {
+function Ipay88Container()  {
+
+    const navigation: any = useNavigation();
 
     const successNotify = (data: any) => {
         const {
@@ -18,6 +21,13 @@ function Ipay88Container() {
             title: 'Message',
             description: `Payment authcode is ${authorizationCode}`
         });
+
+        // const param = {
+        //     id: data.id_order
+        // };
+
+        navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage'})
+
         console.log(' Payment authcode is', authorizationCode);
 
     };
@@ -29,6 +39,7 @@ function Ipay88Container() {
             title: "Message",
             description: `${error}`
         });
+        navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
         console.log('error', error);
     };
 
@@ -39,6 +50,7 @@ function Ipay88Container() {
             title: "Message",
             description: `${error}`
         });
+        navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
         console.log('error', error);
     };
 
