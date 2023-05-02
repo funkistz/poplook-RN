@@ -95,7 +95,7 @@ const APIService = {
             body: injectExtraParams(data)
         };
 
-        // console.log('url', api_test + url, options);
+        console.log('options options', options);
 
         return await fetch(api_test + url, options);
     },

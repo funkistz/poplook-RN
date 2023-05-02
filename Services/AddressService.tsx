@@ -11,20 +11,28 @@ const AddressService = {
     },
 
     async getAddressOne(addressId: String) {
-    
+
         const param = {
-          id: String(addressId)
+            id: String(addressId)
         }
-    
+
         return APIService.getMethod('Addresses/address', param);
     },
 
     async addAddress(params: any) {
 
         return APIService.putMethod('Addresses/addAddress', params);
-    }
+    },
 
-    
+    async updateAddress(params: any) {
+
+        return APIService.postMethod('Addresses/updateAddress', params);
+    },
+
+    async deleteAddress(params: any) {
+
+        return APIService.deleteMethod('Addresses/deleteAddress', params);
+    }
 }
 
 export default AddressService;
