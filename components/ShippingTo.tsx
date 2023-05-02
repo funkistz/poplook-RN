@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Box, HStack, IconButton, Icon, Spacer, Text, CheckIcon, VStack } from 'native-base';
 import { countrySelector, getCountries } from '../Redux/Slices/Infos';
-import { userSelector } from '../Redux/Slices/Sessions';
+import { logout, userSelector } from '../Redux/Slices/Sessions';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { changeCountry } from '../Redux/Slices/Sessions';
+import { clearCart } from '../Redux/Slices/Cart';
+import { getWishList } from '../Redux/Slices/Wishlist';
+import { clearCheckout } from '../Redux/Slices/Checkout';
+import { clearAddress } from '../Redux/Slices/Address';
+import { useNavigation } from '@react-navigation/native';
+import { persistor } from '../Redux/app';
 
-export default function ShippingTo({ navigation }: any) {
+export default function ShippingTo() {
 
     const dispatch = useDispatch()
     const countries = useSelector((storeState: any) => storeState.infos.countries);
@@ -17,6 +23,7 @@ export default function ShippingTo({ navigation }: any) {
     );
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState<string | null>(null);
+    const navigation: any = useNavigation();
 
     useEffect(() => {
         dispatch(getCountries());
@@ -36,10 +43,25 @@ export default function ShippingTo({ navigation }: any) {
     useEffect(() => {
 
         console.log('value', value);
+        console.log('country', country.country_name);
         if (value) {
             let selectedCountry = countries.find((o: any) => o.country_name === value);
             console.log('selectedCountry', selectedCountry);
             dispatch(changeCountry(selectedCountry))
+
+            if(value !== country.country_name) {
+                persistor.purge().then(() => {
+                    if(user != null) {
+                        dispatch(logout())
+                    }
+                    dispatch(getWishList())
+                    dispatch(clearCart())
+                    dispatch(clearCheckout())
+                    dispatch(clearAddress())
+                });
+                navigation.navigate('LoginPage', { screen: 'LoginPage' });
+            }
+            
         }
 
     }, [value])

@@ -9,12 +9,14 @@ import { getSearch, reset } from '../../Redux/Slices/Search';
 import Wishlist from '../wishlist';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { Badge } from 'react-native-paper';
+import { getWishList } from '../../Redux/Slices/Wishlist';
 
 export default function RightHeader({ navigation }: { navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.search);
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
+    const session = useSelector((storeState: any) => storeState.session);
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [keyword, setKeyword] = useState('');
@@ -41,7 +43,8 @@ export default function RightHeader({ navigation }: { navigation: any }) {
     }, [isModalVisible])
 
     useEffect(() => {
-
+        console.log('Enter wishlist....................', session.user)
+        // dispatch(getWishList())
     }, [])
 
 

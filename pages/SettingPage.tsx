@@ -12,6 +12,7 @@ import { userSelector } from '../Redux/Slices/Sessions';
 import { getCountries } from '../Redux/Slices/Infos';
 import ShippingTo from '../components/ShippingTo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import { getWishList } from '../Redux/Slices/Wishlist';
 
 export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -65,9 +66,10 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
     const logoutUser = () => {
         persistor.purge().then(() => {
             dispatch(logout())
-            // dispatch(clearCart())
-            // dispatch(clearCheckout())
-            // dispatch(clearAddress())
+            dispatch(getWishList())
+            dispatch(clearCart())
+            dispatch(clearCheckout())
+            dispatch(clearAddress())
         });
     }
 
