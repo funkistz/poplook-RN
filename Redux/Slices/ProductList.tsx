@@ -36,7 +36,7 @@ export const getFilterList = createAsyncThunk(
             const state: any = getState();
 
             const newParams = {
-                // shop: 1,
+                shop: state.session.country.id_shop,
                 category: categoryId,
                 color: color.toString(),
                 // full: 1,

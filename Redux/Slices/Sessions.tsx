@@ -3,9 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import AuthService from '../../Services/AuthService'
 import GeneralService from '../../Services/GeneralService'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { assignCartId } from './Cart';
+import { assignCartId, clearCart } from './Cart';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
+import { getWishList } from './Wishlist';
+import { clearCheckout } from './Checkout';
+import { clearAddress } from './Address';
 
 export interface SessionState {
     user: {} | null,
@@ -69,6 +72,7 @@ export const loginUser: any = createAsyncThunk(
                     // const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
                     dispatch(assignCartId(data.data.id_cart));
+                    // dispatch(getWishList({idC: data.data.id_customer}))
 
                     return data
                 } else {
@@ -158,6 +162,8 @@ export const sessionSlice = createSlice({
             state = { ...state, ...temp }
 
             GeneralService.toast({ description: payload.message });
+
+            console.log('ppppppppp........', state)
 
             return state;
         }).addCase(loginUser.pending, (state, { payload }) => {

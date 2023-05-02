@@ -15,6 +15,7 @@ export default function CartList({ product }: any) {
     const { navigate } = useNavigation<any>();
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const cart = useSelector((storeState: any) => storeState.cart);
+    const session = useSelector((storeState: any) => storeState.session);
 
     const goToProductPage = () => {
 
@@ -70,7 +71,7 @@ export default function CartList({ product }: any) {
                     </Box>
                     <Box flexGrow={1} width={1} pl={4}>
                         <Text color='black' bold fontSize={15}>{product.name}</Text>
-                        {product.price_wt > 0 && <Text color='black' bold fontSize={14}>RM {product.price_wt}</Text>}
+                        {product.price_wt > 0 && <Text color='black' bold fontSize={14}>{session.country.currency_sign} {product.price_wt}</Text>}
                         {product.price_wt <= 0 && <Text color='black' bold fontSize={14}>Free</Text>}
                         
                         <HStack mt={2}>

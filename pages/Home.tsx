@@ -5,6 +5,8 @@ import { Flex, Center, Image, Link, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { ScrollView } from 'native-base';
 import { WEB_URL, API_KEY } from "@env"
+import { useDispatch, useSelector } from 'react-redux';
+import { getWishList } from '../Redux/Slices/Wishlist';
 
 const win = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -16,6 +18,7 @@ const styles = StyleSheet.create({
 
 export default function HomePage({ route, navigation }: { route: any, navigation: any }) {
 
+    const dispatch = useDispatch()
     const [banners, setBanners] = useState<any[]>([]);
 
     useEffect(() => {
@@ -27,6 +30,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
                 setBanners(json.data);
             }
             fetchData2().catch(console.error);
+            dispatch(getWishList())
         });
 
         return unsubscribe;

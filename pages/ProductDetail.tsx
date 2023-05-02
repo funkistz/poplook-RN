@@ -48,6 +48,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     // Redux
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
+    const session = useSelector((storeState: any) => storeState.session);
 
     // Modal
     const [isModalStore, setModalStore] = useState(false);
@@ -117,7 +118,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         // const params = route.params;
         const params = {
             product_id: product_id,
-            id_shop: 1,
+            id_shop: session.country.id_shop,
             lang: 1,
             full: 1,
         }
@@ -239,11 +240,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         if (oldPrice > newPrice) {
             return <>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text color={'gray.500'} bold strikeThrough fontSize={18}>RM {product.price_without_reduction}</Text><Text style={{ color: 'red' }} bold fontSize={18}> RM {product.price}</Text>
+                    <Text color={'gray.500'} bold strikeThrough fontSize={18}>{session.country.currency_sign} {product.price_without_reduction}</Text><Text style={{ color: 'red' }} bold fontSize={18}> {session.country.currency_sign} {product.price}</Text>
                 </View>
             </>
         } else {
-            return <Text color='black' bold fontSize={18}>RM {product.price}</Text>
+            return <Text color='black' bold fontSize={18}>{session.country.currency_sign} {product.price}</Text>
         }
     }
 
