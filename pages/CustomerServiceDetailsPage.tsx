@@ -133,6 +133,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
         if(isFocused) {
             setDetails(route.params.params.data)
             fetchData(session.user.id_customer).catch(console.error);
+            navigation.setOptions({ title: route.params.params.id == 21 ? 'Contact Us' : route.params.params.title  });
         }
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',

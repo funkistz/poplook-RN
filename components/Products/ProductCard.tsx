@@ -9,6 +9,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
 
     const { navigate } = useNavigation<any>();
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
+    const session = useSelector((storeState: any) => storeState.session);
 
     const goToProductPage = (product: any) => {
 
@@ -35,12 +36,12 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
         if (oldPrice > newPrice) {
             return <>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text color={'gray.500'} bold strikeThrough fontSize={12}>RM {product.price_without_reduction}</Text>
-                    <Text style={{ color: 'red' }} bold fontSize={12}> RM {product.price}</Text>
+                    <Text color={'gray.500'} bold strikeThrough fontSize={12}>{session.country.currency_sign} {product.price_without_reduction}</Text>
+                    <Text style={{ color: 'red' }} bold fontSize={12}> {session.country.currency_sign} {product.price}</Text>
                 </View>
             </>
         } else {
-            return <Text color='black' bold fontSize={12}>RM {product.price}</Text>
+            return <Text color='black' bold fontSize={12}>{session.country.currency_sign} {product.price}</Text>
         }
     }
 

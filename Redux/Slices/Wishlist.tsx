@@ -19,7 +19,7 @@ const initialState: WishlistState = {
 
 export const getWishList: any = createAsyncThunk(
     "wishlist/get",
-    async (_: void, { getState, rejectWithValue }) => {
+    async (_:void, { getState, rejectWithValue }) => {
         try {
             const state: any = getState();
             const id_customer = state.session.user.id_customer;
@@ -95,8 +95,6 @@ export const addToWishlist: any = createAsyncThunk(
                 id_wishlist: user.id_wishlist.toString(),
                 id_customer: user.id_customer.toString(),
             }
-
-            // console.log('params: ', params)
 
 
             const response = await WishlistService.addToWishlist(params);
@@ -174,7 +172,7 @@ export const wishlistSlice = createSlice({
         })
         .addCase(addToCart.rejected, (state, { payload }) => {
 
-        GeneralService.toast({ description: payload.message });
+            GeneralService.toast({ description: payload.message });
 
         
 
@@ -189,7 +187,7 @@ export const wishlistSlice = createSlice({
         })
         .addCase(addToWishlist.rejected, (state, { payload }) => {
 
-        GeneralService.toast({ description: payload.message });
+            GeneralService.toast({ description: payload.message });
 
         
 
@@ -198,7 +196,7 @@ export const wishlistSlice = createSlice({
         .addCase(getWishList.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
-            // console.log('payload: ', payload)
+            console.log('payload test: ', payload)
             if(payload.code == 200) {
                 temp.data = payload.data;
                 temp.id_product = payload.data.product_list.map((product:any) => product.id_product);
@@ -210,7 +208,7 @@ export const wishlistSlice = createSlice({
             }
 
 
-            // console.log('stategetwishlist', state);
+            console.log('stategetwishlist', state);
             return state;
         })
         .addCase(getWishList.pending, (state, { payload }) => {
@@ -218,10 +216,16 @@ export const wishlistSlice = createSlice({
         })
         .addCase(getWishList.rejected, (state, { payload }) => {
             console.log('payload', payload);
+            const temp: any = {};
+            temp.data = {};
+            temp.id_product = [];
+            state = { ...state, ...temp }
+            return state;
             // GeneralService.toast({ description: payload.message });
         })
 
         .addCase(delWishlist.fulfilled, (state, { payload }) => {
+            GeneralService.toast({ description: payload.message });
             return state;
         })
         .addCase(delWishlist.pending, (state, { payload }) => {

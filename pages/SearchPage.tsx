@@ -12,7 +12,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { addToWishlist, getWishList } from '../Redux/Slices/Wishlist';
 import SizeList from '../components/Products/SizeList';
 
-export default function SearchPage() {
+export default function SearchPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.search);
@@ -87,6 +87,10 @@ export default function SearchPage() {
         await dispatch(addToWishlist(params));
         await dispatch(getWishList())
     }
+
+    useEffect(() => {
+        navigation.setOptions({ title: "Search '" + route.params.keyword + "' "});
+    }, [])
 
     return (
         <>
