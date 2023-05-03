@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, StyleSheet } from 'react-native';
-import { Button, Flex, Text } from 'native-base';
+import { Button, Flex, Text, VStack } from 'native-base';
 import AddressDetailPage from '../../pages/AddressDetailPage';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
@@ -36,13 +36,12 @@ export default function AddressEditModal({ visible, onToggle, isCheckout, id }: 
                 visible={visible}
                 onRequestClose={onToggle}
             >
-                <View style={{flex: 1}} >
+                <View>
                     <Flex direction="row-reverse">
                         <Button 
                             variant="unstyled"
                             onPress={onToggle}
                             mr={3}
-                            mt={1}
                             size="16" 
                             bg="transparent" 
                             _text={{
@@ -53,7 +52,11 @@ export default function AddressEditModal({ visible, onToggle, isCheckout, id }: 
                         </Button>
                     </Flex>
                 </View>
-                <AddressDetailPage route={{ screen: 'AddressDetailPage', params: params }}></AddressDetailPage>
+                <View style={{flex: 1}}>
+                    <Text style={styles.bold} marginLeft={3}>Edit Address</Text>
+                    <AddressDetailPage route={{ screen: 'AddressDetailPage', params: params }}></AddressDetailPage>
+                </View>
+                
             </Modal>
         </>
     );

@@ -198,18 +198,18 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const eghl2 = async (data: any) => {
 
-        const response = await PaymentService.eghl(data.id_order, user.id_customer);
+        const response = await PaymentService.repayEghl(data.id_order, user.id_customer);
         const json = await response.json();
 
-        console.log('redirecteghl', json.data.results)
+        console.log('repayEghl', json.data.results)
+    }
 
-        setHtml(json.data.results)
+    const enets = async (data: any) => {
 
-        // let base64 = require("base-64");
-        // const url = json.data.results;
-        // const pageContentUrl = 'data:text/html;base64,' + base64(url);
-        // await openLink(url)
+        const response = await PaymentService.repayEnets(data.id_order, user.id_customer);
+        const json = await response.json();
 
+        console.log('repayEnets', json.data.results)
     }
 
     const atome = async () => {
@@ -288,13 +288,13 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 if (paymentType == '16') {
                     atome()
                 } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    processIpay88() // ipay
+                    processIpay88() 
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
-                    // eghl2(data)
+                    eghl2(data)
                 } else {
-                    //enets
+                    enets(data)
                 }
             } else {
                 if (paymentType == '1') {

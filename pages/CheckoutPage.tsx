@@ -150,7 +150,7 @@ export default function CheckoutPage({ route }: { route: any }) {
                 if (paymentType == '4') {
                     eghl2(data)
                 } else {
-                    //enets
+                    enets(data)
                 }
             } else {
                 if (paymentType == '1') {
@@ -208,10 +208,19 @@ export default function CheckoutPage({ route }: { route: any }) {
 
     const eghl2 = async (data: any) => {
 
-        const response = await PaymentService.eghl(data.id_order, user.id_customer);
+        const response = await PaymentService.eghl(data.id_order, cartId);
         const json = await response.json();
 
-        console.log('redirecteghl', json)
+        console.log('redirectEghl', json)
+
+    }
+
+    const enets = async (data: any) => {
+
+        const response = await PaymentService.enets(data.id_order, cartId);
+        const json = await response.json();
+
+        console.log('redirectEnets', json)
 
     }
 
@@ -295,7 +304,8 @@ export default function CheckoutPage({ route }: { route: any }) {
                             </>
                         }
                         {address &&
-                            <><TouchableOpacity onPress={toggleAddressModal}>
+                            <>
+                            <TouchableOpacity onPress={toggleAddressModal}>
                                 <Address address={address} title='Shipping'></Address>
                             </TouchableOpacity>
                             </>
@@ -308,10 +318,10 @@ export default function CheckoutPage({ route }: { route: any }) {
                         <Divider />
 
                         {address &&
-                            <><Text style={styles.bold} mt={2}>Shipping Method {cartId}</Text>
+                            <>
+                            <Text style={styles.bold} mt={2}>Shipping Method {cartId}</Text>
                                 <ShippingMethod carrier={carrier}></ShippingMethod>
-
-                                <Divider />
+                            <Divider />
                             </>
                         }
 

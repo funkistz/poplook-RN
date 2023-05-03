@@ -249,19 +249,21 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                             />
 
-                            <HStack>
-                                <Spacer></Spacer>
-                                <Button
-                                    mt={5}
-                                    mb={10}
-                                    width={150}
-                                    variant='link'
-                                    style={styles.button_delete}
-                                    colorScheme="danger"
-                                    onPress={() => setIsOpen(!isOpen)}
-                                    _text={{ fontSize: 14, fontWeight: 600 }}>DELETE ADDRESS
-                                </Button>
-                            </HStack>
+                            { isUpdate ? null : 
+                                <HStack>
+                                    <Spacer></Spacer>
+                                    <Button
+                                        mt={5}
+                                        mb={10}
+                                        width={150}
+                                        variant='link'
+                                        style={styles.button_delete}
+                                        colorScheme="danger"
+                                        onPress={() => setIsOpen(!isOpen)}
+                                        _text={{ fontSize: 14, fontWeight: 600 }}>DELETE ADDRESS
+                                    </Button>
+                                </HStack>
+                            }
 
 
                         </ScrollView>
