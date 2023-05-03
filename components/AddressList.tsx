@@ -63,11 +63,11 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
 
 const styles = StyleSheet.create({
     bold: {
-        fontSize: 13,
+        fontSize: 14,
         color: 'black'
     },
     normal: {
-        fontSize: 13,
+        fontSize: 14,
         color: 'grey'
     },
     border: {

@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, Input, FormControl, Icon, Select } from "native-base";
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import { SafeAreaView } from 'react-native';
 
 function FormSelect({ name, variant = 'outline', placeholder, values, text, onChange, onBlur, touched, errors, icon, data, isRequired = false }: any) {
-    return (<>
+    return (<SafeAreaView style={{ flex: 1 }}>
         <FormControl isRequired={isRequired}>
             <FormControl.Label _text={{ color: "#666" }}>{text}</FormControl.Label>
             <Select size="lg"
@@ -27,7 +28,7 @@ function FormSelect({ name, variant = 'outline', placeholder, values, text, onCh
                 Please make a selection!
             </FormControl.ErrorMessage>
         </FormControl>
-    </>);
+    </SafeAreaView>);
 }
 
 export default FormSelect;
