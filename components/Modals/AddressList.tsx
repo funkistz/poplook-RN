@@ -14,17 +14,6 @@ export default function AddressModal({ visible, onToggle, isCheckout }: { visibl
 
     }, [])
 
-    const chooseAddress = (address: any) => {
-
-        const param = {
-            data: address,
-        }
-
-        console.log('param', param)
-
-        navigation.navigate('CheckoutPage', { screen: 'CheckoutPage', param: param });
-    }
-
     return (
         <>
             <Modal
@@ -40,7 +29,6 @@ export default function AddressModal({ visible, onToggle, isCheckout }: { visibl
                             variant="unstyled"
                             onPress={onToggle}
                             mr={3}
-                            mt={1}
                             size="16" 
                             bg="transparent" 
                             _text={{
@@ -53,8 +41,8 @@ export default function AddressModal({ visible, onToggle, isCheckout }: { visibl
                 </View>
                 <View style={{flex: 32}} >
                     <VStack alignContent="flex-start" mb={'auto'} justifyContent= 'center'>
-                        <Text style={styles.bold} marginBottom={5} marginLeft={3}>Select Address</Text>
-                        <AddressListPage isCheckout={isCheckout}></AddressListPage>
+                        <Text style={styles.bold} marginY={4} marginLeft={3}>Select Address</Text>
+                        <AddressListPage isCheckout={isCheckout} onToggle={onToggle}></AddressListPage>
                     </VStack>
                 </View>
             </Modal>
