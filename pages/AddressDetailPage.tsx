@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     },
     normal: {
         fontSize: 13,
-        color: 'grey'
+        color: 'gray'
     },
     border: {
         borderBottomWidth: 1,

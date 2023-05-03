@@ -1,6 +1,6 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
-import { ScrollView, Button, Flex } from 'native-base';
+import { ScrollView, Button, Flex, HStack } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useIsFocused } from '@react-navigation/native';
@@ -14,6 +14,7 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address);
+    const country = useSelector((storeState: any) => storeState.session.country);
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -41,8 +42,8 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
         onToggle()
         
         const params = {
-          data: address,
-          action: 'checkout'
+            data: address,
+            action: 'checkout'
         }
     
         console.log('hantar' ,params);
@@ -55,26 +56,26 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
 
     return (
         <>
-        <Flex backgroundColor='white'>
-        <ScrollView>
-            {address && address.data.length > 0 &&
-                (address.data.map((item: any, index: any) => {
-                    return <>
-                        <TouchableOpacity onPress={() => isCheckout ? chooseAddress(item) : ''}>
-                            <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
-                        </TouchableOpacity>
-                    </>
-                    
-                })
-                )
-            }
-            <View style={styles.container}>
-                <Button bg={'#1cad48'} marginY={3} style={styles.button} _text={{ fontSize: 14, fontWeight: 600}}
-                onPress={() => addAddressPage()}>ADD NEW ADDRESS</Button>
-            </View>
-        </ScrollView>
+        <Flex flex={1} backgroundColor='white'>
+            <ScrollView>
+                {address && address.data != null && address.data.length > 0 &&
+                    (address.data.map((item: any, index: any) => {
+                        return <>
+                            <TouchableOpacity onPress={() => isCheckout ? chooseAddress(item) : ''}>
+                                <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
+                            </TouchableOpacity>
+                        </>
+                        
+                    })
+                    )
+                }
+            </ScrollView>
+            <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
+            <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600}}
+                    onPress={() => addAddressPage()}>ADD NEW ADDRESS</Button>
+            </HStack>
         </Flex>
-        
+    
         </>
     );
     }
@@ -93,10 +94,6 @@ const styles = StyleSheet.create({
     },
     border: {
         borderBottomWidth: 1,
-    },
-    button: {
-        borderRadius: 10,
-        sizes: 'md'
     },
     container: {
         padding: 20,
