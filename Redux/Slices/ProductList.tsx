@@ -39,7 +39,7 @@ export const getFilterList = createAsyncThunk(
                 shop: state.session.country.id_shop,
                 category: categoryId,
                 color: color.toString(),
-                // full: 1,
+                full: 1,
                 product_attribute: product_attribute.toString(),
                 sort_options: sort_option,
                 num_list: state.productList.limit,

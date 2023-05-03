@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { Center, Button, Container, Divider, Flex, Heading, HStack, IconButton, Spacer, Stack, Text, VStack, FormControl, Input, ScrollView, Icon, FlatList, Box, SectionList } from 'native-base';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import { black } from 'react-native-paper/lib/typescript/src/styles/themes/v2/colors';
 
 export default function FilterModal({ visible, onToggle, submitBtn, sortData, attributeData, colorData, sortClick, attributeClick, clearAllClick, selectedSort, selectedAttribute, selectedColor }:
     {
@@ -11,6 +12,10 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
         selectedSort: any, selectedAttribute: any, selectedColor: any
     }) {
 
+    // const getTextColor = (item: any) => {
+
+    //     // return (sizeSelected != id_product_attribute) ? '#000' : '#fff';
+    // }
 
     // Action
     const submit = () => {
@@ -63,7 +68,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                                         style={selectedSort == item.id ? styles.btnClicked : styles.btn}
                                         onPress={() => sortClick(item.id)}
                                     >
-                                        <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
+                                        <Text style={selectedSort == item.id ? styles.TextClicked : styles.Text}> {item.name}</Text>
                                     </Button>
                                 </Box>
                             })}
@@ -76,7 +81,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                                     <Button size='sm' variant="outline"
                                         style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
                                         onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })}>
-                                        <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
+                                        <Text style={selectedAttribute.includes(item.id_combination) ? styles.TextClicked : styles.Text}> {item.name}</Text>
                                     </Button>
                                 </Box>
                             })}
@@ -87,9 +92,9 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                             {colorData.map((item: any, index: any) => {
                                 return <Box w={'25%'} px={1} key={index}>
                                     <Button size='sm' variant="outline"
-                                        style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
-                                        onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })}>
-                                        <Text style={{ fontSize: 12, color: 'black' }}> {item.name}</Text>
+                                        style={selectedColor.includes(item.id_combination) ? styles.btnClicked : styles.btn}
+                                        onPress={() => attributeClick({ data: item.id_combination, type: 'color' })}>
+                                        <Text style={selectedColor.includes(item.id_combination) ? styles.TextClicked : styles.Text}> {item.name}</Text>
                                     </Button>
                                 </Box>
 
@@ -137,23 +142,34 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
 
 const styles = StyleSheet.create({
     btnFooter: {
-        borderRadius: 10,
+        borderRadius: 8,
         padding: 6,
         sizes: 'md'
     },
 
     btn: {
         marginVertical: 3,
-        borderRadius: 20,
+        borderRadius: 8,
         alignItems: 'center',
+        borderColor: '#ccc'
     },
 
     btnClicked: {
         marginVertical: 3,
-        borderRadius: 20,
+        borderRadius: 8,
         alignItems: 'center',
-        backgroundColor: '#0000001f'
+        backgroundColor: '#000',
     },
+    Text: {
+        fontSize: 12,
+        color: '#000',
+
+    },
+    TextClicked: {
+        fontSize: 12,
+        color: '#fff',
+
+    }
 
 
 

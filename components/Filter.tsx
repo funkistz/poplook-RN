@@ -49,7 +49,6 @@ export default function Filter({ clicked, removeItem, product, listSizeColor }: 
                             return (
                                 <Chip mode='outlined' style={styles.chip} onClose={() => close(item)} key={index}>
                                     {findName(item)}
-                                    {/* <Text style={styles.chipText}>{item}</Text> */}
                                 </Chip>
                             );
                         })}
