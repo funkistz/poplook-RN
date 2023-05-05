@@ -3,15 +3,11 @@ import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'rea
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { getCartStep1, getCartStep2 } from '../Redux/Slices/Checkout';
+import { getCartStep1 } from '../Redux/Slices/Checkout';
 import Address from '../components/Address';
-import PaymentMethod from '../components/PaymentMethod';
 import ShippingMethod from '../components/ShippingMethod';
 import AddressModal from '../components/Modals/AddressList';
-import { addressSelectedSelector } from '../Redux/Slices/AdressSelected';
 import CartService from '../Services/CartService';
-import { Pay } from "react-native-ipay88-integration";
-import { startPayment } from 'react-native-eghl';
 import { handlePaymentURL } from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
 import GeneralService from '../Services/GeneralService';
@@ -20,7 +16,7 @@ import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
 
-export default function CheckoutPage({ route }: { route: any }) {
+export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
@@ -58,8 +54,6 @@ export default function CheckoutPage({ route }: { route: any }) {
     // Voucher
     const [voucher, setVoucher] = React.useState('');
 
-
-
     useEffect(() => {
         const param = {
             gift: gift
@@ -80,7 +74,7 @@ export default function CheckoutPage({ route }: { route: any }) {
 
         const response = await VoucherService.validateVoucher(params);
         const json = await response.json();
-        // console.log('json: ', json)
+
         if (json.code == 200) {
             setVoucher('');
             dispatch(getCartStep1({ gift: gift }))
@@ -132,23 +126,21 @@ export default function CheckoutPage({ route }: { route: any }) {
         const response = await CartService.cartStep4(cartId, paymentType, leaveMessage);
         const json = await response.json();
 
-        // console.log('cartstep4', json.data)
+        console.log('cartstep4baru', json.status)
 
-        if (json.status == 200 && json.data) {
+        setData(json.data);
 
-            setData(json.data);
+        if (json.code == 200 && json.data) {
 
             if (shopId == '1') {
                 if (paymentType == '16') {
                     atome()
-                } if (paymentType == '14') {
-                    eghl(data)
                 } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    ipay(data)
+                    processIpay88(data)
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
-                    eghl2(data)
+                    eghl(data)
                 } else {
                     enets(data)
                 }
@@ -168,6 +160,8 @@ export default function CheckoutPage({ route }: { route: any }) {
 
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
+
+        console.log('atome' ,json)
 
         setUrl(json.data.redirect_url);
         setAppUrl(json.data.app_payment_url);
@@ -206,12 +200,25 @@ export default function CheckoutPage({ route }: { route: any }) {
 
     };
 
-    const eghl2 = async (data: any) => {
+    const eghl = async (data: any) => {
 
         const response = await PaymentService.eghl(data.id_order, cartId);
         const json = await response.json();
 
-        console.log('redirectEghl', json)
+        console.log('repayEghl', json.data.results);
+
+        const param = {
+            form: json.data.results,
+            order_id: data.id_order,
+            payment_type: 'sgd_cc',
+            trans_id: null,
+            amount: data.totalPriceWt * 100
+        };
+
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'EghlPaymentPage', params: param }]
+        });
 
     }
 
@@ -220,20 +227,28 @@ export default function CheckoutPage({ route }: { route: any }) {
         const response = await PaymentService.enets(data.id_order, cartId);
         const json = await response.json();
 
-        console.log('redirectEnets', json)
+        console.log('redirectEnets', json.data.results)
 
+        const param = {
+            form: json.data.results,
+            order_id: data.id_order,
+            payment_type: 'enets',
+            trans_id: null,
+            amount: data.totalPriceWt * 100
+        };
+
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'EghlPaymentPage', params: param }]
+        });
     }
 
 
-    const ipay = (data: any) => {
-        try {
-            const merchantCode = 'M01333_S0001'
-            const merchantKey = 'SSEXcXnvgK'
+    const processIpay88 = (data: any) => {
 
-            const request: any = {
+        try {
+            const params: any = {
                 paymentId: paymentId(),
-                merchantKey: merchantKey,
-                merchantCode: merchantCode,
                 referenceNo: data.id_order,
                 amount: data.totalPriceWt,
                 currency: country.currency_iso_code,
@@ -244,53 +259,15 @@ export default function CheckoutPage({ route }: { route: any }) {
                 remark: "Test",
                 utfLang: "UTF-8",
                 country: country.country_iso_code,
-                backendUrl: "https://poplook.com/modules/ipay88induxive/backend_response.php",
             };
 
-            const response = Pay(request);
-            // console.log('result' ,response)
+            PaymentService.ProcessIpay88(params);
 
         } catch (e) {
             console.log(e);
         }
     };
 
-    const eghl = (data: any) => {
-        // console.log('eghl')
-
-        try {
-            const request: any = {
-                TransactionType: 'SALE',
-                Amount: data.totalPriceWt,
-                CurrencyCode: country.currency_iso_code,
-                PaymentID: cartId,
-                OrderNumber: data.id_order,
-                PaymentDesc: 'Reference No: ' + data.id_order,
-                PymtMethod: 'ANY',
-
-                CustEmail: user.email,
-                CustName: user.name,
-                CustPhone: '0123456789',
-
-                MerchantName: 'Poplook',
-                MerchantReturnURL: 'https://pay.e-ghl.com/IPGSG/Payment.aspx ',
-
-                ServiceID: 'sit',
-                Password: 'sit12345',
-
-                LanguageCode: 'EN',
-                PageTimeout: '600',
-
-                Prod: false,
-            }
-            // console.log(request)
-            const response = startPayment(request)
-            // console.log('response' ,response)
-
-        } catch (e) {
-            console.log('error', e)
-        }
-    }
 
     return (
         <>
@@ -326,7 +303,6 @@ export default function CheckoutPage({ route }: { route: any }) {
                         }
 
                         <Text style={styles.bold} py={2}>Payment Method</Text>
-                        {/* <PaymentMethod payment={payment}></PaymentMethod> */}
                         <Radio.Group name="paymentMethod" onChange={nextValue => {
                             setPaymentChild('')
                             setPaymentType(nextValue);
