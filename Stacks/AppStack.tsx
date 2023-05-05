@@ -28,6 +28,7 @@ import WishlistPage from '../pages/WishlistPage';
 import OrderSuccessPage from '../pages/OrderSuccessPage';
 import CustomerServicePage from '../pages/CustomerServicePage';
 import CustomerServiceDetailsPage from '../pages/CustomerServiceDetailsPage';
+import WebviewPage from '../pages/EghlPaymentPage';
 
 const Stack = createNativeStackNavigator();
 
