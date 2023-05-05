@@ -1,5 +1,7 @@
 import APIService from "./ApiService";
 import IPay88, { Pay } from "react-native-ipay88-integration";
+import InAppBrowser from "react-native-inappbrowser-reborn";
+import { MODULE_API } from "@env"
 
 const PaymentService = {
 
@@ -107,6 +109,15 @@ const PaymentService = {
             console.log(e);
         }
 
+    },
+
+    openInAppBrowserForm (form: string) {
+
+        const data = {
+            form: form
+        };
+
+        return InAppBrowser.open(MODULE_API + 'enets/eghl_pay.php' + '?' + new URLSearchParams(data));
     }
 
 
