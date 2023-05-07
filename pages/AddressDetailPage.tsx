@@ -23,6 +23,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const countries = useSelector((storeState: any) => storeState.infos.addressCountries.map((country: any) => { return { label: country.name, value: country.id_country } }));
     const states = useSelector((storeState: any) => storeState.infos.states.map((state: any) => { return { label: state.name, value: state.id } }));
     const country = useSelector((storeState: any) => storeState.session.country);
+    const shopId = useSelector((storeState: any) => storeState.session.id_shop);
 
     const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address_selected);
@@ -59,6 +60,73 @@ export default function AddressDetailPage({ route }: { route: any }) {
 
     }, [isFocused])
 
+    const validation = () => {
+        if(shopId == 1) {
+            return yup.object().shape({
+                firstname: yup
+                    .string()
+                    .required('Firstname is required'),
+                lastname: yup
+                    .string()
+                    .required('Surname is required'),
+                company: yup
+                    .string(),
+                address1: yup
+                    .string()
+                    .required('Address (Line 1) is required'),
+                address2: yup
+                    .string()
+                    .required('Address (Line 2) is required'),
+                id_country: yup
+                    .number()
+                    .required('Country is required'),
+                id_state: yup
+                    .number()
+                    .required('State is required'),
+                city: yup
+                    .string()
+                    .required('City is required'),
+                postcode: yup
+                    .number()
+                    .required('Postcode is required'),
+                phone: yup
+                    .number()
+                    .required('Telephone is required'),
+
+            })
+        } else {
+            return yup.object().shape({
+                firstname: yup
+                    .string()
+                    .required('Firstname is required'),
+                lastname: yup
+                    .string()
+                    .required('Surname is required'),
+                company: yup
+                    .string(),
+                address1: yup
+                    .string()
+                    .required('Address (Line 1) is required'),
+                address2: yup
+                    .string()
+                    .required('Address (Line 2) is required'),
+                id_country: yup
+                    .number()
+                    .required('Country is required'),
+                city: yup
+                    .string()
+                    .required('City is required'),
+                postcode: yup
+                    .number()
+                    .required('Postcode is required'),
+                phone: yup
+                    .number()
+                    .required('Telephone is required'),
+
+            })
+        } 
+    }
+
     return (
         <>
             {address.data && <Formik
@@ -87,38 +155,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                         navigation.navigate('AddressListPage', { screen: 'AddressListPage' });
                     }
                 }
-                validationSchema={yup.object().shape({
-                    firstname: yup
-                        .string()
-                        .required('Firstname is required'),
-                    lastname: yup
-                        .string()
-                        .required('Surname is required'),
-                    company: yup
-                        .string(),
-                    address1: yup
-                        .string()
-                        .required('Address (Line 1) is required'),
-                    address2: yup
-                        .string()
-                        .required('Address (Line 2) is required'),
-                    id_country: yup
-                        .number()
-                        .required('Country is required'),
-                    id_state: yup
-                        .number()
-                        .required('State is required'),
-                    city: yup
-                        .string()
-                        .required('City is required'),
-                    postcode: yup
-                        .number()
-                        .required('Postcode is required'),
-                    phone: yup
-                        .number()
-                        .required('Telephone is required'),
-
-                })}
+                validationSchema={validation}
             >
                 {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
                     <Flex flex={1} backgroundColor='white'>
@@ -218,7 +255,8 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                                 data={countries}
                             />
-                            <FormSelect
+                            { shopId == 1 &&
+                                <FormSelect
                                 name="id_state"
                                 values={values}
                                 onChange={setFieldValue}
@@ -228,6 +266,8 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                                 data={states}
                             />
+                            }
+                            
                             <InputLabel
                                 // placeholder="Enter your city"
                                 name="city"
@@ -249,7 +289,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                             />
 
-                            { isUpdate ? null : 
+                            { isUpdate &&
                                 <HStack>
                                     <Spacer></Spacer>
                                     <Button

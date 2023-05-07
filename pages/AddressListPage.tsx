@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
-import { ScrollView, Button, Flex } from 'native-base';
+import { ScrollView, Button, Flex, HStack } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useIsFocused } from '@react-navigation/native';
@@ -8,6 +8,8 @@ import { getAddressList } from '../Redux/Slices/Address';
 import Address from '../components/Address';
 import AddressList from '../components/AddressList';
 import { useNavigation } from '@react-navigation/native';
+import { getCartStep1 } from '../Redux/Slices/Checkout';
+import AddressAdd from '../components/Modals/AddressAdd';
 
 export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any, isCheckout:boolean}) {
 
@@ -15,12 +17,12 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
     const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address);
     const isFocused = useIsFocused();
+    const [isModalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
 
         if (isFocused) {
             dispatch(getAddressList());
-            console.log('addresslistpage2', address.data);
         }
 
     }, [isFocused])
@@ -38,43 +40,48 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
 
     const chooseAddress = (address: any) => {
 
-        onToggle()
-        
-        const params = {
-          data: address,
-          action: 'checkout'
+        const param = {
+            gift: "",
+            address_id: address.id_address
         }
-    
-        console.log('hantar' ,params);
-    
-        navigation.navigate('CheckoutPage', { screen: 'CheckoutPage', param: params });
+
+        dispatch(getCartStep1(param))
+
+        onToggle()
 
     }
 
-
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     return (
         <>
-        <Flex backgroundColor='white'>
+        <Flex flex={isCheckout ? 0 : 1} backgroundColor='white'>
         <ScrollView>
-            {address && address.data.length > 0 &&
-                (address.data.map((item: any, index: any) => {
-                    return <>
-                        <TouchableOpacity onPress={() => isCheckout ? chooseAddress(item) : ''}>
-                            <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
-                        </TouchableOpacity>
-                    </>
-                    
-                })
-                )
-            }
-            <View style={styles.container}>
-                <Button bg={'#1cad48'} marginY={3} style={styles.button} _text={{ fontSize: 14, fontWeight: 600}}
-                onPress={() => addAddressPage()}>ADD NEW ADDRESS</Button>
-            </View>
-        </ScrollView>
+                {address && address.data != null && address.data.length > 0 &&
+                    (address.data.map((item: any, index: any) => {
+                        return <>
+                            <TouchableOpacity onPress={() => isCheckout ? chooseAddress(item) : ''}>
+                                <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
+                            </TouchableOpacity>
+                        </>
+                        
+                    })
+                    )
+                }
+            </ScrollView>
+            <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
+            <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600}}
+                    onPress={() => isCheckout ? toggleModal() : addAddressPage()}>ADD NEW ADDRESS</Button>
+            </HStack>
         </Flex>
-        
+        <AddressAdd
+            visible={isModalVisible}
+            onToggle={toggleModal}
+            isCheckout={true}
+            id={address.id_address}
+        />
         </>
     );
     }
