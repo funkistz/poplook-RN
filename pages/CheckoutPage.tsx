@@ -15,6 +15,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
+import { roundToNearestMinutes } from 'date-fns/esm';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -35,7 +36,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [leaveMessage, setLeaveMessage] = useState('');
     const [cms, setCms] = useState<any>({});
 
-    const currency = useSelector((storeState: any) => storeState.session.currencySign);
+    const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
     const country = useSelector((storeState: any) => storeState.session.country);
@@ -55,8 +56,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [voucher, setVoucher] = React.useState('');
 
     useEffect(() => {
+
         const param = {
-            gift: gift
+            gift: gift,
+            address_id: address.id
         }
 
         dispatch(getCartStep1(param))
@@ -105,7 +108,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const json = await response.json();
         console.log('json: ', json)
         if (json.code == 200) {
-            dispatch(getCartStep1({ gift: gift }))
+            dispatch(getCartStep1({ gift: gift, address_id: address.id }))
             GeneralService.toast({ description: json.message });
         }
     }
@@ -126,7 +129,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await CartService.cartStep4(cartId, paymentType, leaveMessage);
         const json = await response.json();
 
-        console.log('cartstep4baru', json.status)
+        console.log('cartstep4baru', json.data)
 
         setData(json.data);
 
@@ -202,10 +205,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const eghl = async (data: any) => {
 
-        const response = await PaymentService.eghl(data.id_order, cartId);
+        const response = await PaymentService.eghl(cartId);
         const json = await response.json();
 
-        console.log('repayEghl', json.data.results);
+        console.log('redirectEghl', json.data.results);
 
         const param = {
             form: json.data.results,
@@ -224,7 +227,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const enets = async (data: any) => {
 
-        const response = await PaymentService.enets(data.id_order, cartId);
+        const response = await PaymentService.enets(cartId);
         const json = await response.json();
 
         console.log('redirectEnets', json.data.results)
@@ -296,7 +299,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {address &&
                             <>
-                            <Text style={styles.bold} mt={2}>Shipping Method {cartId}</Text>
+                            <Text style={styles.bold} mt={2}>Shipping Method</Text>
                                 <ShippingMethod carrier={carrier}></ShippingMethod>
                             <Divider />
                             </>
@@ -331,7 +334,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 </>
                             })}
                         </Radio.Group>
-                        <Text color={'black'}>{paymentType} {paymentChild}</Text>
+                        {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
                         <Spacer />
 
                         <Checkbox value="terms" style={styles.checkbox} marginY={3}>
@@ -413,7 +416,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                     const param = {
                                         gift: gift,
                                         gift_wrap_id: gift_wrap_id,
-                                        gift_message: giftMessage
+                                        gift_message: giftMessage,
+                                        address_id: address.id
                                     }
 
                                     dispatch(getCartStep1(param))
