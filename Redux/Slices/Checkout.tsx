@@ -32,21 +32,26 @@ const initialState: CheckoutState = {
 
 export const getCartStep1: any = createAsyncThunk(
     "checkout/step1",
-    async ({ gift, gift_wrap_id, gift_message }: any, { getState, rejectWithValue , dispatch}) => {
+    async ({ gift, gift_wrap_id, gift_message, address_id }: any, { getState, rejectWithValue , dispatch}) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
             const id_gift = gift_wrap_id ? gift_wrap_id : '';
             const message = gift_message ? gift_message : '';
             const gift_value = gift ? gift : '';
+            const id_address = address_id;
 
             const response = await CartService.cartStep1(id_cart, id_gift , message, gift_value);
             let data = await response.json()
-            console.log("step1result", data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
-                    dispatch(getCartStep2())
+
+                    const param = {
+                        address_id: id_address
+                    }
+
+                    dispatch(getCartStep2(param))
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -63,13 +68,11 @@ export const getCartStep1: any = createAsyncThunk(
 
 export const getCartStep2: any = createAsyncThunk(
     "checkout/step2",
-    async (_: void, { getState, rejectWithValue, dispatch }) => {
+    async ({ address_id }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
-            const id_address = state.checkout.address.id;
-
-            console.log("state2", state)
+            const id_address = address_id;
 
             const response = await CartService.cartStep2(id_cart, id_address);
             let data = await response.json()
@@ -154,7 +157,7 @@ export const checkoutSlice = createSlice({
                 state = { ...state, ...temp }
             }
 
-            console.log('statestep1', state);
+            console.log('statestep1baru', state);
             return state;
         }).addCase(getCartStep1.pending, (state, { payload }) => {
 
