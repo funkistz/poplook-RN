@@ -27,11 +27,11 @@ const PaymentService = {
         });
     },
 
-    async eghl(cartId: any, paymentId: any) {
+    async eghl(cartId: any) {
 
         const params: any = {
             id_cart: cartId,
-            id_payment: paymentId,
+            id_payment: '4',
             return_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php?return_url=1',
             callback_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php'
         };
@@ -53,11 +53,11 @@ const PaymentService = {
 
     },
 
-    async enets(cartId: any, paymentId: any) {
+    async enets(cartId: any) {
 
         const params: any = {
             id_cart: cartId,
-            id_payment: paymentId,
+            id_payment: '5',
             return_url: 'https://poplook.com/modules/enets/callback_mobile.php?return_url=1',
             callback_url: 'https://poplook.com/modules/enets/callback_mobile.php'
         };
