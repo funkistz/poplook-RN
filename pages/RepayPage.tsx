@@ -5,7 +5,6 @@ import OrderHistoryService from '../Services/OrderHistoryService';
 import { useSelector } from 'react-redux';
 import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
-import PaymentMethod from '../components/PaymentMethod';
 import ProductDetail from '../components/ProductDetail';
 import { isAtomeAppInstalled } from 'react-native-atome-paylater';
 import { handlePaymentURL } from 'react-native-atome-paylater';
@@ -17,11 +16,6 @@ import GeneralService from '../Services/GeneralService';
 import SkeletonRepay from '../components/SkeletonRepay';
 import CmsModal from '../components/Modals/Cms';
 import CmsService from '../Services/CmsService';
-import { InAppBrowser } from 'react-native-inappbrowser-reborn'
-import WebView from 'react-native-webview';
-import RenderHtml, { HTMLElementModel, HTMLContentModel } from 'react-native-render-html';
-import { useWindowDimensions } from 'react-native';
-import { convertAbsoluteToRem } from 'native-base/lib/typescript/theme/v33x-theme/tools';
 
 
 export default function RepayPage({ route, navigation }: { route: any, navigation: any }) {
@@ -51,7 +45,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [termAgree, setTermAgree] = useState(false)
     const [isCmsModalVisible, setCmsModalVisible] = useState(false);
     const [cms, setCms] = useState<any>({});
-    const [html, setHtml] = useState<any>('');
 
     useEffect(() => {
 
@@ -78,7 +71,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             }
         }
         repay().catch(console.error);
-
 
         AppState.addEventListener('change', handleAppStateChange);
 
@@ -134,7 +126,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     };
 
-
     const processIpay88 = () => {
 
         try {
@@ -159,49 +150,26 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         }
     };
 
-    const eghl = (data: any) => {
-        console.log('eghl')
-
-        try {
-            const request: any = {
-                TransactionType: 'SALE',
-                Amount: data.totalPriceWt,
-                CurrencyCode: country.currency_iso_code,
-                PaymentID: cartId,
-                OrderNumber: data.id_order,
-                PaymentDesc: 'Reference No: ' + data.id_order,
-                PymtMethod: 'ANY',
-
-                CustEmail: user.email,
-                CustName: user.name,
-                CustPhone: '0123456789',
-
-                MerchantName: 'Poplook',
-                MerchantReturnURL: 'https://pay.e-ghl.com/IPGSG/Payment.aspx ',
-
-                ServiceID: 'POP',
-                Password: 'Po1kM5L7',
-
-                LanguageCode: 'EN',
-                PageTimeout: '600',
-
-                Prod: false,
-            }
-            console.log('start', request)
-            const response = execute(request)
-            console.log('response', response)
-
-        } catch (e) {
-            console.log('error', e)
-        }
-    }
-
-    const eghl2 = async (data: any) => {
+    const eghl = async (data: any) => {
 
         const response = await PaymentService.repayEghl(data.id_order, user.id_customer);
         const json = await response.json();
 
-        console.log('repayEghl', json.data.results)
+        console.log('repayEghl', json.data.results);
+
+        const param = {
+            form: json.data.results,
+            order_id: data.id_order,
+            payment_type: 'sgd_cc',
+            trans_id: null,
+            amount: data.totalPriceWt * 100
+        };
+
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'EghlPaymentPage', params: param }]
+        });
+
     }
 
     const enets = async (data: any) => {
@@ -210,6 +178,19 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const json = await response.json();
 
         console.log('repayEnets', json.data.results)
+
+        const param = {
+            form: json.data.results,
+            order_id: data.id_order,
+            payment_type: 'enets',
+            trans_id: null,
+            amount: data.totalPriceWt * 100
+        };
+
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'EghlPaymentPage', params: param }]
+        });
     }
 
     const atome = async () => {
@@ -292,7 +273,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
-                    eghl2(data)
+                    eghl(data)
                 } else {
                     enets(data)
                 }
@@ -333,7 +314,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             <Divider />
 
                             <Text style={styles.bold} py={2}>Choose your payment</Text>
-                            {/* <PaymentMethod payment={payment}></PaymentMethod> */}
                             <Radio.Group name="paymentMethod" onChange={nextValue => {
                                 setPaymentChild('')
                                 setPaymentType(nextValue);

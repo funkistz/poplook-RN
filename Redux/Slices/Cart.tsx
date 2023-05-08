@@ -164,7 +164,15 @@ export const cartSlice = createSlice({
         })
         .addCase(getCart.rejected, (state, { payload }) => {
             console.log('payload', payload);
-            // GeneralService.toast({ description: payload.message });
+            GeneralService.toast({ description: payload.message });
+            if (payload.code == 404) {
+                const temp: any = {};
+                temp.id_cart = null;
+                temp.data = null;
+
+                state = { ...state, ...temp }
+                return state;
+            }
         })
 
         .addCase(delToCart.fulfilled, (state, { payload }) => {

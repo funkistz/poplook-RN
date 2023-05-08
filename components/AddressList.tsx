@@ -18,8 +18,6 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
 
     const editAddressPage = (addressId: any) => {
 
-        console.log('masuk')
-
         const param = {
             id: addressId,
             is_update: true
@@ -39,7 +37,9 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
                     <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
                     <Text style={styles.normal}>{address.address1} {address.address2}</Text>
                     <Text style={styles.normal}>{address.postcode} {address.city}</Text>
-                    <Text style={styles.normal}>{address.state}</Text>
+                    {address && address.state &&
+                        <Text style={styles.normal}>{address.state}</Text>
+                    }
                     <HStack>
                         <Text style={styles.normal} marginBottom={2}>{address.country}</Text>
                         <Spacer />

@@ -8,6 +8,8 @@ import { getAddressList } from '../Redux/Slices/Address';
 import Address from '../components/Address';
 import AddressList from '../components/AddressList';
 import { useNavigation } from '@react-navigation/native';
+import { getCartStep1 } from '../Redux/Slices/Checkout';
+import AddressAdd from '../components/Modals/AddressAdd';
 
 export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any, isCheckout:boolean}) {
 
@@ -16,12 +18,12 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
     const address = useSelector((storeState: any) => storeState.address);
     const country = useSelector((storeState: any) => storeState.session.country);
     const isFocused = useIsFocused();
+    const [isModalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
 
         if (isFocused) {
             dispatch(getAddressList());
-            console.log('addresslistpage2', address.data);
         }
 
     }, [isFocused])
@@ -39,25 +41,25 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
 
     const chooseAddress = (address: any) => {
 
-        onToggle()
-        
-        const params = {
-            data: address,
-            action: 'checkout'
+        const param = {
+            gift: "",
+            address_id: address.id_address
         }
-    
-        console.log('hantar' ,params);
-    
-        navigation.navigate('CheckoutPage', { screen: 'CheckoutPage', param: params });
+
+        dispatch(getCartStep1(param))
+
+        onToggle()
 
     }
 
-
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     return (
         <>
-        <Flex flex={1} backgroundColor='white'>
-            <ScrollView>
+        <Flex flex={isCheckout ? 0 : 1} backgroundColor='white'>
+        <ScrollView>
                 {address && address.data != null && address.data.length > 0 &&
                     (address.data.map((item: any, index: any) => {
                         return <>
@@ -72,10 +74,15 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
             </ScrollView>
             <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
             <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600}}
-                    onPress={() => addAddressPage()}>ADD NEW ADDRESS</Button>
+                    onPress={() => isCheckout ? toggleModal() : addAddressPage()}>ADD NEW ADDRESS</Button>
             </HStack>
         </Flex>
-    
+        <AddressAdd
+            visible={isModalVisible}
+            onToggle={toggleModal}
+            isCheckout={true}
+            id={address.id_address}
+        />
         </>
     );
     }
