@@ -14,7 +14,8 @@ export interface CheckoutState {
     voucher: Array<any> | null;
     storeCredit: Array<any> | null;
     gift_wrap: any,
-    total: String
+    total: String,
+    shipping_fee: String
 }
 
 const initialState: CheckoutState = {
@@ -27,7 +28,8 @@ const initialState: CheckoutState = {
     voucher: null,
     storeCredit: null,
     gift_wrap: '',
-    total: ''
+    total: '',
+    shipping_fee: ''
 }
 
 export const getCartStep1: any = createAsyncThunk(
@@ -39,7 +41,7 @@ export const getCartStep1: any = createAsyncThunk(
             const id_gift = gift_wrap_id ? gift_wrap_id : '';
             const message = gift_message ? gift_message : '';
             const gift_value = gift ? gift : '';
-            const id_address = address_id;
+            const id_address = address_id
 
             const response = await CartService.cartStep1(id_cart, id_gift , message, gift_value);
             let data = await response.json()
@@ -72,7 +74,7 @@ export const getCartStep2: any = createAsyncThunk(
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
-            const id_address = address_id;
+            const id_address = state.cart.address != null ? state.cart.address.id : address_id;
 
             const response = await CartService.cartStep2(id_cart, id_address);
             let data = await response.json()
@@ -80,7 +82,7 @@ export const getCartStep2: any = createAsyncThunk(
 
             if (response.status == 200) {
                 if (data.code == 200) {
-                    dispatch(getCartStep3())
+                    dispatch(getCartStep3(id_address))
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -97,11 +99,11 @@ export const getCartStep2: any = createAsyncThunk(
 
 export const getCartStep3: any = createAsyncThunk(
     "checkout/step3",
-    async (_: void, { getState, rejectWithValue }) => {
+    async ({ address_id }: any, { getState, rejectWithValue }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
-            const id_address = state.checkout.address.id;
+            const id_address = address_id;
             const id_carrier = state.checkout.carrier[0].id_carrier;
 
             const response = await CartService.cartStep3(id_cart, id_address, id_carrier);
@@ -149,10 +151,11 @@ export const checkoutSlice = createSlice({
                 temp.address = payload.data.address_delivery;
                 temp.product = payload.data.product_list;
                 temp.carrier = payload.data.carrier_list;
-                temp.total = payload.data.totalProducts;
+                temp.total = payload.data.totalProductsWt;
                 temp.voucher = payload.data.voucher_list;
                 temp.storeCredit = payload.data.store_credit_list;
                 temp.gift_wrap = payload.data.gift_wrap;
+                temp.shipping_fee = payload.data.shipping_price;
 
                 state = { ...state, ...temp }
             }
@@ -172,7 +175,8 @@ export const checkoutSlice = createSlice({
                 temp.address = payload.data.address_delivery;
                 temp.product = payload.data.product_list;
                 temp.carrier = payload.data.carrier_list;
-                temp.total = payload.data.totalProducts;
+                temp.total = payload.data.totalProductsWt;
+                temp.shipping_fee = payload.data.shipping_price;
                 state = { ...state, ...temp }
             }
 
@@ -182,7 +186,7 @@ export const checkoutSlice = createSlice({
 
         }).addCase(getCartStep2.rejected, (state, { payload }) => {
             console.log('payloapayloadreject2', payload);
-            // GeneralService.toast({ description: payload.message });
+            GeneralService.toast({ description: payload.message });
         }).addCase(getCartStep3.fulfilled, (state, { payload }) => {
     
             const temp: any = {};
@@ -193,7 +197,8 @@ export const checkoutSlice = createSlice({
                 temp.product = payload.data.product_list;
                 temp.carrier = payload.data.carrier_list;
                 temp.payment = payload.data.payment_list;
-                temp.total = payload.data.totalProducts;
+                temp.total = payload.data.totalProductsWt;
+                temp.shipping_fee = payload.data.shipping_price;
                 state = { ...state, ...temp }
             }
 

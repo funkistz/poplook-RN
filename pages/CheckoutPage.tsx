@@ -15,7 +15,6 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
-import { roundToNearestMinutes } from 'date-fns/esm';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -47,6 +46,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const product = useSelector((storeState: any) => storeState.checkout.product);
     const gift_wrap_id = useSelector((storeState: any) => storeState.checkout.id_gift);
     const gift_wrap = useSelector((storeState: any) => storeState.checkout.gift_wrap);
+    const shipping_fee = useSelector((storeState: any) => storeState.checkout.shipping_fee);
     const checkout = useSelector((storeState: any) => storeState.checkout);
     const total = useSelector((storeState: any) => storeState.checkout.total);
     const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
@@ -59,8 +59,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         const param = {
             gift: gift,
-            address_id: address.id
+            address_id: address ? address.id : ''
         }
+
+        console.log('param hantar' , param)
 
         dispatch(getCartStep1(param))
 
@@ -80,7 +82,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         if (json.code == 200) {
             setVoucher('');
-            dispatch(getCartStep1({ gift: gift }))
+            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null}))
             GeneralService.toast({ description: json.message });
         } else {
             GeneralService.toast({ description: json.message });
@@ -108,7 +110,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const json = await response.json();
         console.log('json: ', json)
         if (json.code == 200) {
-            dispatch(getCartStep1({ gift: gift, address_id: address.id }))
+            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null }))
             GeneralService.toast({ description: json.message });
         }
     }
@@ -125,8 +127,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     };
 
     const cartStep4 = async () => {
-        console.log('param', cartId, paymentType, leaveMessage)
-        const response = await CartService.cartStep4(cartId, paymentType, leaveMessage);
+
+        console.log('param', cartId, paymentSelected(), leaveMessage)
+
+        const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
         const json = await response.json();
 
         console.log('cartstep4baru', json.data)
@@ -139,13 +143,13 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 if (paymentType == '16') {
                     atome()
                 } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    processIpay88(data)
+                    processIpay88(json.data)
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
-                    eghl(data)
+                    eghl(json.data)
                 } else {
-                    enets(data)
+                    enets(json.data)
                 }
             } else {
                 if (paymentType == '1') {
@@ -172,6 +176,25 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         handlePaymentURL(result == 'No' ? appUrl : url)
     }
+
+    const paymentSelected = () => {
+
+        if (shopId == 1) {
+
+        } else if (shopId == 2) {
+            if (paymentType == '4') {
+                return 'sgd_cc';
+            } else if (paymentType == '5') {
+                return 'enets'
+            }
+        } else if (shopId == 3) {
+
+            
+        }
+
+        return paymentType;
+
+    };
 
     const paymentId = () => {
 
@@ -205,10 +228,13 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const eghl = async (data: any) => {
 
+        console.log('dataEghl', data);
+
         const response = await PaymentService.eghl(cartId);
         const json = await response.json();
 
         console.log('redirectEghl', json.data.results);
+        
 
         const param = {
             form: json.data.results,
@@ -231,6 +257,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const json = await response.json();
 
         console.log('redirectEnets', json.data.results)
+        console.log('dataEnets', data);
 
         const param = {
             form: json.data.results,
@@ -417,7 +444,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                         gift: gift,
                                         gift_wrap_id: gift_wrap_id,
                                         gift_message: giftMessage,
-                                        address_id: address.id
+                                        address_id: address ? address.id : null
                                     }
 
                                     dispatch(getCartStep1(param))
@@ -519,7 +546,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         <HStack py={1}>
                             <Text style={styles.normal}>Shipping fee :</Text>
                             <Spacer />
-                            <Text style={styles.normal}>-</Text>
+                            <Text style={styles.normal}>{currency} {shipping_fee}</Text>
                         </HStack>
                     </View>
                 </ScrollView>
