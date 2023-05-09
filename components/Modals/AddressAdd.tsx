@@ -6,13 +6,13 @@ import { ThunkDispatch } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 
-export default function AddressEditModal({ visible, onToggle, isCheckout, id }: { visible: boolean, onToggle:any, isCheckout:boolean, id: any}) {
+export default function AddressAddModal({ visible, onToggle, isCheckout, id }: { visible: boolean, onToggle:any, isCheckout:boolean, id: any}) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
     const param = {
         id: id,
-        is_update: true  
+        is_update: false  
     }
 
     const params = {
@@ -49,7 +49,7 @@ export default function AddressEditModal({ visible, onToggle, isCheckout, id }: 
                     </Flex>
                 </View>
                 <View style={{flex: 1}}>
-                    <Text style={styles.bold} marginLeft={3}>Edit Address</Text>
+                    <Text style={styles.bold} marginLeft={3}>Add Address</Text>
                     <AddressDetailPage route={{ screen: 'AddressDetailPage', params: params }}></AddressDetailPage>
                 </View>
                 

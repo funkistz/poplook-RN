@@ -3,15 +3,11 @@ import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'rea
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { getCartStep1, getCartStep2 } from '../Redux/Slices/Checkout';
+import { getCartStep1 } from '../Redux/Slices/Checkout';
 import Address from '../components/Address';
-import PaymentMethod from '../components/PaymentMethod';
 import ShippingMethod from '../components/ShippingMethod';
 import AddressModal from '../components/Modals/AddressList';
-import { addressSelectedSelector } from '../Redux/Slices/AdressSelected';
 import CartService from '../Services/CartService';
-import { Pay } from "react-native-ipay88-integration";
-import { startPayment } from 'react-native-eghl';
 import { handlePaymentURL } from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
 import GeneralService from '../Services/GeneralService';
@@ -19,8 +15,10 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
+// import { assignUser } from '../Redux/Slices/Sessions';
+import { assignCartId, clearCart } from '../Redux/Slices/Cart';
 
-export default function CheckoutPage({ route }: { route: any }) {
+export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
@@ -38,8 +36,9 @@ export default function CheckoutPage({ route }: { route: any }) {
     const [giftMessage, setGiftMessage] = useState('');
     const [leaveMessage, setLeaveMessage] = useState('');
     const [cms, setCms] = useState<any>({});
+    const [termAgree, setTermAgree] = useState(false)
 
-    const currency = useSelector((storeState: any) => storeState.session.currencySign);
+    const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
     const country = useSelector((storeState: any) => storeState.session.country);
@@ -50,6 +49,7 @@ export default function CheckoutPage({ route }: { route: any }) {
     const product = useSelector((storeState: any) => storeState.checkout.product);
     const gift_wrap_id = useSelector((storeState: any) => storeState.checkout.id_gift);
     const gift_wrap = useSelector((storeState: any) => storeState.checkout.gift_wrap);
+    const shipping_fee = useSelector((storeState: any) => storeState.checkout.shipping_fee);
     const checkout = useSelector((storeState: any) => storeState.checkout);
     const total = useSelector((storeState: any) => storeState.checkout.total);
     const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
@@ -58,12 +58,14 @@ export default function CheckoutPage({ route }: { route: any }) {
     // Voucher
     const [voucher, setVoucher] = React.useState('');
 
-
-
     useEffect(() => {
+
         const param = {
-            gift: gift
+            gift: gift,
+            address_id: address ? address.id : ''
         }
+
+        console.log('param hantar' , param)
 
         dispatch(getCartStep1(param))
 
@@ -80,10 +82,10 @@ export default function CheckoutPage({ route }: { route: any }) {
 
         const response = await VoucherService.validateVoucher(params);
         const json = await response.json();
-        // console.log('json: ', json)
+
         if (json.code == 200) {
             setVoucher('');
-            dispatch(getCartStep1({ gift: gift }))
+            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null}))
             GeneralService.toast({ description: json.message });
         } else {
             GeneralService.toast({ description: json.message });
@@ -111,7 +113,7 @@ export default function CheckoutPage({ route }: { route: any }) {
         const json = await response.json();
         console.log('json: ', json)
         if (json.code == 200) {
-            dispatch(getCartStep1({ gift: gift }))
+            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null }))
             GeneralService.toast({ description: json.message });
         }
     }
@@ -128,40 +130,53 @@ export default function CheckoutPage({ route }: { route: any }) {
     };
 
     const cartStep4 = async () => {
-        console.log('param', cartId, paymentType, leaveMessage)
-        const response = await CartService.cartStep4(cartId, paymentType, leaveMessage);
-        const json = await response.json();
 
-        // console.log('cartstep4', json.data)
+        console.log('param', cartId, paymentSelected(), leaveMessage)
 
-        if (json.status == 200 && json.data) {
+        if (paymentType && termAgree) {
+
+            const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
+            const json = await response.json();
+
+            console.log('cartstep4baru', json.data)
 
             setData(json.data);
 
-            if (shopId == '1') {
-                if (paymentType == '16') {
-                    atome()
-                } if (paymentType == '14') {
-                    eghl(data)
-                } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    ipay(data)
-                }
-            } else if (shopId == '2') {
-                if (paymentType == '4') {
-                    eghl2(data)
+            if (json.code == 200 && json.data) {
+
+                dispatch(clearCart())
+                // dispatch(assignCartId())
+
+                if (shopId == '1') {
+                    if (paymentType == '16') {
+                        atome()
+                    } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
+                        processIpay88(json.data)
+                    }
+                } else if (shopId == '2') {
+                    if (paymentType == '4') {
+                        eghl(json.data)
+                    } else {
+                        enets(json.data)
+                    }
                 } else {
-                    //enets
+                    if (paymentType == '1') {
+                        // paypal
+                    } else {
+                        // pay(data) // ipay88
+                    }
                 }
             } else {
-                if (paymentType == '1') {
-                    // paypal
+                if (!paymentType) {
+                    GeneralService.toast({ description: 'Please choose payment type' });
                 } else {
-                    // pay(data) // ipay88
+                    GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
                 }
             }
-        } else {
-            // this.generalService.presentToast(response.data.message);
+
         }
+
+        
     }
 
     const atome = async () => {
@@ -169,12 +184,33 @@ export default function CheckoutPage({ route }: { route: any }) {
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
+        console.log('atome' ,json)
+
         setUrl(json.data.redirect_url);
         setAppUrl(json.data.app_payment_url);
         setRefId(json.data.referenceId);
 
         handlePaymentURL(result == 'No' ? appUrl : url)
     }
+
+    const paymentSelected = () => {
+
+        if (shopId == 1) {
+
+        } else if (shopId == 2) {
+            if (paymentType == '4') {
+                return 'sgd_cc';
+            } else if (paymentType == '5') {
+                return 'enets'
+            }
+        } else if (shopId == 3) {
+
+            
+        }
+
+        return paymentType;
+
+    };
 
     const paymentId = () => {
 
@@ -206,25 +242,59 @@ export default function CheckoutPage({ route }: { route: any }) {
 
     };
 
-    const eghl2 = async (data: any) => {
+    const eghl = async (data: any) => {
 
-        const response = await PaymentService.eghl(data.id_order, user.id_customer);
+        console.log('dataEghl', data);
+
+        const response = await PaymentService.eghl(cartId);
         const json = await response.json();
 
-        console.log('redirecteghl', json)
+        console.log('redirectEghl', json.data.results);
+        
+
+        const param = {
+            form: json.data.results,
+            order_id: data.id_order,
+            payment_type: 'sgd_cc',
+            trans_id: null,
+            amount: data.totalPriceWt * 100
+        };
+
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'EghlPaymentPage', params: param }]
+        });
 
     }
 
+    const enets = async (data: any) => {
 
-    const ipay = (data: any) => {
+        const response = await PaymentService.enets(cartId);
+        const json = await response.json();
+
+        console.log('redirectEnets', json.data.results)
+        console.log('dataEnets', data);
+
+        const param = {
+            form: json.data.results,
+            order_id: data.id_order,
+            payment_type: 'enets',
+            trans_id: null,
+            amount: data.totalPriceWt * 100
+        };
+
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'EghlPaymentPage', params: param }]
+        });
+    }
+
+
+    const processIpay88 = (data: any) => {
+
         try {
-            const merchantCode = 'M01333_S0001'
-            const merchantKey = 'SSEXcXnvgK'
-
-            const request: any = {
+            const params: any = {
                 paymentId: paymentId(),
-                merchantKey: merchantKey,
-                merchantCode: merchantCode,
                 referenceNo: data.id_order,
                 amount: data.totalPriceWt,
                 currency: country.currency_iso_code,
@@ -235,53 +305,15 @@ export default function CheckoutPage({ route }: { route: any }) {
                 remark: "Test",
                 utfLang: "UTF-8",
                 country: country.country_iso_code,
-                backendUrl: "https://poplook.com/modules/ipay88induxive/backend_response.php",
             };
 
-            const response = Pay(request);
-            // console.log('result' ,response)
+            PaymentService.ProcessIpay88(params);
 
         } catch (e) {
             console.log(e);
         }
     };
 
-    const eghl = (data: any) => {
-        // console.log('eghl')
-
-        try {
-            const request: any = {
-                TransactionType: 'SALE',
-                Amount: data.totalPriceWt,
-                CurrencyCode: country.currency_iso_code,
-                PaymentID: cartId,
-                OrderNumber: data.id_order,
-                PaymentDesc: 'Reference No: ' + data.id_order,
-                PymtMethod: 'ANY',
-
-                CustEmail: user.email,
-                CustName: user.name,
-                CustPhone: '0123456789',
-
-                MerchantName: 'Poplook',
-                MerchantReturnURL: 'https://pay.e-ghl.com/IPGSG/Payment.aspx ',
-
-                ServiceID: 'sit',
-                Password: 'sit12345',
-
-                LanguageCode: 'EN',
-                PageTimeout: '600',
-
-                Prod: false,
-            }
-            // console.log(request)
-            const response = startPayment(request)
-            // console.log('response' ,response)
-
-        } catch (e) {
-            console.log('error', e)
-        }
-    }
 
     return (
         <>
@@ -295,7 +327,8 @@ export default function CheckoutPage({ route }: { route: any }) {
                             </>
                         }
                         {address &&
-                            <><TouchableOpacity onPress={toggleAddressModal}>
+                            <>
+                            <TouchableOpacity onPress={toggleAddressModal}>
                                 <Address address={address} title='Shipping'></Address>
                             </TouchableOpacity>
                             </>
@@ -308,15 +341,14 @@ export default function CheckoutPage({ route }: { route: any }) {
                         <Divider />
 
                         {address &&
-                            <><Text style={styles.bold} mt={2}>Shipping Method {cartId}</Text>
+                            <>
+                            <Text style={styles.bold} mt={2}>Shipping Method</Text>
                                 <ShippingMethod carrier={carrier}></ShippingMethod>
-
-                                <Divider />
+                            <Divider />
                             </>
                         }
 
                         <Text style={styles.bold} py={2}>Payment Method</Text>
-                        {/* <PaymentMethod payment={payment}></PaymentMethod> */}
                         <Radio.Group name="paymentMethod" onChange={nextValue => {
                             setPaymentChild('')
                             setPaymentType(nextValue);
@@ -345,13 +377,15 @@ export default function CheckoutPage({ route }: { route: any }) {
                                 </>
                             })}
                         </Radio.Group>
-                        <Text color={'black'}>{paymentType} {paymentChild}</Text>
+                        {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
                         <Spacer />
 
-                        <Checkbox value="terms" style={styles.checkbox} marginY={3}>
-                            <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}>Terms of Service</Link> and
-                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
-                        </Checkbox>
+                        <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
+                                <Text color={'black'} fontSize={14} pr={5}>I agree with the
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
+                                    I adhere to them unconditionally.</Text>
+                            </Checkbox>
                         <Divider />
 
                         <CmsModal
@@ -427,7 +461,8 @@ export default function CheckoutPage({ route }: { route: any }) {
                                     const param = {
                                         gift: gift,
                                         gift_wrap_id: gift_wrap_id,
-                                        gift_message: giftMessage
+                                        gift_message: giftMessage,
+                                        address_id: address ? address.id : null
                                     }
 
                                     dispatch(getCartStep1(param))
@@ -529,7 +564,7 @@ export default function CheckoutPage({ route }: { route: any }) {
                         <HStack py={1}>
                             <Text style={styles.normal}>Shipping fee :</Text>
                             <Spacer />
-                            <Text style={styles.normal}>-</Text>
+                            <Text style={styles.normal}>{currency} {shipping_fee}</Text>
                         </HStack>
                     </View>
                 </ScrollView>
@@ -604,5 +639,4 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     }
 })
-
 

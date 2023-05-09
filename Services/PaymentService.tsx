@@ -1,5 +1,7 @@
 import APIService from "./ApiService";
 import IPay88, { Pay } from "react-native-ipay88-integration";
+import InAppBrowser from "react-native-inappbrowser-reborn";
+import { MODULE_API } from "@env"
 
 const PaymentService = {
 
@@ -15,17 +17,6 @@ const PaymentService = {
 
     },
 
-    async eghl(orderId: any, customerId: any) {
-
-        const params: any = {
-            id_order: orderId,
-            id_customer: customerId
-        };
-
-        return APIService.postMethod('PaymentProcessor/repay_sgdcc', params);
-
-    },
-
     async getPaymentInfo(refId: String) {
 
         let base64 = require("base-64");
@@ -34,6 +25,58 @@ const PaymentService = {
             method: 'GET',
             headers: new Headers({ "Authorization": "Basic " + base64.encode('fb9f8e94420c4dea8781d9282dbdc9e3' + ":" + '587c1346e7224210898b22f9d6e539cd') }),
         });
+    },
+
+    async eghl(cartId: any) {
+
+        const params: any = {
+            id_cart: cartId,
+            id_payment: '4',
+            return_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php?return_url=1',
+            callback_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php'
+        };
+
+        return APIService.putMethod('PaymentProcessor/redirect_sgdcc', params);
+
+    },
+
+    async repayEghl(orderId: any, customerId: any) {
+
+        const params: any = {
+            id_order: orderId,
+            id_customer: customerId,
+            return_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php?return_url=1',
+            callback_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php'
+        };
+
+        return APIService.postMethod('PaymentProcessor/repay_sgdcc', params);
+
+    },
+
+    async enets(cartId: any) {
+
+        const params: any = {
+            id_cart: cartId,
+            id_payment: '5',
+            return_url: 'https://poplook.com/modules/enets/callback_mobile.php?return_url=1',
+            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php'
+        };
+
+        return APIService.putMethod('PaymentProcessor/redirect_enets', params);
+
+    },
+
+    async repayEnets(orderId: any, customerId: any) {
+
+        const params: any = {
+            id_order: orderId,
+            id_customer: customerId,
+            return_url: 'https://poplook.com/modules/enets/callback_mobile.php?return_url=1',
+            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php'
+        };
+
+        return APIService.postMethod('PaymentProcessor/repay_enets', params);
+
     },
 
     ProcessIpay88(data: any) {
@@ -66,6 +109,15 @@ const PaymentService = {
             console.log(e);
         }
 
+    },
+
+    openInAppBrowserForm (form: string) {
+
+        const data = {
+            form: form
+        };
+
+        return InAppBrowser.open(MODULE_API + 'enets/eghl_pay.php' + '?' + new URLSearchParams(data));
     }
 
 

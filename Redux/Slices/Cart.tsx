@@ -3,6 +3,8 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import AuthService from '../../Services/AuthService'
 import CartService from '../../Services/CartService'
 import GeneralService from '../../Services/GeneralService'
+import { useDispatch } from 'react-redux'
+// import { assignUser } from './Sessions'
 
 export interface CartState {
     id_cart: Number | null,
@@ -16,17 +18,16 @@ const initialState: CartState = {
 
 export const getCart: any = createAsyncThunk(
     "cart/get",
-    async (_: void, { getState, rejectWithValue }) => {
+    async (_: void, { getState, rejectWithValue}) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
             const response = await CartService.getCart(id_cart);
             let data = await response.json()
-            console.log("data", data)
+            console.log("datacart", data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
-
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -43,7 +44,7 @@ export const getCart: any = createAsyncThunk(
 
 export const addToCart: any = createAsyncThunk(
     "cart/add",
-    async ({ id_product, id_product_attribute, quantity }: any, { getState, rejectWithValue }) => {
+    async ({ id_product, id_product_attribute, quantity }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
@@ -59,12 +60,11 @@ export const addToCart: any = createAsyncThunk(
 
             const response = await CartService.addToCart(params);
             let data = await response.json()
-            console.log("response", response)
-            console.log("data", data)
+            console.log("responsecart", data)
 
             if (response.status == 201) {
                 if (data.code == 201) {
-
+                    // dispatch(assignUser(data.data.id_cart))
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -125,18 +125,18 @@ export const cartSlice = createSlice({
         },
         clearCart: (state) => {
 
-            console.log('clearcart');
+            console.log('clearcart', state);
             const temp: any = {};
             temp.id_cart = null;
             temp.data = null;
 
             state = { ...state, ...temp }
+            console.log('clearstateresult', state)
             return state;
         },
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(addToCart.fulfilled, (state, { payload }) => {
+        builder.addCase(addToCart.fulfilled, (state, { payload }) => {
                 GeneralService.toast({ description: payload.message });
                 const temp: any = {};
                 if (payload.data) {
@@ -161,16 +161,24 @@ export const cartSlice = createSlice({
                     temp.data = payload.data;
                     state = { ...state, ...temp }
                 }
-
-                console.log('stategetcart', state);
                 return state;
-            })
+
+        })
+        .addCase(getCart.rejected, (state, { payload }) => {
+            console.log('payload', payload);
+            // GeneralService.toast({ description: payload.message });
+            if (payload.code == 404) {
+                const temp: any = {};
+                temp.id_cart = null;
+                temp.data = null;
+
+                state = { ...state, ...temp }
+                return state;
+            }
+        })
+               
             .addCase(getCart.pending, (state, { payload }) => {
 
-            })
-            .addCase(getCart.rejected, (state, { payload }) => {
-                console.log('payload', payload);
-                // GeneralService.toast({ description: payload.message });
             })
 
             .addCase(delToCart.fulfilled, (state, { payload }) => {
