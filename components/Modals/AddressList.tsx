@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function AddressModal({ visible, onToggle, isCheckout }: { visible: boolean, onToggle:any, isCheckout:boolean}) {
 
     const navigation: any = useNavigation();
-   
+
     useEffect(() => {
 
     }, [])
