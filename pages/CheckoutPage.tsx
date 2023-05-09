@@ -15,6 +15,8 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
+import { assignUser } from '../Redux/Slices/Sessions';
+import { assignCartId, clearCart } from '../Redux/Slices/Cart';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -34,6 +36,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [giftMessage, setGiftMessage] = useState('');
     const [leaveMessage, setLeaveMessage] = useState('');
     const [cms, setCms] = useState<any>({});
+    const [termAgree, setTermAgree] = useState(false)
 
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
@@ -130,37 +133,50 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         console.log('param', cartId, paymentSelected(), leaveMessage)
 
-        const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
-        const json = await response.json();
+        if (paymentType && termAgree) {
 
-        console.log('cartstep4baru', json.data)
+            const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
+            const json = await response.json();
 
-        setData(json.data);
+            console.log('cartstep4baru', json.data)
 
-        if (json.code == 200 && json.data) {
+            setData(json.data);
 
-            if (shopId == '1') {
-                if (paymentType == '16') {
-                    atome()
-                } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    processIpay88(json.data)
-                }
-            } else if (shopId == '2') {
-                if (paymentType == '4') {
-                    eghl(json.data)
+            if (json.code == 200 && json.data) {
+
+                dispatch(clearCart())
+                // dispatch(assignCartId())
+
+                if (shopId == '1') {
+                    if (paymentType == '16') {
+                        atome()
+                    } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
+                        processIpay88(json.data)
+                    }
+                } else if (shopId == '2') {
+                    if (paymentType == '4') {
+                        eghl(json.data)
+                    } else {
+                        enets(json.data)
+                    }
                 } else {
-                    enets(json.data)
+                    if (paymentType == '1') {
+                        // paypal
+                    } else {
+                        // pay(data) // ipay88
+                    }
                 }
             } else {
-                if (paymentType == '1') {
-                    // paypal
+                if (!paymentType) {
+                    GeneralService.toast({ description: 'Please choose payment type' });
                 } else {
-                    // pay(data) // ipay88
+                    GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
                 }
             }
-        } else {
-            // this.generalService.presentToast(response.data.message);
+
         }
+
+        
     }
 
     const atome = async () => {
@@ -364,7 +380,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
                         <Spacer />
 
-                        <Checkbox value="terms" style={styles.checkbox} marginY={3}>
+                        <Checkbox isChecked={termAgree} onChange={setTermAgree} value="terms" style={styles.checkbox} marginY={3}>
                             <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}>Terms of Service</Link> and
                                 <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
                         </Checkbox>
@@ -621,5 +637,4 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     }
 })
-
 
