@@ -47,8 +47,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const product = useSelector((storeState: any) => storeState.checkout.product);
     const gift_wrap_id = useSelector((storeState: any) => storeState.checkout.id_gift);
     const gift_wrap = useSelector((storeState: any) => storeState.checkout.gift_wrap);
+    const gift_wrap_exist = useSelector((storeState: any) => storeState.checkout.gift_wrap_exist);
     const shipping_fee = useSelector((storeState: any) => storeState.checkout.shipping_fee);
-    const checkout = useSelector((storeState: any) => storeState.checkout);
     const total = useSelector((storeState: any) => storeState.checkout.total);
     const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
     const credit_store_list = useSelector((storeState: any) => storeState.checkout.storeCredit);
@@ -63,7 +63,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             address_id: address ? address.id : ''
         }
 
-        console.log('param hantar' , param)
+        console.log('param hantar' , gift_wrap_exist)
 
         dispatch(getCartStep1(param))
 
@@ -446,31 +446,37 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         </View>}
 
-                        <HStack py={1}>
-                            <Text style={styles.normal}>Gift Option</Text>
-                            <Spacer />
-                            <Radio.Group
-                                name="giftOption"
-                                value={gift}
-                                onChange={(nextValue) => {
-                                    setGift(nextValue);
+                        { gift_wrap_exist && 
+                            <>
+                            <HStack py={1}>
+                                <Text style={styles.normal}>Gift Option</Text>
+                                <Spacer />
+                                <Radio.Group
+                                    name="giftOption"
+                                    value={gift}
+                                    onChange={(nextValue) => {
+                                        setGift(nextValue);
 
-                                    const param = {
-                                        gift: gift,
-                                        gift_wrap_id: gift_wrap_id,
-                                        gift_message: giftMessage,
-                                        address_id: address ? address.id : null
-                                    }
+                                        const param = {
+                                            gift: gift,
+                                            gift_wrap_id: gift_wrap_id,
+                                            gift_message: giftMessage,
+                                            address_id: address ? address.id : null
+                                        }
 
-                                    dispatch(getCartStep1(param))
-                                }}
-                            >
-                                <HStack>
-                                    <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
-                                    <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
-                                </HStack>
-                            </Radio.Group>
-                        </HStack>
+                                        dispatch(getCartStep1(param))
+                                    }}
+                                >
+                                    <HStack>
+                                        <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
+                                        <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
+                                    </HStack>
+                                </Radio.Group>
+                            </HStack>
+                            </>
+                        }
+
+                        
 
                         {gift && (gift == '1') ? <>
                             <VStack>
@@ -554,7 +560,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             <Text style={styles.normal}>-</Text>
                         </HStack>
                         <HStack py={1}>
-                            <Text style={styles.normal}>Store Credit :</Text>
+                            <Text style={styles.normal}>Store Credit :{gift_wrap_exist}</Text>
                             <Spacer />
                             <Text style={styles.normal}>-</Text>
                         </HStack>

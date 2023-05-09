@@ -14,8 +14,9 @@ export interface CheckoutState {
     voucher: Array<any> | null;
     storeCredit: Array<any> | null;
     gift_wrap: any,
+    gift_wrap_exist: any
     total: String,
-    shipping_fee: String
+    shipping_fee: String,
 }
 
 const initialState: CheckoutState = {
@@ -28,6 +29,7 @@ const initialState: CheckoutState = {
     voucher: null,
     storeCredit: null,
     gift_wrap: '',
+    gift_wrap_exist: null,
     total: '',
     shipping_fee: ''
 }
@@ -45,6 +47,8 @@ export const getCartStep1: any = createAsyncThunk(
 
             const response = await CartService.cartStep1(id_cart, id_gift , message, gift_value);
             let data = await response.json()
+
+            console.log('step1response' ,data.data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -160,6 +164,7 @@ export const checkoutSlice = createSlice({
                 temp.voucher = payload.data.voucher_list;
                 temp.storeCredit = payload.data.store_credit_list;
                 temp.gift_wrap = payload.data.gift_wrap;
+                temp.gift_wrap_exist = payload.data.gift_wrap_exist;
                 temp.shipping_fee = payload.data.shipping_price;
 
                 state = { ...state, ...temp }
@@ -182,6 +187,7 @@ export const checkoutSlice = createSlice({
                 temp.carrier = payload.data.carrier_list;
                 temp.total = payload.data.totalProductsWt;
                 temp.shipping_fee = payload.data.shipping_price;
+                temp.gift_wrap_exist = payload.data.gift_wrap_exist;
                 state = { ...state, ...temp }
             }
 
@@ -204,6 +210,7 @@ export const checkoutSlice = createSlice({
                 temp.payment = payload.data.payment_list;
                 temp.total = payload.data.totalProductsWt;
                 temp.shipping_fee = payload.data.shipping_price;
+                temp.gift_wrap_exist = payload.data.gift_wrap_exist;
                 state = { ...state, ...temp }
             }
 
