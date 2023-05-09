@@ -333,9 +333,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
                                 <Text color={'black'} fontSize={14} pr={5}>I agree with the
                                     <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
-                                    {"\n"}
-                                    I adhere to them unconditionally.</Text>
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
                             </Checkbox>
                             <Divider />
 
