@@ -12,6 +12,7 @@ import { format } from 'date-fns'
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CmsModal from '../components/Modals/Cms';
+import AuthService from '../Services/AuthService';
 
 export default function RegisterPage({ visible, onToggle }: { visible: boolean, onToggle:any }) {
 
@@ -79,7 +80,7 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                     optin: optin ? 1 : 0,
                                     id_lang: 1
                                 }
-                                const response = await RegisterService.register('0', shopId , data);
+                                const response = await AuthService.register('0', shopId , data);
                                 const json = await response.json();
 
                                 if (json.code == 201 && json.data) {
@@ -104,7 +105,8 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                             retypeEmail: yup
                                 .string()
                                 .email('Retype email must be in a valid format')
-                                .required('Retype Email is required'),
+                                .required('Retype Email is required')
+                                .oneOf([yup.ref('email')], "Confirm email don't match"),
                             password: yup
                                 .string()
                                 .min(3, 'Password must be at least 3 characters')
@@ -112,7 +114,8 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                             retypePassword: yup
                                 .string()
                                 .min(3, 'Retype password must be at least 3 characters')
-                                .required('Retype password is required'),
+                                .required('Retype password is required')
+                                .oneOf([yup.ref('password')], "Confirm Password don't match"),
                             terms: yup
                                 .bool()
                                 .oneOf([true])

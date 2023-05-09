@@ -91,7 +91,7 @@ export default function LoginPage() {
                                 errors={errors}
                                 type='password'
                             />
-                            <Text style={styles.right_section}>Forgot Password?</Text>
+                            <Text style={styles.forgot_password}>Forgot Password?</Text>
 
                             <Button
                                 bg={'#1cad48'}
@@ -160,5 +160,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 3,
         sizes: 'md'
+    },
+    forgot_password: {
+        color: 'black',
+        fontWeight: '400',
+        paddingTop: 30,
+        fontSize: 16,
+        paddingBottom: 22,
+        textAlign:'right'
     }
 })
