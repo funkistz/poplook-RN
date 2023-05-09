@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
-import { ScrollView, Button, Flex, HStack } from 'native-base';
+import { ScrollView, Button, Flex, HStack, Text } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useIsFocused } from '@react-navigation/native';
@@ -23,6 +23,7 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
 
         if (isFocused) {
             dispatch(getAddressList());
+            console.log('addresslist' ,address)
         }
 
     }, [isFocused])
@@ -58,19 +59,28 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
     return (
         <>
         <Flex flex={isCheckout ? 0 : 1} backgroundColor='white'>
-        <ScrollView>
-                {address && address.data != null && address.data.length > 0 &&
-                    (address.data.map((item: any, index: any) => {
-                        return <>
+            {address && address.data != null && address.data.length > 0 &&
+                (address.data.map((item: any, index: any) => {
+                    return <>
+                        <ScrollView>
                             <TouchableOpacity onPress={() => isCheckout ? chooseAddress(item) : ''}>
                                 <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
                             </TouchableOpacity>
-                        </>
-                        
-                    })
-                    )
-                }
-            </ScrollView>
+                        </ScrollView>
+                    </>
+                    
+                })
+                )
+            }
+                
+            {address.data == null && 
+                <>
+                    <View style={{flex: 1, justifyContent: "center",alignItems: "center", backgroundColor: 'white'}}>
+                        <Text color='black' fontSize={14}>No address available.</Text>
+                    </View>
+                    
+                </> 
+            }
             <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
             <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600}}
                     onPress={() => isCheckout ? toggleModal() : addAddressPage()}>ADD NEW ADDRESS</Button>
