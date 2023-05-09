@@ -63,9 +63,10 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         title: "Sort by: ",
         data: [
             { id: 0, name: 'Popularity' },
+            { id: 7, name: 'Newest' },
+            { id: 6, name: 'Default' },
             { id: 1, name: 'Price lowest to highest' },
             { id: 2, name: 'Price highest to lowest' },
-            { id: 6, name: 'Newest' }
         ]
     }
 
@@ -150,7 +151,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 const index = newColor.indexOf(params.data)
                 newColor.splice(index, 1);
                 setColor(newColor);
-                // console.log('color:', color)
+                console.log('color:', color)
             } else {
                 setColor([...color, params.data])
             }
@@ -258,6 +259,8 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 sort_option: sort.toString(),
             }
 
+            console.log('useEffect.......', params)
+
             dispatch(getFilterList(params))
 
         }
@@ -300,7 +303,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 selectedAttribute={attribute}
                 selectedColor={color}
             />
-
 
             <View style={{ flex: 1, backgroundColor: 'white' }}>
                 {(product.isSuccess && listSizeColor.length > 0) &&

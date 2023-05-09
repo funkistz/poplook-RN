@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
 import { ScrollView, Button, Flex, HStack } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +16,7 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address);
+    const country = useSelector((storeState: any) => storeState.session.country);
     const isFocused = useIsFocused();
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -100,10 +101,6 @@ const styles = StyleSheet.create({
     },
     border: {
         borderBottomWidth: 1,
-    },
-    button: {
-        borderRadius: 10,
-        sizes: 'md'
     },
     container: {
         padding: 20,
