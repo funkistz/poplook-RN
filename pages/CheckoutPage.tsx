@@ -65,7 +65,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             address_id: address ? address.id : ''
         }
 
-        console.log('param hantar' , param)
+        console.log('param hantar', param)
 
         dispatch(getCartStep1(param))
 
@@ -85,7 +85,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         if (json.code == 200) {
             setVoucher('');
-            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null}))
+            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null }))
             GeneralService.toast({ description: json.message });
         } else {
             GeneralService.toast({ description: json.message });
@@ -119,7 +119,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     }
 
     const toggleAddressModal = () => {
-        setAdressModalVisible(!isAddressModalVisible);
+        // setAdressModalVisible(!isAddressModalVisible);
+        console.log('toggleAddressModal');
+
+        navigation.navigate('AddressListExPage', { screen: 'AddressListExPage', isCheckout: true });
     };
 
     const toggleCmsModal = async (key: any) => {
@@ -176,7 +179,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         }
 
-        
+
     }
 
     const atome = async () => {
@@ -184,7 +187,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
-        console.log('atome' ,json)
+        console.log('atome', json)
 
         setUrl(json.data.redirect_url);
         setAppUrl(json.data.app_payment_url);
@@ -205,7 +208,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             }
         } else if (shopId == 3) {
 
-            
+
         }
 
         return paymentType;
@@ -250,7 +253,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const json = await response.json();
 
         console.log('redirectEghl', json.data.results);
-        
+
 
         const param = {
             form: json.data.results,
@@ -262,7 +265,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
 
     }
@@ -285,7 +288,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
     }
 
@@ -317,7 +320,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     return (
         <>
-            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0}>
+            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} safeAreaBottom>
                 <ScrollView>
                     <View style={styles.container}>
                         {!address &&
@@ -328,9 +331,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         }
                         {address &&
                             <>
-                            <TouchableOpacity onPress={toggleAddressModal}>
-                                <Address address={address} title='Shipping'></Address>
-                            </TouchableOpacity>
+                                <TouchableOpacity onPress={toggleAddressModal}>
+                                    <Address address={address} title='Shipping'></Address>
+                                </TouchableOpacity>
                             </>
                         }
                         <AddressModal
@@ -342,9 +345,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {address &&
                             <>
-                            <Text style={styles.bold} mt={2}>Shipping Method</Text>
+                                <Text style={styles.bold} mt={2}>Shipping Method</Text>
                                 <ShippingMethod carrier={carrier}></ShippingMethod>
-                            <Divider />
+                                <Divider />
                             </>
                         }
 
@@ -381,11 +384,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         <Spacer />
 
                         <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
-                                <Text color={'black'} fontSize={14} pr={5}>I agree with the
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
-                                    I adhere to them unconditionally.</Text>
-                            </Checkbox>
+                            <Text color={'black'} fontSize={14} pr={5}>I agree with the
+                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
+                                I adhere to them unconditionally.</Text>
+                        </Checkbox>
                         <Divider />
 
                         <CmsModal

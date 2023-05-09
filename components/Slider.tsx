@@ -24,7 +24,7 @@ const Slider = memo(function Greeting({ child }: any) {
             category_name: child.name
         };
 
-        navigation.navigate('Categories', { screen: 'CategoryPage', params: params });
+        navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: child.name });
     };
 
     return (
@@ -40,7 +40,7 @@ const Slider = memo(function Greeting({ child }: any) {
                         // });
 
                         return (
-                            <TouchableOpacity onPress={() => goToCategory(child)} key={index}>
+                            <TouchableOpacity onPress={() => goToCategory(menu)} key={index}>
                                 <VStack key={index}>
                                     <Center w={layout.width / 3} bg="grey" borderRadius={10} shadow={1} >
                                         {/* <FullWidthImage style={{ borderRadius: 6 }} key={index} source={{

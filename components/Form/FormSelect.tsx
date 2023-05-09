@@ -10,7 +10,7 @@ function FormSelect({ name, variant = 'outline', placeholder, values, text, onCh
             <FormControl.Label _text={{ color: "#666" }}>{text}</FormControl.Label>
             <Select size="lg"
                 _selectedItem={{
-                    bg: "teal.600",
+                    // bg: "teal.600",
                     endIcon: <IonIcon name='checkmark-outline' size={5} />
                 }}
                 placeholder={placeholder}
@@ -19,8 +19,8 @@ function FormSelect({ name, variant = 'outline', placeholder, values, text, onCh
                 onTouchEnd={() => onBlur(name)}
                 color='#000'
             >
-                {!!data && data.map((data1: any) => {
-                    return <Select.Item label={data1.label} value={data1.value} />;
+                {!!data && data.map((data1: any, index: any) => {
+                    return <Select.Item key={index} label={data1.label} value={data1.value} />;
                 })}
 
             </Select>
