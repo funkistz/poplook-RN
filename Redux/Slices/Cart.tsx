@@ -47,11 +47,17 @@ export const addToCart: any = createAsyncThunk(
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
+            const id_customer = state.session.user ? state.session.user.id_customer : null;
 
             console.log("state before", state)
 
+            let params: any = { id_cart, id_product, id_product_attribute, quantity };
 
-            const response = await CartService.addToCart({ id_cart, id_product, id_product_attribute, quantity });
+            if (id_customer) {
+                params.id_customer = id_customer;
+            }
+
+            const response = await CartService.addToCart(params);
             let data = await response.json()
             console.log("response", response)
             console.log("data", data)
@@ -130,54 +136,54 @@ export const cartSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(addToCart.fulfilled, (state, { payload }) => {
-            GeneralService.toast({ description: payload.message });
-            const temp: any = {};
-            if (payload.data) {
-                temp.id_cart = payload.data.id_cart;
-                state = { ...state, ...temp }
-            }
-            return state;
-        })
-        .addCase(addToCart.pending, (state, { payload }) => {
-        })
-        .addCase(addToCart.rejected, (state, { payload }) => {
+            .addCase(addToCart.fulfilled, (state, { payload }) => {
+                GeneralService.toast({ description: payload.message });
+                const temp: any = {};
+                if (payload.data) {
+                    temp.id_cart = payload.data.id_cart;
+                    state = { ...state, ...temp }
+                }
+                return state;
+            })
+            .addCase(addToCart.pending, (state, { payload }) => {
+            })
+            .addCase(addToCart.rejected, (state, { payload }) => {
 
-            GeneralService.toast({ description: payload.message });
+                GeneralService.toast({ description: payload.message });
 
-        })
-        
-        .addCase(getCart.fulfilled, (state, { payload }) => {
+            })
 
-            const temp: any = {};
-            if (payload.data) {
-                temp.id_cart = payload.data.id_cart;
-                temp.data = payload.data;
-                state = { ...state, ...temp }
-            }
+            .addCase(getCart.fulfilled, (state, { payload }) => {
 
-            console.log('stategetcart', state);
-            return state;
-        })
-        .addCase(getCart.pending, (state, { payload }) => {
+                const temp: any = {};
+                if (payload.data) {
+                    temp.id_cart = payload.data.id_cart;
+                    temp.data = payload.data;
+                    state = { ...state, ...temp }
+                }
 
-        })
-        .addCase(getCart.rejected, (state, { payload }) => {
-            console.log('payload', payload);
-            // GeneralService.toast({ description: payload.message });
-        })
+                console.log('stategetcart', state);
+                return state;
+            })
+            .addCase(getCart.pending, (state, { payload }) => {
 
-        .addCase(delToCart.fulfilled, (state, { payload }) => {
-            GeneralService.toast({ description: payload.message });
-            return state;
-        })
-        .addCase(delToCart.pending, (state, { payload }) => {
-        })
-        .addCase(delToCart.rejected, (state, { payload }) => {
+            })
+            .addCase(getCart.rejected, (state, { payload }) => {
+                console.log('payload', payload);
+                // GeneralService.toast({ description: payload.message });
+            })
 
-            GeneralService.toast({ description: payload.message });
+            .addCase(delToCart.fulfilled, (state, { payload }) => {
+                GeneralService.toast({ description: payload.message });
+                return state;
+            })
+            .addCase(delToCart.pending, (state, { payload }) => {
+            })
+            .addCase(delToCart.rejected, (state, { payload }) => {
 
-        })
+                GeneralService.toast({ description: payload.message });
+
+            })
     },
 })
 
