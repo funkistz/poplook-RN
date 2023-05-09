@@ -351,6 +351,8 @@ PODS:
     - React
   - react-native-pager-view (6.0.1):
     - React-Core
+  - react-native-render-html (6.3.4):
+    - React-Core
   - react-native-safe-area-context (4.4.1):
     - RCT-Folly
     - RCTRequired
@@ -455,6 +457,8 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNGestureHandler (2.9.0):
     - React-Core
+  - RNInAppBrowser (3.7.0):
+    - React-Core
   - RNInsider (5.5.2-nh):
     - InsiderGeofence (= 1.0.3)
     - InsiderHybrid (= 1.4.0)
@@ -554,6 +558,7 @@ DEPENDENCIES:
   - react-native-atome-paylater (from `../node_modules/react-native-atome-paylater`)
   - react-native-ipay88-integration (from `../node_modules/react-native-ipay88-integration`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
+  - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -574,6 +579,7 @@ DEPENDENCIES:
   - RNeGHL (from `../node_modules/react-native-eghl`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNInsider (from `../node_modules/react-native-insider`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -653,6 +659,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-ipay88-integration"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
+  react-native-render-html:
+    :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
@@ -693,6 +701,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNInAppBrowser:
+    :path: "../node_modules/react-native-inappbrowser-reborn"
   RNInsider:
     :path: "../node_modules/react-native-insider"
   RNReanimated:
@@ -747,6 +757,7 @@ SPEC CHECKSUMS:
   react-native-atome-paylater: d0fc8268e80360e94b9cd5aac39d1cbde6f45fdf
   react-native-ipay88-integration: 37a077e959bcddf315e585c6085c6bb7db833b38
   react-native-pager-view: 3051346698a0ba0c4e13e40097cc11b00ee03cca
+  react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   React-perflogger: 43392072a5b867a504e2b4857606f8fc5a403d7f
@@ -767,6 +778,7 @@ SPEC CHECKSUMS:
   RNeGHL: 376e6d573baea8c8825ffbba0a466bd507676483
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
   RNInsider: 8aeee8eafe88089bd7ec8aaa0dcf9ab93b6d9751
   RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d

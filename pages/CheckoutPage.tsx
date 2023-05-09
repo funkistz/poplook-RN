@@ -15,7 +15,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
-import { assignUser } from '../Redux/Slices/Sessions';
+// import { assignUser } from '../Redux/Slices/Sessions';
 import { assignCartId, clearCart } from '../Redux/Slices/Cart';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
