@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getCartStep1 } from '../Redux/Slices/Checkout';
 import AddressAdd from '../components/Modals/AddressAdd';
 
-export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any, isCheckout:boolean}) {
+export default function AddressListPage({ isCheckout, onToggle }: any) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const navigation: any = useNavigation();
@@ -58,36 +58,36 @@ export default function AddressListPage({ isCheckout, onToggle }: { onToggle:any
 
     return (
         <>
-        <Flex flex={isCheckout ? 0 : 1} backgroundColor='white'>
-        <ScrollView>
-                {address && address.data != null && address.data.length > 0 &&
-                    (address.data.map((item: any, index: any) => {
-                        return <>
-                            <TouchableOpacity onPress={() => isCheckout ? chooseAddress(item) : ''}>
-                                <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
-                            </TouchableOpacity>
-                        </>
-                        
-                    })
-                    )
-                }
-            </ScrollView>
-            <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
-            <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600}}
-                    onPress={() => isCheckout ? toggleModal() : addAddressPage()}>ADD NEW ADDRESS</Button>
-            </HStack>
-        </Flex>
-        <AddressAdd
-            visible={isModalVisible}
-            onToggle={toggleModal}
-            isCheckout={true}
-            id={address.id_address}
-        />
+            <Flex flex={isCheckout ? 0 : 1} backgroundColor='white'>
+                <ScrollView>
+                    {address && address.data != null && address.data.length > 0 &&
+                        (address.data.map((item: any, index: any) => {
+                            return <>
+                                <TouchableOpacity onPress={() => isCheckout ? chooseAddress(item) : ''}>
+                                    <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
+                                </TouchableOpacity>
+                            </>
+
+                        })
+                        )
+                    }
+                </ScrollView>
+                <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
+                    <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600 }}
+                        onPress={() => isCheckout ? toggleModal() : addAddressPage()}>ADD NEW ADDRESS</Button>
+                </HStack>
+            </Flex>
+            <AddressAdd
+                visible={isModalVisible}
+                onToggle={toggleModal}
+                isCheckout={true}
+                id={address.id_address}
+            />
         </>
     );
-    }
+}
 
-        
+
 
 
 const styles = StyleSheet.create({
