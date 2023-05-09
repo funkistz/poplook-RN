@@ -23,7 +23,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const countries = useSelector((storeState: any) => storeState.infos.addressCountries.map((country: any) => { return { label: country.name, value: country.id_country } }));
     const states = useSelector((storeState: any) => storeState.infos.states.map((state: any) => { return { label: state.name, value: state.id } }));
     const country = useSelector((storeState: any) => storeState.session.country);
-    const shopId = useSelector((storeState: any) => storeState.session.id_shop);
+    const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
 
     const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address_selected);
