@@ -26,7 +26,7 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
             category_name: child.name
         };
 
-        navigation.navigate('Categories', { screen: 'CategoryPage', params: params });
+        navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: child.name });
     };
 
     const renderCategory = (category: any) => {

@@ -136,7 +136,7 @@ export const addressSlice = createSlice({
     reducers: {
         clearAddress: (state) => {
 
-            console.log('clearaddress');
+            // console.log('clearaddress');
             const temp: any = {};
             temp.data = null;
 
@@ -155,7 +155,7 @@ export const addressSlice = createSlice({
                 state = { ...state, ...temp }
             }
 
-            console.log('statekai', state);
+            // console.log('statekai', state);
             return state;
         }).addCase(getAddressList.pending, (state, { payload }) => {
 

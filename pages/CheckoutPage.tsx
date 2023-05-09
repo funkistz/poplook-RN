@@ -83,7 +83,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         if (json.code == 200) {
             setVoucher('');
-            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null}))
+            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null }))
             GeneralService.toast({ description: json.message });
         } else {
             GeneralService.toast({ description: json.message });
@@ -117,7 +117,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     }
 
     const toggleAddressModal = () => {
-        setAdressModalVisible(!isAddressModalVisible);
+        // setAdressModalVisible(!isAddressModalVisible);
+        console.log('toggleAddressModal');
+
+        navigation.navigate('AddressListExPage', { screen: 'AddressListExPage', isCheckout: true });
     };
 
     const toggleCmsModal = async (key: any) => {
@@ -285,7 +288,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
 
     }
@@ -308,13 +311,13 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
     }
 
     return (
         <>
-            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0}>
+            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} safeAreaBottom>
                 <ScrollView>
                     <View style={styles.container}>
                         {!address &&
@@ -325,9 +328,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         }
                         {address &&
                             <>
-                            <TouchableOpacity onPress={toggleAddressModal}>
-                                <Address address={address} title='Shipping'></Address>
-                            </TouchableOpacity>
+                                <TouchableOpacity onPress={toggleAddressModal}>
+                                    <Address address={address} title='Shipping'></Address>
+                                </TouchableOpacity>
                             </>
                         }
                         <AddressModal
@@ -339,9 +342,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {address &&
                             <>
-                            <Text style={styles.bold} mt={2}>Shipping Method</Text>
+                                <Text style={styles.bold} mt={2}>Shipping Method</Text>
                                 <ShippingMethod carrier={carrier}></ShippingMethod>
-                            <Divider />
+                                <Divider />
                             </>
                         }
 
@@ -378,11 +381,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         <Spacer />
 
                         <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
-                                <Text color={'black'} fontSize={14} pr={5}>I agree with the
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
-                                    I adhere to them unconditionally.</Text>
-                            </Checkbox>
+                            <Text color={'black'} fontSize={14} pr={5}>I agree with the
+                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
+                                I adhere to them unconditionally.</Text>
+                        </Checkbox>
                         <Divider />
 
                         <CmsModal
@@ -560,7 +563,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             <Text style={styles.normal}>-</Text>
                         </HStack>
                         <HStack py={1}>
-                            <Text style={styles.normal}>Store Credit :{gift_wrap_exist}</Text>
+                            <Text style={styles.normal}>Store Credit :</Text>
                             <Spacer />
                             <Text style={styles.normal}>-</Text>
                         </HStack>

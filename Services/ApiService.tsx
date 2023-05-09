@@ -14,7 +14,7 @@ import { API_URL, API_KEY } from "@env"
 //     axios.defaults.headers.common['Authorization'] = token;
 // }
 
-const api_test = 'https://poplook.com/webapi/';
+const api_test = 'https://dev3.poplook.com/webapi/';
 
 const injectExtraParamsOld = (params: any, isString = true) => {
     let data: any = {

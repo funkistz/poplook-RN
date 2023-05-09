@@ -11,6 +11,9 @@ import AppStack from '../Stacks/AppStack';
 import { useSelector, useDispatch } from 'react-redux';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import EghlPaymentPage from '../pages/EghlPaymentPage';
+import AddressDetailPage from '../pages/AddressDetailPage';
+import CheckoutPage from '../pages/CheckoutPage';
+import AddressListPage from '../pages/AddressListPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -75,7 +78,7 @@ const TabNavigator = () => {
       }
     </Tab.Navigator>
   )
-  ;
+    ;
 }
 
 export default function TabStack() {
@@ -84,10 +87,14 @@ export default function TabStack() {
   return (
     <NativeBaseProvider theme={themed}>
       <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Main" component={TabNavigator}/>
-      <Stack.Screen name='EghlPaymentPage' component={EghlPaymentPage} options={{ title: 'Payment' }} />
-      </Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Main" component={TabNavigator} />
+          <Stack.Screen name='EghlPaymentPage' component={EghlPaymentPage} options={{ title: 'Payment' }} />
+          <Stack.Screen name='AddressDetailExPage' component={AddressDetailPage} options={{ title: 'Add New Address', headerShown: true }} />
+          <Stack.Screen name='CheckoutExPage' component={CheckoutPage} options={{ title: 'Order Confirmation', headerShown: true }} />
+          <Stack.Screen name='AddressListExPage' component={AddressListPage} options={{ title: 'My Addresses', headerShown: true }} />
+
+        </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
   );

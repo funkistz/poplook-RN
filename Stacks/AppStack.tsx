@@ -46,7 +46,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             // headerLeft: () => (<LeftHeader navigation={navigation}></LeftHeader>)
         }}>
             <Stack.Screen name='HomePage' component={HomePage} options={{ title: 'Poplook' }} />
-            <Stack.Screen name='CategoryPage' component={CategoryPage} options={{ title: 'Category' }} />
+            <Stack.Screen name='CategoryPage' component={CategoryPage} options={{ title: route.params ? route.params.title : 'Category' }} />
             <Stack.Screen name='CategoriesPage' component={CategoriesPage} options={{ title: 'Categories' }} />
             <Stack.Screen name='ProductListPage' component={ProductListPage} options={{ title: 'Product' }} />
             <Stack.Screen name='ProductDetailPage' component={ProductDetailPage} options={{ title: 'Product' }} />
