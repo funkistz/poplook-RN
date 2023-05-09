@@ -15,8 +15,6 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
-// import { assignUser } from '../Redux/Slices/Sessions';
-import { assignCartId, clearCart } from '../Redux/Slices/Cart';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -131,62 +129,64 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const cartStep4 = async () => {
 
-        // console.log('param', cartId, paymentSelected(), leaveMessage)
-
         if (paymentType && termAgree) {
 
-            const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
-            const json = await response.json();
+            if (paymentType == '2' || paymentType == '8') {
+                if (paymentChild) {
+                    const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
+                    const json = await response.json();
 
-            console.log('cartstep4baru', json.data)
+                    console.log('cartstep4baru', json.data)
 
-            setData(json.data);
+                    setData(json.data);
 
-            if (json.code == 200 && json.data) {
+                    if (json.code == 200 && json.data) {
 
-                if (shopId == '1') {
-                    if (paymentType == '16') {
-                        atome()
-                    } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                        processIpay88(json.data)
-                    }
-                } else if (shopId == '2') {
-                    if (paymentType == '4') {
-                        eghl(json.data)
-                    } else {
-                        enets(json.data)
+                        if (shopId == '1') {
+                            processIpay88(json.data)
+                        } 
                     }
                 } else {
-                    if (paymentType == '1') {
-                        // paypal
-                    } else {
-                        // pay(data) // ipay88
-                    }
+                    GeneralService.toast({ description: 'Please select payment type' });
                 }
-            } 
+            } else {
+                const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
+                    const json = await response.json();
+
+                    console.log('cartstep4baru', json.data)
+
+                    setData(json.data);
+
+                    if (json.code == 200 && json.data) {
+
+                        if (shopId == '1') {
+                            if (paymentType == '16') {
+                                atome()
+                            } else if (paymentType == '3') {
+                                processIpay88(json.data)
+                            }
+                        } else if (shopId == '2') {
+                            if (paymentType == '4') {
+                                eghl(json.data)
+                            } else {
+                                enets(json.data)
+                            }
+                        } else {
+                            if (paymentType == '1') {
+                                // paypal
+                            } else {
+                                // pay(data) // ipay88
+                            }
+                        }
+                    } 
+            }
         } else {
             if (!paymentType) {
                 GeneralService.toast({ description: 'Please choose payment type' });
             } else {
                 GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
             }
-        }
-
-        
-    }
-
-    const atome = async () => {
-
-        const response = await PaymentService.atome(cartId);
-        const json = await response.json();
-
-        console.log('atome' ,json)
-
-        setUrl(json.data.redirect_url);
-        setAppUrl(json.data.app_payment_url);
-        setRefId(json.data.referenceId);
-
-        handlePaymentURL(result == 'No' ? appUrl : url)
+        } 
     }
 
     const paymentSelected = () => {
@@ -201,7 +201,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             }
         } else if (shopId == 3) {
 
-            
         }
 
         return paymentType;
@@ -213,29 +212,58 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         if (shopId == 1) {
             if (paymentType == '2') {
                 return paymentChild;
-            }
-
-            if (paymentType == '8') {
+            } else if (paymentType == '8') {
                 return paymentChild;
-            }
-
-            if (paymentType == '3') { // Credit Card (MYR)
+            }else if (paymentType == '3') { // Credit Card (MYR)
                 return 2;
             }
-
         } else if (shopId == 2) {
 
-
         } else if (shopId == 3) {
-
             if (paymentType == '6') { //Credit Card (USD)
                 return 25;
             }
-
         }
 
         return paymentType;
 
+    };
+
+    const atome = async () => {
+
+        const response = await PaymentService.atome(cartId);
+        const json = await response.json();
+
+        console.log('atome' ,json)
+
+        setUrl(json.data.redirect_url);
+        setAppUrl(json.data.app_payment_url);
+        setRefId(json.data.referenceId);
+        handlePaymentURL(result == 'No' ? appUrl : url)
+    }
+
+    const processIpay88 = (data: any) => {
+
+        try {
+            const params: any = {
+                paymentId: paymentId(),
+                referenceNo: data.id_order,
+                amount: data.totalPriceWt,
+                currency: country.currency_iso_code,
+                productDescription: "Reference No: " + data.id_order,
+                userName: user.name,
+                userEmail: user.email,
+                userContact: "0123456789",
+                remark: "Test",
+                utfLang: "UTF-8",
+                country: country.country_iso_code,
+            };
+
+            PaymentService.ProcessIpay88(params);
+
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     const eghl = async (data: any) => {
@@ -247,7 +275,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         console.log('redirectEghl', json.data.results);
         
-
         const param = {
             form: json.data.results,
             order_id: data.id_order,
@@ -284,32 +311,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             routes: [{name: 'EghlPaymentPage', params: param }]
         });
     }
-
-
-    const processIpay88 = (data: any) => {
-
-        try {
-            const params: any = {
-                paymentId: paymentId(),
-                referenceNo: data.id_order,
-                amount: data.totalPriceWt,
-                currency: country.currency_iso_code,
-                productDescription: "Reference No: " + data.id_order,
-                userName: user.name,
-                userEmail: user.email,
-                userContact: "0123456789",
-                remark: "Test",
-                utfLang: "UTF-8",
-                country: country.country_iso_code,
-            };
-
-            PaymentService.ProcessIpay88(params);
-
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
 
     return (
         <>
@@ -574,7 +575,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}>
                     <Button w={'100%'} style={styles.footer} onPress={() => cartStep4()}>PLACE ORDER</Button>
                 </HStack>
-
             </Flex>
         </>
     )
