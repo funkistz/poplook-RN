@@ -131,7 +131,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const cartStep4 = async () => {
 
-        console.log('param', cartId, paymentSelected(), leaveMessage)
+        // console.log('param', cartId, paymentSelected(), leaveMessage)
 
         if (paymentType && termAgree) {
 
@@ -143,9 +143,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             setData(json.data);
 
             if (json.code == 200 && json.data) {
-
-                dispatch(clearCart())
-                // dispatch(assignCartId())
 
                 if (shopId == '1') {
                     if (paymentType == '16') {
@@ -166,14 +163,13 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         // pay(data) // ipay88
                     }
                 }
+            } 
+        } else {
+            if (!paymentType) {
+                GeneralService.toast({ description: 'Please choose payment type' });
             } else {
-                if (!paymentType) {
-                    GeneralService.toast({ description: 'Please choose payment type' });
-                } else {
-                    GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
-                }
+                GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
             }
-
         }
 
         
@@ -377,7 +373,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 </>
                             })}
                         </Radio.Group>
-                        {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
+                        <Text color={'black'}>{paymentType} {paymentChild}</Text>
                         <Spacer />
 
                         <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
