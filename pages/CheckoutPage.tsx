@@ -380,10 +380,12 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
                         <Spacer />
 
-                        <Checkbox isChecked={termAgree} onChange={setTermAgree} value="terms" style={styles.checkbox} marginY={3}>
-                            <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}>Terms of Service</Link> and
-                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
-                        </Checkbox>
+                        <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
+                                <Text color={'black'} fontSize={14} pr={5}>I agree with the
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
+                                    I adhere to them unconditionally.</Text>
+                            </Checkbox>
                         <Divider />
 
                         <CmsModal

@@ -24,7 +24,7 @@ export const getCart: any = createAsyncThunk(
             const id_cart = state.cart.id_cart;
             const response = await CartService.getCart(id_cart);
             let data = await response.json()
-            console.log("datacart", data.data.id_cart)
+            console.log("datacart", data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -136,8 +136,7 @@ export const cartSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(addToCart.fulfilled, (state, { payload }) => {
+        builder.addCase(addToCart.fulfilled, (state, { payload }) => {
                 GeneralService.toast({ description: payload.message });
                 const temp: any = {};
                 if (payload.data) {
@@ -162,9 +161,10 @@ export const cartSlice = createSlice({
                     temp.data = payload.data;
                     state = { ...state, ...temp }
                 }
+                return state;
 
         })
-        .addCase(getCart.rejected, (state, { payload, dispatch }) => {
+        .addCase(getCart.rejected, (state, { payload }) => {
             console.log('payload', payload);
             // GeneralService.toast({ description: payload.message });
             if (payload.code == 404) {
@@ -179,10 +179,6 @@ export const cartSlice = createSlice({
                
             .addCase(getCart.pending, (state, { payload }) => {
 
-            })
-            .addCase(getCart.rejected, (state, { payload }) => {
-                console.log('payload', payload);
-                // GeneralService.toast({ description: payload.message });
             })
 
             .addCase(delToCart.fulfilled, (state, { payload }) => {
