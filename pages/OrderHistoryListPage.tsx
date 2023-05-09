@@ -20,7 +20,7 @@ export default function OrderHistoryListPage() {
 
             console.log('order' ,json)
 
-            setOrders(json.data.order_histories);
+            setOrders(json.data);
         }
         getOrderHistoryList().catch(console.error);
 
@@ -68,9 +68,9 @@ export default function OrderHistoryListPage() {
 
     return (
         <>
-            <ScrollView>
+            <ScrollView bgColor={'white'}>
                 <View style={styles.container}>
-                        {orders && orders.map((item: any, index: any) => {
+                        {orders.orders_histories && orders.total_items != 0 && (orders.order_histories.map((item: any, index: any) => {
                             return <><TouchableOpacity key={index} onPress={() => orderHistoryDetailsPage(item.id_order)}>
                                 <HStack py={3}>
                                     <VStack paddingRight={8}>
@@ -105,7 +105,15 @@ export default function OrderHistoryListPage() {
                                     </Button>
                                 </HStack> ) : <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" paddingX={65}></HStack> }
                             </TouchableOpacity></>
-                        })}
+                        }))} 
+                        {orders.total_items == 0 && 
+                            <>
+                                <View style={{flex:1,justifyContent: "center",alignItems: "center", backgroundColor: 'white'}}>
+                                    <Text style={styles.bold} mt={10}>Your order history is empty.</Text> 
+                                </View>
+                            </>
+                            
+                        }
                 </View>
             </ScrollView>
         </>
