@@ -56,6 +56,7 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
                 />
             </View>
 
+
         </>
 
     );
@@ -72,5 +73,6 @@ const styles = StyleSheet.create({
     },
     border: {
         borderBottomWidth: 1,
+        borderColor: '#ccc',
     }
 });

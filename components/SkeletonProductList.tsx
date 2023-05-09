@@ -2,7 +2,7 @@ import { Box, HStack,VStack, Skeleton, IconButton, Text, View } from 'native-bas
 
 export function Body () {
     return <>
-        <HStack h={250}>
+        <HStack h={270}>
             <VStack w="50%">
                 <Box w={'100%'} p={3}>
                     <Skeleton h="full" borderRadius={10} startColor="muted.300" />
@@ -37,7 +37,7 @@ export function Body () {
             </VStack>
         </HStack>
 
-        <HStack h={250} mt={30}>
+        <HStack h={270} mt={30}>
             <VStack w="50%">
                 <Box w={'100%'} p={3}>
                     <Skeleton h="full" borderRadius={10} startColor="muted.300" />
@@ -72,7 +72,7 @@ export function Body () {
             </VStack>
         </HStack>
 
-        <HStack h={250} mt={30}>
+        <HStack h={270} mt={30}>
             <VStack w="50%">
                 <Box w={'100%'} p={3}>
                     <Skeleton h="full" borderRadius={10} startColor="muted.300" />

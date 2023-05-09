@@ -83,7 +83,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                         </HStack>
                             <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
                                 <Button w={'100%'} style={styles.footer} onPress={() => checkoutPage()}>NEXT</Button>  
-                            </HStack>
+                        </HStack>
                     </>
                     
                 }

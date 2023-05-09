@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TextInput, Modal } from 'react-native'
-import { Text, Button, ScrollView, Stack, Link, Checkbox , HStack, Flex, VStack } from "native-base";
+import { Text, Button, ScrollView, Stack, Link, Checkbox, HStack, Flex, VStack } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import InputLabel from '../components/Form/InputLabel';
@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CmsModal from '../components/Modals/Cms';
 
-export default function RegisterPage({ visible, onToggle }: { visible: boolean, onToggle:any }) {
+export default function RegisterPage({ visible, onToggle }: any) {
 
     useEffect(() => {
 
@@ -26,12 +26,12 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
     const [cms, setCms] = useState<any>({});
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
-    const [newsletter ,setNewsletter] = useState(false)
-    const [optin ,setOptin] = useState(false)
-    const [terms ,setTerms] = useState(false)
+    const [newsletter, setNewsletter] = useState(false)
+    const [optin, setOptin] = useState(false)
+    const [terms, setTerms] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
 
-    const onChange = (event : any, selectedDate: any) => {
+    const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || date;
         setDate(currentDate);
     };
@@ -46,7 +46,7 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
         const json = await response.json();
         setCms(json.data[0]);
     };
-      
+
 
     return (
         <>
@@ -78,7 +78,7 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                     optin: optin ? 1 : 0,
                                     id_lang: 1
                                 }
-                                const response = await RegisterService.register('0', shopId , data);
+                                const response = await RegisterService.register('0', shopId, data);
                                 const json = await response.json();
 
                                 if (json.code == 201 && json.data) {
@@ -143,13 +143,13 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                 />
 
                                 <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" py="1" >
-                                    <TextInput style={styles.date} value="Date of Birth" onFocus={showPicker}/>
+                                    <TextInput style={styles.date} value="Date of Birth" onFocus={showPicker} />
                                     <DateTimePicker
-                                    themeVariant="light"
-                                    value={date}
-                                    mode="date"
-                                    display="default"
-                                    onChange={onChange}
+                                        themeVariant="light"
+                                        value={date}
+                                        mode="date"
+                                        display="default"
+                                        onChange={onChange}
                                     />
                                 </HStack>
 
@@ -163,7 +163,7 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                     touched={touched}
                                     errors={errors}
                                 />
-                                
+
                                 <InputLabel
                                     placeholder="Enter your email"
                                     name="retypeEmail"
@@ -204,13 +204,13 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                         <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('career')}> Personal Data Protection Notice.</Link></Text>
                                 </Checkbox>
 
-                                <CmsModal 
+                                <CmsModal
                                     visible={isModalVisible}
                                     onToggle={toggleModal}
                                     data={cms}
                                 />
 
-            
+
                                 <Stack height={10}></Stack>
 
                                 <Button

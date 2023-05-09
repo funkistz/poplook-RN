@@ -12,8 +12,9 @@ export default function SkeletonProductDetails() {
                 <ScrollView flex={1}>
                     <Skeleton w={'100%'} h={500} startColor="muted.300"/>
 
-                    <VStack space={4}  pt={10} backgroundColor={'white'} >
-                        <Skeleton.Text px="4" startColor="muted.300" />
+                    <VStack space={4}  pt={5} backgroundColor={'white'} >
+                        <Skeleton size="5" px="5" rounded="full" startColor="muted.300" width={'100%'}/>
+                        <Skeleton size="5" px="5" rounded="full" startColor="muted.300" width={'40%'}/>
                     </VStack>
                 </ScrollView>
                 
