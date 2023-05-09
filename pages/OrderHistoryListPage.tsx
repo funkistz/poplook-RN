@@ -70,7 +70,7 @@ export default function OrderHistoryListPage() {
         <>
             <ScrollView bgColor={'white'}>
                 <View style={styles.container}>
-                        {orders.orders_histories && orders.total_items != 0 && (orders.order_histories.map((item: any, index: any) => {
+                        {orders.order_histories && orders.total_items != 0 && (orders.order_histories.map((item: any, index: any) => {
                             return <><TouchableOpacity key={index} onPress={() => orderHistoryDetailsPage(item.id_order)}>
                                 <HStack py={3}>
                                     <VStack paddingRight={8}>
