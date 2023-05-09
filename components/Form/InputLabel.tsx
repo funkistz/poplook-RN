@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, Input, FormControl, Icon } from "native-base";
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-export default function InputLabel({ name, variant = 'outline', placeholder, values, text, onChangeText, onBlur, touched, errors, icon }: any) {
+export default function InputLabel({ name, variant = 'outline', placeholder, values, text, onChangeText, onBlur, touched, errors, icon, type= 'text' }: any) {
 
     useEffect(() => {
 
@@ -14,6 +14,7 @@ export default function InputLabel({ name, variant = 'outline', placeholder, val
         <FormControl mb={1}>
             {!!text && <FormControl.Label _text={{ color: "#666" }}>{text}</FormControl.Label>}
             <Input
+                type={type}
                 variant={variant}
                 placeholder={placeholder}
                 value={values[name]}

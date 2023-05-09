@@ -26,8 +26,8 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
     const [cms, setCms] = useState<any>({});
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
-    const [newsletter ,setNewsletter] = useState(false)
-    const [optin ,setOptin] = useState(false)
+    const [newsletter ,setNewsletter] = useState(true)
+    const [optin ,setOptin] = useState(true)
     const [terms ,setTerms] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -46,11 +46,10 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
         const json = await response.json();
         setCms(json.data[0]);
     };
-      
 
     return (
         <>
-            <ScrollView>
+            <ScrollView backgroundColor={'#fff'}>
                 <View style={styles.container}>
                     <Text style={styles.title}>Sign up your account now!</Text>
 
@@ -68,6 +67,8 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                         }}
                         onSubmit={
                             async (values) => {
+                                if(!terms) return  GeneralService.toast({ description: 'You must agree to accepting and consenting privacy policy before register.' }); 
+
                                 const data = {
                                     firstname: values.firstname,
                                     lastname: values.lastname,
@@ -142,16 +143,18 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                     secureTextEntry={false}
                                 />
 
-                                <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" py="1" >
-                                    <TextInput style={styles.date} value="Date of Birth" onFocus={showPicker}/>
+                                <View style={{marginVertical: 5}}>
+                                    <TextInput style={{color: '#666'}} value="Date of Birth*" onFocus={showPicker}/>
                                     <DateTimePicker
-                                    themeVariant="light"
-                                    value={date}
-                                    mode="date"
-                                    display="default"
-                                    onChange={onChange}
+                                        themeVariant="light"
+                                        value={date}
+                                        mode="date"
+                                        display="spinner"
+                                        onChange={onChange}
+                                        maximumDate={new Date()}
+                                        style={{borderWidth: 1, borderColor: 'black', borderRadius: 5, width: '100%', marginTop: 5, height: 50}}
                                     />
-                                </HStack>
+                                </View>
 
                                 <InputLabel
                                     placeholder="Enter your email"
@@ -183,6 +186,7 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                     text="Password*"
                                     touched={touched}
                                     errors={errors}
+                                    type='password'
                                 />
                                 <InputLabel
                                     placeholder="Enter your password"
@@ -193,16 +197,40 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                     text="Retype Password*"
                                     touched={touched}
                                     errors={errors}
+                                    type='password'
                                 />
 
                                 <Stack height={6}></Stack>
 
-                                <Checkbox value="newsletter" onChange={setNewsletter} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }}>Yes, sign me up for POPLOOK mailing list.</Checkbox><Stack height={1}></Stack>
-                                <Checkbox value="optin" onChange={setOptin} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }}>Allow POPLOOK to send push notification.</Checkbox><Stack height={1}></Stack>
-                                <Checkbox value="terms" onChange={setTerms} style={styles.checkbox}>
-                                    <Text color={'black'} fontSize={12}>I am accepting and consenting to the practices described in the<Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('privacypolicy')}> Privacy Policy</Link> &
-                                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('career')}> Personal Data Protection Notice.</Link></Text>
-                                </Checkbox>
+                                <HStack>
+                                    <HStack w={'8%'}>
+                                        <Checkbox value="newsletter"  isChecked={newsletter} style={styles.checkbox} onChange={setNewsletter}></Checkbox>
+                                    </HStack>
+                                    <HStack  w={'92%'}>
+                                        <Text color='black'fontSize={12}>Yes, sign me up for POPLOOK mailing list.</Text>
+                                    </HStack>
+                                </HStack>
+
+                                <HStack mt={1}>
+                                    <HStack  w={'8%'}>
+                                        <Checkbox value="optin" isChecked={optin} style={styles.checkbox} onChange={setOptin} ></Checkbox>
+                                    </HStack>
+                                    <HStack w={'92%'}>
+                                        <Text color='black'fontSize={12}>Allow POPLOOK to send push notification.</Text>
+                                    </HStack>
+                                </HStack>
+
+                                <HStack mt={1}>
+                                    <HStack w={'8%'}>
+                                        <Checkbox value="terms" isChecked={terms} style={styles.checkbox} onChange={setTerms} ></Checkbox>
+                                    </HStack>
+                                    <HStack w={'92%'} >
+                                        <Text color={'black'} fontSize={12}>I am accepting and consenting to the practices described in the
+                                            <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('privacypolicy')}> Privacy Policy</Link> &
+                                            <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('career')}> Personal Data Protection Notice.</Link>
+                                        </Text>
+                                    </HStack>
+                                </HStack>
 
                                 <CmsModal 
                                     visible={isModalVisible}
