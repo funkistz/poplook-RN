@@ -67,6 +67,11 @@ const AuthService = {
         const url = 'UserAuth/forgetPassword'; 
 
         return APIService.getMethod(url, params);
+    },
+    getVersion() {
+        const url = 'Devices/versionInfo'; 
+
+        return APIService.getMethod(url);
     }
     
 

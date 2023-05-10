@@ -13,6 +13,7 @@ import { getCountries } from '../Redux/Slices/Infos';
 import ShippingTo from '../components/ShippingTo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { getWishList } from '../Redux/Slices/Wishlist';
+import { VERSION } from "@env"
 
 export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -20,7 +21,6 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
     const { user } = useSelector(
         userSelector
     );
-
 
     const categories = [
         { id: 0, key: "personal", title: "Personal Information", icon: "person-outline" },
@@ -135,7 +135,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                             <Spacer />
                         </HStack>
                     </TouchableOpacity>
-                    <Text style={styles.version}>App Version 6.6.3</Text>
+                    <Text style={styles.version}>App Version {VERSION}</Text>
                 </View>
             </ScrollView>
         </View>
