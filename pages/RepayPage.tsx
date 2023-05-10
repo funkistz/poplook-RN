@@ -95,36 +95,59 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const paymentId = () => {
 
-        console.log('parent: ', paymentType)
-        console.log('child: ', paymentChild)
-
         if (shopId == 1) {
             if (paymentType == '2') {
                 return paymentChild;
-            }
-
-            if (paymentType == '8') {
+            } else if (paymentType == '8') {
                 return paymentChild;
-            }
-
-            if (paymentType == '3') { // Credit Card (MYR)
+            }else if (paymentType == '3') { // Credit Card (MYR)
                 return 2;
             }
-
         } else if (shopId == 2) {
 
-
         } else if (shopId == 3) {
-
             if (paymentType == '6') { //Credit Card (USD)
                 return 25;
             }
-
         }
 
         return paymentType;
 
     };
+
+    const atome = async () => {
+
+        const response = await PaymentService.atome(cartId);
+        const json = await response.json();
+
+        console.log('atome', json.data)
+
+        setUrl(json.data.redirect_url);
+        setAppUrl(json.data.app_payment_url);
+        setRefId(json.data.referenceId);
+
+        handlePaymentURL(result == 'No' ? appUrl : url)
+    }
+
+    const getPaymentInfo = async () => {
+
+        const response = await PaymentService.getPaymentInfo(refId);
+        const json = await response.json();
+
+        console.log('paymentinfo', json)
+
+        setTransId(json.paymentTransaction);
+        setAmount(json.amount);
+
+        if (json.status == 'PAID') {
+            setStatus(1);
+        } else {
+            setStatus(0);
+        }
+
+        await cartStep5()
+
+    }
 
     const processIpay88 = () => {
 
@@ -193,37 +216,34 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         });
     }
 
-    const atome = async () => {
-
-        const response = await PaymentService.atome(cartId);
-        const json = await response.json();
-
-        console.log('atome', json.data)
-
-        setUrl(json.data.redirect_url);
-        setAppUrl(json.data.app_payment_url);
-        setRefId(json.data.referenceId);
-
-        handlePaymentURL(result == 'No' ? appUrl : url)
-    }
-
-    const getPaymentInfo = async () => {
-
-        const response = await PaymentService.getPaymentInfo(refId);
-        const json = await response.json();
-
-        console.log('paymentinfo', json)
-
-        setTransId(json.paymentTransaction);
-        setAmount(json.amount);
-
-        if (json.status == 'PAID') {
-            setStatus(1);
+    const redirectPayment = () => {
+        if (paymentType && termAgree) {
+            if (shopId == '1') {
+                if (paymentType == '16') {
+                    atome()
+                } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
+                    processIpay88() 
+                }
+            } else if (shopId == '2') {
+                if (paymentType == '4') {
+                    eghl(data)
+                } else {
+                    enets(data)
+                }
+            } else {
+                if (paymentType == '1') {
+                    // paypal
+                } else {
+                    // pay(data) // ipay88
+                }
+            }
         } else {
-            setStatus(0);
+            if (!paymentType) {
+                GeneralService.toast({ description: 'Please choose payment type' });
+            } else {
+                GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
+            }
         }
-
-        await cartStep5()
 
     }
 
@@ -260,38 +280,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         } else {
             navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
         }
-
-    }
-
-    const redirectPayment = () => {
-        if (paymentType && termAgree) {
-            if (shopId == '1') {
-                if (paymentType == '16') {
-                    atome()
-                } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    processIpay88() 
-                }
-            } else if (shopId == '2') {
-                if (paymentType == '4') {
-                    eghl(data)
-                } else {
-                    enets(data)
-                }
-            } else {
-                if (paymentType == '1') {
-                    // paypal
-                } else {
-                    // pay(data) // ipay88
-                }
-            }
-        } else {
-            if (!paymentType) {
-                GeneralService.toast({ description: 'Please choose payment type' });
-            } else {
-                GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
-            }
-        }
-
     }
 
     return (
@@ -345,9 +333,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
                                 <Text color={'black'} fontSize={14} pr={5}>I agree with the
                                     <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
-                                    {"\n"}
-                                    I adhere to them unconditionally.</Text>
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
                             </Checkbox>
                             <Divider />
 
