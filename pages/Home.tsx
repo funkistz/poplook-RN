@@ -24,6 +24,9 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     const [banners, setBanners] = useState<any[]>([]);
     const [platfrom, setPlatform] = useState<any>('');
 
+    // Dummy Version
+    const dummy_version = '6.6.1';
+
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
@@ -58,7 +61,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             setPlatform(res.android_version)
         }
 
-        if(VERSION != platfrom) {
+        if(dummy_version != platfrom) {
             Alert.alert('Please update to continue using the app.', '', [
                 {
                     text: 'OK',
