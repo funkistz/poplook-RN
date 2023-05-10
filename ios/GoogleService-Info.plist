@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>549922517099-tcvbse8ppe4sfu6p57qp541ba5p3sfu5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.549922517099-tcvbse8ppe4sfu6p57qp541ba5p3sfu5</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>549922517099-7tql97rkf3e1njkfhrhgv9hrqb07l48i.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAX840l_PaAVAcekM6NUToBqxB4w6-OrEQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>549922517099</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tiseno.Poplook</string>
+	<key>PROJECT_ID</key>
+	<string>poplook-1469764212998</string>
+	<key>STORAGE_BUCKET</key>
+	<string>poplook-1469764212998.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:549922517099:ios:e29bbfa52b8f7dbd</string>
+	<key>DATABASE_URL</key>
+	<string>https://poplook-1469764212998.firebaseio.com</string>
+</dict>
+</plist>
