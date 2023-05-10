@@ -12,11 +12,13 @@ import { clearCheckout } from '../Redux/Slices/Checkout';
 import { clearAddress } from '../Redux/Slices/Address';
 import { useNavigation } from '@react-navigation/native';
 import { persistor } from '../Redux/app';
+import { Alert } from 'react-native';
 
 export default function ShippingTo() {
 
     const dispatch = useDispatch()
     const countries = useSelector((storeState: any) => storeState.infos.countries);
+    const session = useSelector((storeState: any) => storeState.session);
     const [countryList, setCountryList] = useState([]);
     const { user, country } = useSelector(
         userSelector
@@ -47,76 +49,38 @@ export default function ShippingTo() {
         if (value) {
             let selectedCountry = countries.find((o: any) => o.country_name === value);
             console.log('selectedCountry', selectedCountry);
-            dispatch(changeCountry(selectedCountry))
+            dispatch(changeCountry(selectedCountry));
 
-            if(value !== country.country_name) {
-                persistor.purge().then(() => {
-                    if(user != null) {
-                        dispatch(logout())
-                    }
-                    dispatch(getWishList())
-                    dispatch(clearCart())
-                    dispatch(clearCheckout())
-                    dispatch(clearAddress())
-                });
-                navigation.navigate('LoginPage', { screen: 'LoginPage' });
+            if(session.user != null) {
+                alert()
             }
-            
         }
 
     }, [value])
 
-    const setCountry = (prop: any) => {
-        console.log('prop', prop);
+    const alert = () => {
+        Alert.alert('You will be log out from you current store', '', [
+            {
+                text: 'OK',
+                onPress: () => logout_()
+            },
+        ]);
+    }
 
+    const logout_ = () => {
+        persistor.purge().then(() => {
+            if(user != null) {
+                dispatch(logout())
+                dispatch(getWishList())
+                dispatch(clearCart())
+                dispatch(clearCheckout())
+                dispatch(clearAddress())
+            }
+        });
     }
 
     return (
         <>
-
-            {/* <SearchableDropdown
-                onItemSelect={(item: any) => {
-                    //   const items = this.state.selectedItems;
-                    //   items.push(item)
-                    //   this.setState({ selectedItems: items });
-                }}
-                containerStyle={{ padding: 5 }}
-                onRemoveItem={(item: any, index: any) => {
-                    //   const items = this.state.selectedItems.filter((sitem) => sitem.id !== item.id);
-                    //   this.setState({ selectedItems: items });
-                }}
-                itemStyle={{
-                    padding: 10,
-                    marginTop: 2,
-                    backgroundColor: '#ddd',
-                    borderColor: '#bbb',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                }}
-                itemTextStyle={{ color: '#222' }}
-                itemsContainerStyle={{ maxHeight: 140 }}
-                items={countryList}
-                defaultIndex={2}
-                resetValue={false}
-                textInputProps={
-                    {
-                        placeholder: "placeholder",
-                        underlineColorAndroid: "transparent",
-                        style: {
-                            padding: 12,
-                            borderWidth: 1,
-                            borderColor: '#ccc',
-                            borderRadius: 5,
-                        },
-                        onTextChange: (text: any) => alert(text)
-                    }
-                }
-                listProps={
-                    {
-                        nestedScrollEnabled: true,
-                    }
-                }
-            /> */}
             <VStack>
                 <Text color='#000' fontSize={16} mb={2}>Shipping to:</Text>
                 <Spacer />

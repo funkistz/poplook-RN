@@ -464,8 +464,6 @@ PODS:
     - React
   - react-native-pager-view (6.0.1):
     - React-Core
-  - react-native-render-html (6.3.4):
-    - React-Core
   - react-native-safe-area-context (4.4.1):
     - RCT-Folly
     - RCTRequired
@@ -578,8 +576,6 @@ PODS:
     - RNFBApp
   - RNGestureHandler (2.9.0):
     - React-Core
-  - RNInAppBrowser (3.7.0):
-    - React-Core
   - RNInsider (5.5.2-nh):
     - InsiderGeofence (= 1.0.3)
     - InsiderHybrid (= 1.4.0)
@@ -687,7 +683,6 @@ DEPENDENCIES:
   - react-native-atome-paylater (from `../node_modules/react-native-atome-paylater`)
   - react-native-ipay88-integration (from `../node_modules/react-native-ipay88-integration`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
-  - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -710,7 +705,6 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNInsider (from `../node_modules/react-native-insider`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -803,8 +797,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-ipay88-integration"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
-  react-native-render-html:
-    :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
@@ -849,8 +841,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNInAppBrowser:
-    :path: "../node_modules/react-native-inappbrowser-reborn"
   RNInsider:
     :path: "../node_modules/react-native-insider"
   RNNotifee:
@@ -919,7 +909,6 @@ SPEC CHECKSUMS:
   react-native-atome-paylater: d0fc8268e80360e94b9cd5aac39d1cbde6f45fdf
   react-native-ipay88-integration: 37a077e959bcddf315e585c6085c6bb7db833b38
   react-native-pager-view: 3051346698a0ba0c4e13e40097cc11b00ee03cca
-  react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   React-perflogger: 43392072a5b867a504e2b4857606f8fc5a403d7f
@@ -942,7 +931,6 @@ SPEC CHECKSUMS:
   RNFBApp: 922564a99c97a8cab366d5a918f9fecff6b563d5
   RNFBMessaging: e2438bcdd8037ed2eb14023026e9f3219b207b29
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
   RNInsider: 8aeee8eafe88089bd7ec8aaa0dcf9ab93b6d9751
   RNNotifee: 05692d7bb42b6c718a3906aeb8431c48ff2e8097
   RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128

@@ -43,8 +43,7 @@ export default function RightHeader({ navigation }: { navigation: any }) {
     }, [isModalVisible])
 
     useEffect(() => {
-        console.log('Enter wishlist....................', session.user)
-        // dispatch(getWishList())
+        
     }, [])
 
 

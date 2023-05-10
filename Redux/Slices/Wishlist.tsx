@@ -196,7 +196,7 @@ export const wishlistSlice = createSlice({
         .addCase(getWishList.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
-            console.log('payload test: ', payload)
+            // console.log('payload test: ', payload)
             if(payload.code == 200) {
                 temp.data = payload.data;
                 temp.id_product = payload.data.product_list.map((product:any) => product.id_product);
@@ -208,7 +208,7 @@ export const wishlistSlice = createSlice({
             }
 
 
-            console.log('stategetwishlist', state);
+            // console.log('stategetwishlist', state);
             return state;
         })
         .addCase(getWishList.pending, (state, { payload }) => {

@@ -12,6 +12,7 @@ import { format } from 'date-fns'
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CmsModal from '../components/Modals/Cms';
+import AuthService from '../Services/AuthService';
 
 export default function RegisterPage({ visible, onToggle }: any) {
 
@@ -26,9 +27,9 @@ export default function RegisterPage({ visible, onToggle }: any) {
     const [cms, setCms] = useState<any>({});
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
-    const [newsletter, setNewsletter] = useState(false)
-    const [optin, setOptin] = useState(false)
-    const [terms, setTerms] = useState(false)
+    const [newsletter ,setNewsletter] = useState(true)
+    const [optin ,setOptin] = useState(true)
+    const [terms ,setTerms] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
 
     const onChange = (event: any, selectedDate: any) => {
@@ -47,10 +48,9 @@ export default function RegisterPage({ visible, onToggle }: any) {
         setCms(json.data[0]);
     };
 
-
     return (
         <>
-            <ScrollView>
+            <ScrollView backgroundColor={'#fff'}>
                 <View style={styles.container}>
                     <Text style={styles.title}>Sign up your account now!</Text>
 
@@ -68,6 +68,8 @@ export default function RegisterPage({ visible, onToggle }: any) {
                         }}
                         onSubmit={
                             async (values) => {
+                                if(!terms) return  GeneralService.toast({ description: 'You must agree to accepting and consenting privacy policy before register.' }); 
+
                                 const data = {
                                     firstname: values.firstname,
                                     lastname: values.lastname,
@@ -78,7 +80,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     optin: optin ? 1 : 0,
                                     id_lang: 1
                                 }
-                                const response = await RegisterService.register('0', shopId, data);
+                                const response = await AuthService.register('0', shopId , data);
                                 const json = await response.json();
 
                                 if (json.code == 201 && json.data) {
@@ -103,7 +105,8 @@ export default function RegisterPage({ visible, onToggle }: any) {
                             retypeEmail: yup
                                 .string()
                                 .email('Retype email must be in a valid format')
-                                .required('Retype Email is required'),
+                                .required('Retype Email is required')
+                                .oneOf([yup.ref('email')], "Confirm email don't match"),
                             password: yup
                                 .string()
                                 .min(3, 'Password must be at least 3 characters')
@@ -111,7 +114,8 @@ export default function RegisterPage({ visible, onToggle }: any) {
                             retypePassword: yup
                                 .string()
                                 .min(3, 'Retype password must be at least 3 characters')
-                                .required('Retype password is required'),
+                                .required('Retype password is required')
+                                .oneOf([yup.ref('password')], "Confirm Password don't match"),
                             terms: yup
                                 .bool()
                                 .oneOf([true])
@@ -142,16 +146,18 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     secureTextEntry={false}
                                 />
 
-                                <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" py="1" >
-                                    <TextInput style={styles.date} value="Date of Birth" onFocus={showPicker} />
+                                <View style={{marginVertical: 5}}>
+                                    <TextInput style={{color: '#666'}} value="Date of Birth*" onFocus={showPicker}/>
                                     <DateTimePicker
                                         themeVariant="light"
                                         value={date}
                                         mode="date"
-                                        display="default"
+                                        display="spinner"
                                         onChange={onChange}
+                                        maximumDate={new Date()}
+                                        style={{borderWidth: 1, borderColor: 'black', borderRadius: 5, width: '100%', marginTop: 5, height: 50}}
                                     />
-                                </HStack>
+                                </View>
 
                                 <InputLabel
                                     placeholder="Enter your email"
@@ -183,6 +189,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     text="Password*"
                                     touched={touched}
                                     errors={errors}
+                                    type='password'
                                 />
                                 <InputLabel
                                     placeholder="Enter your password"
@@ -193,16 +200,40 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     text="Retype Password*"
                                     touched={touched}
                                     errors={errors}
+                                    type='password'
                                 />
 
                                 <Stack height={6}></Stack>
 
-                                <Checkbox value="newsletter" onChange={setNewsletter} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }}>Yes, sign me up for POPLOOK mailing list.</Checkbox><Stack height={1}></Stack>
-                                <Checkbox value="optin" onChange={setOptin} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }}>Allow POPLOOK to send push notification.</Checkbox><Stack height={1}></Stack>
-                                <Checkbox value="terms" onChange={setTerms} style={styles.checkbox}>
-                                    <Text color={'black'} fontSize={12}>I am accepting and consenting to the practices described in the<Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('privacypolicy')}> Privacy Policy</Link> &
-                                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('career')}> Personal Data Protection Notice.</Link></Text>
-                                </Checkbox>
+                                <HStack>
+                                    <HStack w={'8%'}>
+                                        <Checkbox value="newsletter"  isChecked={newsletter} style={styles.checkbox} onChange={setNewsletter}></Checkbox>
+                                    </HStack>
+                                    <HStack  w={'92%'}>
+                                        <Text color='black'fontSize={12}>Yes, sign me up for POPLOOK mailing list.</Text>
+                                    </HStack>
+                                </HStack>
+
+                                <HStack mt={1}>
+                                    <HStack  w={'8%'}>
+                                        <Checkbox value="optin" isChecked={optin} style={styles.checkbox} onChange={setOptin} ></Checkbox>
+                                    </HStack>
+                                    <HStack w={'92%'}>
+                                        <Text color='black'fontSize={12}>Allow POPLOOK to send push notification.</Text>
+                                    </HStack>
+                                </HStack>
+
+                                <HStack mt={1}>
+                                    <HStack w={'8%'}>
+                                        <Checkbox value="terms" isChecked={terms} style={styles.checkbox} onChange={setTerms} ></Checkbox>
+                                    </HStack>
+                                    <HStack w={'92%'} >
+                                        <Text color={'black'} fontSize={12}>I am accepting and consenting to the practices described in the
+                                            <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('privacypolicy')}> Privacy Policy</Link> &
+                                            <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleModal('career')}> Personal Data Protection Notice.</Link>
+                                        </Text>
+                                    </HStack>
+                                </HStack>
 
                                 <CmsModal
                                     visible={isModalVisible}

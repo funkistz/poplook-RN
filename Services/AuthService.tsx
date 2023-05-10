@@ -1,6 +1,7 @@
 import APIService from "./ApiService";
 import md5 from 'md5';
 import { useSelector } from 'react-redux';
+import { API_URL, API_KEY } from "@env"
 
 const AuthService = {
 
@@ -16,6 +17,20 @@ const AuthService = {
         const url = 'UserAuth/login';
 
         return APIService.getMethod(url, params);
+
+    },
+    register(id_cart: String, shopId: String, data: any) {
+
+        const params = {
+            ...data,
+            id_shop: shopId,
+            id_cart: id_cart,
+            apikey: API_KEY,
+        };
+
+        const url = 'Customers/registration';
+
+        return APIService.putMethod(url, params);
 
     },
     userId() {
@@ -46,34 +61,14 @@ const AuthService = {
 
         return APIService.postMethod(url, params);
 
-    }
-    // updateUserInfo(params:any) {
+    },
+    forgotPassword(params:any) {
 
-    //     const newParams = {
-    //       ...params,
-    //       apikey: environment.apiKey
-    //     }
-    //     return await this.apiService.post(API_PERSONAL_INFO, newParams);
+        const url = 'UserAuth/forgetPassword'; 
+
+        return APIService.getMethod(url, params);
+    }
     
-    //     const body = new URLSearchParams();
-    //     body.set('id_customer', params.id_customer);
-    //     body.set('id_lang', params.id_lang);
-    //     body.set('apikey', environment.apiKey);
-    //     body.set('email', params.email);
-    //     body.set('firstname', params.firstname);
-    //     body.set('lastname', params.lastname);
-    //     body.set('birthday', params.birthday);
-    //     body.set('password', params.password);
-    //     body.set('newsletter', params.newsletter);
-    //     body.set('optin', params.optin);
-    //     const options = {
-    //       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-    //     };
-    //     const url = this.apiService.apiUrl(API_PERSONAL_INFO);
-    
-    //     return this.http.post(url, body.toString(), options);
-    //   }
-    // },
 
 
 }
