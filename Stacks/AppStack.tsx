@@ -29,6 +29,7 @@ import OrderSuccessPage from '../pages/OrderSuccessPage';
 import CustomerServicePage from '../pages/CustomerServicePage';
 import CustomerServiceDetailsPage from '../pages/CustomerServiceDetailsPage';
 import WebviewPage from '../pages/EghlPaymentPage';
+import ForgotPassword from '../pages/ForgotPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='ProductDetailPage' component={ProductDetailPage} options={{ title: 'Product' }} />
             <Stack.Screen name='SettingPage' component={SettingPage} options={{ title: 'Setting' }} />
             <Stack.Screen name='LoginPage' component={LoginPage} options={{ title: 'Login' }} />
+            <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{ title: 'Forgot Password' }} />
             <Stack.Screen name='CmsPage' component={CmsPage} />
             <Stack.Screen name='SearchPage' component={SearchPage} options={{ title: 'Search' }} />
             <Stack.Screen name='RegisterPage' component={RegisterPage} options={{ title: 'Register' }} />
