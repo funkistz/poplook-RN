@@ -3,7 +3,7 @@ import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'rea
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { getCartStep1, getGiftMessage, leaveMessageCheckout } from '../Redux/Slices/Checkout';
+import { clearLeaveMessage, getCartStep1, getGiftMessage, leaveMessageCheckout } from '../Redux/Slices/Checkout';
 import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import AddressModal from '../components/Modals/AddressList';
@@ -15,6 +15,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
+import Ipay88Container from '../components/Payment/Ipay88Container';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -34,7 +35,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [giftMessage, setGiftMessage] = useState('');
     const [leaveMessage, setLeaveMessage] = useState('');
     const [cms, setCms] = useState<any>({});
-    const [termAgree, setTermAgree] = useState(false)
+    const [termAgree, setTermAgree] = useState(false);
 
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
@@ -68,8 +69,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             address_id: address ? address.id : ''
         }
 
-        console.log('param hantar' , gift_wrap_exist)
-
         dispatch(getCartStep1(param))
 
         if (text_message) {
@@ -84,8 +83,20 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             }
         }
 
+        const timeOutId = setTimeout(() => {
+            
+            const param = {
+                gift_message: giftMessage
+            }
 
-    }, [])
+            dispatch(getGiftMessage(param));
+            dispatch(leaveMessageCheckout(leaveMessage))
+            
+        }, 500);
+
+        return () => clearTimeout(timeOutId);
+
+    }, [leaveMessage, giftMessage])
 
     // Voucher
     const validateVoucher = async () => {
@@ -163,6 +174,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                     if (json.code == 200 && json.data) {
 
                         if (shopId == '1') {
+                            dispatch(clearLeaveMessage()) 
                             processIpay88(json.data)
                         } 
                     }
@@ -212,7 +224,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const paymentSelected = () => {
 
         if (shopId == 1) {
-
+            if (paymentType == '16') {
+                return 'atome';
+            } else {
+                return 'ipay88'
+            }
         } else if (shopId == 2) {
             if (paymentType == '4') {
                 return 'sgd_cc';
@@ -279,6 +295,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 country: country.country_iso_code,
             };
 
+            console.log('ipay', params)
+
             PaymentService.ProcessIpay88(params);
 
         } catch (e) {
@@ -337,6 +355,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} safeAreaBottom>
                 <ScrollView>
                     <View style={styles.container}>
+                        <Ipay88Container></Ipay88Container>
+
                         {!address &&
                             <><TouchableOpacity onPress={toggleAddressModal}>
                                 <Text style={styles.bold} marginY={3}>Please Add Address</Text>
@@ -370,7 +390,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             setPaymentChild('')
                             setPaymentType(nextValue);
                         }}>
-                            {payment.map((item: any) => {
+                            {payment && payment.map((item: any) => {
                                 return <>
                                     <HStack>
                                         <Radio value={item.id} my="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
@@ -500,26 +520,22 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             <VStack>
                                 <Box borderRadius={10}>
                                     <HStack>
-                                        <AspectRatio w="40%" ratio={4 / 4}>
-                                            <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
-                                        </AspectRatio>
+                                        { gift_wrap &&
+                                            <>
+                                            <AspectRatio w="40%" ratio={4 / 4}>
+                                                <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
+                                            </AspectRatio>
 
-                                        <VStack m={3} flexShrink={1}>
-                                            <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
-                                            <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
-                                        </VStack>
+                                            <VStack m={3} flexShrink={1}>
+                                                <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
+                                                <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
+                                            </VStack>
+                                            </>
+                                        }
+                                        
                                     </HStack>
                                 </Box>
                                 <TextArea marginY={3} value={giftMessage} 
-                                    onKeyPress={(e) => {
-                                        setTimeout(() => {
-
-                                            const param = {
-                                                gift_message: giftMessage
-                                            }
-                                            dispatch(getGiftMessage(param));
-                                        }, 10000); 
-                                    }}
                                     onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
                             </VStack>
                         </> : null}
@@ -543,13 +559,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {message && (message == '1') ? <>
                             <VStack>
-                                <TextArea marginY={3} value={leaveMessage} 
-                                    onKeyPress={(e) => {
-                                        setTimeout(() => {
-                                            dispatch(leaveMessageCheckout(leaveMessage));
-                                        }, 10000); 
-                                    }}
-                                    onChangeText={text => setLeaveMessage(text)} maxW="330" autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
+                                <TextArea marginY={3} 
+                                    value={leaveMessage}
+                                    onChangeText={text => {setLeaveMessage(text)}}
+                                    maxW="330" autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
+                                
                             </VStack>
                         </> : null}
 
