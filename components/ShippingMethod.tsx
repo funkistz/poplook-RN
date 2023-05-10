@@ -5,13 +5,15 @@ import { StyleSheet } from 'react-native';
 export default function ShippingMethod({ carrier }: any) {
 
     return (
-        <HStack py={3} mb={1}>
-            <Checkbox value="newsletter" marginLeft={3} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }} defaultIsChecked>
-                <Text style={styles.normal}>{carrier.name}</Text>
-            </Checkbox>
-            <Spacer />
-            {carrier.price > 0 && <Text style={styles.normal}>{carrier.price}</Text>}
-        </HStack>
+        <>
+            {carrier && <HStack py={3} mb={1}>
+                <Checkbox value="newsletter" marginLeft={3} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }} defaultIsChecked>
+                    <Text style={styles.normal}>{carrier.name}</Text>
+                </Checkbox>
+                <Spacer />
+                {carrier.price > 0 && <Text style={styles.normal}>{carrier.price}</Text>}
+            </HStack>}
+        </>
     );
 }
 

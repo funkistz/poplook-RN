@@ -17,8 +17,11 @@ export default function CategoriesPage({ route, navigation }: { route: any, navi
                 const response = await CategoryService.getCategories();
                 const json = await response.json();
 
-                // console.log('data', json.data);
-                setCategories(json.data);
+                // console.log('data sama ke', JSON.stringify(categories) === JSON.stringify(json.data));
+
+                if (JSON.stringify(categories) !== JSON.stringify(json.data)) {
+                    setCategories(json.data);
+                }
             }
             fetchData().catch(console.error);
         });

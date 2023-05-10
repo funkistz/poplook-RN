@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { persistor } from '../Redux/app';
 import { getAddressCountries, getStates } from '../Redux/Slices/Infos';
 import FormSelect from '../components/Form/FormSelect';
+import { getCartStep1 } from '../Redux/Slices/Checkout';
 
 export default function AddressDetailPage({ route }: { route: any }) {
 
@@ -23,11 +24,11 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const countries = useSelector((storeState: any) => storeState.infos.addressCountries.map((country: any) => { return { label: country.name, value: country.id_country } }));
     const states = useSelector((storeState: any) => storeState.infos.states.map((state: any) => { return { label: state.name, value: state.id } }));
     const country = useSelector((storeState: any) => storeState.session.country);
-    const shopId = useSelector((storeState: any) => storeState.session.id_shop);
+    const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
 
     const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address_selected);
-    console.log('addressx', address);
+    const { isCheckout } = route.params;
 
     const isFocused = useIsFocused();
     const addressId = route.params.param.id;
@@ -37,16 +38,16 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const onClose = () => {
         dispatch(deleteAddress(addressId));
         setIsOpen(false);
-        navigation.navigate('AddressListPage', { screen: 'AddressListPage' });
+        navigation.goBack();
     };
     const cancelRef = useRef(null);
 
     useEffect(() => {
 
-        console.log('addressId addressId', addressId);
-        console.log('addresspage', address);
-        console.log('states', states);
-        console.log('countries', countries);
+        // console.log('addressId addressId', addressId);
+        // console.log('addresspage', address);
+        // console.log('states', states);
+        // console.log('countries', countries);
 
         if (isFocused) {
             if (addressId) {
@@ -61,7 +62,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
     }, [isFocused])
 
     const validation = () => {
-        if(shopId == 1) {
+        if (shopId == 1) {
             return yup.object().shape({
                 firstname: yup
                     .string()
@@ -124,7 +125,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                     .required('Telephone is required'),
 
             })
-        } 
+        }
     }
 
     return (
@@ -152,7 +153,27 @@ export default function AddressDetailPage({ route }: { route: any }) {
                             console.log('ADD', JSON.stringify(values))
                             dispatch(addAddress(values));
                         }
-                        navigation.navigate('AddressListPage', { screen: 'AddressListPage' });
+
+                        if (isCheckout) {
+
+
+                            // dispatch(getCartStep1(param))
+                            // navigation.pop(3);
+                            if (isUpdate) {
+                                const param = {
+                                    gift: "",
+                                    address_id: addressId
+                                }
+                                dispatch(getCartStep1(param))
+                                navigation.navigate('CheckoutExPage', { screen: 'CheckoutExPage' });
+                            } else {
+                                navigation.goBack();
+                            }
+
+                        } else {
+                            navigation.goBack();
+                        }
+
                     }
                 }
                 validationSchema={validation}
@@ -255,19 +276,19 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                                 data={countries}
                             />
-                            { shopId == 1 &&
+                            {shopId == 1 &&
                                 <FormSelect
-                                name="id_state"
-                                values={values}
-                                onChange={setFieldValue}
-                                onBlur={setFieldTouched}
-                                text="State*"
-                                touched={touched}
-                                errors={errors}
-                                data={states}
-                            />
+                                    name="id_state"
+                                    values={values}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    text="State*"
+                                    touched={touched}
+                                    errors={errors}
+                                    data={states}
+                                />
                             }
-                            
+
                             <InputLabel
                                 // placeholder="Enter your city"
                                 name="city"
@@ -289,7 +310,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                             />
 
-                            { isUpdate &&
+                            {isUpdate &&
                                 <HStack>
                                     <Spacer></Spacer>
                                     <Button

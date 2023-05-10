@@ -15,6 +15,8 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
+// import { assignUser } from '../Redux/Slices/Sessions';
+import { assignCartId, clearCart } from '../Redux/Slices/Cart';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -34,6 +36,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [giftMessage, setGiftMessage] = useState('');
     const [leaveMessage, setLeaveMessage] = useState('');
     const [cms, setCms] = useState<any>({});
+    const [termAgree, setTermAgree] = useState(false)
 
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
@@ -62,7 +65,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             address_id: address ? address.id : ''
         }
 
-        console.log('param hantar' , param)
+        console.log('param hantar', param)
 
         dispatch(getCartStep1(param))
 
@@ -82,7 +85,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         if (json.code == 200) {
             setVoucher('');
-            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null}))
+            dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null }))
             GeneralService.toast({ description: json.message });
         } else {
             GeneralService.toast({ description: json.message });
@@ -116,7 +119,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     }
 
     const toggleAddressModal = () => {
-        setAdressModalVisible(!isAddressModalVisible);
+        // setAdressModalVisible(!isAddressModalVisible);
+        console.log('toggleAddressModal');
+
+        navigation.navigate('AddressListExPage', { screen: 'AddressListExPage', isCheckout: true });
     };
 
     const toggleCmsModal = async (key: any) => {
@@ -130,37 +136,50 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         console.log('param', cartId, paymentSelected(), leaveMessage)
 
-        const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
-        const json = await response.json();
+        if (paymentType && termAgree) {
 
-        console.log('cartstep4baru', json.data)
+            const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
+            const json = await response.json();
 
-        setData(json.data);
+            console.log('cartstep4baru', json.data)
 
-        if (json.code == 200 && json.data) {
+            setData(json.data);
 
-            if (shopId == '1') {
-                if (paymentType == '16') {
-                    atome()
-                } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    processIpay88(json.data)
-                }
-            } else if (shopId == '2') {
-                if (paymentType == '4') {
-                    eghl(json.data)
+            if (json.code == 200 && json.data) {
+
+                dispatch(clearCart())
+                // dispatch(assignCartId())
+
+                if (shopId == '1') {
+                    if (paymentType == '16') {
+                        atome()
+                    } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
+                        processIpay88(json.data)
+                    }
+                } else if (shopId == '2') {
+                    if (paymentType == '4') {
+                        eghl(json.data)
+                    } else {
+                        enets(json.data)
+                    }
                 } else {
-                    enets(json.data)
+                    if (paymentType == '1') {
+                        // paypal
+                    } else {
+                        // pay(data) // ipay88
+                    }
                 }
             } else {
-                if (paymentType == '1') {
-                    // paypal
+                if (!paymentType) {
+                    GeneralService.toast({ description: 'Please choose payment type' });
                 } else {
-                    // pay(data) // ipay88
+                    GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
                 }
             }
-        } else {
-            // this.generalService.presentToast(response.data.message);
+
         }
+
+
     }
 
     const atome = async () => {
@@ -168,7 +187,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
-        console.log('atome' ,json)
+        console.log('atome', json)
 
         setUrl(json.data.redirect_url);
         setAppUrl(json.data.app_payment_url);
@@ -189,7 +208,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             }
         } else if (shopId == 3) {
 
-            
+
         }
 
         return paymentType;
@@ -234,7 +253,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const json = await response.json();
 
         console.log('redirectEghl', json.data.results);
-        
+
 
         const param = {
             form: json.data.results,
@@ -246,7 +265,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
 
     }
@@ -269,7 +288,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
     }
 
@@ -301,7 +320,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     return (
         <>
-            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0}>
+            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} safeAreaBottom>
                 <ScrollView>
                     <View style={styles.container}>
                         {!address &&
@@ -312,9 +331,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         }
                         {address &&
                             <>
-                            <TouchableOpacity onPress={toggleAddressModal}>
-                                <Address address={address} title='Shipping'></Address>
-                            </TouchableOpacity>
+                                <TouchableOpacity onPress={toggleAddressModal}>
+                                    <Address address={address} title='Shipping'></Address>
+                                </TouchableOpacity>
                             </>
                         }
                         <AddressModal
@@ -326,9 +345,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {address &&
                             <>
-                            <Text style={styles.bold} mt={2}>Shipping Method</Text>
+                                <Text style={styles.bold} mt={2}>Shipping Method</Text>
                                 <ShippingMethod carrier={carrier}></ShippingMethod>
-                            <Divider />
+                                <Divider />
                             </>
                         }
 
@@ -364,9 +383,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
                         <Spacer />
 
-                        <Checkbox value="terms" style={styles.checkbox} marginY={3}>
-                            <Text color={'black'} fontSize={12}>I agree with the <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}>Terms of Service</Link> and
-                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
+                        <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
+                            <Text color={'black'} fontSize={14} pr={5}>I agree with the
+                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
+                                I adhere to them unconditionally.</Text>
                         </Checkbox>
                         <Divider />
 
@@ -621,5 +642,4 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     }
 })
-
 

@@ -44,7 +44,9 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             category_name: banner.category_name
         };
 
-        navigation.navigate('Home', { screen: 'CategoryPage', params: params });
+        console.log('title', banner.category_name);
+
+        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: banner.category_name });
     }
 
     return (

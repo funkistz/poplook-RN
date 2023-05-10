@@ -74,7 +74,7 @@ export const getCartStep2: any = createAsyncThunk(
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
-            const id_address = state.cart.address != null ? state.cart.address.id : address_id;
+            const id_address = state.cart.address ? state.cart.address.id : address_id;
 
             const response = await CartService.cartStep2(id_cart, id_address);
             let data = await response.json()
@@ -82,7 +82,12 @@ export const getCartStep2: any = createAsyncThunk(
 
             if (response.status == 200) {
                 if (data.code == 200) {
-                    dispatch(getCartStep3(id_address))
+
+                    const param = {
+                        address_id: id_address
+                    }
+
+                    dispatch(getCartStep3(param))
                     return data
                 } else {
                     return rejectWithValue(data)

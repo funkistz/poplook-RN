@@ -20,10 +20,22 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
 
         const param = {
             id: addressId,
-            is_update: true
+            is_update: true,
+            isCheckout: isCheckout
         }
 
         navigation.navigate('AddressDetailPage', { screen: 'AddressDetailPage', param: param });
+    }
+
+    const editAddressExPage = (addressId: any) => {
+
+        const param = {
+            id: addressId,
+            is_update: true,
+            isCheckout: isCheckout
+        }
+
+        navigation.navigate('AddressDetailExPage', { screen: 'AddressDetailExPage', param: param, isCheckout: true });
     }
 
     const toggleModal = () => {
@@ -43,7 +55,7 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
                     <HStack>
                         <Text style={styles.normal} marginBottom={2}>{address.country}</Text>
                         <Spacer />
-                        <TouchableOpacity onPress={() => isCheckout ? toggleModal() : editAddressPage(address.id_address)}>
+                        <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
                             <Text color={'#1cad48'} fontSize={14} paddingRight={3} fontWeight={'600'}>EDIT</Text>
                         </TouchableOpacity>
                     </HStack>

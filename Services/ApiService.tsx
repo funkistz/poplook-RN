@@ -14,9 +14,9 @@ import { API_URL, API_KEY } from "@env"
 //     axios.defaults.headers.common['Authorization'] = token;
 // }
 
-const api_test = 'https://poplook.com/webapi/';
+const api_test = 'https://dev3.poplook.com/webapi/';
 
-const injectExtraParams = (params: any, isString = true) => {
+const injectExtraParamsOld = (params: any, isString = true) => {
     let data: any = {
         ...params,
         apikey: API_KEY,
@@ -73,10 +73,12 @@ const APIService = {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+        const params: any = await this.injectParams(data);
+
         const options = {
             method: 'PUT',
             headers: myHeaders,
-            body: injectExtraParams(data)
+            body: params
         };
 
         console.log('url', api_test + url, options);
@@ -89,10 +91,12 @@ const APIService = {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+        const params: any = await this.injectParams(data);
+
         const options = {
             method: 'POST',
             headers: myHeaders,
-            body: injectExtraParams(data)
+            body: params
         };
 
         console.log('options options', options);
@@ -105,10 +109,12 @@ const APIService = {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+        const params: any = await this.injectParams(data);
+
         const options = {
             method: 'DELETE',
             headers: myHeaders,
-            body: injectExtraParams(data)
+            body: params
         };
 
         // console.log('url', api_test + url, options);

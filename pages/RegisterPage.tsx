@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TextInput, Modal } from 'react-native'
-import { Text, Button, ScrollView, Stack, Link, Checkbox , HStack, Flex, VStack } from "native-base";
+import { Text, Button, ScrollView, Stack, Link, Checkbox, HStack, Flex, VStack } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import InputLabel from '../components/Form/InputLabel';
@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import CmsModal from '../components/Modals/Cms';
 import AuthService from '../Services/AuthService';
 
-export default function RegisterPage({ visible, onToggle }: { visible: boolean, onToggle:any }) {
+export default function RegisterPage({ visible, onToggle }: any) {
 
     useEffect(() => {
 
@@ -32,7 +32,7 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
     const [terms ,setTerms] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
 
-    const onChange = (event : any, selectedDate: any) => {
+    const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || date;
         setDate(currentDate);
     };
@@ -169,7 +169,7 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                     touched={touched}
                                     errors={errors}
                                 />
-                                
+
                                 <InputLabel
                                     placeholder="Enter your email"
                                     name="retypeEmail"
@@ -235,13 +235,13 @@ export default function RegisterPage({ visible, onToggle }: { visible: boolean, 
                                     </HStack>
                                 </HStack>
 
-                                <CmsModal 
+                                <CmsModal
                                     visible={isModalVisible}
                                     onToggle={toggleModal}
                                     data={cms}
                                 />
 
-            
+
                                 <Stack height={10}></Stack>
 
                                 <Button
