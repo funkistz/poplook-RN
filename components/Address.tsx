@@ -8,7 +8,7 @@ export default function Address({ address, title } : { address: any , title: Str
         <HStack py={3}>
             <VStack paddingRight={8}>
                 <Text style={styles.bold}>{title} Address</Text>
-                <Text style={styles.normal}>{address.firstname} {address.lastname} {address.id}</Text>
+                <Text style={styles.normal}>{address.firstname} {address.lastname}</Text>
                 {address && address.company &&
                     <Text style={styles.normal}>{address.company}</Text>
                 }
