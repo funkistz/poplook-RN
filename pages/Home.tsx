@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Platform, Alert} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, Text } from 'native-base';
@@ -7,6 +7,8 @@ import { ScrollView } from 'native-base';
 import { WEB_URL, API_KEY } from "@env"
 import { useDispatch, useSelector } from 'react-redux';
 import { getWishList } from '../Redux/Slices/Wishlist';
+import { useFocusEffect } from '@react-navigation/native';
+import AuthService from '../Services/AuthService';
 
 const win = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -20,6 +22,10 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     const dispatch = useDispatch()
     const [banners, setBanners] = useState<any[]>([]);
+    const [platfrom, setPlatform] = useState<any>('');
+    
+    // Dummy Version
+    const dummy_version = '6.6.2';
 
     useEffect(() => {
 
@@ -36,6 +42,43 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         return unsubscribe;
 
     }, [])
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const getVersion = async () => {
+                const response = await AuthService.getVersion();
+                const json = await response.json();
+                checkVersion(json.data)
+            }
+            getVersion().catch(console.error);
+        }, [])
+    );
+
+    const checkVersion = (res:any) => {
+        if(Platform.OS == 'ios') {
+            setPlatform(res.ios_version)
+        } else {
+            setPlatform(res.android_version)
+        }
+
+        if(dummy_version != platfrom) {
+            Alert.alert('Please update to continue using the app.', '', [
+                {
+                    text: 'OK',
+                    onPress: () => update()
+                },
+            ]);
+        }
+    }
+
+    const update = () => {
+        console.log('update')
+        if(Platform.OS == 'ios') {
+            // https://apps.apple.com/us/app/poplook/id1081245738?platform=iphone
+        } else {
+            // https://play.google.com/store/apps/details?id=com.tiseno.poplook&hl=en&gl=US
+        }
+    }
 
     const goToCategory = (banner: any) => {
 
