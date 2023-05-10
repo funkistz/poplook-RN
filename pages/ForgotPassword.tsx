@@ -18,10 +18,10 @@ export default function ForgotPassword() {
     return (
         <>
             <View style={styles.container}>
-                <Text style={styles.title}>POPLOOK</Text>
+                <Text style={styles.title}>Forgot Password</Text>
                 <Formik 
                     initialValues={{ 
-                    email: '',
+                        email: '',
                     }}
                     onSubmit={
 
@@ -52,15 +52,6 @@ export default function ForgotPassword() {
             <Text style={{ color: '#000000', paddingBottom: 10, }}>
                 If a POPLOOK account exists for the email address you enter, we will send an email to that address with a link to reset your password.
             </Text>
-            {/* <Input 
-                variant="underlined" 
-                placeholder="Email" 
-                value={values.email} 
-                onChangeText={handleChange('email')}
-                onBlur={() => setFieldTouched('email')}  
-                style={styles.input} 
-                // InputLeftElement={<Icon as={<MaterialIcons name="email" />} size={5} ml="2" color="muted.900" />}
-            /> */}
             <CustomInput
                 key={1}
                 placeholder={'Email'}
