@@ -4,7 +4,7 @@ import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { ScrollView } from 'native-base';
-import { WEB_URL, API_KEY } from "@env"
+import { WEB_URL, API_KEY, VERSION } from "@env"
 import { useDispatch, useSelector } from 'react-redux';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { useFocusEffect } from '@react-navigation/native';
@@ -23,9 +23,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     const dispatch = useDispatch()
     const [banners, setBanners] = useState<any[]>([]);
     const [platfrom, setPlatform] = useState<any>('');
-    
-    // Dummy Version
-    const dummy_version = '6.6.2';
 
     useEffect(() => {
 
@@ -61,7 +58,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             setPlatform(res.android_version)
         }
 
-        if(dummy_version != platfrom) {
+        if(VERSION != platfrom) {
             Alert.alert('Please update to continue using the app.', '', [
                 {
                     text: 'OK',
