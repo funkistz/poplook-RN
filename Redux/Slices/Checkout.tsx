@@ -3,6 +3,8 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import AuthService from '../../Services/AuthService'
 import CartService from '../../Services/CartService'
 import GeneralService from '../../Services/GeneralService'
+import { Message } from 'yup'
+import { Alert } from 'react-native'
 
 export interface CheckoutState {
     id_cart: Number | null,
@@ -14,8 +16,12 @@ export interface CheckoutState {
     voucher: Array<any> | null;
     storeCredit: Array<any> | null;
     gift_wrap: any,
-    gift_wrap_exist: any
-    total: String,
+    gift_wrap_exist: any,
+    gift_option: any,
+    gift_message: String,
+    total_price: String,
+    total_product: String,
+    discount: String
     shipping_fee: String,
 }
 
@@ -30,7 +36,11 @@ const initialState: CheckoutState = {
     storeCredit: null,
     gift_wrap: '',
     gift_wrap_exist: null,
-    total: '',
+    gift_option: '',
+    gift_message: '',
+    total_price: '',
+    total_product: '',
+    discount: '',
     shipping_fee: ''
 }
 
@@ -135,6 +145,35 @@ export const getCartStep3: any = createAsyncThunk(
     }
 )
 
+export const getGiftMessage: any = createAsyncThunk(
+    "checkout/giftMessage",
+    async ({ gift_message }: any, { getState, rejectWithValue , dispatch}) => {
+        try {
+            const state: any = getState();
+            const id_cart = state.cart.id_cart;
+            const message = gift_message ? gift_message : '';
+
+            const response = await CartService.cartStep1(id_cart, '' , message, '');
+            let data = await response.json()
+
+            console.log('giftmessage' ,data.data)
+
+            if (response.status == 200) {
+                if (data.code == 200) {
+                    return data
+                } else {
+                    return rejectWithValue(data)
+                }
+            } else {
+                return rejectWithValue(data)
+            }
+        } catch (e: any) {
+            console.log("Error", e.response.data)
+            rejectWithValue(e.response.data)
+        }
+    }
+)
+
 
 export const checkoutSlice = createSlice({
     name: 'checkout',
@@ -145,6 +184,23 @@ export const checkoutSlice = createSlice({
             console.log('clearcheckout');
             const temp: any = {};
             temp.data = null;
+
+            state = { ...state, ...temp }
+            return state;
+        },
+        leaveMessageCheckout: (state, action) => {
+            
+            const temp: any = {};
+            temp.message = action.payload;
+
+            state = { ...state, ...temp }
+            return state;
+        },
+        clearLeaveMessage: (state) => {
+
+            console.log('clearleavemessage');
+            const temp: any = {};
+            temp.message = null;
 
             state = { ...state, ...temp }
             return state;
@@ -160,12 +216,15 @@ export const checkoutSlice = createSlice({
                 temp.address = payload.data.address_delivery;
                 temp.product = payload.data.product_list;
                 temp.carrier = payload.data.carrier_list;
-                temp.total = payload.data.totalProductsWt;
+                temp.total_price = payload.data.totalPriceWt;
+                temp.total_product = payload.data.totalProductsWt;
                 temp.voucher = payload.data.voucher_list;
                 temp.storeCredit = payload.data.store_credit_list;
                 temp.gift_wrap = payload.data.gift_wrap;
-                temp.gift_wrap_exist = payload.data.gift_wrap_exist;
+                temp.gift_wrap_exist = payload.data.gift_wrap.gift_wrap_exist;
+                temp.gift_option = payload.data.gift_wrap_exist;
                 temp.shipping_fee = payload.data.shipping_price;
+                temp.discount = payload.data.totalDiscountsWt;
 
                 state = { ...state, ...temp }
             }
@@ -185,9 +244,11 @@ export const checkoutSlice = createSlice({
                 temp.address = payload.data.address_delivery;
                 temp.product = payload.data.product_list;
                 temp.carrier = payload.data.carrier_list;
-                temp.total = payload.data.totalProductsWt;
+                temp.total_price = payload.data.totalPriceWt;
+                temp.total_product = payload.data.totalProductsWt;
                 temp.shipping_fee = payload.data.shipping_price;
-                temp.gift_wrap_exist = payload.data.gift_wrap_exist;
+                temp.gift_option = payload.data.gift_wrap_exist;
+                temp.discount = payload.data.totalDiscountsWt;
                 state = { ...state, ...temp }
             }
 
@@ -197,7 +258,6 @@ export const checkoutSlice = createSlice({
 
         }).addCase(getCartStep2.rejected, (state, { payload }) => {
             console.log('payloapayloadreject2', payload);
-            GeneralService.toast({ description: payload.message });
         }).addCase(getCartStep3.fulfilled, (state, { payload }) => {
     
             const temp: any = {};
@@ -208,9 +268,11 @@ export const checkoutSlice = createSlice({
                 temp.product = payload.data.product_list;
                 temp.carrier = payload.data.carrier_list;
                 temp.payment = payload.data.payment_list;
-                temp.total = payload.data.totalProductsWt;
+                temp.total_price = payload.data.totalPriceWt;
+                temp.total_product = payload.data.totalProductsWt;
                 temp.shipping_fee = payload.data.shipping_price;
-                temp.gift_wrap_exist = payload.data.gift_wrap_exist;
+                temp.gift_option = payload.data.gift_wrap_exist;
+                temp.discount = payload.data.totalDiscountsWt;
                 state = { ...state, ...temp }
             }
 
@@ -221,12 +283,25 @@ export const checkoutSlice = createSlice({
         }).addCase(getCartStep3.rejected, (state, { payload }) => {
             console.log('payloadreject3', payload);
             // GeneralService.toast({ description: payload.message });
+        }).addCase(getGiftMessage.fulfilled, (state, { payload }) => {
+    
+            const temp: any = {};
+            if (payload.data) {
+                temp.gift_message = payload.data.cart_list.gift_message;
+                state = { ...state, ...temp }
+            }
+            
+            return state;
+        }).addCase(getGiftMessage.pending, (state, { payload }) => {
+
+        }).addCase(getGiftMessage.rejected, (state, { payload }) => {
+            console.log('payloadrejectmessage', payload);
         })
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { clearCheckout } = checkoutSlice.actions
+export const { clearCheckout, leaveMessageCheckout, clearLeaveMessage } = checkoutSlice.actions
 
 export const checkoutSelector = (state: any) => state.checkout
 
