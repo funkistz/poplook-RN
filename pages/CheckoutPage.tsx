@@ -3,7 +3,7 @@ import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'rea
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { getCartStep1 } from '../Redux/Slices/Checkout';
+import { getCartStep1, getGiftMessage, leaveMessageCheckout } from '../Redux/Slices/Checkout';
 import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import AddressModal from '../components/Modals/AddressList';
@@ -48,10 +48,15 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const gift_wrap_id = useSelector((storeState: any) => storeState.checkout.id_gift);
     const gift_wrap = useSelector((storeState: any) => storeState.checkout.gift_wrap);
     const gift_wrap_exist = useSelector((storeState: any) => storeState.checkout.gift_wrap_exist);
+    const gift_option = useSelector((storeState: any) => storeState.checkout.gift_option);
+    const gift_message = useSelector((storeState: any) => storeState.checkout.gift_message);
     const shipping_fee = useSelector((storeState: any) => storeState.checkout.shipping_fee);
-    const total = useSelector((storeState: any) => storeState.checkout.total);
+    const total_price = useSelector((storeState: any) => storeState.checkout.total_price);
+    const total_product = useSelector((storeState: any) => storeState.checkout.total_product);
+    const discount = useSelector((storeState: any) => storeState.checkout.discount);
     const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
     const credit_store_list = useSelector((storeState: any) => storeState.checkout.storeCredit);
+    const text_message = useSelector((storeState: any) => storeState.checkout.message);
 
     // Voucher
     const [voucher, setVoucher] = React.useState('');
@@ -66,6 +71,18 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         console.log('param hantar' , gift_wrap_exist)
 
         dispatch(getCartStep1(param))
+
+        if (text_message) {
+            setMessage('1')
+            setLeaveMessage(text_message)
+        }
+
+        if (gift_option) {
+            setGift('0')
+            if(gift_message) {
+                setGiftMessage(gift_message)
+            }
+        }
 
 
     }, [])
@@ -449,7 +466,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         </View>}
 
-                        { gift_wrap_exist && 
+                        { gift_wrap_exist == '1' && 
                             <>
                             <HStack py={1}>
                                 <Text style={styles.normal}>Gift Option</Text>
@@ -471,17 +488,15 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                     }}
                                 >
                                     <HStack>
-                                        <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
-                                        <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
+                                        <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
+                                        <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
                                     </HStack>
                                 </Radio.Group>
                             </HStack>
                             </>
                         }
 
-                        
-
-                        {gift && (gift == '1') ? <>
+                        {gift && (gift == '0') ? <>
                             <VStack>
                                 <Box borderRadius={10}>
                                     <HStack>
@@ -495,7 +510,17 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                         </VStack>
                                     </HStack>
                                 </Box>
-                                <TextArea marginY={3} value={giftMessage} onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
+                                <TextArea marginY={3} value={giftMessage} 
+                                    onKeyPress={(e) => {
+                                        setTimeout(() => {
+
+                                            const param = {
+                                                gift_message: giftMessage
+                                            }
+                                            dispatch(getGiftMessage(param));
+                                        }, 10000); 
+                                    }}
+                                    onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
                             </VStack>
                         </> : null}
 
@@ -518,7 +543,13 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {message && (message == '1') ? <>
                             <VStack>
-                                <TextArea marginY={3} value={leaveMessage} onChangeText={text => setLeaveMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Type something here" color={'black'} />
+                                <TextArea marginY={3} value={leaveMessage} 
+                                    onKeyPress={(e) => {
+                                        setTimeout(() => {
+                                            dispatch(leaveMessageCheckout(leaveMessage));
+                                        }, 10000); 
+                                    }}
+                                    onChangeText={text => setLeaveMessage(text)} maxW="330" autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
                             </VStack>
                         </> : null}
 
@@ -555,12 +586,12 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         <HStack py={1}>
                             <Text style={styles.normal}>Retail Price :</Text>
                             <Spacer />
-                            <Text style={styles.normal}>{currency} {total}</Text>
+                            <Text style={styles.normal}>{currency} {total_product}</Text>
                         </HStack>
                         <HStack py={1}>
                             <Text style={styles.normal}>Discount :</Text>
                             <Spacer />
-                            <Text style={styles.normal}>-</Text>
+                            <Text style={styles.normal}>{currency} {discount}</Text>
                         </HStack>
                         <HStack py={1}>
                             <Text style={styles.normal}>Store Credit :</Text>
@@ -578,7 +609,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 <HStack style={{ marginHorizontal: 20 }}>
                     <Text style={styles.total}>Total :</Text>
                     <Spacer />
-                    <Text style={styles.total}>{currency} {total}</Text>
+                    <Text style={styles.total}>{currency} {total_price}</Text>
                 </HStack>
 
                 <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}>
