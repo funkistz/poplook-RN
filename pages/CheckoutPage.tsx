@@ -78,20 +78,36 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         if (gift_option) {
             setGift('0')
-            if(gift_message) {
+            if (gift_message) {
+                setGiftMessage(gift_message)
+            }
+        }
+
+    }, [])
+
+    useEffect(() => {
+
+        if (text_message) {
+            setMessage('1')
+            setLeaveMessage(text_message)
+        }
+
+        if (gift_option) {
+            setGift('0')
+            if (gift_message) {
                 setGiftMessage(gift_message)
             }
         }
 
         const timeOutId = setTimeout(() => {
-            
+
             const param = {
                 gift_message: giftMessage
             }
 
             dispatch(getGiftMessage(param));
             dispatch(leaveMessageCheckout(leaveMessage))
-            
+
         }, 500);
 
         return () => clearTimeout(timeOutId);
@@ -174,43 +190,43 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                     if (json.code == 200 && json.data) {
 
                         if (shopId == '1') {
-                            dispatch(clearLeaveMessage()) 
+                            dispatch(clearLeaveMessage())
                             processIpay88(json.data)
-                        } 
+                        }
                     }
                 } else {
                     GeneralService.toast({ description: 'Please select payment type' });
                 }
             } else {
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
-                    const json = await response.json();
+                const json = await response.json();
 
-                    console.log('cartstep4baru', json.data)
+                console.log('cartstep4baru', json.data)
 
-                    setData(json.data);
+                setData(json.data);
 
-                    if (json.code == 200 && json.data) {
+                if (json.code == 200 && json.data) {
 
-                        if (shopId == '1') {
-                            if (paymentType == '16') {
-                                atome()
-                            } else if (paymentType == '3') {
-                                processIpay88(json.data)
-                            }
-                        } else if (shopId == '2') {
-                            if (paymentType == '4') {
-                                eghl(json.data)
-                            } else {
-                                enets(json.data)
-                            }
-                        } else {
-                            if (paymentType == '1') {
-                                // paypal
-                            } else {
-                                // pay(data) // ipay88
-                            }
+                    if (shopId == '1') {
+                        if (paymentType == '16') {
+                            atome()
+                        } else if (paymentType == '3') {
+                            processIpay88(json.data)
                         }
-                    } 
+                    } else if (shopId == '2') {
+                        if (paymentType == '4') {
+                            eghl(json.data)
+                        } else {
+                            enets(json.data)
+                        }
+                    } else {
+                        if (paymentType == '1') {
+                            // paypal
+                        } else {
+                            // pay(data) // ipay88
+                        }
+                    }
+                }
             }
         } else {
             if (!paymentType) {
@@ -218,7 +234,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             } else {
                 GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
             }
-        } 
+        }
     }
 
     const paymentSelected = () => {
@@ -250,7 +266,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 return paymentChild;
             } else if (paymentType == '8') {
                 return paymentChild;
-            }else if (paymentType == '3') { // Credit Card (MYR)
+            } else if (paymentType == '3') { // Credit Card (MYR)
                 return 2;
             }
         } else if (shopId == 2) {
@@ -270,7 +286,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
-        console.log('atome' ,json)
+        console.log('atome', json)
 
         setUrl(json.data.redirect_url);
         setAppUrl(json.data.app_payment_url);
@@ -312,7 +328,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const json = await response.json();
 
         console.log('redirectEghl', json.data.results);
-        
+
         const param = {
             form: json.data.results,
             order_id: data.id_order,
@@ -486,33 +502,33 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         </View>}
 
-                        { gift_wrap_exist == '1' && 
+                        {gift_wrap_exist == '1' &&
                             <>
-                            <HStack py={1}>
-                                <Text style={styles.normal}>Gift Option</Text>
-                                <Spacer />
-                                <Radio.Group
-                                    name="giftOption"
-                                    value={gift}
-                                    onChange={(nextValue) => {
-                                        setGift(nextValue);
+                                <HStack py={1}>
+                                    <Text style={styles.normal}>Gift Option</Text>
+                                    <Spacer />
+                                    <Radio.Group
+                                        name="giftOption"
+                                        value={gift}
+                                        onChange={(nextValue) => {
+                                            setGift(nextValue);
 
-                                        const param = {
-                                            gift: gift,
-                                            gift_wrap_id: gift_wrap_id,
-                                            gift_message: giftMessage,
-                                            address_id: address ? address.id : null
-                                        }
+                                            const param = {
+                                                gift: gift,
+                                                gift_wrap_id: gift_wrap_id,
+                                                gift_message: giftMessage,
+                                                address_id: address ? address.id : null
+                                            }
 
-                                        dispatch(getCartStep1(param))
-                                    }}
-                                >
-                                    <HStack>
-                                        <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
-                                        <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
-                                    </HStack>
-                                </Radio.Group>
-                            </HStack>
+                                            dispatch(getCartStep1(param))
+                                        }}
+                                    >
+                                        <HStack>
+                                            <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
+                                            <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
+                                        </HStack>
+                                    </Radio.Group>
+                                </HStack>
                             </>
                         }
 
@@ -520,22 +536,22 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             <VStack>
                                 <Box borderRadius={10}>
                                     <HStack>
-                                        { gift_wrap &&
+                                        {gift_wrap &&
                                             <>
-                                            <AspectRatio w="40%" ratio={4 / 4}>
-                                                <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
-                                            </AspectRatio>
+                                                <AspectRatio w="40%" ratio={4 / 4}>
+                                                    <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
+                                                </AspectRatio>
 
-                                            <VStack m={3} flexShrink={1}>
-                                                <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
-                                                <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
-                                            </VStack>
+                                                <VStack m={3} flexShrink={1}>
+                                                    <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
+                                                    <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
+                                                </VStack>
                                             </>
                                         }
-                                        
+
                                     </HStack>
                                 </Box>
-                                <TextArea marginY={3} value={giftMessage} 
+                                <TextArea marginY={3} value={giftMessage}
                                     onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
                             </VStack>
                         </> : null}
@@ -559,11 +575,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {message && (message == '1') ? <>
                             <VStack>
-                                <TextArea marginY={3} 
+                                <TextArea marginY={3}
                                     value={leaveMessage}
-                                    onChangeText={text => {setLeaveMessage(text)}}
+                                    onChangeText={text => { setLeaveMessage(text) }}
                                     maxW="330" autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
-                                
+
                             </VStack>
                         </> : null}
 
