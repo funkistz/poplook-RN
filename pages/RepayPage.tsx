@@ -124,17 +124,19 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         setUrl(json.data.redirect_url);
         setAppUrl(json.data.app_payment_url);
-        setRefId(json.data.referenceId);
+        setRefId(json.data.reference_id);
 
         handlePaymentURL(result == 'No' ? appUrl : url)
     }
 
     const getPaymentInfo = async () => {
 
+        console.log('refid', refId)
+
         const response = await PaymentService.getPaymentInfo(refId);
         const json = await response.json();
 
-        console.log('paymentinfo', json)
+        console.log('paymentinfo', json) 
 
         setTransId(json.paymentTransaction);
         setAmount(json.amount);
@@ -149,12 +151,26 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     }
 
+    const ipay = async (data: any) => {
+
+        const response = await PaymentService.repayIpay(data.id_order, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('repayIpay', json);
+
+        if (json.code == '200') {
+            processIpay88()
+        } else {
+
+        }
+    }
+
     const processIpay88 = () => {
 
         try {
             const params: any = {
                 paymentId: paymentId(),
-                referenceNo: data.id_order,
+                referenceNo: cartId,
                 amount: data.totalPriceWt,
                 currency: country.currency_iso_code,
                 productDescription: "Reference No: " + data.id_order,
@@ -222,7 +238,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 if (paymentType == '16') {
                     atome()
                 } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    processIpay88() 
+                    ipay(data)
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
@@ -326,9 +342,11 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
                                             </Box>
                                         </HStack>
+                                        
                                     </>
                                 })}
                             </Radio.Group>
+                            <Text color={'black'}>{paymentType} {paymentChild}</Text>
 
                             <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
                                 <Text color={'black'} fontSize={14} pr={5}>I agree with the
