@@ -22,9 +22,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     const dispatch = useDispatch()
     const [banners, setBanners] = useState<any[]>([]);
-    const [platfrom, setPlatform] = useState<any>('');
     
-
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
@@ -53,23 +51,24 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     );
 
     const checkVersion = (res:any) => {
+        let platform = '';
         if(Platform.OS == 'ios') {
-            setPlatform(res.ios_version)
+            platform = res.ios_version
         } else {
-            setPlatform(res.android_version)
+            platform = res.android_version
         }
 
-        if(platfrom > VERSION) {
+        if(platform > VERSION) {
             Alert.alert('Please update to continue using the app.', '', [
                 {
                     text: 'OK',
-                    onPress: () => update()
+                    onPress: () => update(platform)
                 },
             ]);
         }
     }
 
-    const update = () => {
+    const update = (res:any) => {
         if(Platform.OS == 'ios') {
             Linking.openURL('https://apps.apple.com/us/app/poplook/id1081245738?platform=iphone')
         } else {
