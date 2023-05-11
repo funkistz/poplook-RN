@@ -19,33 +19,63 @@ const PaymentService = {
 
         let base64 = require("base-64");
 
-        return fetch('https://api.apaylater.net/v2/payments/' + refId, {
+        return fetch('https://api.apaylater.com/v2/payments/' + refId, {
             method: 'GET',
-            headers: new Headers({ "Authorization": "Basic " + base64.encode('fb9f8e94420c4dea8781d9282dbdc9e3' + ":" + '587c1346e7224210898b22f9d6e539cd') }),
+            headers: new Headers({ "Authorization": "Basic " + base64.encode('eac2f0df26f8403b998c2fae5a5e4f64' + ":" + 'd33f0678ad224f979e991682807e3adb') }),
         });
+
+    },
+
+    async repayIpay(orderId: any, customerId: any, paymentId: any) {
+
+        const params: any = {
+            id_order: orderId,
+            id_customer: customerId,
+            id_payment: paymentId,
+            return_url: '',
+            callback_url: ''
+        };
+
+        return APIService.postMethod('PaymentProcessor/repay_ipay88', params);
+
+    },
+
+    async repayIpayUsd(orderId: any, customerId: any, paymentId: any) {
+
+        const params: any = {
+            id_order: orderId,
+            id_customer: customerId,
+            id_payment: paymentId,
+            return_url: '',
+            callback_url: ''
+        };
+
+        return APIService.postMethod('PaymentProcessor/repay_usdcc', params);
+
     },
 
     ProcessIpay88(data: any) {
 
         try {
             const merchantCode = 'M01333_S0001'
-            const merchantKey = 'SSEXcXnvgK'
+            const merchantKey = 's8EXcXnvqK'
 
             const request: any = {
                 paymentId: data.paymentId,
                 merchantKey: merchantKey,
                 merchantCode: merchantCode,
-                referenceNo: data.referenceNo,
                 amount: data.amount,
-                currency: data.currency,
-                productDescription: data.productDescription,
+                remark: "Modest Fashion",
+                referenceNo: data.referenceNo,
+                productDescription: "Poplook Purchases",
                 userName: data.userName,
                 userEmail: data.userEmail,
                 userContact: "0123456789",
-                remark: "Test",
-                utfLang: "UTF-8",
                 country: data.country,
                 backendUrl: "https://poplook.com/modules/ipay88induxive/backend_response.php",
+                currency: data.currency,
+                utfLang: "UTF-8"
+                
             };
 
             const response = Pay(request);
