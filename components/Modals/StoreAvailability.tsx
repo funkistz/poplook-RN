@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, TextInput, Dimensions } from 'react-native';
 import { Center, Button, Container, Divider, Flex, Heading, HStack, IconButton, Spacer, Stack, Text, VStack, FormControl, Input, ScrollView, Icon, FlatList, Box, Badge } from 'native-base';
-import { Chip, List } from 'react-native-paper';
 import ProductService from '../../Services/ProductService';
 import Spinner from '../Spinner';
-import SizeList from '../Products/SizeList';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function StoreAvailabilityModal({ visible, onToggle, size, reference, product }: { visible: boolean, onToggle: any, size: any, reference: any, product: any }) {
 
@@ -13,9 +12,6 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
     const [available, setAvailable] = useState<any>([]);
     const [select, setSelect] = useState<any>('');
     const [isLoading, setIsLoading] = useState(false);
-
-    // useEffect(() => {
-    // }, [])
 
     useEffect(() => {
 
@@ -74,7 +70,20 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                 onRequestClose={onToggle}
             >
                 <View style={{ flex: 1, paddingHorizontal: 20, paddingVertical: 30 }}>
-                    <Text bold style={{ color: 'black', fontSize: 18 }}>Check in-store availability</Text>
+                    <HStack mb={4}>
+                        <HStack w={'90%'}>
+                            <Text bold style={{ color: 'black', fontSize: 18 }}>Check in-store availability</Text>
+                        </HStack>
+                        <HStack w={'10%'}>
+                            <TouchableOpacity onPress={onToggle}>
+                                <Icon
+                                    size="6"
+                                    color="black"
+                                    as={<IonIcon name="close-outline" />}
+                                />
+                            </TouchableOpacity>
+                        </HStack>
+                    </HStack>
                     <Text bold style={{ color: 'black', fontSize: 16 }} mt={2}>{product.name}</Text>
                     {size.length > 0 &&
                         <>
@@ -141,12 +150,12 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                     }
 
                     {!isLoading && available === null &&
-                                    <>
-                                        <Center>
-                                            <Text color='gray.700' mt={4}>Not available in-stores</Text>
-                                        </Center>
-                                    </>
-                                }
+                        <>
+                            <Center>
+                                <Text color='gray.700' mt={4}>Not available in-stores</Text>
+                            </Center>
+                        </>
+                    }
                 </View>
             </Modal>
         </>

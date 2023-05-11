@@ -1,6 +1,6 @@
 import { StyleSheet, View, Dimensions, Image, TouchableOpacity, Share, PixelRatio, Modal, Animated } from 'react-native';
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { VStack, HStack, Center, Flex, Spacer, Box, ScrollView, Button, IconButton, Text, Divider, Backdrop } from 'native-base';
+import { VStack, HStack, Center, Flex, Spacer, Box, ScrollView, Button, IconButton, Text, Divider, Backdrop, Icon } from 'native-base';
 import ProductService from '../Services/ProductService';
 import { SliderBox } from "react-native-image-slider-box";
 import SliderItem from '../components/Products/SliderItem';
@@ -323,8 +323,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     useEffect(() => {
         setIsLoading(false);
         dispatch(getCart());
-        setHeightDetails(400)
-
         fetchData(route.params.product_id).catch(console.error);
 
     }, [])
@@ -412,7 +410,20 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         onRequestClose={toggleModalDetails}
                                     >
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
-                                            <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Details</Text>
+                                            <HStack mb={4}>
+                                                <HStack w={'90%'}>
+                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Details</Text>
+                                                </HStack>
+                                                <HStack w={'10%'}>
+                                                    <TouchableOpacity onPress={toggleModalDetails}>
+                                                        <Icon
+                                                            size="6"
+                                                            color="black"
+                                                            as={<IonIcon name="close-outline" />}
+                                                        />
+                                                    </TouchableOpacity>
+                                                </HStack>
+                                            </HStack>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
                                             {details &&
                                                 <>
@@ -496,8 +507,21 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         onRequestClose={toggleModalMeasurements}
                                     >
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
-                                            <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Measurements</Text>
-                                            <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
+                                            <HStack mb={4}>
+                                                <HStack w={'90%'}>
+                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Measurements</Text>
+                                                </HStack>
+                                                <HStack w={'10%'}>
+                                                    <TouchableOpacity onPress={toggleModalMeasurements}>
+                                                        <Icon
+                                                            size="6"
+                                                            color="black"
+                                                            as={<IonIcon name="close-outline" />}
+                                                        />
+                                                    </TouchableOpacity>
+                                                </HStack>
+                                            </HStack>
+                                            <Divider mb={4} style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
                                             {measurements &&
                                                 <>
                                                     <View>
@@ -505,7 +529,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                             <WebView
                                                                 source={{ html: htmlContent(measurements) }}
                                                                 injectedJavaScript={injectedJavaScript}
-                                                                onMessage={handleWebViewMessage}
                                                                 style={{ height: win.height - 150 }}
                                                                 startInLoadingState={true}
                                                             />
@@ -539,8 +562,21 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         style={{ justifyContent: 'flex-end' }}
                                     >
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
-                                            <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Care</Text>
-                                            <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
+                                            <HStack mb={4}>
+                                                <HStack w={'90%'}>
+                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Care</Text>
+                                                </HStack>
+                                                <HStack w={'10%'}>
+                                                    <TouchableOpacity onPress={toggleModalCare}>
+                                                        <Icon
+                                                            size="6"
+                                                            color="black"
+                                                            as={<IonIcon name="close-outline" />}
+                                                        />
+                                                    </TouchableOpacity>
+                                                </HStack>
+                                            </HStack>
+                                            <Divider mb={4} style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
                                             {care &&
                                                 <>
                                                     <View>
@@ -548,7 +584,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                             <WebView
                                                                 source={{ html: htmlContent(care) }}
                                                                 injectedJavaScript={injectedJavaScript}
-                                                                onMessage={handleWebViewMessage}
                                                                 style={{ height: win.height - 150 }}
                                                                 startInLoadingState={true}
                                                             />
@@ -581,7 +616,20 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         onRequestClose={toggleModalDelivery}
                                     >
                                         <View style={{ flex: 1, paddingVertical: 20 }}>
-                                            <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Delivery & Return</Text>
+                                            <HStack mb={4}>
+                                                <HStack w={'90%'}>
+                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Delivery & Return</Text>
+                                                </HStack>
+                                                <HStack w={'10%'}>
+                                                    <TouchableOpacity onPress={toggleModalDelivery}>
+                                                        <Icon
+                                                            size="6"
+                                                            color="black"
+                                                            as={<IonIcon name="close-outline" />}
+                                                        />
+                                                    </TouchableOpacity>
+                                                </HStack>
+                                            </HStack>
                                             <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
                                             {delivery &&
                                                 <>
@@ -590,7 +638,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                             <WebView
                                                                 source={{ html: htmlContent(delivery) }}
                                                                 injectedJavaScript={injectedJavaScript}
-                                                                onMessage={handleWebViewMessage}
                                                                 style={{ height: win.height - 150 }}
                                                                 startInLoadingState={true}
                                                             />

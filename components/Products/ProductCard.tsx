@@ -88,7 +88,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
 
                 <Center>
                     <HStack mt={2} py={0} mb={4}>
-                        <VStack style={{ width: hideWishlist ? 160 : 140, height: 30 }}>
+                        <VStack style={{ width: hideWishlist ? 160 : 140, height: 50 }}>
                             {product.collection_name &&
                                 <Text fontWeight={300} color='black' fontSize={11} >{product.collection_name}</Text>
                             }
@@ -97,7 +97,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                         </VStack>
 
                         {!hideWishlist && <>
-                            <Box alignItems="center" style={{ width: 40, height: 30 }} >
+                            <Box alignItems="center" style={{ width: 40, height: 50 }} >
                                 <IconButton aria-label="wishlist" onPress={() =>  clickedWishlist()}>
                                     <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
                                 </IconButton>
