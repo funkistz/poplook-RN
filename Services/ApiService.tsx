@@ -50,7 +50,8 @@ const APIService = {
             id_lang: 1,
             id_shop: id_shop,
             device_type: 'apps',
-            api_version: 'apps'
+            api_version: 'apps',
+            app_version: 'v2'
         };
 
         if (isString) {

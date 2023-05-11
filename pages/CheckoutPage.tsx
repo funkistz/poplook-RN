@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert, ActivityIndicator, AppState } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { clearLeaveMessage, getCartStep1, getGiftMessage, leaveMessageCheckout } from '../Redux/Slices/Checkout';
+import { assignOrderID, assignRefID, clearLeaveMessage, getCartStep1, getGiftMessage, leaveMessageCheckout } from '../Redux/Slices/Checkout';
 import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import AddressModal from '../components/Modals/AddressList';
@@ -16,6 +16,8 @@ import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
 import Ipay88Container from '../components/Payment/Ipay88Container';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -28,6 +30,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [isAddressModalVisible, setAdressModalVisible] = useState(false);
     const [isCmsModalVisible, setCmsModalVisible] = useState(false);
     const [data, setData] = useState({});
+    const [orderId, setOrderId] = useState('');
     const [url, setUrl] = useState<any>('');
     const [appUrl, setAppUrl] = useState<any>('');
     const [result, setResult] = useState('');
@@ -36,6 +39,12 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [leaveMessage, setLeaveMessage] = useState('');
     const [cms, setCms] = useState<any>({});
     const [termAgree, setTermAgree] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [status, setStatus] = useState<any>('');
+    const [amount, setAmount] = useState<any>('');
+    const [transId, setTransId] = useState<any>('');
+    const [paymentMethod, setPaymentMethod] = React.useState('');
+    const [paymentState, setPaymentState] = React.useState('');
 
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
@@ -58,6 +67,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
     const credit_store_list = useSelector((storeState: any) => storeState.checkout.storeCredit);
     const text_message = useSelector((storeState: any) => storeState.checkout.message);
+    const reference_id = useSelector((storeState: any) => storeState.checkout.ref_id);
+    const order_id = useSelector((storeState: any) => storeState.checkout.order_id);
 
     // Voucher
     const [voucher, setVoucher] = React.useState('');
@@ -110,9 +121,22 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         }, 500);
 
+        AppState.addEventListener('change', handleAppStateChange);
+
         return () => clearTimeout(timeOutId);
 
+
     }, [leaveMessage, giftMessage])
+
+    const handleAppStateChange = async (nextAppState: any) => {
+
+        if (nextAppState === 'background' || nextAppState === 'inactive') {
+            console.log('back')
+        } else if (nextAppState === 'active') {
+            console.log('active', refId)
+            getPaymentInfo(reference_id)
+        }
+    }
 
     // Voucher
     const validateVoucher = async () => {
@@ -201,9 +225,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                 const json = await response.json();
 
-                console.log('cartstep4baru', json.data)
+                console.log('cartstep4baru', json.data.id_order)
 
-                setData(json.data);
+                // setOrderId(json.data.id_order);
+
+                dispatch(assignOrderID(json.data.id_order))
 
                 if (json.code == 200 && json.data) {
 
@@ -234,6 +260,37 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             } else {
                 GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
             }
+        }
+    }
+
+    const cartStep5 = async (orderId: any, status: any, paymentMethod: any, transId: any, amount: any) => {
+
+        console.log('id order', orderId)
+        console.log('status', status)
+        console.log('paymenttyupe', paymentMethod)
+        console.log('transid', transId)
+        console.log('amount', amount)
+
+        const response = await CartService.cartStep5(orderId, status, paymentMethod, transId, amount);
+        const json = await response.json();
+
+        console.log('cartstep5', json)
+
+        if (json.status == 200 && json.data) {
+            setPaymentState(json.data.payment_state)
+
+            if (paymentState == '42' || paymentState == '18') {
+
+                const param = {
+                    id: orderId
+                };
+
+                navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage', param: param })
+            } else {
+                navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
+            }
+        } else {
+            navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
         }
     }
 
@@ -283,23 +340,50 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const atome = async () => {
 
+        setIsLoading(true)
+
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
         console.log('atome', json)
 
-        setUrl(json.data.redirect_url);
-        setAppUrl(json.data.app_payment_url);
-        setRefId(json.data.referenceId);
-        handlePaymentURL(result == 'No' ? appUrl : url)
+
+        if (json.code == '200' && json.data) {
+            setIsLoading(false)
+            setUrl(json.data.redirect_url);
+            setAppUrl(json.data.app_payment_url);
+            dispatch(assignRefID(json.data.reference_id))
+
+            await handlePaymentURL(json.data.redirect_url)
+        }
     }
+
+    const getPaymentInfo = async (refId: any) => {
+
+        console.log('refid', refId)
+
+        const response = await PaymentService.getPaymentInfo(refId);
+        const json = await response.json();
+
+        console.log('paymentinfo', json)
+
+        setTransId(json.paymentTransaction);
+        setAmount(json.amount);
+
+        if (json.status == 'PAID') {
+            await cartStep5(order_id, '1', 'atome', json.paymentTransaction, json.amount)
+        } else {
+            await cartStep5(order_id, '0', 'atome', json.paymentTransaction, json.amount)
+        }
+    }
+
 
     const processIpay88 = (data: any) => {
 
         try {
             const params: any = {
                 paymentId: paymentId(),
-                referenceNo: data.id_order,
+                referenceNo: cartId,
                 amount: data.totalPriceWt,
                 currency: country.currency_iso_code,
                 productDescription: "Reference No: " + data.id_order,
@@ -401,7 +485,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             </>
                         }
 
-                        <Text style={styles.bold} py={2}>Payment Method</Text>
+                        <Text style={styles.bold} py={2}>Payment Method{refId}</Text>
                         <Radio.Group name="paymentMethod" onChange={nextValue => {
                             setPaymentChild('')
                             setPaymentType(nextValue);
@@ -635,6 +719,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         </HStack>
                     </View>
                 </ScrollView>
+
+                {isLoading ? <ActivityIndicator /> : null}
 
                 <HStack style={{ marginHorizontal: 20 }}>
                     <Text style={styles.total}>Total :</Text>
