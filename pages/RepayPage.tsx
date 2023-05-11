@@ -1,24 +1,26 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Alert, StyleSheet, AppState } from 'react-native';
+import { Alert, StyleSheet, AppState, ActivityIndicator } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, VStack, Divider, Checkbox, Link, Radio, Select, Box, CheckIcon } from "native-base";
 import OrderHistoryService from '../Services/OrderHistoryService';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import ProductDetail from '../components/ProductDetail';
 import { isAtomeAppInstalled } from 'react-native-atome-paylater';
 import { handlePaymentURL } from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
-import { execute } from 'react-native-eghl';
 import CartService from '../Services/CartService';
 import Ipay88Container from '../components/Payment/Ipay88Container';
 import GeneralService from '../Services/GeneralService';
 import SkeletonRepay from '../components/SkeletonRepay';
 import CmsModal from '../components/Modals/Cms';
 import CmsService from '../Services/CmsService';
-
+import { assignRefID } from '../Redux/Slices/Checkout';
 
 export default function RepayPage({ route, navigation }: { route: any, navigation: any }) {
+
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
     const cartId = route.params.params.id;
     const country = useSelector((storeState: any) => storeState.session.country);
@@ -45,6 +47,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [termAgree, setTermAgree] = useState(false)
     const [isCmsModalVisible, setCmsModalVisible] = useState(false);
     const [cms, setCms] = useState<any>({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
 
@@ -117,16 +120,23 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const atome = async () => {
 
+        setIsLoading(true)
+
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
         console.log('atome', json.data)
 
-        setUrl(json.data.redirect_url);
-        setAppUrl(json.data.app_payment_url);
-        setRefId(json.data.reference_id);
+        if (json.code == '200' && json.data) {
+            setIsLoading(false)
+            setUrl(json.data.redirect_url);
+            setAppUrl(json.data.app_payment_url);
+            dispatch(assignRefID(json.data.reference_id))
 
-        handlePaymentURL(result == 'No' ? appUrl : url)
+            await handlePaymentURL(json.data.redirect_url)
+        }
+
+        // handlePaymentURL(result == 'No' ? appUrl : url)
     }
 
     const getPaymentInfo = async () => {
@@ -346,7 +356,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                                     </>
                                 })}
                             </Radio.Group>
-                            <Text color={'black'}>{paymentType} {paymentChild}</Text>
+                            {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
 
                             <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
                                 <Text color={'black'} fontSize={14} pr={5}>I agree with the
@@ -409,7 +419,11 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             </VStack>
                         </View>
                     </ScrollView>
+
+                    
+                    
                     <Box backgroundColor='#ffffff'>
+                        {isLoading ? <ActivityIndicator /> : null }
                         <Button style={styles.button} onPress={() => redirectPayment()}>NEXT</Button>
                     </Box>
                 </>
