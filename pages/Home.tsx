@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Platform, Alert} from 'react-native';
+import { StyleSheet, View, Dimensions, Platform, Alert, Linking} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, Text } from 'native-base';
@@ -23,6 +23,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     const dispatch = useDispatch()
     const [banners, setBanners] = useState<any[]>([]);
     const [platfrom, setPlatform] = useState<any>('');
+    
 
     useEffect(() => {
 
@@ -69,11 +70,10 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     }
 
     const update = () => {
-        console.log('update')
         if(Platform.OS == 'ios') {
-            // https://apps.apple.com/us/app/poplook/id1081245738?platform=iphone
+            Linking.openURL('https://apps.apple.com/us/app/poplook/id1081245738?platform=iphone')
         } else {
-            // https://play.google.com/store/apps/details?id=com.tiseno.poplook&hl=en&gl=US
+            Linking.openURL('https://play.google.com/store/apps/details?id=com.tiseno.poplook&hl=en&gl=US')
         }
     }
 
