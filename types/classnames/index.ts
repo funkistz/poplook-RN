@@ -12,5 +12,6 @@ declare module '@env' {
     export const WEB_URL: string;
     export const MODULE_API: string;
     export const API_KEY: string;
+    export const VERSION: string;
 }
 declare module 'md5';

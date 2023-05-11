@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Text, Input, Box, Button, ScrollView, View } from "native-base";
 import { Formik } from 'formik'
@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useNavigation } from '@react-navigation/native';
 import ShippingTo from '../components/ShippingTo';
+import { TouchableHighlight } from '@gorhom/bottom-sheet';
 
 export default function LoginPage() {
 
@@ -38,6 +39,12 @@ export default function LoginPage() {
     const register = () => {
 
         navigation.navigate('RegisterPage', { screen: 'RegisterPage' });
+
+    }
+
+    const forgotPassword = () => {
+
+        navigation.navigate('ForgotPassword', { screen: 'ForgotPassword' });
 
     }
 
@@ -91,7 +98,10 @@ export default function LoginPage() {
                                 errors={errors}
                                 type='password'
                             />
-                            <Text style={styles.right_section}>Forgot Password?</Text>
+                            <TouchableOpacity onPress={() => forgotPassword()}>
+                                <Text style={styles.forgot_password}>Forgot Password?</Text>
+                            </TouchableOpacity>
+                            
 
                             <Button
                                 bg={'#1cad48'}
@@ -160,5 +170,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 3,
         sizes: 'md'
+    },
+    forgot_password: {
+        color: 'black',
+        fontWeight: '400',
+        paddingTop: 30,
+        fontSize: 16,
+        paddingBottom: 22,
+        textAlign:'right'
     }
 })
