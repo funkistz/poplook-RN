@@ -323,7 +323,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     useEffect(() => {
         setIsLoading(false);
         dispatch(getCart());
-
         fetchData(route.params.product_id).catch(console.error);
 
     }, [])
@@ -441,7 +440,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                                 <View>
                                                                     {shownHere &&
                                                                         <>
-                                                                            <Text fontSize={15} color={'black'}>Shown here with: {heightDetails}</Text>
+                                                                            <Text fontSize={15} color={'black'}>Shown here with:</Text>
                                                                             <View style={{ marginVertical: 10 }}>
                                                                                 {shownHere.map((res: any) => {
                                                                                     return <Chip
@@ -530,7 +529,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                             <WebView
                                                                 source={{ html: htmlContent(measurements) }}
                                                                 injectedJavaScript={injectedJavaScript}
-                                                                onMessage={handleWebViewMessage}
                                                                 style={{ height: win.height - 150 }}
                                                                 startInLoadingState={true}
                                                             />
@@ -586,7 +584,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                             <WebView
                                                                 source={{ html: htmlContent(care) }}
                                                                 injectedJavaScript={injectedJavaScript}
-                                                                onMessage={handleWebViewMessage}
                                                                 style={{ height: win.height - 150 }}
                                                                 startInLoadingState={true}
                                                             />
@@ -641,7 +638,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                             <WebView
                                                                 source={{ html: htmlContent(delivery) }}
                                                                 injectedJavaScript={injectedJavaScript}
-                                                                onMessage={handleWebViewMessage}
                                                                 style={{ height: win.height - 150 }}
                                                                 startInLoadingState={true}
                                                             />
