@@ -59,7 +59,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             setPlatform(res.android_version)
         }
 
-        if(VERSION != platfrom) {
+        if(platfrom > VERSION) {
             Alert.alert('Please update to continue using the app.', '', [
                 {
                     text: 'OK',
