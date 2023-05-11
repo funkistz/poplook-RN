@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Platform, Alert} from 'react-native';
+import { StyleSheet, View, Dimensions, Platform, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, Text } from 'native-base';
@@ -51,14 +51,17 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         }, [])
     );
 
-    const checkVersion = (res:any) => {
-        if(Platform.OS == 'ios') {
+    const checkVersion = (res: any) => {
+        if (Platform.OS == 'ios') {
             setPlatform(res.ios_version)
         } else {
             setPlatform(res.android_version)
         }
 
-        if(VERSION != platfrom) {
+        console.log('version', res);
+
+        // VERSION
+        if ("6.8.4" < platfrom) {
             Alert.alert('Please update to continue using the app.', '', [
                 {
                     text: 'OK',
@@ -70,7 +73,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     const update = () => {
         console.log('update')
-        if(Platform.OS == 'ios') {
+        if (Platform.OS == 'ios') {
             // https://apps.apple.com/us/app/poplook/id1081245738?platform=iphone
         } else {
             // https://play.google.com/store/apps/details?id=com.tiseno.poplook&hl=en&gl=US
