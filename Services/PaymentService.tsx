@@ -1,5 +1,6 @@
 import APIService from "./ApiService";
-import IPay88, { Pay } from "react-native-ipay88-integration";
+// import IPay88, { Pay } from "react-native-ipay88-integration";
+import IPay88, { Pay } from "ipay88-sdk";
 
 const PaymentService = {
 
@@ -29,13 +30,13 @@ const PaymentService = {
 
         try {
             const merchantCode = 'M01333_S0001'
-            const merchantKey = 'SSEXcXnvgK'
+            const merchantKey = 'sBEXcXnvqK'
 
             const request: any = {
-                paymentId: data.paymentId,
+                paymentId: String(data.paymentId),
                 merchantKey: merchantKey,
                 merchantCode: merchantCode,
-                referenceNo: data.referenceNo,
+                referenceNo: String(data.referenceNo),
                 amount: data.amount,
                 currency: data.currency,
                 productDescription: data.productDescription,
