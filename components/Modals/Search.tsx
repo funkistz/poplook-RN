@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, TextInput } from 'react-native';
-import { Center, Button, Container, Divider, Flex, Heading, HStack, IconButton, Spacer, Stack, Text, VStack, FormControl, Input, ScrollView, Icon } from 'native-base';
+import { Center, Button, Flex, VStack, FormControl, Input, Icon } from 'native-base';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function SearchModal({ visible, onToggle, searchKeyword }: { visible: boolean, onToggle: any, searchKeyword: any }) {

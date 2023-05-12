@@ -42,7 +42,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     const snapPoints = useMemo(() => ['30%', '50%'], []);
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
-        if(index == -1) {
+        if (index == -1) {
             setAttributeList([])
             setBackdropVisible(false)
         }
@@ -54,7 +54,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     const [sizeSelected, setSizeSelected] = useState<any>();
     const setSizeSelectedModal = async (size: any) => {
         bottomSheetRef.current?.close();
-        await addtoWishlist(size,attributeList)
+        await addtoWishlist(size, attributeList)
         await dispatch(getWishList())
     }
 
@@ -205,15 +205,15 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
     }
 
-    const addtoWishlist = async (id_product_attribute = null, item:any) => {
+    const addtoWishlist = async (id_product_attribute = null, item: any) => {
 
         // Must login
-        if(user.user == null) {
+        if (user.user == null) {
             GeneralService.toast({ description: 'Log in required for wishlist item' });
             return;
         }
 
-        setAttributeList(item)    
+        setAttributeList(item)
 
         if (item.attribute_list.length > 0) {
             if (!id_product_attribute) {
@@ -371,44 +371,44 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 }
             </View>
             <BottomSheet
-                    ref={bottomSheetRef}
-                    index={-1}
-                    snapPoints={snapPoints}
-                    onChange={handleSheetChanges}
-                    enablePanDownToClose
-                    backdropComponent={() => (
-                        <>
-                            {backdropVisible &&  <Backdrop
-                                onPress={() => {
-                                    setBackdropVisible(false);
-                                    bottomSheetRef.current?.close();
-                                }}
-                                opacity={0}
-                            />}
-                        </>
-                        
-                    )}
-                    // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
-                >
+                ref={bottomSheetRef}
+                index={-1}
+                snapPoints={snapPoints}
+                onChange={handleSheetChanges}
+                enablePanDownToClose
+                backdropComponent={() => (
+                    <>
+                        {backdropVisible && <Backdrop
+                            onPress={() => {
+                                setBackdropVisible(false);
+                                bottomSheetRef.current?.close();
+                            }}
+                            opacity={0}
+                        />}
+                    </>
 
-                    {attributeList.length == 0 && 
-                        <>
-                            <Spinner spin={true} />
-                        </>
-                    }
+                )}
+            // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
+            >
 
-                    {attributeList.length != 0 && 
-                        <>
-                            <View style={styles.contentContainer}>
-                                <Text color={'black'} bold mb={2}>Select Size: </Text>
-                                <SizeList attribute={attributeList.attribute_list} setSizeSelected={(size:any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
-                            </View>
-                        </>
-                    }
-                    
+                {attributeList.length == 0 &&
+                    <>
+                        <Spinner spin={true} />
+                    </>
+                }
+
+                {attributeList.length != 0 &&
+                    <>
+                        <View style={styles.contentContainer}>
+                            <Text color={'black'} bold mb={2}>Select Size: </Text>
+                            <SizeList attribute={attributeList.attribute_list} setSizeSelected={(size: any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
+                        </View>
+                    </>
+                }
+
             </BottomSheet>
 
-        
+
 
         </>
 

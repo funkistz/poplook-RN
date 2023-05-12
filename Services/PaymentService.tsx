@@ -1,5 +1,6 @@
 import APIService from "./ApiService";
-import IPay88, { Pay } from "react-native-ipay88-integration";
+// import IPay88, { Pay } from "react-native-ipay88-integration";
+import IPay88, { Pay } from "ipay88-sdk";
 
 const PaymentService = {
 
@@ -61,12 +62,12 @@ const PaymentService = {
             const merchantKey = 's8EXcXnvqK'
 
             const request: any = {
-                paymentId: data.paymentId,
+                paymentId: String(data.paymentId),
                 merchantKey: merchantKey,
                 merchantCode: merchantCode,
                 amount: data.amount,
                 remark: "Modest Fashion",
-                referenceNo: data.referenceNo,
+                referenceNo: String(data.referenceNo),
                 productDescription: "Poplook Purchases",
                 userName: data.userName,
                 userEmail: data.userEmail,
@@ -75,7 +76,7 @@ const PaymentService = {
                 backendUrl: "https://poplook.com/modules/ipay88induxive/backend_response.php",
                 currency: data.currency,
                 utfLang: "UTF-8"
-                
+
             };
 
             const response = Pay(request);

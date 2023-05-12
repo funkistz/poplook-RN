@@ -10,19 +10,8 @@ import RNInsider from 'react-native-insider';
 import InsiderCallbackType from 'react-native-insider/src/InsiderCallbackType';
 // import { ExecutionEnvironment } from 'expo-constants';
 import { Alert, Platform, PermissionsAndroid } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
 
 export default function App() {
-
-  async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
-  }
 
   // useEffect(() => {
   //   const unsubscribe = messaging().onMessage(async remoteMessage => {
