@@ -18,6 +18,8 @@ import GeneralService from '../Services/GeneralService';
 
 export default function CategoryPage({ route, navigation }: { route: any, navigation: any }) {
 
+    console.log('CategoryPage param', route.params);
+
     // Redux
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.productList);

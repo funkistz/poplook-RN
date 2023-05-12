@@ -104,7 +104,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 return paymentChild;
             } else if (paymentType == '8') {
                 return paymentChild;
-            }else if (paymentType == '3') { // Credit Card (MYR)
+            } else if (paymentType == '3') { // Credit Card (MYR)
                 return 2;
             }
         } else if (shopId == 2) {
@@ -147,7 +147,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const response = await PaymentService.getPaymentInfo(refId);
         const json = await response.json();
 
-        console.log('paymentinfo', json) 
+        console.log('paymentinfo', json)
 
         setTransId(json.paymentTransaction);
         setAmount(json.amount);
@@ -167,7 +167,22 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         console.log('repayIpay', json);
 
         if (json.code == '200') {
-            processIpay88()
+            // processIpay88Browser()
+            const params = {
+                form: json.data.results,
+                order_id: data.id_order,
+                payment_type: 'ipay88',
+                trans_id: null,
+                amount: data.totalPriceWt * 100
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Ipay88PaymentPage',
+                    params: params
+                }]
+            });
         } else {
 
         }
@@ -197,6 +212,34 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         }
     };
 
+    const processIpay88Browser = async () => {
+
+        try {
+
+            const params: any = {
+                paymentId: paymentId(),
+                referenceNo: cartId,
+                amount: data.totalPriceWt,
+                currency: country.currency_iso_code,
+                productDescription: "Reference No: " + data.id_order,
+                userName: user.name,
+                userEmail: user.email,
+                userContact: "0123456789",
+                remark: "Test",
+                utfLang: "UTF-8",
+                country: country.country_iso_code,
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Ipay88PaymentPage', params: params }]
+            });
+
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     const eghl = async (data: any) => {
 
         const response = await PaymentService.repayEghl(data.id_order, user.id_customer);
@@ -214,7 +257,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
 
     }
@@ -236,7 +279,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
     }
 
@@ -368,7 +411,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
                                             </Box>
                                         </HStack>
-                                        
+
                                     </>
                                 })}
                             </Radio.Group>
@@ -381,7 +424,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             </Checkbox>
                             <Divider />
 
-                            <CmsModal 
+                            <CmsModal
                                 visible={isCmsModalVisible}
                                 onToggle={toggleCmsModal}
                                 data={cms}
@@ -436,10 +479,10 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                         </View>
                     </ScrollView>
 
-                    
-                    
+
+
                     <Box backgroundColor='#ffffff'>
-                        {isLoading ? <ActivityIndicator /> : null }
+                        {isLoading ? <ActivityIndicator /> : null}
                         <Button style={styles.button} onPress={() => redirectPayment()}>NEXT</Button>
                     </Box>
                 </>

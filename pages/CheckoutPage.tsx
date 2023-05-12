@@ -215,7 +215,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         if (shopId == '1') {
                             dispatch(clearLeaveMessage())
-                            processIpay88(json.data)
+                            ipay(json.data)
                         }
                     }
                 } else {
@@ -237,7 +237,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         if (paymentType == '16') {
                             atome()
                         } else if (paymentType == '3') {
-                            processIpay88(json.data)
+                            ipay(json.data)
                         }
                     } else if (shopId == '2') {
                         if (paymentType == '4') {
@@ -374,6 +374,37 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             await cartStep5(order_id, '1', 'atome', json.paymentTransaction, json.amount)
         } else {
             await cartStep5(order_id, '0', 'atome', json.paymentTransaction, json.amount)
+        }
+    }
+
+    const ipay = async (data: any) => {
+
+        console.log('data checkout', data);
+
+        const response = await PaymentService.payIpay(data.id_cart, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('repayIpay', json);
+
+        if (json.code == '200') {
+            // processIpay88Browser()
+            const params = {
+                form: json.data.results,
+                order_id: data.id_order,
+                payment_type: 'ipay88',
+                trans_id: null,
+                amount: data.totalPriceWt * 100
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Ipay88PaymentPage',
+                    params: params
+                }]
+            });
+        } else {
+
         }
     }
 

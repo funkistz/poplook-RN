@@ -101,7 +101,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
                                 const height = Number(banner.height) * (win.width / Number(banner.width));
 
-                                return <Center key={key2} >
+                                return <Center key={key + '_' + key2} >
                                     {!banner.new_window.includes("_blank") &&
                                         <TouchableOpacity onPress={() => goToCategory(banner)}>
                                             <Image w={win.width} h={height} source={{
