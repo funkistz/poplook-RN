@@ -4,7 +4,7 @@ import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { ScrollView } from 'native-base';
-import { WEB_URL, API_KEY, VERSION } from "@env"
+import { WEB_URL, API_KEY, IOS_VERSION } from "@env"
 import { useDispatch, useSelector } from 'react-redux';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { useFocusEffect } from '@react-navigation/native';
@@ -46,33 +46,29 @@ export default function HomePage({ route, navigation }: { route: any, navigation
                 const json = await response.json();
                 checkVersion(json.data)
             }
-            getVersion().catch(console.error);
+            // getVersion().catch(console.error);
         }, [])
     );
 
     const checkVersion = (res:any) => {
-        let platform = '';
         if(Platform.OS == 'ios') {
-            platform = res.ios_version
+            if(res.ios_version > IOS_VERSION) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'ForceUpdatePage',
+                    }]
+                });
+            }
         } else {
-            platform = res.android_version
-        }
-
-        if(platform > VERSION) {
-            Alert.alert('Please update to continue using the app.', '', [
-                {
-                    text: 'OK',
-                    onPress: () => update(platform)
-                },
-            ]);
-        }
-    }
-
-    const update = (res:any) => {
-        if(Platform.OS == 'ios') {
-            Linking.openURL('https://apps.apple.com/us/app/poplook/id1081245738?platform=iphone')
-        } else {
-            Linking.openURL('https://play.google.com/store/apps/details?id=com.tiseno.poplook&hl=en&gl=US')
+            if(res.android_version > IOS_VERSION) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'ForceUpdatePage',
+                    }]
+                });
+            }
         }
     }
 

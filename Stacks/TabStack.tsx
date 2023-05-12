@@ -14,6 +14,7 @@ import EghlPaymentPage from '../pages/EghlPaymentPage';
 import AddressDetailPage from '../pages/AddressDetailPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import AddressListPage from '../pages/AddressListPage';
+import ForceUpdatePage from '../pages/ForceUpdatePage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -93,6 +94,7 @@ export default function TabStack() {
           <Stack.Screen name='AddressDetailExPage' component={AddressDetailPage} options={{ title: 'Add New Address', headerShown: true }} />
           <Stack.Screen name='CheckoutExPage' component={CheckoutPage} options={{ title: 'Order Confirmation', headerShown: true }} />
           <Stack.Screen name='AddressListExPage' component={AddressListPage} options={{ title: 'My Addresses', headerShown: true }} />
+          <Stack.Screen name='ForceUpdatePage' component={ForceUpdatePage} options={{ title: 'Force Update', headerShown: true }} />
 
         </Stack.Navigator>
       </NavigationContainer>
