@@ -19,7 +19,7 @@ export default function CategoriesPage({ route, navigation }: { route: any, navi
 
                 // console.log('data sama ke', JSON.stringify(categories) === JSON.stringify(json.data));
 
-                if (JSON.stringify(categories) !== JSON.stringify(json.data)) {
+                if (JSON.stringify(categories) != JSON.stringify(json.data)) {
                     setCategories(json.data);
                 }
             }
