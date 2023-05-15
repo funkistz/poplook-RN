@@ -60,7 +60,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                 style={{ flex: 1 }}
                                 borderRadius={10}
                                 resizeMode="cover">
-                                {product.discount_text != null && 
+                                {product.discount_text != null && product.quantity > 0 && 
                                     <View style={{ 
                                         flex: 1,
                                         justifyContent: 'flex-end',
@@ -72,13 +72,33 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                             style={{ 
                                                 color: 'white',
                                                 fontSize: 8,
-                                                backgroundColor: 'black',
+                                                backgroundColor: '#000',
                                                 width: '100%',
                                                 textAlign: 'center',
                                             }}>{product.discount_text}</Text>
                                     </View>
                                 }
-                                
+                                {product.quantity == 0 && 
+                                    <View style={{ 
+                                        flex: 1,
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'center',
+                                        borderRadius: 10,
+                                        overflow: 'hidden',
+                                    }}>
+                                        <Text py={1} 
+                                            style={{ 
+                                                color: 'white',
+                                                fontSize: 8,
+                                                backgroundColor: '#000',
+                                                // opacity: 0.8,
+                                                width: '100%',
+                                                textAlign: 'center',
+                                                textTransform: 'uppercase'
+
+                                            }}>out of stock</Text>
+                                    </View>
+                                }
                             </ImageBackground>
                         </>
                     }
