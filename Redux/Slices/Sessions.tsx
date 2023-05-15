@@ -89,6 +89,37 @@ export const loginUser: any = createAsyncThunk(
     }
 )
 
+export const customerDetails: any = createAsyncThunk(
+    "users/customerDetails",
+    async (_: void, { getState, rejectWithValue, dispatch }) => {
+        try {
+            const state: any = getState();
+            const email = state.session.user.email
+
+            const response = await AuthService.customerDetails(email);
+            let data = await response.json()
+
+            if (response.status === 200) {
+
+                if (data.code == 200) {
+
+                    dispatch(assignCartId(data.data.id_cart));
+
+                    return data
+                } else {
+                    return rejectWithValue(data)
+                }
+
+            } else {
+                return rejectWithValue(data)
+            }
+        } catch (e: any) {
+            console.log("Error", e.response.data)
+            rejectWithValue(e.response.data)
+        }
+    }
+)
+
 export const sessionSlice = createSlice({
     name: 'session',
     initialState,

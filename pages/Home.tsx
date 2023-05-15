@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { useFocusEffect } from '@react-navigation/native';
 import AuthService from '../Services/AuthService';
+import { customerDetails } from '../Redux/Slices/Sessions';
 
 const win = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
 export default function HomePage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch()
+    const session = useSelector((storeState: any) => storeState.session.user);
     const [banners, setBanners] = useState<any[]>([]);
     
     useEffect(() => {
@@ -41,15 +43,26 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     useFocusEffect(
         React.useCallback(() => {
-            const getVersion = async () => {
-                const response = await AuthService.getVersion();
-                const json = await response.json();
-                const version = Platform.OS == 'ios'? json.data.ios_version : json.data.android_version;
-                checkVersion(version)
-            }
+            getCurrentIdCart()
+            // Developer Mode command getversion()
             // getVersion().catch(console.error);
         }, [])
     );
+
+    const getCurrentIdCart = async () => {
+        if(session != null) {
+            dispatch(customerDetails())
+        }
+        
+    }
+
+    const getVersion = async () => {
+        const response = await AuthService.getVersion();
+        const json = await response.json();
+        const version = Platform.OS == 'ios'? json.data.ios_version : json.data.android_version;
+        checkVersion(version)
+    }
+
 
     const checkVersion = (res:any) => {
         if(res > IOS_VERSION) {
