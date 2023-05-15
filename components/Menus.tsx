@@ -26,7 +26,13 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
             category_name: child.name
         };
 
+        console.log('title', child.name);
+
+        // navigation.navigate('CategoryPage', { params: params, title: child.name });
         navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: child.name });
+
+
+        return;
     };
 
     const renderCategory = (category: any) => {

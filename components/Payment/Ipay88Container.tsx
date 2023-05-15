@@ -1,10 +1,11 @@
-import IPay88, { Pay } from "react-native-ipay88-integration";
+// import IPay88, { Pay } from "react-native-ipay88-integration";
+import IPay88, { Pay } from "ipay88-sdk";
 import { Platform, Alert } from "react-native";
 import GeneralService from "../../Services/GeneralService";
 import { useNavigation } from '@react-navigation/native';
 
 
-function Ipay88Container()  {
+function Ipay88Container() {
 
     const navigation: any = useNavigation();
 
@@ -26,7 +27,7 @@ function Ipay88Container()  {
         //     id: data.id_order
         // };
 
-        navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage'})
+        navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage' })
 
         console.log(' Payment authcode is', authorizationCode);
 

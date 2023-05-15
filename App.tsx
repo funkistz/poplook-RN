@@ -13,6 +13,12 @@ import { Alert, Platform, PermissionsAndroid } from 'react-native';
 
 export default function App() {
 
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //  console.log("new message" , remoteMessage);
+  //   // show the message to the user or use it to update to your local store
+  //  return unsubscribe;
+  // }, []);
 
   useEffect(() => {
 

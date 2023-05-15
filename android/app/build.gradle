@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"
 apply plugin: "com.facebook.react"
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
@@ -114,12 +115,12 @@ android {
     }
     signingConfigs {
         debug {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
+//            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file("poplook_mobile_android.jks")
+                storePassword "info123@"
+                keyAlias "otestalias"
+                keyPassword "info123@"
+//            }
         }
         release {
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
@@ -177,6 +178,11 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation project(':react-native-vector-icons')
+//    implementation(name: 'IPHSD_SDK_11022021', ext: 'aar')
+    // implementation fileTree(dir: "libs", include: ["*.aar"]) 
+//    implementation project(':react-native-ipay88-integration')
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

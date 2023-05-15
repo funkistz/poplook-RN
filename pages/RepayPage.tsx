@@ -1,30 +1,33 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Alert, StyleSheet, AppState } from 'react-native';
+import { Alert, StyleSheet, AppState, ActivityIndicator } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, VStack, Divider, Checkbox, Link, Radio, Select, Box, CheckIcon } from "native-base";
 import OrderHistoryService from '../Services/OrderHistoryService';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import ProductDetail from '../components/ProductDetail';
 import { isAtomeAppInstalled } from 'react-native-atome-paylater';
 import { handlePaymentURL } from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
-import { execute } from 'react-native-eghl';
 import CartService from '../Services/CartService';
 import Ipay88Container from '../components/Payment/Ipay88Container';
 import GeneralService from '../Services/GeneralService';
 import SkeletonRepay from '../components/SkeletonRepay';
 import CmsModal from '../components/Modals/Cms';
 import CmsService from '../Services/CmsService';
-
+import { assignRefID } from '../Redux/Slices/Checkout';
 
 export default function RepayPage({ route, navigation }: { route: any, navigation: any }) {
+
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
     const cartId = route.params.params.id;
     const country = useSelector((storeState: any) => storeState.session.country);
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const user = useSelector((storeState: any) => storeState.session.user);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
+    const reference_id = useSelector((storeState: any) => storeState.checkout.ref_id);
     const [address, setAddress] = useState<any>({});
     const [carrier, setCarrier] = useState<any>({});
     const [payment, setPayment] = useState<any>([]);
@@ -45,6 +48,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [termAgree, setTermAgree] = useState(false)
     const [isCmsModalVisible, setCmsModalVisible] = useState(false);
     const [cms, setCms] = useState<any>({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
 
@@ -82,7 +86,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             console.log('back')
         } else if (nextAppState === 'active') {
             console.log('active', refId)
-            await getPaymentInfo()
+            await getPaymentInfo(reference_id)
         }
     }
 
@@ -100,7 +104,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 return paymentChild;
             } else if (paymentType == '8') {
                 return paymentChild;
-            }else if (paymentType == '3') { // Credit Card (MYR)
+            } else if (paymentType == '3') { // Credit Card (MYR)
                 return 2;
             }
         } else if (shopId == 2) {
@@ -117,19 +121,28 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const atome = async () => {
 
+        setIsLoading(true)
+
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
         console.log('atome', json.data)
 
-        setUrl(json.data.redirect_url);
-        setAppUrl(json.data.app_payment_url);
-        setRefId(json.data.referenceId);
+        if (json.code == '200' && json.data) {
+            setIsLoading(false)
+            setUrl(json.data.redirect_url);
+            setAppUrl(json.data.app_payment_url);
+            dispatch(assignRefID(json.data.reference_id))
 
-        handlePaymentURL(result == 'No' ? appUrl : url)
+            await handlePaymentURL(json.data.redirect_url)
+        }
+
+        // handlePaymentURL(result == 'No' ? appUrl : url)
     }
 
-    const getPaymentInfo = async () => {
+    const getPaymentInfo = async (refId: any) => {
+
+        console.log('refid', refId)
 
         const response = await PaymentService.getPaymentInfo(refId);
         const json = await response.json();
@@ -140,13 +153,39 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         setAmount(json.amount);
 
         if (json.status == 'PAID') {
-            setStatus(1);
+            await cartStep5(data.id_order, '1', 'atome', json.paymentTransaction, json.amount)
         } else {
-            setStatus(0);
+            await cartStep5(data.id_order, '0', 'atome', json.paymentTransaction, json.amount)
         }
+    }
 
-        await cartStep5()
+    const ipay = async (data: any) => {
 
+        const response = await PaymentService.repayIpay(data.id_order, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('repayIpay', json);
+
+        if (json.code == '200') {
+            // processIpay88Browser()
+            const params = {
+                form: json.data.results,
+                order_id: data.id_order,
+                payment_type: 'ipay88',
+                trans_id: null,
+                amount: data.totalPriceWt * 100
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Ipay88PaymentPage',
+                    params: params
+                }]
+            });
+        } else {
+
+        }
     }
 
     const processIpay88 = () => {
@@ -154,7 +193,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         try {
             const params: any = {
                 paymentId: paymentId(),
-                referenceNo: data.id_order,
+                referenceNo: cartId,
                 amount: data.totalPriceWt,
                 currency: country.currency_iso_code,
                 productDescription: "Reference No: " + data.id_order,
@@ -167,6 +206,34 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             };
 
             PaymentService.ProcessIpay88(params);
+
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const processIpay88Browser = async () => {
+
+        try {
+
+            const params: any = {
+                paymentId: paymentId(),
+                referenceNo: cartId,
+                amount: data.totalPriceWt,
+                currency: country.currency_iso_code,
+                productDescription: "Reference No: " + data.id_order,
+                userName: user.name,
+                userEmail: user.email,
+                userContact: "0123456789",
+                remark: "Test",
+                utfLang: "UTF-8",
+                country: country.country_iso_code,
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Ipay88PaymentPage', params: params }]
+            });
 
         } catch (e) {
             console.log(e);
@@ -190,7 +257,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{ name: 'EghlPaymentPage', params: param }]
         });
 
     }
@@ -212,8 +279,30 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         navigation.reset({
             index: 0,
+            routes: [{ name: 'EghlPaymentPage', params: param }]
+        });
+    }
+
+    const ipayUSD = async (data: any) => {
+
+        const response = await PaymentService.repayIpayUsd(data.id_order, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('repayIpayUSD', json.data.results);
+
+        const param = {
+            form: json.data.results,
+            order_id: data.id_order,
+            payment_type: 'usd_cc',
+            trans_id: null,
+            amount: data.totalPriceWt * 100
+        };
+
+        navigation.reset({
+            index: 0,
             routes: [{name: 'EghlPaymentPage', params: param }]
         });
+
     }
 
     const redirectPayment = () => {
@@ -222,7 +311,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 if (paymentType == '16') {
                     atome()
                 } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    processIpay88() 
+                    ipay(data)
                 }
             } else if (shopId == '2') {
                 if (paymentType == '4') {
@@ -234,7 +323,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 if (paymentType == '1') {
                     // paypal
                 } else {
-                    // pay(data) // ipay88
+                    ipayUSD(data)
                 }
             }
         } else {
@@ -247,19 +336,15 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     }
 
-    const cartStep5 = async () => {
+    const cartStep5 = async (orderId: any, status: any, paymentMethod: any, transId: any, amount: any) => {
 
-        console.log('id order', data.id_order)
+        console.log('id order', orderId)
         console.log('status', status)
-        console.log('paymenttyupe', paymentType)
+        console.log('paymenttyupe', paymentMethod)
         console.log('transid', transId)
         console.log('amount', amount)
 
-        if (paymentType == '16') {
-            setPaymentMethod('atome')
-        }
-
-        const response = await CartService.cartStep5(data.id_order, status, paymentMethod, transId, amount);
+        const response = await CartService.cartStep5(orderId, status, paymentMethod, transId, amount);
         const json = await response.json();
 
         console.log('cartstep5', json)
@@ -326,9 +411,11 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
                                             </Box>
                                         </HStack>
+
                                     </>
                                 })}
                             </Radio.Group>
+                            {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
 
                             <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
                                 <Text color={'black'} fontSize={14} pr={5}>I agree with the
@@ -337,7 +424,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             </Checkbox>
                             <Divider />
 
-                            <CmsModal 
+                            <CmsModal
                                 visible={isCmsModalVisible}
                                 onToggle={toggleCmsModal}
                                 data={cms}
@@ -391,7 +478,11 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             </VStack>
                         </View>
                     </ScrollView>
+
+
+
                     <Box backgroundColor='#ffffff'>
+                        {isLoading ? <ActivityIndicator /> : null}
                         <Button style={styles.button} onPress={() => redirectPayment()}>NEXT</Button>
                     </Box>
                 </>

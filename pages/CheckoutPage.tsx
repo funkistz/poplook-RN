@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert, ActivityIndicator, AppState } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { getCartStep1, getGiftMessage, leaveMessageCheckout } from '../Redux/Slices/Checkout';
+import { assignOrderID, assignRefID, clearLeaveMessage, getCartStep1, getGiftMessage, leaveMessageCheckout } from '../Redux/Slices/Checkout';
 import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import AddressModal from '../components/Modals/AddressList';
@@ -15,6 +15,9 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
+import Ipay88Container from '../components/Payment/Ipay88Container';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -27,6 +30,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [isAddressModalVisible, setAdressModalVisible] = useState(false);
     const [isCmsModalVisible, setCmsModalVisible] = useState(false);
     const [data, setData] = useState({});
+    const [orderId, setOrderId] = useState('');
     const [url, setUrl] = useState<any>('');
     const [appUrl, setAppUrl] = useState<any>('');
     const [result, setResult] = useState('');
@@ -34,7 +38,13 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [giftMessage, setGiftMessage] = useState('');
     const [leaveMessage, setLeaveMessage] = useState('');
     const [cms, setCms] = useState<any>({});
-    const [termAgree, setTermAgree] = useState(false)
+    const [termAgree, setTermAgree] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [status, setStatus] = useState<any>('');
+    const [amount, setAmount] = useState<any>('');
+    const [transId, setTransId] = useState<any>('');
+    const [paymentMethod, setPaymentMethod] = React.useState('');
+    const [paymentState, setPaymentState] = React.useState('');
 
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
@@ -57,6 +67,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
     const credit_store_list = useSelector((storeState: any) => storeState.checkout.storeCredit);
     const text_message = useSelector((storeState: any) => storeState.checkout.message);
+    const reference_id = useSelector((storeState: any) => storeState.checkout.ref_id);
+    const order_id = useSelector((storeState: any) => storeState.checkout.order_id);
 
     // Voucher
     const [voucher, setVoucher] = React.useState('');
@@ -68,8 +80,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             address_id: address ? address.id : ''
         }
 
-        console.log('param hantar' , gift_wrap_exist)
-
         dispatch(getCartStep1(param))
 
         if (text_message) {
@@ -79,13 +89,54 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         if (gift_option) {
             setGift('0')
-            if(gift_message) {
+            if (gift_message) {
                 setGiftMessage(gift_message)
             }
         }
 
-
     }, [])
+
+    useEffect(() => {
+
+        if (text_message) {
+            setMessage('1')
+            setLeaveMessage(text_message)
+        }
+
+        if (gift_option) {
+            setGift('0')
+            if (gift_message) {
+                setGiftMessage(gift_message)
+            }
+        }
+
+        const timeOutId = setTimeout(() => {
+
+            const param = {
+                gift_message: giftMessage
+            }
+
+            dispatch(getGiftMessage(param));
+            dispatch(leaveMessageCheckout(leaveMessage))
+
+        }, 500);
+
+        AppState.addEventListener('change', handleAppStateChange);
+
+        return () => clearTimeout(timeOutId);
+
+
+    }, [leaveMessage, giftMessage])
+
+    const handleAppStateChange = async (nextAppState: any) => {
+
+        if (nextAppState === 'background' || nextAppState === 'inactive') {
+            console.log('back')
+        } else if (nextAppState === 'active') {
+            console.log('active', refId)
+            getPaymentInfo(reference_id)
+        }
+    }
 
     // Voucher
     const validateVoucher = async () => {
@@ -163,42 +214,45 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                     if (json.code == 200 && json.data) {
 
                         if (shopId == '1') {
-                            processIpay88(json.data)
-                        } 
+                            dispatch(clearLeaveMessage())
+                            ipay(json.data)
+                        }
                     }
                 } else {
                     GeneralService.toast({ description: 'Please select payment type' });
                 }
             } else {
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
-                    const json = await response.json();
+                const json = await response.json();
 
-                    console.log('cartstep4baru', json.data)
+                console.log('cartstep4baru', json.data.id_order)
 
-                    setData(json.data);
+                // setOrderId(json.data.id_order);
 
-                    if (json.code == 200 && json.data) {
+                dispatch(assignOrderID(json.data.id_order))
 
-                        if (shopId == '1') {
-                            if (paymentType == '16') {
-                                atome()
-                            } else if (paymentType == '3') {
-                                processIpay88(json.data)
-                            }
-                        } else if (shopId == '2') {
-                            if (paymentType == '4') {
-                                eghl(json.data)
-                            } else {
-                                enets(json.data)
-                            }
-                        } else {
-                            if (paymentType == '1') {
-                                // paypal
-                            } else {
-                                // pay(data) // ipay88
-                            }
+                if (json.code == 200 && json.data) {
+
+                    if (shopId == '1') {
+                        if (paymentType == '16') {
+                            atome()
+                        } else if (paymentType == '3') {
+                            ipay(json.data)
                         }
-                    } 
+                    } else if (shopId == '2') {
+                        if (paymentType == '4') {
+                            eghl(json.data)
+                        } else {
+                            enets(json.data)
+                        }
+                    } else {
+                        if (paymentType == '1') {
+                            // paypal
+                        } else {
+                            // pay(data) // ipay88
+                        }
+                    }
+                }
             }
         } else {
             if (!paymentType) {
@@ -206,13 +260,48 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             } else {
                 GeneralService.toast({ description: 'You must agree to Term of Service and Privacy Policy before continuing.' });
             }
-        } 
+        }
+    }
+
+    const cartStep5 = async (orderId: any, status: any, paymentMethod: any, transId: any, amount: any) => {
+
+        console.log('id order', orderId)
+        console.log('status', status)
+        console.log('paymenttyupe', paymentMethod)
+        console.log('transid', transId)
+        console.log('amount', amount)
+
+        const response = await CartService.cartStep5(orderId, status, paymentMethod, transId, amount);
+        const json = await response.json();
+
+        console.log('cartstep5', json)
+
+        if (json.status == 200 && json.data) {
+            setPaymentState(json.data.payment_state)
+
+            if (paymentState == '42' || paymentState == '18') {
+
+                const param = {
+                    id: orderId
+                };
+
+                navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage', param: param })
+            } else {
+                navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
+            }
+        } else {
+            navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
+        }
     }
 
     const paymentSelected = () => {
 
         if (shopId == 1) {
-
+            if (paymentType == '16') {
+                return 'atome';
+            } else {
+                return 'ipay88'
+            }
         } else if (shopId == 2) {
             if (paymentType == '4') {
                 return 'sgd_cc';
@@ -234,7 +323,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 return paymentChild;
             } else if (paymentType == '8') {
                 return paymentChild;
-            }else if (paymentType == '3') { // Credit Card (MYR)
+            } else if (paymentType == '3') { // Credit Card (MYR)
                 return 2;
             }
         } else if (shopId == 2) {
@@ -251,23 +340,81 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const atome = async () => {
 
+        setIsLoading(true)
+
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
-        console.log('atome' ,json)
+        console.log('atome', json)
 
-        setUrl(json.data.redirect_url);
-        setAppUrl(json.data.app_payment_url);
-        setRefId(json.data.referenceId);
-        handlePaymentURL(result == 'No' ? appUrl : url)
+
+        if (json.code == '200' && json.data) {
+            setIsLoading(false)
+            setUrl(json.data.redirect_url);
+            setAppUrl(json.data.app_payment_url);
+            dispatch(assignRefID(json.data.reference_id))
+
+            await handlePaymentURL(json.data.redirect_url)
+        }
     }
+
+    const getPaymentInfo = async (refId: any) => {
+
+        console.log('refid', refId)
+
+        const response = await PaymentService.getPaymentInfo(refId);
+        const json = await response.json();
+
+        console.log('paymentinfo', json)
+
+        setTransId(json.paymentTransaction);
+        setAmount(json.amount);
+
+        if (json.status == 'PAID') {
+            await cartStep5(order_id, '1', 'atome', json.paymentTransaction, json.amount)
+        } else {
+            await cartStep5(order_id, '0', 'atome', json.paymentTransaction, json.amount)
+        }
+    }
+
+    const ipay = async (data: any) => {
+
+        console.log('data checkout', data);
+
+        const response = await PaymentService.payIpay(data.id_cart, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('repayIpay', json);
+
+        if (json.code == '200') {
+            // processIpay88Browser()
+            const params = {
+                form: json.data.results,
+                order_id: data.id_order,
+                payment_type: 'ipay88',
+                trans_id: null,
+                amount: data.totalPriceWt * 100
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Ipay88PaymentPage',
+                    params: params
+                }]
+            });
+        } else {
+
+        }
+    }
+
 
     const processIpay88 = (data: any) => {
 
         try {
             const params: any = {
                 paymentId: paymentId(),
-                referenceNo: data.id_order,
+                referenceNo: cartId,
                 amount: data.totalPriceWt,
                 currency: country.currency_iso_code,
                 productDescription: "Reference No: " + data.id_order,
@@ -278,6 +425,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 utfLang: "UTF-8",
                 country: country.country_iso_code,
             };
+
+            console.log('ipay', params)
 
             PaymentService.ProcessIpay88(params);
 
@@ -294,7 +443,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const json = await response.json();
 
         console.log('redirectEghl', json.data.results);
-        
+
         const param = {
             form: json.data.results,
             order_id: data.id_order,
@@ -337,6 +486,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} safeAreaBottom>
                 <ScrollView>
                     <View style={styles.container}>
+                        <Ipay88Container></Ipay88Container>
+
                         {!address &&
                             <><TouchableOpacity onPress={toggleAddressModal}>
                                 <Text style={styles.bold} marginY={3}>Please Add Address</Text>
@@ -365,12 +516,12 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             </>
                         }
 
-                        <Text style={styles.bold} py={2}>Payment Method</Text>
+                        <Text style={styles.bold} py={2}>Payment Method{refId}</Text>
                         <Radio.Group name="paymentMethod" onChange={nextValue => {
                             setPaymentChild('')
                             setPaymentType(nextValue);
                         }}>
-                            {payment.map((item: any) => {
+                            {payment && payment.map((item: any) => {
                                 return <>
                                     <HStack>
                                         <Radio value={item.id} my="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
@@ -466,33 +617,33 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         </View>}
 
-                        { gift_wrap_exist == '1' && 
+                        {gift_wrap_exist == '1' &&
                             <>
-                            <HStack py={1}>
-                                <Text style={styles.normal}>Gift Option</Text>
-                                <Spacer />
-                                <Radio.Group
-                                    name="giftOption"
-                                    value={gift}
-                                    onChange={(nextValue) => {
-                                        setGift(nextValue);
+                                <HStack py={1}>
+                                    <Text style={styles.normal}>Gift Option</Text>
+                                    <Spacer />
+                                    <Radio.Group
+                                        name="giftOption"
+                                        value={gift}
+                                        onChange={(nextValue) => {
+                                            setGift(nextValue);
 
-                                        const param = {
-                                            gift: gift,
-                                            gift_wrap_id: gift_wrap_id,
-                                            gift_message: giftMessage,
-                                            address_id: address ? address.id : null
-                                        }
+                                            const param = {
+                                                gift: gift,
+                                                gift_wrap_id: gift_wrap_id,
+                                                gift_message: giftMessage,
+                                                address_id: address ? address.id : null
+                                            }
 
-                                        dispatch(getCartStep1(param))
-                                    }}
-                                >
-                                    <HStack>
-                                        <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
-                                        <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
-                                    </HStack>
-                                </Radio.Group>
-                            </HStack>
+                                            dispatch(getCartStep1(param))
+                                        }}
+                                    >
+                                        <HStack>
+                                            <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
+                                            <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
+                                        </HStack>
+                                    </Radio.Group>
+                                </HStack>
                             </>
                         }
 
@@ -500,26 +651,22 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             <VStack>
                                 <Box borderRadius={10}>
                                     <HStack>
-                                        <AspectRatio w="40%" ratio={4 / 4}>
-                                            <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
-                                        </AspectRatio>
+                                        {gift_wrap &&
+                                            <>
+                                                <AspectRatio w="40%" ratio={4 / 4}>
+                                                    <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
+                                                </AspectRatio>
 
-                                        <VStack m={3} flexShrink={1}>
-                                            <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
-                                            <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
-                                        </VStack>
+                                                <VStack m={3} flexShrink={1}>
+                                                    <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
+                                                    <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
+                                                </VStack>
+                                            </>
+                                        }
+
                                     </HStack>
                                 </Box>
-                                <TextArea marginY={3} value={giftMessage} 
-                                    onKeyPress={(e) => {
-                                        setTimeout(() => {
-
-                                            const param = {
-                                                gift_message: giftMessage
-                                            }
-                                            dispatch(getGiftMessage(param));
-                                        }, 10000); 
-                                    }}
+                                <TextArea marginY={3} value={giftMessage}
                                     onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
                             </VStack>
                         </> : null}
@@ -543,13 +690,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {message && (message == '1') ? <>
                             <VStack>
-                                <TextArea marginY={3} value={leaveMessage} 
-                                    onKeyPress={(e) => {
-                                        setTimeout(() => {
-                                            dispatch(leaveMessageCheckout(leaveMessage));
-                                        }, 10000); 
-                                    }}
-                                    onChangeText={text => setLeaveMessage(text)} maxW="330" autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
+                                <TextArea marginY={3}
+                                    value={leaveMessage}
+                                    onChangeText={text => { setLeaveMessage(text) }}
+                                    maxW="330" autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
+
                             </VStack>
                         </> : null}
 
@@ -605,6 +750,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         </HStack>
                     </View>
                 </ScrollView>
+
+                {isLoading ? <ActivityIndicator /> : null}
 
                 <HStack style={{ marginHorizontal: 20 }}>
                     <Text style={styles.total}>Total :</Text>

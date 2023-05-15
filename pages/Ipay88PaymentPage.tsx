@@ -5,7 +5,7 @@ import WebView from 'react-native-webview';
 import CartService from '../Services/CartService';
 import { MODULE_API } from '@env';
 
-export default function EghlPaymentPage({ route, navigation }: { route: any, navigation: any }) {
+export default function Ipay88PaymentPage({ route, navigation }: { route: any, navigation: any }) {
 
     const form = route.params.form;
     const orderId = route.params.order_id;
@@ -26,20 +26,27 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
         const _url = navState.url
 
-        getSearchParamFromURL(_url, 'TxnStatus')
+        if (_url.includes('ipay88_mobile_response')) {
+            getSearchParamFromURL(_url)
+        }
 
     };
 
-    const getSearchParamFromURL = (url: any, param: any) => {
-        const include = url.includes(param)
+    const getSearchParamFromURL = (url: any) => {
 
-        if (!include) return null
+        var regex = /[?&]([^=#]+)=([^&#]*)/g, params: any = {}, match;
 
-        const params = url.split(/([&,?,=])/)
-        const index = params.indexOf(param)
-        const value = params[index + 2]
-        setSatus(value);
-        cartStep5(status)
+        while (match = regex.exec(url)) {
+            params[match[1]] = match[2];
+        }
+
+        if (params.status) {
+            console.log('status', params.status)
+
+            setSatus(params.status);
+            cartStep5(params.status)
+        }
+
     }
 
 
@@ -90,12 +97,17 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
         if (json.status == 200 && json.data) {
             setPaymentState(json.data.payment_state)
 
-            if (paymentState == '31' || paymentState == '28') {
+            if (paymentState == '18') {
 
                 const param = {
                     id: orderId
                 };
 
+                // navigation.navigate('Main', {
+                //     screen: 'My Account', params: {
+                //         screen: 'OrderSuccessPage'
+                //     }
+                // });
                 navigation.reset({
                     index: 0,
                     routes: [
@@ -117,6 +129,11 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
                 // navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage', param: param })
             } else {
+                // navigation.navigate('Main', {
+                //     screen: 'My Account', params: {
+                //         screen: 'OrderHistoryListPage'
+                //     }
+                // });
                 navigation.reset({
                     index: 0,
                     routes: [
@@ -137,6 +154,11 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                 });
             }
         } else {
+            // navigation.navigate('Main', {
+            //     screen: 'My Account', params: {
+            //         screen: 'OrderHistoryListPage'
+            //     }
+            // });
             navigation.reset({
                 index: 0,
                 routes: [
