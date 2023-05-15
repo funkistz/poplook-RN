@@ -166,7 +166,7 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
             }
 
             {(product.isLoading && product.items.length == 0) &&
-                <SkeletonLoading filter={false} containerOnly={false} />
+                <SkeletonLoading filter={false} containerOnly={false} search={true} />
             }
 
             <BottomSheet

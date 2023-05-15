@@ -407,9 +407,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                     }
                     
             </BottomSheet>
-
-        
-
         </>
 
     );
