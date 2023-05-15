@@ -44,31 +44,21 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             const getVersion = async () => {
                 const response = await AuthService.getVersion();
                 const json = await response.json();
-                checkVersion(json.data)
+                const version = Platform.OS == 'ios'? json.data.ios_version : json.data.android_version;
+                checkVersion(version)
             }
-            // getVersion().catch(console.error);
+            getVersion().catch(console.error);
         }, [])
     );
 
     const checkVersion = (res:any) => {
-        if(Platform.OS == 'ios') {
-            if(res.ios_version > IOS_VERSION) {
-                navigation.reset({
-                    index: 0,
-                    routes: [{
-                        name: 'ForceUpdatePage',
-                    }]
-                });
-            }
-        } else {
-            if(res.android_version > IOS_VERSION) {
-                navigation.reset({
-                    index: 0,
-                    routes: [{
-                        name: 'ForceUpdatePage',
-                    }]
-                });
-            }
+        if(res > IOS_VERSION) {
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'ForceUpdatePage',
+                }]
+            });
         }
     }
 
