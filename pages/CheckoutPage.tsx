@@ -310,9 +310,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             }
         } else if (shopId == 3) {
             if (paymentType == '1') {
-                // return 'paypal';
+                return 'paypal';
             } else {
-                return 'ipay88'
+                return 'usd_cc'
             }
         }
 
@@ -426,7 +426,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             const params = {
                 form: json.data.results,
                 order_id: data.id_order,
-                payment_type: 'ipay88',
+                payment_type: 'usd_cc',
                 trans_id: null,
                 amount: data.totalPriceWt * 100
             };
@@ -549,7 +549,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             </>
                         }
 
-                        <Text style={styles.bold} py={2}>Payment Method{refId}</Text>
+                        <Text style={styles.bold} py={2}>Payment Method</Text>
                         <Radio.Group name="paymentMethod" onChange={nextValue => {
                             setPaymentChild('')
                             setPaymentType(nextValue);
