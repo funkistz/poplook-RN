@@ -106,12 +106,10 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     const changeProductId = (item: any) => {
         navigation.push('ProductDetailPage', {product_id: item} )
-        setIsLoading(false)
     }
 
     const selectProductId = async (item: any) => {
         await setModalDetails(!isModalDetails);
-        setIsLoading(true)
         await changeProductId(item);
     }
 
