@@ -249,7 +249,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         if (paymentType == '1') {
                             // paypal
                         } else {
-                            // pay(data) // ipay88
+                            ipayUsd(json.data)
                         }
                     }
                 }
@@ -309,7 +309,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 return 'enets'
             }
         } else if (shopId == 3) {
-
+            if (paymentType == '1') {
+                // return 'paypal';
+            } else {
+                return 'ipay88'
+            }
         }
 
         return paymentType;
@@ -385,6 +389,37 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const json = await response.json();
 
         console.log('repayIpay', json);
+
+        if (json.code == '200') {
+            // processIpay88Browser()
+            const params = {
+                form: json.data.results,
+                order_id: data.id_order,
+                payment_type: 'ipay88',
+                trans_id: null,
+                amount: data.totalPriceWt * 100
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Ipay88PaymentPage',
+                    params: params
+                }]
+            });
+        } else {
+
+        }
+    }
+
+    const ipayUsd = async (data: any) => {
+
+        console.log('data checkout', data);
+
+        const response = await PaymentService.payIpayUsd(data.id_cart, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('IpayUsd', json);
 
         if (json.code == '200') {
             // processIpay88Browser()
