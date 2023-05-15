@@ -437,8 +437,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const eghl = async (data: any) => {
 
-        console.log('dataEghl', data);
-
         const response = await PaymentService.eghl(cartId);
         const json = await response.json();
 
@@ -545,7 +543,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 </>
                             })}
                         </Radio.Group>
-                        <Text color={'black'}>{paymentType} {paymentChild}</Text>
+                        {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
                         <Spacer />
 
                         <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>

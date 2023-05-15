@@ -133,8 +133,8 @@ const PaymentService = {
         const params: any = {
             id_cart: cartId,
             id_payment: '5',
-            return_url: 'https://poplook.com/modules/enets/callback_mobile.php?return_url=1',
-            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php'
+            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php',
+            return_url: 'https://poplook.com/modules/enets/enets_mobile_bridge.php',
         };
 
         return APIService.putMethod('PaymentProcessor/redirect_enets', params);
