@@ -1,10 +1,10 @@
-import { StyleSheet, View, Dimensions, Platform, Alert, Linking } from 'react-native';
+import { StyleSheet, View, Dimensions, Platform, Alert, Linking} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { ScrollView } from 'native-base';
-import { WEB_URL, API_KEY, VERSION } from "@env"
+import { WEB_URL, API_KEY, IOS_VERSION } from "@env"
 import { useDispatch, useSelector } from 'react-redux';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { useFocusEffect } from '@react-navigation/native';
@@ -22,7 +22,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     const dispatch = useDispatch()
     const [banners, setBanners] = useState<any[]>([]);
-
+    
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
@@ -44,35 +44,21 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             const getVersion = async () => {
                 const response = await AuthService.getVersion();
                 const json = await response.json();
-                checkVersion(json.data)
+                const version = Platform.OS == 'ios'? json.data.ios_version : json.data.android_version;
+                checkVersion(version)
             }
             getVersion().catch(console.error);
         }, [])
     );
 
-    const checkVersion = (res: any) => {
-        let platform = '';
-        if (Platform.OS == 'ios') {
-            platform = res.ios_version
-        } else {
-            platform = res.android_version
-        }
-
-        if (platform > VERSION) {
-            Alert.alert('Please update to continue using the app.', '', [
-                {
-                    text: 'OK',
-                    onPress: () => update(platform)
-                },
-            ]);
-        }
-    }
-
-    const update = (res: any) => {
-        if (Platform.OS == 'ios') {
-            Linking.openURL('https://apps.apple.com/us/app/poplook/id1081245738?platform=iphone')
-        } else {
-            Linking.openURL('https://play.google.com/store/apps/details?id=com.tiseno.poplook&hl=en&gl=US')
+    const checkVersion = (res:any) => {
+        if(res > IOS_VERSION) {
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'ForceUpdatePage',
+                }]
+            });
         }
     }
 
@@ -101,7 +87,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
                                 const height = Number(banner.height) * (win.width / Number(banner.width));
 
-                                return <Center key={key + '_' + key2} >
+                                return <Center key={key2} >
                                     {!banner.new_window.includes("_blank") &&
                                         <TouchableOpacity onPress={() => goToCategory(banner)}>
                                             <Image w={win.width} h={height} source={{

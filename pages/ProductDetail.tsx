@@ -104,7 +104,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     };
 
     const changeProductId = (item: any) => {
-        fetchData(item).catch(console.error);
+        navigation.push('ProductDetailPage', {product_id: item} )
         setIsLoading(false)
     }
 
@@ -250,7 +250,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     const chooseColor = (item: any) => {
         if(item !== route.params.product_id) {
-            fetchData(item).catch(console.error);
+            navigation.push('ProductDetailPage', {product_id: item} )
         }
     }
 
