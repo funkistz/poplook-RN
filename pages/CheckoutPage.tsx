@@ -657,7 +657,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                                                 <VStack m={3} flexShrink={1}>
                                                     <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
-                                                    <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
+                                                    <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].price).toFixed(2)}</Text>
                                                 </VStack>
                                             </>
                                         }
