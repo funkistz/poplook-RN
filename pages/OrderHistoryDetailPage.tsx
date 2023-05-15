@@ -102,7 +102,8 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
 const styles = StyleSheet.create({
     container: {
        paddingStart: 30,
-       paddingEnd: 30
+       paddingEnd: 30,
+       backgroundColor: 'white'
     },
     button: {
         borderRadius: 10,
