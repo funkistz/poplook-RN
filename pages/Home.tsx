@@ -47,7 +47,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
                 const version = Platform.OS == 'ios'? json.data.ios_version : json.data.android_version;
                 checkVersion(version)
             }
-            getVersion().catch(console.error);
+            // getVersion().catch(console.error);
         }, [])
     );
 

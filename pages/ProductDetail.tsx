@@ -240,7 +240,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         if (oldPrice > newPrice) {
             return <>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text color={'gray.500'} bold strikeThrough fontSize={18}>{session.country.currency_sign} {product.price_without_reduction}</Text><Text style={{ color: 'red' }} bold fontSize={18}> {session.country.currency_sign} {product.price}</Text>
+                    <Text color={'gray.400'} strikeThrough fontSize={18}>{session.country.currency_sign} {product.price_without_reduction}</Text><Text style={{ color: 'red' }} bold fontSize={18}> {session.country.currency_sign} {product.price}</Text>
                 </View>
             </>
         } else {

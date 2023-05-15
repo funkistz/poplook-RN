@@ -36,7 +36,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
         if (oldPrice > newPrice) {
             return <>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text color={'gray.500'} bold strikeThrough fontSize={12}>{session.country.currency_sign} {product.price_without_reduction}</Text>
+                    <Text color={'gray.400'} strikeThrough fontSize={12}>{session.country.currency_sign} {product.price_without_reduction}</Text>
                     <Text style={{ color: 'red' }} bold fontSize={12}> {session.country.currency_sign} {product.price}</Text>
                 </View>
             </>
@@ -46,7 +46,6 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
     }
 
     useEffect(() => {
-        // console.log('product......', product)
 
     }, [])
 
@@ -72,7 +71,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                         <Text py={1} 
                                             style={{ 
                                                 color: 'white',
-                                                fontSize: 10,
+                                                fontSize: 8,
                                                 backgroundColor: 'black',
                                                 width: '100%',
                                                 textAlign: 'center',

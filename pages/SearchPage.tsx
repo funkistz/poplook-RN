@@ -101,9 +101,9 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
                             <Center backgroundColor={'white'} py={3}>
                                 <Box w="95%" >
                                     <Select
-                                        backgroundColor={'gray.100'}
+                                        backgroundColor={'#fff'}
                                         color={'black'}
-                                        borderColor={'red'}
+                                        borderColor={'#ccc'}
                                         selectedValue={product.sort.toString()}
                                         accessibilityLabel="Please Select"
                                         placeholder="Please Select"
