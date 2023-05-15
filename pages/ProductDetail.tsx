@@ -41,6 +41,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [reference, setReference] = useState<any>('');
     const [styleItWith, setStyleItWith] = useState<any>([]);
     const [motherDaughter, setMotherDaughter] = useState<any>([]);
+    const [quantityAvailable, setQuantityAvailable] = useState<any>('');
 
     // Webview
     const [heightDetails, setHeightDetails] = useState<any>(0);;
@@ -160,6 +161,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setMeasurements(json.data.measurements)
         setStyleItWith(json.data.style_it_with)
         setMotherDaughter(json.data.mother_daughter_with)
+        setQuantityAvailable(json.data.quantity)
         setIsLoading(true)
     }
 
@@ -356,12 +358,15 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                 <Text color={'black'} fontSize={18}>{product.name}</Text>
                                 {price()}
                                 {product.discount_text != null && <Text px={3} py={1} style={{ color: 'white', fontSize: 10, backgroundColor: 'black', textAlign: 'center' }}>{product.discount_text}</Text>}
-                                {attribute.length > 0 &&
+
+                                {attribute.length > 0 && quantityAvailable > 0 &&
                                     <>
                                         <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
                                         <SizeList attribute={attribute} setSizeSelected={setSizeSelected} sizeSelected={sizeSelected}></SizeList>
                                     </>
                                 }
+
+                                {quantityAvailable == 0 && <Text style={{color: '#a94442', fontSize: 18, marginTop: 20,}}>This product is not available.</Text>}
 
                                 <TouchableOpacity onPress={toggleModalStore} >
                                     <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' mb={6} mt={6}> Check in store availability </Text>
@@ -677,9 +682,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                     </VStack>
                                 </>
                             }
-
-
-
                         </ScrollView>
 
                         <HStack style={{ height: 60, paddingVertical: 5}}  >
@@ -696,7 +698,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                 onPress={shareUrl}
                             />
                             <Box w={win.width * 3 / 5}>
-                                <Button onPress={() => addToCartF()} style={styles.addtoCartBtn}>
+                                <Button isDisabled={quantityAvailable == 0 ? true : false} onPress={() => addToCartF()} style={styles.addtoCartBtn}>
                                     ADD TO CART
                                 </Button>
                             </Box>
