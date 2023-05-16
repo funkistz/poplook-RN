@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, TextInput, Button, Keyboard } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Text, ScrollView, View, HStack, Box, Spacer, Icon, FlatList, Center, Select, CheckIcon, VStack } from "native-base";
+import { Text, ScrollView, View, HStack, Box, Spacer, Icon, FlatList, Center, Select, CheckIcon, VStack, Backdrop } from "native-base";
 import ProductCard from '../components/Products/ProductCard';
 import Spinner from '../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,8 +24,10 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
         console.log('handleSheetChanges', index);
         if(index == -1) {
             setAttributeList([])
+            setBackdropVisible(false)
         }
     }, []);
+    const [backdropVisible, setBackdropVisible] = useState(false);
 
     // Size data
     const [attributeList, setAttributeList] = useState<any>([]);
@@ -72,6 +74,7 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
         if (item.attribute_list.length > 0) {
             if (!id_product_attribute) {
                 bottomSheetRef.current?.snapToIndex(0);
+                setBackdropVisible(true);
                 return;
             }
         }
@@ -95,15 +98,15 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
     return (
         <>
             {(!product.isLoading || product.items.length > 0) &&
-                <View>
+                <View style={{ flex: 1, backgroundColor: 'white' }}>
                     {(product.count > 0) &&
-                        <View>
-                            <Center backgroundColor={'white'} py={3}>
+                        <>
+                            <Center py={3}>
                                 <Box w="95%" >
                                     <Select
-                                        backgroundColor={'gray.100'}
+                                        backgroundColor={'#fff'}
                                         color={'black'}
-                                        borderColor={'red'}
+                                        borderColor={'#ccc'}
                                         selectedValue={product.sort.toString()}
                                         accessibilityLabel="Please Select"
                                         placeholder="Please Select"
@@ -127,7 +130,6 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
                                 backgroundColor={'white'}
                                 numColumns={2}
                                 data={product.items}
-                                mb={10}
                                 renderItem={({
                                     item
                                 }) => <Box w="50%">
@@ -138,7 +140,7 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
                                 onEndReachedThreshold={1}
                                 ListFooterComponent={loadingSpinner}
                             />
-                        </View>
+                        </>
                     }
                     {product.count == 0 &&
 
@@ -166,7 +168,7 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
             }
 
             {(product.isLoading && product.items.length == 0) &&
-                <SkeletonLoading filter={false} containerOnly={false} />
+                <SkeletonLoading filter={false} containerOnly={false} search={true} />
             }
 
             <BottomSheet
@@ -175,6 +177,18 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
                     snapPoints={snapPoints}
                     onChange={handleSheetChanges}
                     enablePanDownToClose
+                    backdropComponent={() => (
+                        <>
+                            {backdropVisible && <Backdrop
+                                onPress={() => {
+                                    setBackdropVisible(false);
+                                    bottomSheetRef.current?.close();
+                                }}
+                                opacity={0}
+                            />}
+                        </>
+    
+                    )}
                     backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
                 >
 

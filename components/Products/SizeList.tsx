@@ -17,7 +17,9 @@ function SizeList({ attribute, setSizeSelected, sizeSelected }: any) {
                     backgroundColor={(sizeSelected == res.id_product_attribute) ? '#000' : '#fff'}
                     borderColor={(sizeSelected == res.id_product_attribute) ? '#000' : '#ccc'}
                     width={(res.attribute_name.includes("Year") ? (win.width / 5) + 2 : (win.width / 6 - 2))}
-                    _text={{ color: getTextColor(res.id_product_attribute), fontSize: 13 }}>
+                    _text={{ color: getTextColor(res.id_product_attribute), fontSize: 13 }}
+                    isDisabled={res.quantity == 0 ? true : false}
+                    >
                     {res.attribute_name}
                 </Button>
             })}

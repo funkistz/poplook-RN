@@ -36,7 +36,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
         if (oldPrice > newPrice) {
             return <>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text color={'gray.500'} bold strikeThrough fontSize={12}>{session.country.currency_sign} {product.price_without_reduction}</Text>
+                    <Text color={'gray.400'} strikeThrough fontSize={12}>{session.country.currency_sign} {product.price_without_reduction}</Text>
                     <Text style={{ color: 'red' }} bold fontSize={12}> {session.country.currency_sign} {product.price}</Text>
                 </View>
             </>
@@ -46,7 +46,6 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
     }
 
     useEffect(() => {
-        // console.log('product......', product)
 
     }, [])
 
@@ -61,7 +60,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                 style={{ flex: 1 }}
                                 borderRadius={10}
                                 resizeMode="cover">
-                                {product.discount_text != null && 
+                                {product.discount_text != null && product.quantity > 0 && 
                                     <View style={{ 
                                         flex: 1,
                                         justifyContent: 'flex-end',
@@ -72,14 +71,34 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                         <Text py={1} 
                                             style={{ 
                                                 color: 'white',
-                                                fontSize: 10,
-                                                backgroundColor: 'black',
+                                                fontSize: 8,
+                                                backgroundColor: '#000',
                                                 width: '100%',
                                                 textAlign: 'center',
                                             }}>{product.discount_text}</Text>
                                     </View>
                                 }
-                                
+                                {product.quantity == 0 && 
+                                    <View style={{ 
+                                        flex: 1,
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'center',
+                                        borderRadius: 10,
+                                        overflow: 'hidden',
+                                    }}>
+                                        <Text py={1} 
+                                            style={{ 
+                                                color: 'white',
+                                                fontSize: 8,
+                                                backgroundColor: '#000',
+                                                // opacity: 0.8,
+                                                width: '100%',
+                                                textAlign: 'center',
+                                                textTransform: 'uppercase'
+
+                                            }}>out of stock</Text>
+                                    </View>
+                                }
                             </ImageBackground>
                         </>
                     }
