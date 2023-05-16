@@ -25,7 +25,6 @@ import LoyaltyPage from '../pages/LoyaltyPage';
 import RewardsPage from '../pages/RewardsPage';
 import FaqPage from '../pages/FaqPage';
 import WishlistPage from '../pages/WishlistPage';
-import OrderSuccessPage from '../pages/OrderSuccessPage';
 import CustomerServicePage from '../pages/CustomerServicePage';
 import CustomerServiceDetailsPage from '../pages/CustomerServiceDetailsPage';
 import WebviewPage from '../pages/EghlPaymentPage';
@@ -71,7 +70,6 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='RewardsPage' component={RewardsPage} options={{ title: 'Reward' }} />
             <Stack.Screen name='FaqPage' component={FaqPage} options={{ title: 'FAQ' }} />
             <Stack.Screen name='WishlistPage' component={WishlistPage} options={{ title: 'Wishlist' }} />
-            <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation' }} />
             <Stack.Screen name='CustomerServicePage' component={CustomerServicePage} options={{ title: 'Customer Service' }} />
             <Stack.Screen name='CustomerServiceDetailsPage' component={CustomerServiceDetailsPage} options={{ title: 'Customer Service' }} />
         </Stack.Navigator>
