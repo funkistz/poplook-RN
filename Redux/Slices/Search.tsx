@@ -33,12 +33,12 @@ export const getSearch: any = createAsyncThunk(
         try {
 
             const state: any = getState();
-            const user = state.session.user.tier;
+            const user = state.session.user;
             const params = {
                 keyword:  keyword,
                 num_page: state.search.page,
                 sort_options: sort ,
-                tier: user,
+                tier: user == null ? 1: user.tier,
             }
             // console.log('params: ', params)
 
