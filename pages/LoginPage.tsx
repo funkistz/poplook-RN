@@ -86,6 +86,8 @@ export default function LoginPage() {
                                 icon="mail-outline"
                                 touched={touched}
                                 errors={errors}
+                                type="email"
+                                autoCapitalize="none"
                             />
                             <CustomInput
                                 placeholder="Password"

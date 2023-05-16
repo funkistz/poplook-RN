@@ -72,7 +72,18 @@ const AuthService = {
         const url = 'Devices/versionInfo'; 
 
         return APIService.getMethod(url);
-    }
+    },
+    async customerDetails(data: any) {
+
+        const params = {
+            email: data,
+        };
+
+        const url = 'UserAuth/loginNoPassword';
+
+        return APIService.getMethod(url, params);
+
+    },
     
 
 

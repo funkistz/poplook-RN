@@ -168,6 +168,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                                                 icon={icon(id)}
                                                 touched={touched}
                                                 errors={errors}
+                                                autoCapitalize="none"
                                             />
                                             <CustomInput
                                                 key={2}
@@ -180,6 +181,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                                                 icon={icon(id)}
                                                 touched={touched}
                                                 errors={errors}
+                                                autoCapitalize="none"
                                             />
                                         </>}
 

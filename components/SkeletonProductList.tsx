@@ -136,20 +136,41 @@ export function Header () {
     </>
 }
 
+export function SearchFilter() {
+    return <>
+        <HStack py="2" w="100%" maxW="100%" backgroundColor={'white'}>
+            <HStack mb={1} px={2}  w="100%">
+                <Skeleton mt={1} mx={1} h={10} w={'full'} flex="1" style={{borderRadius: 8}} startColor="muted.300" />
+            </HStack>
+        </HStack>
+    </>
+}
 
-export default function SkeletonProductList({filter , containerOnly}:{filter: boolean, containerOnly: boolean}) {
+
+export default function SkeletonProductList({filter , containerOnly, search = false}:any) {
 
     return (
         <>
-            { containerOnly && <Body />}
-
-            { !containerOnly && 
-                <>
-                    <Header />
-                    { filter &&  <Filter />}
+            {
+                search && <>
+                    <SearchFilter />
                     <Body />
                 </>
             }
+            { 
+                !search && <>
+                    { containerOnly && <Body />}
+
+                    { !containerOnly && 
+                        <>
+                            <Header />
+                            { filter &&  <Filter />}
+                            <Body />
+                        </>
+                    }
+                </>
+            }
+            
         </>
     );
 }
