@@ -34,7 +34,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
                 setBanners(json.data);
             }
             fetchData2().catch(console.error);
-            dispatch(getWishList())
         });
 
         return unsubscribe;
@@ -43,6 +42,9 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     useFocusEffect(
         React.useCallback(() => {
+            if(session != null) {
+                dispatch(getWishList())
+            }
             getCurrentIdCart()
             // Developer Mode command getversion()
             // getVersion().catch(console.error);

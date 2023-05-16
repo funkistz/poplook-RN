@@ -16,12 +16,13 @@ export default function LoginPage() {
 
     const navigation: any = useNavigation();
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+    const cart = useSelector((storeState: any) => storeState.cart);
     const { isFetching, isSuccess, isError, errorMessage } = useSelector(
         userSelector
     );
 
     useEffect(() => {
-
+        console.log('cart huh.....', cart)
 
     }, []);
 

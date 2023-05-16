@@ -53,6 +53,9 @@ export default function ShippingTo() {
 
             if(session.user != null) {
                 alert()
+            } else {
+                dispatch(clearCart())
+                dispatch(clearCheckout())
             }
         }
 
@@ -72,9 +75,9 @@ export default function ShippingTo() {
             if(user != null) {
                 dispatch(logout())
                 dispatch(getWishList())
+                dispatch(clearAddress())
                 dispatch(clearCart())
                 dispatch(clearCheckout())
-                dispatch(clearAddress())
             }
         });
     }

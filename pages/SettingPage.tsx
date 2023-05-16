@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, Alert, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Text, ScrollView, View, HStack, Box, Spacer, Icon, Select } from "native-base";
 import { logout } from '../Redux/Slices/Sessions';
@@ -13,7 +13,7 @@ import { getCountries } from '../Redux/Slices/Infos';
 import ShippingTo from '../components/ShippingTo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { getWishList } from '../Redux/Slices/Wishlist';
-import { VERSION } from "@env"
+import { IOS_VERSION, ANDROID_VERSION } from "@env"
 
 export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -135,7 +135,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                             <Spacer />
                         </HStack>
                     </TouchableOpacity>
-                    <Text style={styles.version}>App Version {VERSION}</Text>
+                    <Text style={styles.version}>App Version {Platform.OS == 'ios' ?  IOS_VERSION : ANDROID_VERSION}</Text>
                 </View>
             </ScrollView>
         </View>

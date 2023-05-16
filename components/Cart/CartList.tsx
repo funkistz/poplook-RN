@@ -27,11 +27,10 @@ export default function CartList({ product }: any) {
     }
 
     useEffect(() => {
-        // console.log('product.......', product)
+
     }, [])
 
     const deleteCart = async (product: any) => {
-        console.log('asdasdasdasdasdsad', product);
 
         const params = {
             id_cart: cart.id_cart,
@@ -81,7 +80,6 @@ export default function CartList({ product }: any) {
                                 )}
                                 <Text color='black'>Ref No: {product.reference}</Text>
                                 <Text color='black'>Quantity: {product.quantity}</Text>
-                                {/* <Text color='black'>Total: {product.total_wt}</Text> */}
                             </Box>
                             <Box w={'30%'} style={{flex: 1, justifyContent: 'flex-end',alignItems: 'center',}}>
                                 <IconButton 
