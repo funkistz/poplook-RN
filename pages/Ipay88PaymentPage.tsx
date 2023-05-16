@@ -49,28 +49,6 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
 
     }
 
-
-    // React.useEffect(
-    //     () =>
-    //         navigation.addListener('beforeRemove', (e: any) => {
-    //             e.preventDefault();
-
-    //             Alert.alert(
-    //                 'Discard changes?',
-    //                 'You have unsaved changes. Are you sure to discard them and leave the screen?',
-    //                 [
-    //                     { text: "Don't leave", style: 'cancel', onPress: () => { } },
-    //                     {
-    //                         text: 'Discard',
-    //                         style: 'destructive',
-    //                         onPress: () => navigation.dispatch(e.data.action),
-    //                     },
-    //                 ]
-    //             );
-    //         }),
-    //     [navigation]
-    // );
-
     const alertCancelOrder = () => {
         Alert.alert('Are you sure to close the payment screen?', '', [
             {
@@ -79,7 +57,31 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
             },
             {
                 text: 'OK',
-                onPress: () => cartStep5(0)
+                onPress: () => {
+                    navigation.reset({
+                        index: 0,
+                        routes: [
+                            {
+                                name: 'Main',
+                                state: {
+                                    routes: [{
+                                        name: 'My Account',
+                                        state: {
+                                            routes: [{
+                                                name: 'SettingPage',
+                                                state: {
+                                                    routes: [{
+                                                        name: 'OrderHistoryListPage'
+                                                    }],
+                                                },
+                                            }],
+                                        },
+                                    }],
+                                },
+                            },
+                        ],
+                    });
+                }
             },
         ]);
     }
@@ -87,7 +89,6 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
     const cartStep5 = async (status: any) => {
 
         console.log('txnstatus', status)
-
 
         const response = await CartService.cartStep5(orderId, status, paymentType, transId, amount);
         const json = await response.json();
@@ -102,12 +103,6 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                 const param = {
                     id: orderId
                 };
-
-                // navigation.navigate('Main', {
-                //     screen: 'My Account', params: {
-                //         screen: 'OrderSuccessPage'
-                //     }
-                // });
                 navigation.reset({
                     index: 0,
                     routes: [
@@ -126,14 +121,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                         },
                     ],
                 });
-
-                // navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage', param: param })
             } else {
-                // navigation.navigate('Main', {
-                //     screen: 'My Account', params: {
-                //         screen: 'OrderHistoryListPage'
-                //     }
-                // });
                 navigation.reset({
                     index: 0,
                     routes: [
@@ -144,7 +132,12 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                                     name: 'My Account',
                                     state: {
                                         routes: [{
-                                            name: 'OrderHistoryListPage'
+                                            name: 'SettingPage',
+                                            state: {
+                                                routes: [{
+                                                    name: 'OrderHistoryListPage'
+                                                }],
+                                            },
                                         }],
                                     },
                                 }],
@@ -154,11 +147,6 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                 });
             }
         } else {
-            // navigation.navigate('Main', {
-            //     screen: 'My Account', params: {
-            //         screen: 'OrderHistoryListPage'
-            //     }
-            // });
             navigation.reset({
                 index: 0,
                 routes: [
@@ -169,7 +157,12 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                                 name: 'My Account',
                                 state: {
                                     routes: [{
-                                        name: 'OrderHistoryListPage'
+                                        name: 'SettingPage',
+                                        state: {
+                                            routes: [{
+                                                name: 'OrderHistoryListPage'
+                                            }],
+                                        },
                                     }],
                                 },
                             }],
@@ -185,7 +178,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
             <Box safeAreaTop />
             <HStack px="1" py="1" justifyContent="space-between" alignItems="center" w="100%" maxW="350">
                 <HStack alignItems="center">
-                    <Button variant={'ghost'} onPress={() => alertCancelOrder()}>Close</Button>
+                    {/* <Button variant={'ghost'} onPress={() => alertCancelOrder()}>Close</Button> */}
                 </HStack>
                 <HStack>
                 </HStack>

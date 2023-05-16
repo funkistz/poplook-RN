@@ -127,8 +127,6 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                         },
                     ],
                 });
-
-                // navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage', param: param })
             } else {
                 navigation.reset({
                     index: 0,
@@ -140,7 +138,12 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                                     name: 'My Account',
                                     state: {
                                         routes: [{
-                                            name: 'OrderHistoryListPage'
+                                            name: 'SettingPage',
+                                            state: {
+                                                routes: [{
+                                                    name: 'OrderHistoryListPage'
+                                                }],
+                                            },
                                         }],
                                     },
                                 }],
@@ -160,7 +163,12 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                                 name: 'My Account',
                                 state: {
                                     routes: [{
-                                        name: 'OrderHistoryListPage'
+                                        name: 'SettingPage',
+                                        state: {
+                                            routes: [{
+                                                name: 'OrderHistoryListPage'
+                                            }],
+                                        },
                                     }],
                                 },
                             }],
@@ -176,7 +184,7 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
             <Box safeAreaTop />
             <HStack px="1" py="1" justifyContent="space-between" alignItems="center" w="100%" maxW="350">
                 <HStack alignItems="center">
-                    <Button variant={'ghost'} onPress={() => alertCancelOrder()}>Close</Button>
+                    {/* <Button variant={'ghost'} onPress={() => alertCancelOrder()}>Close</Button> */}
                 </HStack>
                 <HStack>
                 </HStack>
