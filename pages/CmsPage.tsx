@@ -13,7 +13,7 @@ export default function CmsPage({ route, navigation }: { route: any, navigation:
         const getDetails = async () => {
             const response = await CmsService.getCmsDetails(key);
             const json = await response.json();
-            console.log('res: ', json.data[0].content)
+            // console.log('res: ', json.data[0].content)
             setCms(json.data[0]);
             
         }
@@ -25,7 +25,7 @@ export default function CmsPage({ route, navigation }: { route: any, navigation:
         <>
             <WebView
                 originWhitelist={['*']}
-                source={{ html: '<style>h1,h2,h3,h4,p,span {font-size: 35px !important} </style><div style="padding: 0 30px">'  +cms.content+'</>' }}
+                source={{ html: '<style>h1,h2,h3,h4,p,span {font-size: 35px !important} a { color: #1cad48 !important;} </style><div style="padding: 0 30px">'  +cms.content+'</>' }}
             />
             
         </>
