@@ -9,7 +9,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import RNInsider from 'react-native-insider';
 import InsiderCallbackType from 'react-native-insider/src/InsiderCallbackType';
 // import { ExecutionEnvironment } from 'expo-constants';
-import { Alert, Platform, PermissionsAndroid } from 'react-native';
+import { Alert, Platform, PermissionsAndroid, StatusBar } from 'react-native';
 
 export default function App() {
 
@@ -24,6 +24,7 @@ export default function App() {
 
     // console.log('ExecutionEnvironment', ExecutionEnvironment.Standalone);
 
+    StatusBar.setBarStyle('dark-content');
 
     RNInsider.init(
       'poplook',
