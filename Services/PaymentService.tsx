@@ -116,10 +116,11 @@ const PaymentService = {
 
     },
 
-    async eghl(cartId: any) {
+    async eghl(cartId: any, orderId: any) {
 
         const params: any = {
             id_cart: cartId,
+            id_order: orderId,
             id_payment: '4',
             return_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php?return_url=1',
             callback_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php'
