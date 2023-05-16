@@ -1,5 +1,5 @@
 import { store } from '../Redux/app';
-import { API_URL, API_KEY } from "@env"
+import { API_URL, API_KEY, IOS_VERSION } from "@env"
 
 // import axios from 'axios';
 // import { store } from '../Redux/app';
@@ -51,7 +51,7 @@ const APIService = {
             id_shop: id_shop,
             device_type: 'apps',
             api_version: 'apps',
-            app_version: 'v2'
+            app_version: IOS_VERSION
         };
 
         if (isString) {
