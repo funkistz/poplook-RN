@@ -55,14 +55,28 @@ const PaymentService = {
 
     },
 
+    async payIpayUsd(id_cart: any, customerId: any, paymentId: any) {
+
+        const params: any = {
+            id_cart: id_cart,
+            id_customer: customerId,
+            id_payment: paymentId,
+            return_url: 'https://poplook.com/modules/ipay88induxive/ipay88_mobile_bridge.php',
+            callback_url: 'https://poplook.com/modules/ipay88induxive/backend_response.php'
+        };
+
+        return APIService.putMethod('PaymentProcessor/redirect_usdcc', params);
+
+    },
+
     async repayIpayUsd(orderId: any, customerId: any, paymentId: any) {
 
         const params: any = {
             id_order: orderId,
             id_customer: customerId,
             id_payment: paymentId,
-            return_url: '',
-            callback_url: ''
+            return_url: 'https://poplook.com/modules/ipay88induxive/ipay88_mobile_bridge.php',
+            callback_url: 'https://poplook.com/modules/ipay88induxive/backend_response.php'
         };
 
         return APIService.postMethod('PaymentProcessor/repay_usdcc', params);
@@ -102,10 +116,11 @@ const PaymentService = {
 
     },
 
-    async eghl(cartId: any) {
+    async eghl(cartId: any, orderId: any) {
 
         const params: any = {
             id_cart: cartId,
+            id_order: orderId,
             id_payment: '4',
             return_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php?return_url=1',
             callback_url: 'https://poplook.com/modules/sgcreditcard/callback_mobile.php'
@@ -128,13 +143,14 @@ const PaymentService = {
 
     },
 
-    async enets(cartId: any) {
+    async enets(cartId: any, orderId: any) {
 
         const params: any = {
             id_cart: cartId,
+            id_order: orderId,
             id_payment: '5',
-            return_url: 'https://poplook.com/modules/enets/callback_mobile.php?return_url=1',
-            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php'
+            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php',
+            return_url: 'https://poplook.com/modules/enets/enets_mobile_bridge.php',
         };
 
         return APIService.putMethod('PaymentProcessor/redirect_enets', params);
@@ -146,8 +162,8 @@ const PaymentService = {
         const params: any = {
             id_order: orderId,
             id_customer: customerId,
-            return_url: 'https://poplook.com/modules/enets/callback_mobile.php?return_url=1',
-            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php'
+            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php',
+            return_url: 'https://poplook.com/modules/enets/enets_mobile_bridge.php',
         };
 
         return APIService.postMethod('PaymentProcessor/repay_enets', params);

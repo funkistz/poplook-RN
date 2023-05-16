@@ -249,7 +249,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         if (paymentType == '1') {
                             // paypal
                         } else {
-                            // pay(data) // ipay88
+                            ipayUsd(json.data)
                         }
                     }
                 }
@@ -309,7 +309,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 return 'enets'
             }
         } else if (shopId == 3) {
-
+            if (paymentType == '1') {
+                return 'paypal';
+            } else {
+                return 'usd_cc'
+            }
         }
 
         return paymentType;
@@ -408,6 +412,37 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         }
     }
 
+    const ipayUsd = async (data: any) => {
+
+        console.log('data checkout', data);
+
+        const response = await PaymentService.payIpayUsd(data.id_cart, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('IpayUsd', json);
+
+        if (json.code == '200') {
+            // processIpay88Browser()
+            const params = {
+                form: json.data.results,
+                order_id: data.id_order,
+                payment_type: 'usd_cc',
+                trans_id: null,
+                amount: data.totalPriceWt * 100
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Ipay88PaymentPage',
+                    params: params
+                }]
+            });
+        } else {
+
+        }
+    }
+
 
     const processIpay88 = (data: any) => {
 
@@ -437,9 +472,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const eghl = async (data: any) => {
 
-        console.log('dataEghl', data);
-
-        const response = await PaymentService.eghl(cartId);
+        const response = await PaymentService.eghl(cartId, data.id_order);
         const json = await response.json();
 
         console.log('redirectEghl', json.data.results);
@@ -461,7 +494,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const enets = async (data: any) => {
 
-        const response = await PaymentService.enets(cartId);
+        const response = await PaymentService.enets(cartId, data.id_order);
         const json = await response.json();
 
         console.log('redirectEnets', json.data.results)
@@ -516,7 +549,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             </>
                         }
 
-                        <Text style={styles.bold} py={2}>Payment Method{refId}</Text>
+                        <Text style={styles.bold} py={2}>Payment Method</Text>
                         <Radio.Group name="paymentMethod" onChange={nextValue => {
                             setPaymentChild('')
                             setPaymentType(nextValue);
@@ -545,7 +578,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 </>
                             })}
                         </Radio.Group>
-                        <Text color={'black'}>{paymentType} {paymentChild}</Text>
+                        {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
                         <Spacer />
 
                         <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
@@ -659,7 +692,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                                                 <VStack m={3} flexShrink={1}>
                                                     <Text color='black' fontSize={13}>{gift_wrap.product_val[gift_wrap_id].name}</Text>
-                                                    <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].base_price).toFixed(2)}</Text>
+                                                    <Text color='black' fontSize={13}>{currency} {Number(gift_wrap.product_val[gift_wrap_id].price).toFixed(2)}</Text>
                                                 </VStack>
                                             </>
                                         }

@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Text, ScrollView, View, HStack, Spacer, VStack, Divider } from "native-base";
+import { Text, ScrollView, View, HStack, Spacer, VStack, Divider, Button, Flex } from "native-base";
+import { useSelector } from 'react-redux';
 import OrderHistoryService from '../Services/OrderHistoryService';
 import ProductDetail from '../components/ProductDetail';
 import Address from '../components/Address';
 
-export default function OrderSuccessPage({ route } : { route: any }) {
+export default function OrderSuccessPage({ route, navigation } : { route: any, navigation: any }) {
 
-    const orderId = route.params.param.id;
+    const orderId = route.params.id;
+    const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
+
     const [details, setDetails] = useState<any>({});
     const [shipping, setShipping] = useState<any>({});
-    const [billing, setBilling] = useState<any>({});
+    const [billing, setBilling] = useState<any>({})
     const [products, setProducts] = useState<any>([]);
     const [messages, setMessages] = useState<any>([]);
+    const [giftMessages, setGiftMessages] = useState<any>([]);
 
     useEffect(() => {
 
-        console.log('hai' ,route.params)
+        console.log('hai' ,route.params.id)
 
         const orderHistoryDetails = async () => {
             const response = await OrderHistoryService.orderHistoryDetails(orderId);
@@ -28,14 +32,33 @@ export default function OrderSuccessPage({ route } : { route: any }) {
             setShipping(json.data.shipping_details);
             setBilling(json.data.billing_details);
             setProducts(json.data.product_details);
-            setMessages(json.data.order_message);
+            setMessages(json.data.order_message[0]);
+            setGiftMessages(json.data.order_details);
         }
         orderHistoryDetails().catch(console.error);
 
     }, [])
 
+    const goToHomePage = () => {
+
+        navigation.reset({
+            index: 0,
+            routes: [
+                {
+                    name: 'Main',
+                    state: {
+                        routes: [{
+                            name: 'Home'
+                        }],
+                    },
+                },
+            ],
+        });
+    };
+
     return (
         <>
+            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} safeAreaBottom>
             <ScrollView>
                 <View style={styles.container}>
                 <Text style={styles.title}>Thank you for shopping at POPLOOK!</Text>
@@ -66,7 +89,7 @@ export default function OrderSuccessPage({ route } : { route: any }) {
                 <HStack py={3}>
                     <VStack paddingRight={8}>
                         <Text style={styles.bold}>Gift Message</Text>
-                        <Text style={styles.normal}>No messsage available</Text>
+                        <Text style={styles.normal}>{giftMessages.gift_message? giftMessages.gift_message : 'No messages available'}</Text>
                     </VStack>
                 </HStack>
                 <Divider/>
@@ -74,7 +97,7 @@ export default function OrderSuccessPage({ route } : { route: any }) {
                 <HStack py={3}>
                     <VStack paddingRight={8}>
                         <Text style={styles.bold}>Order Message</Text>
-                        <Text style={styles.normal}>No messsage available</Text>
+                        <Text style={styles.normal}>{messages.message ? messages.message : 'No message available'}</Text>
                     </VStack>
                 </HStack>
                 <Divider/>
@@ -89,17 +112,21 @@ export default function OrderSuccessPage({ route } : { route: any }) {
                     <HStack>
                     <Text style={styles.bold}>Shipping</Text>
                     <Spacer/>
-                    <Text style={styles.bold}>Free Shipping</Text>
+                    <Text style={styles.bold}>{currency} {details.carrier_price}</Text>
                     </HStack>
                 </VStack>
                 <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
                     <HStack>
                     <Spacer/>
-                    <Text style={styles.bold}>TOTAL { details.total_paid }</Text>
+                    <Text style={styles.bold}>TOTAL {currency} { details.total_paid }</Text>
                     </HStack>
                 </VStack>
             </View>
             </ScrollView>
+            <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}>
+                <Button w={'100%'} style={styles.footer} onPress={() => goToHomePage()}>CONTINUE SHOPPING</Button>
+            </HStack>
+            </Flex>
         </>
     )
 }
@@ -125,16 +152,19 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     title: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
-        marginVertical: 8
+        marginVertical: 3
     },
     border: {
         borderBottomWidth: 1,
         borderColor: 'muted.100',
         paddingRight: 8
-    }
+    },
+    footer: {
+        backgroundColor: '#1cad48'
+    },
 })
 
 

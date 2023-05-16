@@ -20,49 +20,56 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
     const [currentUrl, setCurrentUrl] = useState('');
     const [paymentState, setPaymentState] = React.useState('');
     const [status, setSatus] = React.useState('');
+    const [newStatus, setnewSatus] = React.useState('');
 
     const handleNavigationStateChange = (navState: any) => {
         console.log('changeurl', navState)
 
         const _url = navState.url
 
-        getSearchParamFromURL(_url, 'TxnStatus')
+        if (_url.includes('ipay88_mobile_response')) {
+            getSearchParamFromURLEnets(_url)
+        }
+
+        if (_url.includes('callback_mobile.php')) {
+            getSearchParamFromURLEghl(_url)
+        }
 
     };
 
-    const getSearchParamFromURL = (url: any, param: any) => {
-        const include = url.includes(param)
+    const getSearchParamFromURLEnets = (url: any) => {
 
-        if (!include) return null
+        var regex = /[?&]([^=#]+)=([^&#]*)/g, params: any = {}, match;
 
-        const params = url.split(/([&,?,=])/)
-        const index = params.indexOf(param)
-        const value = params[index + 2]
-        setSatus(value);
-        cartStep5(status)
+        while (match = regex.exec(url)) {
+            params[match[1]] = match[2];
+        }
+
+        if (params.status) {
+            console.log('status', params.status)
+
+            setSatus(params.status);
+            cartStep5(params.status)
+        }
+
     }
 
+    const getSearchParamFromURLEghl = (url: any) => {
 
-    // React.useEffect(
-    //     () =>
-    //         navigation.addListener('beforeRemove', (e: any) => {
-    //             e.preventDefault();
+        var regex = /[?&]([^=#]+)=([^&#]*)/g, params: any = {}, match;
 
-    //             Alert.alert(
-    //                 'Discard changes?',
-    //                 'You have unsaved changes. Are you sure to discard them and leave the screen?',
-    //                 [
-    //                     { text: "Don't leave", style: 'cancel', onPress: () => { } },
-    //                     {
-    //                         text: 'Discard',
-    //                         style: 'destructive',
-    //                         onPress: () => navigation.dispatch(e.data.action),
-    //                     },
-    //                 ]
-    //             );
-    //         }),
-    //     [navigation]
-    // );
+        while (match = regex.exec(url)) {
+            params[match[1]] = match[2];
+        }
+
+        if (params.TxnStatus) {
+            console.log('status', params.TxnStatus)
+
+            setSatus(params.TxnStatus);
+            cartStep5(params.TxnStatus)
+        }
+
+    }
 
     const alertCancelOrder = () => {
         Alert.alert('Are you sure to close the payment screen?', '', [
@@ -77,12 +84,18 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
         ]);
     }
 
-    const cartStep5 = async (status: any) => {
+    const cartStep5 = async (data: any) => {
 
-        console.log('txnstatus', status)
+        console.log('txnstatus', data)
 
+        if (data == '1') {
+            setnewSatus('0')
+        } else {
+            setnewSatus('1')
+        }
 
-        const response = await CartService.cartStep5(orderId, status, paymentType, transId, amount);
+        console.log(orderId, newStatus, paymentType, transId, amount)
+        const response = await CartService.cartStep5(orderId, newStatus, paymentType, transId, amount);
         const json = await response.json();
 
         console.log('cartstep5', json)
@@ -98,43 +111,32 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
                 navigation.reset({
                     index: 0,
-                    routes: [
-                        {
-                            name: 'Main',
-                            state: {
-                                routes: [{
-                                    name: 'My Account',
-                                    state: {
-                                        routes: [{
-                                            name: 'OrderSuccessPage'
-                                        }],
-                                    },
-                                }],
-                            },
-                        },
-                    ],
+                    routes: [{ name: 'OrderSuccessPage', params: param }]
                 });
-
-                // navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage', param: param })
             } else {
                 navigation.reset({
-                    index: 0,
-                    routes: [
-                        {
-                            name: 'Main',
-                            state: {
-                                routes: [{
-                                    name: 'My Account',
-                                    state: {
-                                        routes: [{
-                                            name: 'OrderHistoryListPage'
-                                        }],
-                                    },
-                                }],
-                            },
+                index: 0,
+                routes: [
+                    {
+                        name: 'Main',
+                        state: {
+                            routes: [{
+                                name: 'My Account',
+                                state: {
+                                    routes: [{
+                                        name: 'SettingPage',
+                                        state: {
+                                            routes: [{
+                                                name: 'OrderHistoryListPage'
+                                            }],
+                                        },
+                                    }],
+                                },
+                            }],
                         },
-                    ],
-                });
+                    },
+                ],
+            });
             }
         } else {
             navigation.reset({
@@ -147,7 +149,12 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                                 name: 'My Account',
                                 state: {
                                     routes: [{
-                                        name: 'OrderHistoryListPage'
+                                        name: 'SettingPage',
+                                        state: {
+                                            routes: [{
+                                                name: 'OrderHistoryListPage'
+                                            }],
+                                        },
                                     }],
                                 },
                             }],
@@ -163,7 +170,7 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
             <Box safeAreaTop />
             <HStack px="1" py="1" justifyContent="space-between" alignItems="center" w="100%" maxW="350">
                 <HStack alignItems="center">
-                    <Button variant={'ghost'} onPress={() => alertCancelOrder()}>Close</Button>
+                    {/* <Button variant={'ghost'} onPress={() => alertCancelOrder()}>Close</Button> */}
                 </HStack>
                 <HStack>
                 </HStack>

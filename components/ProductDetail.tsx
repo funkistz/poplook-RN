@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 export default function ProductDetail({ product }: { product: any }) {
 
-    const currency = useSelector((storeState: any) => storeState.session.currencySign);
+    const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
 
     return (
         <Box borderRadius={10}>

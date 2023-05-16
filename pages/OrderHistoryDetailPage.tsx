@@ -9,6 +9,7 @@ import Address from '../components/Address';
 export default function OrderHistoryDetailPage({ route} : { route: any }) {
 
     const customerId = useSelector((storeState: any) => storeState.session.user.id_customer);
+    const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const orderId = route.params.params.id;
     const url = 'https://poplook.com/application/download/POPLOOK_generic_returnform.pdf';
     const [details, setDetails] = useState<any>({});
@@ -84,13 +85,13 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
                     <HStack>
                     <Text style={styles.bold}>Shipping</Text>
                     <Spacer/>
-                    <Text style={styles.bold}>Free Shipping</Text>
+                    <Text style={styles.bold}>{currency} {details.carrier_price}</Text>
                     </HStack>
                 </VStack>
                 <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
                     <HStack>
                     <Spacer/>
-                    <Text style={styles.bold}>TOTAL { details.total_paid }</Text>
+                    <Text style={styles.bold}>TOTAL {currency} {details.total_paid}</Text>
                     </HStack>
                 </VStack>
             </View>
@@ -102,7 +103,8 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
 const styles = StyleSheet.create({
     container: {
        paddingStart: 30,
-       paddingEnd: 30
+       paddingEnd: 30,
+       backgroundColor: 'white'
     },
     button: {
         borderRadius: 10,
