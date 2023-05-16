@@ -73,7 +73,6 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
     `
     }
 
-
     const injectedJavaScript = `
         window.ReactNativeWebView.postMessage(
             Math.max(
@@ -88,8 +87,6 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
         true;
     `;
 
-
-
     const validationSchema = Yup.object({
         subject: Yup.string().required('Subject is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -101,8 +98,10 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
         const json = await response.json();
         console.log('result: ......', json)
         console.log('idasdas: ', json.data.order_histories)
-        const orderIds = json.data.order_histories.map((order: any) => order.id_order);
-        setListOrderId(orderIds)
+        if(json.data.order_histories != "") {
+            const orderIds = json.data.order_histories.map((order: any) => order.id_order);
+            setListOrderId(orderIds)
+        }
     }
 
     const submit = async (values: any, resetForm: any) => {
@@ -131,6 +130,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
 
     useEffect(() => {
         if(isFocused) {
+            console.log('params ', route.params.params.data)
             setDetails(route.params.params.data)
             fetchData(session.user.id_customer).catch(console.error);
             navigation.setOptions({ title: route.params.params.id == 21 ? 'Contact Us' : route.params.params.title  });
@@ -216,7 +216,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
                                         <Input variant={'outline'} value={values['email']} isReadOnly={true} color={'black'} borderColor={'#ccc'} />
 
                                         <Text color='black' my={2} fontSize={14} pt={1} fontWeight={500}>Order Reference</Text>
-                                        <Select key={2} color={'black'} selectedValue={values.order_id} w="100%" borderColor={'#ccc'} accessibilityLabel="Choose Order Reference" placeholder="Choose Order Reference" 
+                                        <Select isDisabled={listOrderId.length == 0 ? true : false} key={2} color={'black'} selectedValue={values.order_id} w="100%" borderColor={'#ccc'} accessibilityLabel="Choose Order Reference" placeholder="Choose Order Reference" 
                                             _selectedItem={{
                                                 bg: "teal.600",
                                                 endIcon: <CheckIcon size="5" />
