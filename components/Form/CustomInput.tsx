@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function CustomInput({ name, variant = 'unstyled', placeholder, values, onChangeText, onBlur, icon, touched,
-errors, type = 'text', readOnly = false, showIcon = true, autoCapitalize = "" }: any) {
+errors, type = 'text', readOnly = false, showIcon = true, autoCapitalize = "sentences" }: any) {
 
     useEffect(() => {
 

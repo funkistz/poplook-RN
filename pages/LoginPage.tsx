@@ -22,7 +22,6 @@ export default function LoginPage() {
     );
 
     useEffect(() => {
-        console.log('cart huh.....', cart)
 
     }, []);
 
