@@ -233,6 +233,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                 if (json.code == 200 && json.data) {
 
+                    dispatch(clearLeaveMessage())
+
                     if (shopId == '1') {
                         if (paymentType == '16') {
                             atome()
