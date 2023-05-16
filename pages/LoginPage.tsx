@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, Input, Box, Button, ScrollView, View } from "native-base";
+import { Text, Input, Box, Button, ScrollView, View, HStack } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import AuthService from '../Services/AuthService';
@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useNavigation } from '@react-navigation/native';
 import ShippingTo from '../components/ShippingTo';
-import { TouchableHighlight } from '@gorhom/bottom-sheet';
 
 export default function LoginPage() {
 
@@ -100,9 +99,12 @@ export default function LoginPage() {
                                 errors={errors}
                                 type='password'
                             />
-                            <TouchableOpacity onPress={() => forgotPassword()}>
-                                <Text style={styles.forgot_password}>Forgot Password?</Text>
-                            </TouchableOpacity>
+
+                            <HStack style={{marginVertical: 20}}>
+                                <HStack w={'50%'} style={{flex: 1, justifyContent: 'flex-end'}} h={30}>
+                                    <Text style={styles.forgot_password} onPress={() => forgotPassword()}>Forgot Password?</Text>
+                                </HStack>
+                            </HStack>
                             
 
                             <Button
@@ -176,9 +178,8 @@ const styles = StyleSheet.create({
     forgot_password: {
         color: 'black',
         fontWeight: '400',
-        paddingTop: 30,
         fontSize: 16,
-        paddingBottom: 22,
-        textAlign:'right'
+        textAlign:'right',
+        paddingTop: 5,
     }
 })
