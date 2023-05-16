@@ -472,7 +472,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const eghl = async (data: any) => {
 
-        const response = await PaymentService.eghl(cartId);
+        const response = await PaymentService.eghl(cartId, data.id_order);
         const json = await response.json();
 
         console.log('redirectEghl', json.data.results);
