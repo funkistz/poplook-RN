@@ -143,10 +143,11 @@ const PaymentService = {
 
     },
 
-    async enets(cartId: any) {
+    async enets(cartId: any, orderId: any) {
 
         const params: any = {
             id_cart: cartId,
+            id_order: orderId,
             id_payment: '5',
             callback_url: 'https://poplook.com/modules/enets/callback_mobile.php',
             return_url: 'https://poplook.com/modules/enets/enets_mobile_bridge.php',
@@ -161,8 +162,8 @@ const PaymentService = {
         const params: any = {
             id_order: orderId,
             id_customer: customerId,
-            return_url: 'https://poplook.com/modules/enets/callback_mobile.php?return_url=1',
-            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php'
+            callback_url: 'https://poplook.com/modules/enets/callback_mobile.php',
+            return_url: 'https://poplook.com/modules/enets/enets_mobile_bridge.php',
         };
 
         return APIService.postMethod('PaymentProcessor/repay_enets', params);

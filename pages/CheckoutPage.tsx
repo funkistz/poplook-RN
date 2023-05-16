@@ -494,7 +494,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const enets = async (data: any) => {
 
-        const response = await PaymentService.enets(cartId);
+        const response = await PaymentService.enets(cartId, data.id_order);
         const json = await response.json();
 
         console.log('redirectEnets', json.data.results)
