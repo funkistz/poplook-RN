@@ -4,6 +4,7 @@ import { Flex, Center, Image, Box, VStack, IconButton, Icon, AspectRatio, Text, 
 import { useNavigation } from '@react-navigation/native';
 import Wishlist from '../wishlist';
 import { useSelector } from 'react-redux';
+import GeneralService from '../../Services/GeneralService';
 
 export default function ProductCard({ product, route, openWishlist, hideWishlist = false }: any) {
 
@@ -27,6 +28,10 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
     }
 
     const clickedWishlist = () => {
+        if(session.user == null) {
+            return GeneralService.toast({ description: 'Log in required for wishlist item' });
+            
+        }
         openWishlist(null, product)
     }
 

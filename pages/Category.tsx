@@ -14,14 +14,13 @@ import { scroll, reset, getFilterList } from '../Redux/Slices/ProductList';
 import { addToWishlist, getWishList } from '../Redux/Slices/Wishlist';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SizeList from '../components/Products/SizeList';
-import GeneralService from '../Services/GeneralService';
 
 export default function CategoryPage({ route, navigation }: { route: any, navigation: any }) {
 
     // Redux
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.productList);
-    const user = useSelector((storeState: any) => storeState.session);
+    const user = useSelector((storeState: any) => storeState.session.user);
 
 
     // Define
@@ -206,12 +205,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     }
 
     const addtoWishlist = async (id_product_attribute = null, item: any) => {
-
-        // Must login
-        if (user.user == null) {
-            GeneralService.toast({ description: 'Log in required for wishlist item' });
-            return;
-        }
 
         setAttributeList(item)
 
