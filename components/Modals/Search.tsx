@@ -117,6 +117,7 @@ export default function SearchModal({ visible, onToggle, searchKeyword }: { visi
                         </View>
                     </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>
+
             </Modal>
         </>
     );
