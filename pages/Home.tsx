@@ -38,8 +38,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
                 });
             }
 
-            // navigation.navigate('IntroPage', { screen: 'IntroPage' });
-
             const fetchData2 = async () => {
                 const response = await BannerService.getBanners();
                 const json = await response.json();

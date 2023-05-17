@@ -16,6 +16,7 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.search);
+    const session = useSelector((storeState: any) => storeState.session);
 
      // Bottom sheet
     const bottomSheetRef = useRef<BottomSheet>(null);
@@ -94,6 +95,14 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
     useEffect(() => {
         navigation.setOptions({ title: "Search '" + route.params.keyword + "' "});
     }, [])
+
+    useEffect(() => {
+        const params = {
+            keyword: route.params.keyword,
+            sort: "0"
+        };
+        dispatch(getSearch(params))
+    }, [session])
 
     return (
         <>

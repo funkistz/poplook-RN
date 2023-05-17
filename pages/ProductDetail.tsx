@@ -327,6 +327,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     }, [])
 
+    useEffect(() => {
+        dispatch(getCart());
+        fetchData(route.params.product_id).catch(console.error);
+    }, [session])
+
 
     return (
         <View style={styles.container}>

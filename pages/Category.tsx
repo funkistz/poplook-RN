@@ -20,7 +20,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     // Redux
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.productList);
-    const user = useSelector((storeState: any) => storeState.session.user);
+    const session = useSelector((storeState: any) => storeState.session);
 
 
     // Define
@@ -239,8 +239,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         setColor([])
         setCombine([])
 
-        // console.log('product:', product)
-
     }, [])
 
     useEffect(() => {
@@ -271,6 +269,16 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
             dispatch(getFilterList(params))
         }
     }, [route])
+
+    useEffect(() => {
+        const params = {
+            categoryId: route.params.category_id,
+            product_attribute: attribute,
+            color: color,
+            sort_option: sort.toString(),
+        }
+        dispatch(getFilterList(params))
+    }, [session])
 
     useEffect(() => {
 
