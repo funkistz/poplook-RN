@@ -792,7 +792,8 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     divider: {
-        backgroundColor: '#d1f456',
+        // backgroundColor: '#d1f456',
+        backgroundColor: '#1cad48',
         height: 5,
     },
     levelup: {

@@ -112,6 +112,7 @@ export default function LoginPage() {
                                 style={styles.button}
                                 _text={{ fontSize: 14, fontWeight: 600 }}
                                 disabled={!isValid}
+                                _pressed={{  backgroundColor: '#1cad48' }}
                                 onPress={() => handleSubmit()}>LOGIN
                             </Button>
                             <Button
@@ -121,6 +122,7 @@ export default function LoginPage() {
                                 borderWidth={1}
                                 _text={{ color: "#1cad48", fontSize: 14, fontWeight: 600 }}
                                 onPress={() => register()}
+                                _pressed={{  backgroundColor: '#fff' }}
                             >NEW HERE? SIGN UP
                             </Button>
 

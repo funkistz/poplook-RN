@@ -254,6 +254,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     style={styles.button}
                                     _text={{ fontSize: 14, fontWeight: 600 }}
                                     disabled={!isValid}
+                                    _pressed={{  backgroundColor: '#1cad48' }}
                                     onPress={() => handleSubmit()}>SIGN UP
                                 </Button>
                             </>

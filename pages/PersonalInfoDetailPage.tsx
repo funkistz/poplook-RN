@@ -283,6 +283,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                                         style={styles.button}
                                         _text={{ fontSize: 14, fontWeight: 600 }}
                                         isDisabled={!isValid}
+                                        _pressed={{  backgroundColor: '#1cad48' }}
                                         onPress={() => handleSubmit()}>{id===0 ? 'Save Email Address Changes': id=== 1 ? 'Save Password Changes' : 'Save Name Changes'}
                                     </Button>
                                 </>

@@ -111,6 +111,7 @@ export default function SearchModal({ visible, onToggle, searchKeyword }: { visi
                                     _text={{ fontSize: 14, fontWeight: 600 }}
                                     isDisabled={disabledBtn}
                                     onPress={submit}
+                                    _pressed={{  backgroundColor: '#1cad48' }}
                                 >Search
                                 </Button>
                             </VStack>

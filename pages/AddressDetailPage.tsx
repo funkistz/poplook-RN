@@ -335,6 +335,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 style={styles.button}
                                 _text={{ fontSize: 14, fontWeight: 600 }}
                                 disabled={!isValid}
+                                _pressed={{  backgroundColor: '#1cad48' }}
                                 onPress={() => handleSubmit()}>SAVE ADDRESS
                             </Button>
 

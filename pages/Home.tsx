@@ -57,8 +57,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
                 dispatch(getWishList())
             }
             getCurrentIdCart()
-            // Developer Mode command getversion()
-            // getVersion().catch(console.error);
+            getVersion().catch(console.error);
         }, [])
     );
 
