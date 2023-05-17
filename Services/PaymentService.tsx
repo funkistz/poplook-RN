@@ -9,7 +9,7 @@ const PaymentService = {
         const params: any = {
             id_payment: 16,
             id_cart: cartId,
-            return_url: ''
+            // return_url: ''
         };
 
         return APIService.postMethod('PaymentProcessor/redirect_atomepayment', params);
@@ -168,7 +168,35 @@ const PaymentService = {
 
         return APIService.postMethod('PaymentProcessor/repay_enets', params);
 
-    }
+    },
+
+    async paypal(id_cart: any, customerId: any, paymentId: any) {
+
+        const params: any = {
+            id_cart: id_cart,
+            id_customer: customerId,
+            id_payment: paymentId,
+            return_url: 'https://poplook.com/modules/ipay88induxive/ipay88_mobile_bridge.php',
+            callback_url: 'https://poplook.com/modules/ipay88induxive/backend_response.php'
+        };
+
+        return APIService.putMethod('PaymentProcessor/redirect_paypalIpay88', params);
+
+    },
+
+    async repayPaypal(orderId: any, customerId: any, paymentId: any) {
+
+        const params: any = {
+            id_order: orderId,
+            id_customer: customerId,
+            id_payment: paymentId,
+            return_url: 'https://poplook.com/modules/ipay88induxive/ipay88_mobile_bridge.php',
+            callback_url: 'https://poplook.com/modules/ipay88induxive/backend_response.php'
+        };
+
+        return APIService.postMethod('PaymentProcessor/repay_paypalIpay88', params);
+
+    },
 
 }
 
