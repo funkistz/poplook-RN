@@ -182,8 +182,7 @@ export const checkoutSlice = createSlice({
         clearCheckout: (state) => {
 
             console.log('clearcheckout');
-            const temp: any = {};
-            temp.data = null;
+            const temp: any = initialState;
 
             state = { ...state, ...temp }
             return state;
@@ -220,6 +219,16 @@ export const checkoutSlice = createSlice({
             const temp: any = {};
             console.log('orderid' ,action.payload)
             temp.order_id = action.payload;
+
+            state = { ...state, ...temp }
+            return state;
+        },
+
+        selectPayment: (state, action) => {
+            
+            const temp: any = {};
+            console.log('paymentselected' ,action.payload)
+            temp.payment_selected = action.payload;
 
             state = { ...state, ...temp }
             return state;
@@ -320,7 +329,7 @@ export const checkoutSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { clearCheckout, leaveMessageCheckout, clearLeaveMessage, assignRefID, assignOrderID } = checkoutSlice.actions
+export const { clearCheckout, leaveMessageCheckout, clearLeaveMessage, assignRefID, assignOrderID, selectPayment } = checkoutSlice.actions
 
 export const checkoutSelector = (state: any) => state.checkout
 
