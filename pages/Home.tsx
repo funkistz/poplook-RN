@@ -22,12 +22,24 @@ const styles = StyleSheet.create({
 export default function HomePage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch()
-    const session = useSelector((storeState: any) => storeState.session.user);
+    const session = useSelector((storeState: any) => storeState.session);
+    const x = useSelector((storeState: any) => storeState.wishlist);
     const [banners, setBanners] = useState<any[]>([]);
     
     useEffect(() => {
-
         const unsubscribe = navigation.addListener('focus', () => {
+            dispatch(getWishList())
+            if(session.intro == false || session.intro == undefined) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'IntroPage',
+                    }]
+                });
+            }
+
+            // navigation.navigate('IntroPage', { screen: 'IntroPage' });
+
             const fetchData2 = async () => {
                 const response = await BannerService.getBanners();
                 const json = await response.json();
@@ -36,13 +48,14 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             fetchData2().catch(console.error);
         });
 
+        
         return unsubscribe;
 
     }, [])
 
     useFocusEffect(
         React.useCallback(() => {
-            if(session != null) {
+            if(session.user != null) {
                 dispatch(getWishList())
             }
             getCurrentIdCart()
@@ -52,7 +65,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     );
 
     const getCurrentIdCart = async () => {
-        if(session != null) {
+        if(session.user != null) {
             dispatch(customerDetails())
         }
         

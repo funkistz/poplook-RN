@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import AuthService from '../Services/AuthService';
 import CustomInput from '../components/Form/CustomInput';
 import GeneralService from '../Services/GeneralService';
-import { loginUser, userSelector } from '../Redux/Slices/Sessions';
+import { intro, loginUser, userSelector } from '../Redux/Slices/Sessions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useNavigation } from '@react-navigation/native';
@@ -22,13 +22,12 @@ export default function LoginPage() {
     );
 
     useEffect(() => {
-
+        // dispatch(intro(false))
     }, []);
 
     useEffect(() => {
         if (isError) {
-            // console.log('error xx');
-            //   dispatch(clearState());
+            
         }
         if (isSuccess) {
             navigation.navigate('Home', { screen: 'HomePage' });

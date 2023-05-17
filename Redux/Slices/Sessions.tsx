@@ -23,6 +23,7 @@ export interface SessionState {
     isSuccess: boolean,
     isError: boolean,
     errorMessage: string | null,
+    intro: boolean,
 }
 
 const dummy = {
@@ -50,6 +51,7 @@ const initialState: SessionState = {
     isSuccess: false,
     isError: false,
     errorMessage: "",
+    intro: false,
 }
 
 export const loginUser: any = createAsyncThunk(
@@ -179,6 +181,13 @@ export const sessionSlice = createSlice({
             state = { ...state, ...temp }
             return state;
         },
+        intro: (state, action) => {
+            console.log('action intro', action.payload)
+            const temp: any = {};
+            temp.intro = action.payload;
+            state = { ...state, ...temp }
+            return state;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(loginUser.fulfilled, (state, { payload }) => {
@@ -194,7 +203,7 @@ export const sessionSlice = createSlice({
 
             GeneralService.toast({ description: payload.message });
 
-            console.log('ppppppppp........', state)
+            // console.log('ppppppppp........', state)
 
             return state;
         }).addCase(loginUser.pending, (state, { payload }) => {
@@ -216,7 +225,7 @@ export const sessionSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { changeCountry, logout, profile } = sessionSlice.actions
+export const { changeCountry, logout, profile, intro } = sessionSlice.actions
 
 export const userSelector = (state: any) => state.session
 

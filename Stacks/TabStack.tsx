@@ -17,6 +17,7 @@ import AddressListPage from '../pages/AddressListPage';
 import Ipay88PaymentPage from '../pages/Ipay88PaymentPage';
 import ForceUpdatePage from '../pages/ForceUpdatePage';
 import OrderSuccessPage from '../pages/OrderSuccessPage';
+import IntroPage from '../pages/IntroPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -99,6 +100,7 @@ export default function TabStack() {
           <Stack.Screen name='AddressListExPage' component={AddressListPage} options={{ title: 'My Addresses', headerShown: true }} />
           <Stack.Screen name='ForceUpdatePage' component={ForceUpdatePage} options={{ title: 'Force Update', headerShown: true }} />
           <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation', headerShown: true }}/>
+          <Stack.Screen name='IntroPage' component={IntroPage} options={{ title: 'Poplook', headerShown: true }}/>
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
