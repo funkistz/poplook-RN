@@ -3,7 +3,7 @@ import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert, ActivityIn
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { assignOrderID, assignRefID, clearLeaveMessage, getCartStep1, getGiftMessage, leaveMessageCheckout } from '../Redux/Slices/Checkout';
+import { assignOrderID, assignRefID, clearLeaveMessage, getCartStep1, getGiftMessage, leaveMessageCheckout, selectPayment } from '../Redux/Slices/Checkout';
 import Address from '../components/Address';
 import ShippingMethod from '../components/ShippingMethod';
 import AddressModal from '../components/Modals/AddressList';
@@ -16,8 +16,6 @@ import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
 import Ipay88Container from '../components/Payment/Ipay88Container';
-import { InAppBrowser } from 'react-native-inappbrowser-reborn'
-
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -69,6 +67,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const text_message = useSelector((storeState: any) => storeState.checkout.message);
     const reference_id = useSelector((storeState: any) => storeState.checkout.ref_id);
     const order_id = useSelector((storeState: any) => storeState.checkout.order_id);
+    const payment_selected = useSelector((storeState: any) => storeState.checkout.payment_selected);
 
     // Voucher
     const [voucher, setVoucher] = React.useState('');
@@ -133,8 +132,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         if (nextAppState === 'background' || nextAppState === 'inactive') {
             console.log('back')
         } else if (nextAppState === 'active') {
-            console.log('active', refId)
-            getPaymentInfo(reference_id)
+            console.log('redux', payment_selected)
+            if (payment_selected == 'atome') {
+                getPaymentInfo(reference_id)
+            }
         }
     }
 
@@ -209,7 +210,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                     console.log('cartstep4baru', json.data)
 
-                    setData(json.data);
+                    // setData(json.data);
+                    dispatch(selectPayment(json.data.payment_selected.payment_method))
 
                     if (json.code == 200 && json.data) {
 
@@ -225,10 +227,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                 const json = await response.json();
 
-                console.log('cartstep4baru', json.data.id_order)
+                console.log('cartstep4baru', json.data.payment_selected.payment_method)
 
-                // setOrderId(json.data.id_order);
-
+                dispatch(selectPayment(json.data.payment_selected.payment_method))
                 dispatch(assignOrderID(json.data.id_order))
 
                 if (json.code == 200 && json.data) {
@@ -249,7 +250,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         }
                     } else {
                         if (paymentType == '1') {
-                            // paypal
+                            paypal(json.data)
                         } else {
                             ipayUsd(json.data)
                         }
@@ -312,7 +313,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             }
         } else if (shopId == 3) {
             if (paymentType == '1') {
-                return 'paypal';
+                return 'usd_paypal';
             } else {
                 return 'usd_cc'
             }
@@ -371,14 +372,16 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await PaymentService.getPaymentInfo(refId);
         const json = await response.json();
 
-        console.log('paymentinfo', json)
+        console.log('paymentinfo', json.status)
 
         setTransId(json.paymentTransaction);
         setAmount(json.amount);
 
         if (json.status == 'PAID') {
+            console.log('idorder1', order_id)
             await cartStep5(order_id, '1', 'atome', json.paymentTransaction, json.amount)
         } else {
+            console.log('idorder2', order_id)
             await cartStep5(order_id, '0', 'atome', json.paymentTransaction, json.amount)
         }
     }
@@ -514,6 +517,34 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             index: 0,
             routes: [{ name: 'EghlPaymentPage', params: param }]
         });
+    }
+
+    const paypal = async (data: any) => {
+
+        const response = await PaymentService.paypal(data.id_cart, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('paypal', json);
+
+        if (json.code == '200') {
+            const params = {
+                form: json.data.results,
+                order_id: data.id_order,
+                payment_type: 'usd_paypal',
+                trans_id: null,
+                amount: data.totalPriceWt * 100
+            };
+
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Ipay88PaymentPage',
+                    params: params
+                }]
+            });
+        } else {
+
+        }
     }
 
     return (

@@ -147,14 +147,16 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const response = await PaymentService.getPaymentInfo(refId);
         const json = await response.json();
 
-        console.log('paymentinfo', json)
+        console.log('paymentinfo', json.status)
 
         setTransId(json.paymentTransaction);
         setAmount(json.amount);
 
         if (json.status == 'PAID') {
+            console.log('idorder', data.id_order)
             await cartStep5(data.id_order, '1', 'atome', json.paymentTransaction, json.amount)
         } else {
+            console.log('idorder', data.id_order)
             await cartStep5(data.id_order, '0', 'atome', json.paymentTransaction, json.amount)
         }
     }
@@ -300,7 +302,30 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'EghlPaymentPage', params: param }]
+            routes: [{name: 'Ipay88PaymentPage', params: param }]
+        });
+
+    }
+
+    const paypal = async (data: any) => {
+        console.log('paypal')
+
+        const response = await PaymentService.repayPaypal(data.id_order, user.id_customer, paymentId());
+        const json = await response.json();
+
+        console.log('repayPaypal', json.data.results);
+
+        const param = {
+            form: json.data.results,
+            order_id: data.id_order,
+            payment_type: 'usd_paypal',
+            trans_id: null,
+            amount: data.totalPriceWt * 100
+        };
+
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'Ipay88PaymentPage', params: param }]
         });
 
     }
@@ -321,7 +346,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 }
             } else {
                 if (paymentType == '1') {
-                    // paypal
+                    paypal(data)
                 } else {
                     ipayUSD(data)
                 }
