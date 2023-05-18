@@ -112,28 +112,28 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                 });
             } else {
                 navigation.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: 'Main',
-                        state: {
-                            routes: [{
-                                name: 'My Account',
-                                state: {
-                                    routes: [{
-                                        name: 'SettingPage',
-                                        state: {
-                                            routes: [{
-                                                name: 'OrderHistoryListPage'
-                                            }],
-                                        },
-                                    }],
-                                },
-                            }],
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'Main',
+                            state: {
+                                routes: [{
+                                    name: 'My Account',
+                                    state: {
+                                        routes: [{
+                                            name: 'SettingPage',
+                                            state: {
+                                                routes: [{
+                                                    name: 'OrderHistoryListPage'
+                                                }],
+                                            },
+                                        }],
+                                    },
+                                }],
+                            },
                         },
-                    },
-                ],
-            });
+                    ],
+                });
             }
         } else {
             navigation.reset({

@@ -18,19 +18,19 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
             product_id: product.id_product
         };
 
-        if(route) {
+        if (route) {
             route(product.id_product)
         } else {
             navigate('ProductDetailPage', params);
         }
-        
-        
+
+
     }
 
     const clickedWishlist = () => {
-        if(session.user == null) {
-            return GeneralService.toast({ description: 'Log in required for wishlist item' });
-            
+        if (session.user == null) {
+            return GeneralService.toast({ description: 'To use Wishlist function, please log in to your account.' });
+
         }
         openWishlist(null, product)
     }
@@ -58,23 +58,23 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
         <TouchableOpacity onPress={() => goToProductPage(product)}>
             <Box p={3} borderRadius={10} >
                 <AspectRatio w="100%" ratio={3 / 4}>
-                    {product && product.image_url && 
+                    {product && product.image_url &&
                         <>
                             <ImageBackground
-                                source={{  uri: Array.isArray(product.image_url) ? product.image_url[0] : product.image_url }}
+                                source={{ uri: Array.isArray(product.image_url) ? product.image_url[0] : product.image_url }}
                                 style={{ flex: 1 }}
                                 borderRadius={10}
                                 resizeMode="cover">
-                                {product.discount_text != null && product.quantity > 0 && 
-                                    <View style={{ 
+                                {product.discount_text != null && product.quantity > 0 &&
+                                    <View style={{
                                         flex: 1,
                                         justifyContent: 'flex-end',
                                         alignItems: 'center',
                                         borderRadius: 10,
                                         overflow: 'hidden',
                                     }}>
-                                        <Text py={1} 
-                                            style={{ 
+                                        <Text py={1}
+                                            style={{
                                                 color: 'white',
                                                 fontSize: 8,
                                                 backgroundColor: '#000',
@@ -83,16 +83,16 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                             }}>{product.discount_text}</Text>
                                     </View>
                                 }
-                                {product.quantity == 0 && 
-                                    <View style={{ 
+                                {product.quantity == 0 &&
+                                    <View style={{
                                         flex: 1,
                                         justifyContent: 'flex-end',
                                         alignItems: 'center',
                                         borderRadius: 10,
                                         overflow: 'hidden',
                                     }}>
-                                        <Text py={1} 
-                                            style={{ 
+                                        <Text py={1}
+                                            style={{
                                                 color: 'white',
                                                 fontSize: 8,
                                                 backgroundColor: '#000',
@@ -107,7 +107,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                             </ImageBackground>
                         </>
                     }
-                    
+
                 </AspectRatio>
 
                 <Center>
@@ -122,7 +122,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
 
                         {!hideWishlist && <>
                             <Box alignItems="center" style={{ width: 40, height: 50 }} >
-                                <IconButton aria-label="wishlist" onPress={() =>  clickedWishlist()}>
+                                <IconButton aria-label="wishlist" onPress={() => clickedWishlist()}>
                                     <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
                                 </IconButton>
                             </Box>
