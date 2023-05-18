@@ -327,6 +327,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     }, [])
 
+    useEffect(() => {
+        dispatch(getCart());
+        fetchData(route.params.product_id).catch(console.error);
+    }, [session])
+
 
     return (
         <View style={styles.container}>
@@ -787,7 +792,8 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     divider: {
-        backgroundColor: '#d1f456',
+        // backgroundColor: '#d1f456',
+        backgroundColor: '#1cad48',
         height: 5,
     },
     levelup: {

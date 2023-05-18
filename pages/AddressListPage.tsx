@@ -74,7 +74,7 @@ export default function AddressListPage({ route, onToggle }: any) {
                 />
                 <ScrollView>
                     <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
-                        <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600 }}
+                        <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600 }}  _pressed={{  backgroundColor: '#1cad48' }}
                             onPress={() => isCheckout ? toggleModal() : addAddressPage()}>ADD NEW ADDRESS</Button>
                     </HStack>
                     {address && address.data != null && address.data.length > 0 &&

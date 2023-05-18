@@ -118,6 +118,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                                     borderColor='muted.100'
                                     _text={{ fontSize: 14, fontWeight: 600, color: 'black' }}
                                     onPress={() => clearAllClick()}
+                                    _pressed={{  backgroundColor: 'muted.100' }}
                                 >Clear All
                                 </Button>
                             </HStack>
@@ -130,6 +131,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                                     color={"black"}
                                     style={styles.btnFooter}
                                     _text={{ fontSize: 14, fontWeight: 600 }}
+                                    _pressed={{  backgroundColor: '#1cad48' }}
                                     onPress={submit}
                                 >Apply
                                 </Button>

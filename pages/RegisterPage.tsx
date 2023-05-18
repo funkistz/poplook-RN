@@ -168,6 +168,8 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     text="Email*"
                                     touched={touched}
                                     errors={errors}
+                                    type="email"
+                                    autoCapitalize="none"
                                 />
 
                                 <InputLabel
@@ -179,6 +181,8 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     text="Retype Email*"
                                     touched={touched}
                                     errors={errors}
+                                    type="email"
+                                    autoCapitalize="none"
                                 />
                                 <InputLabel
                                     placeholder="Enter your password"
@@ -207,7 +211,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
 
                                 <HStack>
                                     <HStack w={'8%'}>
-                                        <Checkbox value="newsletter"  isChecked={newsletter} style={styles.checkbox} onChange={setNewsletter}></Checkbox>
+                                        <Checkbox value="newsletter" isChecked={newsletter} style={styles.checkbox} onChange={setNewsletter} accessibilityLabel="Newsletter"></Checkbox>
                                     </HStack>
                                     <HStack  w={'92%'}>
                                         <Text color='black'fontSize={12}>Yes, sign me up for POPLOOK mailing list.</Text>
@@ -216,7 +220,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
 
                                 <HStack mt={1}>
                                     <HStack  w={'8%'}>
-                                        <Checkbox value="optin" isChecked={optin} style={styles.checkbox} onChange={setOptin} ></Checkbox>
+                                        <Checkbox value="optin" isChecked={optin} style={styles.checkbox} onChange={setOptin} accessibilityLabel="SetOptin"></Checkbox>
                                     </HStack>
                                     <HStack w={'92%'}>
                                         <Text color='black'fontSize={12}>Allow POPLOOK to send push notification.</Text>
@@ -225,7 +229,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
 
                                 <HStack mt={1}>
                                     <HStack w={'8%'}>
-                                        <Checkbox value="terms" isChecked={terms} style={styles.checkbox} onChange={setTerms} ></Checkbox>
+                                        <Checkbox value="terms" isChecked={terms} style={styles.checkbox} onChange={setTerms} accessibilityLabel="Terms"></Checkbox>
                                     </HStack>
                                     <HStack w={'92%'} >
                                         <Text color={'black'} fontSize={12}>I am accepting and consenting to the practices described in the
@@ -250,6 +254,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     style={styles.button}
                                     _text={{ fontSize: 14, fontWeight: 600 }}
                                     disabled={!isValid}
+                                    _pressed={{  backgroundColor: '#1cad48' }}
                                     onPress={() => handleSubmit()}>SIGN UP
                                 </Button>
                             </>

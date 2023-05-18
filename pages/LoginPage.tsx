@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import AuthService from '../Services/AuthService';
 import CustomInput from '../components/Form/CustomInput';
 import GeneralService from '../Services/GeneralService';
-import { loginUser, userSelector } from '../Redux/Slices/Sessions';
+import { intro, loginUser, userSelector } from '../Redux/Slices/Sessions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useNavigation } from '@react-navigation/native';
@@ -22,13 +22,12 @@ export default function LoginPage() {
     );
 
     useEffect(() => {
-
+        // dispatch(intro(false))
     }, []);
 
     useEffect(() => {
         if (isError) {
-            // console.log('error xx');
-            //   dispatch(clearState());
+            
         }
         if (isSuccess) {
             navigation.navigate('Home', { screen: 'HomePage' });
@@ -113,6 +112,7 @@ export default function LoginPage() {
                                 style={styles.button}
                                 _text={{ fontSize: 14, fontWeight: 600 }}
                                 disabled={!isValid}
+                                _pressed={{  backgroundColor: '#1cad48' }}
                                 onPress={() => handleSubmit()}>LOGIN
                             </Button>
                             <Button
@@ -122,6 +122,7 @@ export default function LoginPage() {
                                 borderWidth={1}
                                 _text={{ color: "#1cad48", fontSize: 14, fontWeight: 600 }}
                                 onPress={() => register()}
+                                _pressed={{  backgroundColor: '#fff' }}
                             >NEW HERE? SIGN UP
                             </Button>
 
