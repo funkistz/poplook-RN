@@ -10,7 +10,7 @@ import { clearCart } from '../Redux/Slices/Cart';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { clearCheckout } from '../Redux/Slices/Checkout';
 import { clearAddress } from '../Redux/Slices/Address';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import { persistor } from '../Redux/app';
 import { Alert } from 'react-native';
 
@@ -54,12 +54,22 @@ export default function ShippingTo() {
             if(session.user != null) {
                 alert()
             } else {
+                reset()
                 dispatch(clearCart())
                 dispatch(clearCheckout())
             }
         }
 
     }, [value])
+
+    const reset = () => {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: session.user != null ? 'Main' : 'Login' }], // Replace with the name of your main tab navigator
+            })
+        );
+    }
 
     const alert = () => {
         Alert.alert('You will be log out from you current store', '', [
@@ -71,6 +81,7 @@ export default function ShippingTo() {
     }
 
     const logout_ = () => {
+        reset()
         persistor.purge().then(() => {
             if(user != null) {
                 dispatch(logout())

@@ -113,7 +113,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     };
 
     const scrollMore = () => {
-
         if (!product.isLoading) {
             if (product.items.length < product.count) {
                 dispatch(scroll(product));
@@ -252,12 +251,13 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
             console.log('useEffect.......', params)
 
-            dispatch(getFilterList(params))
+            // dispatch(getFilterList(params))
 
         }
     }, [isModalFilter])
 
     useEffect(() => {
+        console.log('asdasdasd')
         const Reset = dispatch(reset(product))
         if (Reset) {
             const params = {
@@ -269,16 +269,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
             dispatch(getFilterList(params))
         }
     }, [route])
-
-    useEffect(() => {
-        const params = {
-            categoryId: route.params.category_id,
-            product_attribute: attribute,
-            color: color,
-            sort_option: sort.toString(),
-        }
-        dispatch(getFilterList(params))
-    }, [session])
 
     useEffect(() => {
 
@@ -323,7 +313,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                                             </Box>}
                                             keyExtractor={(item: any) => item.id_product}
                                             onEndReached={scrollMore}
-                                            onEndReachedThreshold={1}
+                                            onEndReachedThreshold={0.1}
                                             ListFooterComponent={() => <Spinner spin={product.isLoading}></Spinner>}
                                         />
                                     </>

@@ -43,7 +43,7 @@ export default function RightHeader({ navigation }: { navigation: any }) {
     }, [isModalVisible])
 
     useEffect(() => {
-        
+
     }, [])
 
 
@@ -68,8 +68,8 @@ export default function RightHeader({ navigation }: { navigation: any }) {
                 _pressed={{
                     backgroundColor: "gray"
                 }}
-                icon={ <>
-                    <Wishlist like={false} size={24} /> 
+                icon={<>
+                    <Wishlist like={false} size={24} />
                     <Badge
                         size={18}
                         style={styles.badge}
@@ -77,7 +77,7 @@ export default function RightHeader({ navigation }: { navigation: any }) {
                     >
                         {wishlist.id_product.length}
                     </Badge>
-                </>} 
+                </>}
             />
             <IconButton
                 onPress={toggleModal}

@@ -46,22 +46,26 @@ const initialState: CheckoutState = {
 
 export const getCartStep1: any = createAsyncThunk(
     "checkout/step1",
-    async ({ gift, gift_wrap_id, gift_message, address_id }: any, { getState, rejectWithValue , dispatch}) => {
+    async ({ gift, gift_wrap_id, gift_message, address_id }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
             const id_gift = gift_wrap_id ? gift_wrap_id : '';
             const message = gift_message ? gift_message : '';
             const gift_value = gift ? gift : '';
-            const id_address = address_id
+            let id_address = address_id ? address_id : 0;
 
-            const response = await CartService.cartStep1(id_cart, id_gift , message, gift_value);
+            const response = await CartService.cartStep1(id_cart, id_gift, message, gift_value);
             let data = await response.json()
 
-            console.log('step1response' ,data.data)
+            console.log('step1response', data.data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
+
+                    if (data.data.address_delivery) {
+                        id_address = data.data.address_delivery.id;
+                    }
 
                     const param = {
                         address_id: id_address
@@ -147,16 +151,16 @@ export const getCartStep3: any = createAsyncThunk(
 
 export const getGiftMessage: any = createAsyncThunk(
     "checkout/giftMessage",
-    async ({ gift_message }: any, { getState, rejectWithValue , dispatch}) => {
+    async ({ gift_message }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
             const message = gift_message ? gift_message : '';
 
-            const response = await CartService.cartStep1(id_cart, '' , message, '');
+            const response = await CartService.cartStep1(id_cart, '', message, '');
             let data = await response.json()
 
-            console.log('giftmessage' ,data.data)
+            console.log('giftmessage', data.data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -188,7 +192,7 @@ export const checkoutSlice = createSlice({
             return state;
         },
         leaveMessageCheckout: (state, action) => {
-            
+
             const temp: any = {};
             temp.message = action.payload;
 
@@ -205,9 +209,9 @@ export const checkoutSlice = createSlice({
             return state;
         },
         assignRefID: (state, action) => {
-            
+
             const temp: any = {};
-            console.log('refid' ,action.payload)
+            console.log('refid', action.payload)
             temp.ref_id = action.payload;
 
             state = { ...state, ...temp }
@@ -215,9 +219,9 @@ export const checkoutSlice = createSlice({
         },
 
         assignOrderID: (state, action) => {
-            
+
             const temp: any = {};
-            console.log('orderid' ,action.payload)
+            console.log('orderid', action.payload)
             temp.order_id = action.payload;
 
             state = { ...state, ...temp }
@@ -225,9 +229,9 @@ export const checkoutSlice = createSlice({
         },
 
         selectPayment: (state, action) => {
-            
+
             const temp: any = {};
-            console.log('paymentselected' ,action.payload)
+            console.log('paymentselected', action.payload)
             temp.payment_selected = action.payload;
 
             state = { ...state, ...temp }
@@ -236,7 +240,7 @@ export const checkoutSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getCartStep1.fulfilled, (state, { payload }) => {
-    
+
             const temp: any = {};
             if (payload.data) {
                 temp.id_cart = payload.data.id_cart;
@@ -264,7 +268,7 @@ export const checkoutSlice = createSlice({
         }).addCase(getCartStep1.rejected, (state, { payload }) => {
             console.log('payloadreject1', payload);
         }).addCase(getCartStep2.fulfilled, (state, { payload }) => {
-    
+
             const temp: any = {};
 
             if (payload.data) {
@@ -287,7 +291,7 @@ export const checkoutSlice = createSlice({
         }).addCase(getCartStep2.rejected, (state, { payload }) => {
             console.log('payloapayloadreject2', payload);
         }).addCase(getCartStep3.fulfilled, (state, { payload }) => {
-    
+
             const temp: any = {};
 
             if (payload.data) {
@@ -312,13 +316,13 @@ export const checkoutSlice = createSlice({
             console.log('payloadreject3', payload);
             // GeneralService.toast({ description: payload.message });
         }).addCase(getGiftMessage.fulfilled, (state, { payload }) => {
-    
+
             const temp: any = {};
             if (payload.data) {
                 temp.gift_message = payload.data.cart_list.gift_message;
                 state = { ...state, ...temp }
             }
-            
+
             return state;
         }).addCase(getGiftMessage.pending, (state, { payload }) => {
 
