@@ -67,7 +67,7 @@ export const addToCart: any = createAsyncThunk(
             if (response.status == 201) {
                 if (data.code == 201) {
                     // dispatch(assignUser(data.data.id_cart))
-                    dispatch(getCart())
+                    // dispatch(getCart())
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -145,6 +145,7 @@ export const cartSlice = createSlice({
             const temp: any = {};
             if (payload.data) {
                 temp.id_cart = payload.data.id_cart;
+                temp.total_item = payload.data.totalItemInCart;
                 // temp.data = { ...state.data, totalItemInCart: payload.data.totalItemInCart }
                 state = { ...state, ...temp }
             }
@@ -175,7 +176,7 @@ export const cartSlice = createSlice({
                 // GeneralService.toast({ description: payload.message });
                 if (payload.code == 404) {
                     const temp: any = {};
-                    temp.id_cart = null;
+                    // temp.id_cart = null;
                     temp.data = {};
                     temp.total_item = 0;
 

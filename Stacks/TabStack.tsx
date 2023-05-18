@@ -78,7 +78,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Home" children={props => <AppStack initialRoute='HomePage' {...props} />} />
       <Tab.Screen name="Categories" children={props => <AppStack initialRoute='CategoriesPage' {...props} />} />
 
-      {!!totalItem && totalItem > 0 &&
+      {totalItem > 0 &&
         <Tab.Screen
           name="Cart"
           options={{
@@ -88,7 +88,7 @@ const TabNavigator = () => {
           children={props => <AppStack initialRoute='CartPage' {...props} />}
         />
       }
-      {!totalItem || totalItem <= 0 &&
+      {totalItem <= 0 &&
         <Tab.Screen name="Cart" children={props => <AppStack initialRoute='CartPage' {...props} />} />
       }
 

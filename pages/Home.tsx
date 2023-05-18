@@ -89,14 +89,24 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     const goToCategory = (banner: any) => {
 
-        const params = {
-            category_id: banner.category_id,
-            category_name: banner.category_name
-        };
+        console.log('banner', banner.link);
+        console.log('banner true', banner.link.includes("process_redirect_url.php"));
 
-        console.log('title', banner.category_name);
+        if (banner.link.includes("process_redirect_url.php")) {
+            Linking.openURL(WEB_URL + banner.link);
+        } else {
 
-        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: banner.category_name });
+            const params = {
+                category_id: banner.category_id,
+                category_name: banner.category_name
+            };
+
+            console.log('title', banner.category_name);
+
+            navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: banner.category_name });
+
+        }
+
     }
 
     return (
