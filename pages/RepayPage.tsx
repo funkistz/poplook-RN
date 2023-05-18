@@ -302,7 +302,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'Ipay88PaymentPage', params: param }]
+            routes: [{ name: 'Ipay88PaymentPage', params: param }]
         });
 
     }
@@ -325,7 +325,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         navigation.reset({
             index: 0,
-            routes: [{name: 'Ipay88PaymentPage', params: param }]
+            routes: [{ name: 'Ipay88PaymentPage', params: param }]
         });
 
     }
@@ -397,21 +397,21 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             {!data && <SkeletonRepay></SkeletonRepay>}
             {data &&
                 <>
-                    <ScrollView>
-                        <View style={styles.container}>
+                    <ScrollView backgroundColor='white'>
+                        <View style={styles.container} pt={4}>
                             <Ipay88Container></Ipay88Container>
 
                             <Address address={address} title='Shipping'></Address>
-                            <Divider />
+                            <Divider bg="#ccc" />
 
                             {/* <Address address={address} title='Billing'></Address>
                             <Divider /> */}
 
-                            <Text style={styles.bold} mt={2}>Shipping Method</Text>
+                            <Text style={styles.bold} mt={4}>Shipping Method</Text>
                             <ShippingMethod carrier={carrier}></ShippingMethod>
-                            <Divider />
+                            <Divider bg="#ccc" mt={4} />
 
-                            <Text style={styles.bold} py={2}>Choose your payment</Text>
+                            <Text style={styles.bold} py={3} pt={4}>Payment Method</Text>
                             <Radio.Group name="paymentMethod" onChange={nextValue => {
                                 setPaymentChild('')
                                 setPaymentType(nextValue);
@@ -419,10 +419,10 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                                 {payment.map((item: any, index: any) => {
                                     return <>
                                         <HStack>
-                                            <Radio key={index} value={item.id} my="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
+                                            <Radio key={index} value={item.id} my="2" backgroundColor={'white'} _text={{ color: 'black', fontSize: 14 }} size="md">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
 
                                                 {item.id == 2 || item.id == 8 ?
-                                                    <Select safeArea selectedValue={paymentChild} minWidth="190" placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
+                                                    <Select safeArea selectedValue={paymentChild} mt={1} minWidth="190" placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
 
                                                         {item.options.map((option: any, index: any) => {
                                                             return (
@@ -442,12 +442,15 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             </Radio.Group>
                             {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
 
-                            <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
-                                <Text color={'black'} fontSize={14} pr={5}>I agree with the
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
-                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
-                            </Checkbox>
-                            <Divider />
+                            <Box bg="#fff" mt={4} mb={2}>
+                                <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} mr={2} size='lg'>
+                                    <Text color={'black'} fontSize={14} pr={6} ml={2}>I agree with the
+                                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
+                                </Checkbox>
+                            </Box>
+
+                            <Divider bg="#ccc" mb={4} />
 
                             <CmsModal
                                 visible={isCmsModalVisible}
@@ -538,7 +541,7 @@ const styles = StyleSheet.create({
     },
     border: {
         borderBottomWidth: 1,
-        borderColor: 'muted.100',
+        borderColor: '#ccc',
         paddingRight: 8
     },
     checkbox: {

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { HStack , VStack, Text } from 'native-base';
+import { HStack, VStack, Text } from 'native-base';
 import { StyleSheet } from 'react-native';
 
-export default function Address({ address, title } : { address: any , title: String}) {
+export default function Address({ address, title }: { address: any, title: String }) {
 
     return (
         <HStack py={3}>
             <VStack paddingRight={8}>
-                <Text style={styles.bold}>{title} Address</Text>
+                <Text style={styles.bold} mb={2}>{title} Address</Text>
                 <Text style={styles.normal}>{address.firstname} {address.lastname}</Text>
                 {address && address.company &&
                     <Text style={styles.normal}>{address.company}</Text>
@@ -17,7 +17,7 @@ export default function Address({ address, title } : { address: any , title: Str
                 {address && address.state &&
                     <Text style={styles.normal}>{address.state}</Text>
                 }
-                
+
                 <Text style={styles.normal}>{address.country}</Text>
                 <Text style={styles.normal}>{address.phone}</Text>
             </VStack>

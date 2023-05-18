@@ -551,7 +551,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         <>
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} safeAreaBottom>
                 <ScrollView>
-                    <View style={styles.container}>
+                    <View style={styles.container} pt={4}>
                         <Ipay88Container></Ipay88Container>
 
                         {!address &&
@@ -572,55 +572,15 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             onToggle={toggleAddressModal}
                             isCheckout={true}
                         />
-                        <Divider />
+                        <Divider bg="#ccc" />
 
                         {address &&
                             <>
-                                <Text style={styles.bold} mt={2}>Shipping Method</Text>
+                                <Text style={styles.bold} mt={4}>Shipping Method</Text>
                                 <ShippingMethod carrier={carrier}></ShippingMethod>
-                                <Divider />
+                                <Divider bg="#ccc" mt={4} />
                             </>
                         }
-
-                        <Text style={styles.bold} py={2}>Payment Method</Text>
-                        <Radio.Group name="paymentMethod" onChange={nextValue => {
-                            setPaymentChild('')
-                            setPaymentType(nextValue);
-                        }}>
-                            {payment && payment.map((item: any) => {
-                                return <>
-                                    <HStack>
-                                        <Radio value={item.id} my="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
-
-                                            {item.id == 2 || item.id == 8 ?
-                                                <Select selectedValue={paymentChild} minWidth="190" placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
-
-                                                    {item.options.map((option: any) => {
-                                                        return (
-                                                            <Select.Item value={option.value} label={option.name} />
-
-                                                        );
-                                                    })}
-                                                </Select>
-
-                                                : ''}
-
-                                        </Box>
-                                    </HStack>
-
-                                </>
-                            })}
-                        </Radio.Group>
-                        {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
-                        <Spacer />
-
-                        <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} marginY={2}>
-                            <Text color={'black'} fontSize={14} pr={5}>I agree with the
-                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
-                                <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
-                                I adhere to them unconditionally.</Text>
-                        </Checkbox>
-                        <Divider />
 
                         <CmsModal
                             visible={isCmsModalVisible}
@@ -628,8 +588,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             data={cms}
                         />
 
+                        <Text style={styles.bold} mt={4} mb={4}>Voucher</Text>
                         <Input
-                            marginY={3}
+                            mb={4}
                             color='black'
                             placeholder="Enter code"
                             value={voucher}
@@ -685,7 +646,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {gift_wrap_exist == '1' &&
                             <>
-                                <HStack py={1}>
+                                <HStack py={3}>
                                     <Text style={styles.normal}>Gift Option</Text>
                                     <Spacer />
                                     <Radio.Group
@@ -705,8 +666,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                         }}
                                     >
                                         <HStack>
-                                            <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
-                                            <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
+                                            <Radio value="1" backgroundColor={'white'} marginLeft={3} _text={{ color: 'black', fontSize: 14 }} size="md">No</Radio>
+                                            <Radio value="0" backgroundColor={'white'} marginLeft={3} _text={{ color: 'black', fontSize: 14 }} size="md">Yes</Radio>
                                         </HStack>
                                     </Radio.Group>
                                 </HStack>
@@ -733,11 +694,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                     </HStack>
                                 </Box>
                                 <TextArea marginY={3} value={giftMessage}
-                                    onChangeText={text => setGiftMessage(text)} maxW="330" autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
+                                    onChangeText={text => setGiftMessage(text)} autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
                             </VStack>
                         </> : null}
 
-                        <HStack py={1}>
+                        <HStack pt={2} pb={4}>
                             <Text style={styles.normal}>Leave Message</Text>
                             <Spacer />
                             <Radio.Group
@@ -748,8 +709,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 }}
                             >
                                 <HStack>
-                                    <Radio value="0" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">No</Radio>
-                                    <Radio value="1" backgroundColor={'white'} marginBottom={2} marginLeft={3} _text={{ color: 'black' }} size="sm">Yes</Radio>
+                                    <Radio value="0" backgroundColor={'white'} marginLeft={3} _text={{ color: 'black', fontSize: 14 }} size="md">No</Radio>
+                                    <Radio value="1" backgroundColor={'white'} marginLeft={3} _text={{ color: 'black', fontSize: 14 }} size="md">Yes</Radio>
                                 </HStack>
                             </Radio.Group>
                         </HStack>
@@ -759,14 +720,60 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 <TextArea marginY={3}
                                     value={leaveMessage}
                                     onChangeText={text => { setLeaveMessage(text) }}
-                                    maxW="330" autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
+                                    autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
 
                             </VStack>
                         </> : null}
 
-                        <Divider />
+                        <Divider bg="#ccc" />
 
-                        <Text style={styles.bold} marginTop={3}>Shopping Bag</Text>
+                        <Text style={styles.bold} py={3} pt={4}>Payment Method</Text>
+                        <Radio.Group name="paymentMethod" onChange={nextValue => {
+                            setPaymentChild('')
+                            setPaymentType(nextValue);
+                        }}>
+                            {payment && payment.map((item: any) => {
+                                return <>
+                                    <HStack>
+                                        <Radio value={item.id} my="2" backgroundColor={'white'} _text={{ color: 'black', fontSize: 14 }} size="md">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
+
+                                            {item.id == 2 || item.id == 8 ?
+                                                <Select selectedValue={paymentChild} mt={1} minWidth="190" placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
+
+                                                    {item.options.map((option: any) => {
+                                                        return (
+                                                            <Select.Item value={option.value} label={option.name} />
+
+                                                        );
+                                                    })}
+                                                </Select>
+
+                                                : ''}
+
+                                        </Box>
+                                    </HStack>
+
+                                </>
+                            })}
+                        </Radio.Group>
+                        {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
+                        <Spacer />
+
+                        {/* <Divider bg="#ccc" mt={2} /> */}
+
+                        <Box bg="#fff" mt={4} mb={4}>
+                            <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} mr={2} size='lg'>
+                                <Text color={'black'} fontSize={12} pr={6} ml={2}>I agree with the
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
+                                    I adhere to them unconditionally.</Text>
+                            </Checkbox>
+                        </Box>
+
+                        <Divider bg="#ccc" mb={4} />
+
+                        <Text style={styles.bold} marginTop={0}>Shopping Bag</Text>
+
                         <ScrollView horizontal py={3}>
                             {product.map((item: any, index: any) => {
                                 return <>
@@ -791,8 +798,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 </>;
                             })}
                         </ScrollView>
-                        <Divider />
 
+                        <Divider bg="#ccc" mt={2} mb={2} />
 
                         <HStack py={1}>
                             <Text style={styles.normal}>Retail Price :</Text>
@@ -809,7 +816,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             <Spacer />
                             <Text style={styles.normal}>-</Text>
                         </HStack>
-                        <HStack py={1}>
+                        <HStack py={1} mb={4}>
                             <Text style={styles.normal}>Shipping fee :</Text>
                             <Spacer />
                             <Text style={styles.normal}>{currency} {shipping_fee}</Text>
@@ -828,7 +835,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}>
                     <Button w={'100%'} style={styles.footer} onPress={() => cartStep4()}>PLACE ORDER</Button>
                 </HStack>
-            </Flex>
+            </Flex >
         </>
     )
 }

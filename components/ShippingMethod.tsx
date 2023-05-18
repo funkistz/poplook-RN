@@ -6,8 +6,8 @@ export default function ShippingMethod({ carrier }: any) {
 
     return (
         <>
-            {carrier && <HStack py={3} mb={1}>
-                <Checkbox value="newsletter" marginLeft={3} style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }} defaultIsChecked>
+            {carrier && <HStack pt={3} >
+                <Checkbox size='md' value="newsletter" style={styles.checkbox} _text={{ color: 'black', fontSize: 12 }} defaultIsChecked>
                     <Text style={styles.normal}>{carrier.name}</Text>
                 </Checkbox>
                 <Spacer />

@@ -18,7 +18,7 @@ export default function OrderHistoryListPage() {
             const response = await OrderHistoryService.orderHistoryList(customerId);
             const json = await response.json();
 
-            console.log('order' ,json)
+            console.log('order', json)
 
             setOrders(json.data);
         }
@@ -46,16 +46,17 @@ export default function OrderHistoryListPage() {
 
     const cancelOrder = (orderId: any) =>
         Alert.alert('Message', 'Confirm to cancel order?', [
-        {
-            text: 'Cancel',
-            style: 'cancel',
-        },
-        {   text: 'OK', 
-            onPress: () => cancelOrderHistory(orderId)
-        },
-    ]);
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+            {
+                text: 'OK',
+                onPress: () => cancelOrderHistory(orderId)
+            },
+        ]);
 
-    const cancelOrderHistory = async (orderId : any) => {
+    const cancelOrderHistory = async (orderId: any) => {
         const response = await OrderHistoryService.cancelOrderHistory(orderId);
         const json = await response.json();
 
@@ -68,29 +69,29 @@ export default function OrderHistoryListPage() {
 
     return (
         <>
-            <ScrollView bgColor={'white'}>
-                <View style={styles.container}>
-                        {orders.order_histories && orders.total_items != 0 && (orders.order_histories.map((item: any, index: any) => {
-                            return <><TouchableOpacity key={index} onPress={() => orderHistoryDetailsPage(item.id_order)}>
-                                <HStack py={3}>
-                                    <VStack paddingRight={8}>
-                                        <Text style={styles.normal}>Order No</Text>
-                                        <Text style={styles.normal}>Date</Text>
-                                        <Text style={styles.normal}>Status</Text>
-                                        <Text style={styles.normal}>Tracking No</Text>
-                                        <Text style={styles.normal}>Delivery No</Text>
-                                    </VStack>
-                                    <VStack>
+            <ScrollView bgColor={'white'} p={6}>
+                {orders.order_histories && orders.total_items != 0 && (orders.order_histories.map((item: any, index: any) => {
+                    return <>
+                        <TouchableOpacity key={index} onPress={() => orderHistoryDetailsPage(item.id_order)}>
+                            <HStack py={3} px={0} m={0}>
+                                <VStack paddingRight={8}>
+                                    <Text style={styles.normal}>Order No</Text>
+                                    <Text style={styles.normal}>Date</Text>
+                                    <Text style={styles.normal}>Status</Text>
+                                    <Text style={styles.normal}>Tracking No</Text>
+                                    <Text style={styles.normal}>Delivery No</Text>
+                                </VStack>
+                                <VStack>
                                     <Text style={styles.bold}># {item.id_order}</Text>
-                                        <Text style={styles.normal}>{item.date_add}</Text>
-                                        <Text style={styles.normal}>{item.order_state}</Text>
-                                        <Text style={styles.normal}>{item.tracking_number}</Text>
-                                        <Text style={styles.normal}>{item.carrier}</Text>
-                                    </VStack>
-                                </HStack>
-                                { item.valid && item.valid == '0' ? ( 
-                                <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" paddingX={65}>
-                                <Button
+                                    <Text style={styles.normal}>{item.date_add}</Text>
+                                    <Text style={styles.normal}>{item.order_state}</Text>
+                                    <Text style={styles.normal}>{item.tracking_number}</Text>
+                                    <Text style={styles.normal}>{item.carrier}</Text>
+                                </VStack>
+                            </HStack>
+                            {item.valid && item.valid == '0' ? (
+                                <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" justifyContent="center">
+                                    <Button
                                         mb={5}
                                         style={styles.button}
                                         marginRight={5}
@@ -103,18 +104,17 @@ export default function OrderHistoryListPage() {
                                         _text={{ fontSize: 13, fontWeight: 600 }}
                                         onPress={() => cancelOrder(item.id_order)}>CANCEL
                                     </Button>
-                                </HStack> ) : <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" paddingX={65}></HStack> }
-                            </TouchableOpacity></>
-                        }))} 
-                        {orders.total_items == 0 && 
-                            <>
-                                <View style={{flex:1,justifyContent: "center",alignItems: "center", backgroundColor: 'white'}}>
-                                    <Text style={styles.bold} mt={10}>Your order history is empty.</Text> 
-                                </View>
-                            </>
-                            
-                        }
-                </View>
+                                </HStack>) : <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" paddingX={65}></HStack>}
+                        </TouchableOpacity></>
+                }))}
+                {orders.total_items == 0 &&
+                    <>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: 'white' }}>
+                            <Text style={styles.bold} mt={10}>Your order history is empty.</Text>
+                        </View>
+                    </>
+
+                }
             </ScrollView>
         </>
     )
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     container: {
         paddingStart: 30,
         paddingEnd: 30,
-        backgroundColor: 'white'
+        backgroundColor: 'red'
     },
     button: {
         borderRadius: 10,
