@@ -167,7 +167,7 @@ export const productListSlice = createSlice({
             const result = payload.data.data;
             const temp:any = {
                 page: result.pagination.current_page,
-                count: result.pagination.total_items,
+                count: result.pagination.total_items_color_group, // isse either total_items or total_items_color_group
                 limit: result.pagination.limit_perpage,
                 sort: JSONData.sort,
                 items: JSONData.page === 1 ? [...result.products] : [...JSONData.items, ...result.products] ,
