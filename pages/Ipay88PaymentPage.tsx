@@ -16,9 +16,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
     const data = {
         form: form
     };
-
-    const [currentUrl, setCurrentUrl] = useState('');
-    const [paymentState, setPaymentState] = React.useState('');
+    
     const [status, setSatus] = React.useState('');
 
     const handleNavigationStateChange = (navState: any) => {
@@ -95,10 +93,9 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
 
         console.log('cartstep5', json)
 
-        if (json.status == 200 && json.data) {
-            setPaymentState(json.data.payment_state)
+        if (json.code == 200 && json.data) {
 
-            if (paymentState == '18') {
+            if (json.data.payment_state == '18') {
 
                 const param = {
                     id: orderId
