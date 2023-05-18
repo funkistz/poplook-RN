@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Platform, Alert, Linking} from 'react-native';
+import { StyleSheet, View, Dimensions, Platform, Alert, Linking } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, Text } from 'native-base';
@@ -25,11 +25,11 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     const session = useSelector((storeState: any) => storeState.session);
     const x = useSelector((storeState: any) => storeState.wishlist);
     const [banners, setBanners] = useState<any[]>([]);
-    
+
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             dispatch(getWishList())
-            if(session.intro == false || session.intro == undefined) {
+            if (session.intro == false || session.intro == undefined) {
                 navigation.reset({
                     index: 0,
                     routes: [{
@@ -46,14 +46,14 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             fetchData2().catch(console.error);
         });
 
-        
+
         return unsubscribe;
 
     }, [])
 
     useFocusEffect(
         React.useCallback(() => {
-            if(session.user != null) {
+            if (session.user != null) {
                 dispatch(getWishList())
             }
             getCurrentIdCart()
@@ -62,22 +62,22 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     );
 
     const getCurrentIdCart = async () => {
-        if(session.user != null) {
+        if (session.user != null) {
             dispatch(customerDetails())
         }
-        
+
     }
 
     const getVersion = async () => {
         const response = await AuthService.getVersion();
         const json = await response.json();
-        const version = Platform.OS == 'ios'? json.data.ios_version : json.data.android_version;
+        const version = Platform.OS == 'ios' ? json.data.ios_version : json.data.android_version;
         checkVersion(version)
     }
 
 
-    const checkVersion = (res:any) => {
-        if(res > IOS_VERSION) {
+    const checkVersion = (res: any) => {
+        if (res > IOS_VERSION) {
             navigation.reset({
                 index: 0,
                 routes: [{
@@ -106,29 +106,33 @@ export default function HomePage({ route, navigation }: { route: any, navigation
                     <Flex direction="column">
                         {Object.keys(banners).map((key: any) => {
 
-                            return banners[key].data.map((banner: any, key2: any) => {
+                            return <Center key={key}>
+                                {
+                                    banners[key].data.map((banner: any, key2: any) => {
 
-                                const href: string = banner.href;
+                                        const href: string = banner.href;
 
-                                const height = Number(banner.height) * (win.width / Number(banner.width));
+                                        const height = Number(banner.height) * (win.width / Number(banner.width));
 
-                                return <Center key={key2} >
-                                    {!banner.new_window.includes("_blank") &&
-                                        <TouchableOpacity onPress={() => goToCategory(banner)}>
-                                            <Image w={win.width} h={height} source={{
-                                                uri: banner.href
-                                            }} alt="Alternate Text" />
-                                        </TouchableOpacity>
-                                    }
-                                    {banner.new_window.includes("_blank") &&
-                                        <Link href={WEB_URL + banner.link}>
-                                            <Image w={win.width} h={height} source={{
-                                                uri: banner.href
-                                            }} alt="Alternate Text" />
-                                        </Link>
-                                    }
-                                </Center>
-                            })
+                                        return <Center key={banner.id + key2} >
+                                            {!banner.new_window.includes("_blank") &&
+                                                <TouchableOpacity onPress={() => goToCategory(banner)}>
+                                                    <Image w={win.width} h={height} source={{
+                                                        uri: banner.href
+                                                    }} alt="Alternate Text" />
+                                                </TouchableOpacity>
+                                            }
+                                            {banner.new_window.includes("_blank") &&
+                                                <Link href={WEB_URL + banner.link}>
+                                                    <Image w={win.width} h={height} source={{
+                                                        uri: banner.href
+                                                    }} alt="Alternate Text" />
+                                                </Link>
+                                            }
+                                        </Center>
+                                    })
+                                }
+                            </Center>
                         })
                         }
                     </Flex>

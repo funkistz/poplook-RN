@@ -17,7 +17,9 @@ export default function CategoriesPage({ route, navigation }: { route: any, navi
                 const response = await CategoryService.getCategories();
                 const json = await response.json();
 
-                // console.log('data sama ke', JSON.stringify(categories) === JSON.stringify(json.data));
+                if (categories) {
+                    console.log('data sama ke', isEqual(categories, json.data));
+                }
 
                 if (JSON.stringify(categories) != JSON.stringify(json.data)) {
                     setCategories(json.data);
@@ -29,6 +31,30 @@ export default function CategoriesPage({ route, navigation }: { route: any, navi
         return unsubscribe;
 
     }, [])
+
+    const isEqual = function (obj1: any, obj2: any) {
+        const obj1Keys = Object.keys(obj1);
+        const obj2Keys = Object.keys(obj2);
+
+        if (obj1Keys.length !== obj2Keys.length) {
+            return false;
+        }
+
+        for (let objKey of obj1Keys) {
+            if (obj1[objKey] !== obj2[objKey]) {
+                if (typeof obj1[objKey] == "object" && typeof obj2[objKey] == "object") {
+                    if (!isEqual(obj1[objKey], obj2[objKey])) {
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    };
 
     return (
         <Center style={{ height: "100%", width: "100%" }}>

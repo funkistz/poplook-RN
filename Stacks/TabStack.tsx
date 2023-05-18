@@ -35,8 +35,12 @@ const themed = Themed();
 const TabNavigator = () => {
 
   const sessions = useSelector((storeState: any) => storeState.session);
+  const totalItem = useSelector((storeState: any) => storeState.cart.total_item);
+  console.log('cart', totalItem);
 
   return (
+
+
     <Tab.Navigator screenOptions={({ route }) => ({
       // header: AppBar,
       headerShown: false,
@@ -73,7 +77,21 @@ const TabNavigator = () => {
     })}>
       <Tab.Screen name="Home" children={props => <AppStack initialRoute='HomePage' {...props} />} />
       <Tab.Screen name="Categories" children={props => <AppStack initialRoute='CategoriesPage' {...props} />} />
-      <Tab.Screen name="Cart" children={props => <AppStack initialRoute='CartPage' {...props} />} />
+
+      {!!totalItem && totalItem > 0 &&
+        <Tab.Screen
+          name="Cart"
+          options={{
+            tabBarBadge: totalItem,
+            tabBarBadgeStyle: { backgroundColor: '#1cad48', color: 'white' }
+          }}
+          children={props => <AppStack initialRoute='CartPage' {...props} />}
+        />
+      }
+      {!totalItem || totalItem <= 0 &&
+        <Tab.Screen name="Cart" children={props => <AppStack initialRoute='CartPage' {...props} />} />
+      }
+
       {sessions && sessions.user &&
         <Tab.Screen name="My Account" children={props => <AppStack initialRoute='SettingPage' {...props} />} />
       }
@@ -99,8 +117,8 @@ export default function TabStack() {
           <Stack.Screen name='CheckoutExPage' component={CheckoutPage} options={{ title: 'Order Confirmation', headerShown: true }} />
           <Stack.Screen name='AddressListExPage' component={AddressListPage} options={{ title: 'My Addresses', headerShown: true }} />
           <Stack.Screen name='ForceUpdatePage' component={ForceUpdatePage} options={{ title: 'Force Update', headerShown: true }} />
-          <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation', headerShown: true }}/>
-          <Stack.Screen name='IntroPage' component={IntroPage} options={{ title: 'Poplook', headerShown: true }}/>
+          <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation', headerShown: true }} />
+          <Stack.Screen name='IntroPage' component={IntroPage} options={{ title: 'Poplook', headerShown: true }} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
