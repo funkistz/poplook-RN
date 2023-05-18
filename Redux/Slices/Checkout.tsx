@@ -247,36 +247,7 @@ export const checkoutSlice = createSlice({
 
             state = { ...state, ...temp }
             return state;
-        },
-        assignRefID: (state, action) => {
-
-            const temp: any = {};
-            console.log('refid', action.payload)
-            temp.ref_id = action.payload;
-
-            state = { ...state, ...temp }
-            return state;
-        },
-
-        assignOrderID: (state, action) => {
-
-            const temp: any = {};
-            console.log('orderid', action.payload)
-            temp.order_id = action.payload;
-
-            state = { ...state, ...temp }
-            return state;
-        },
-
-        selectPayment: (state, action) => {
-
-            const temp: any = {};
-            console.log('paymentselected', action.payload)
-            temp.payment_selected = action.payload;
-
-            state = { ...state, ...temp }
-            return state;
-        },
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getCartStep1.fulfilled, (state, { payload }) => {
@@ -373,7 +344,7 @@ export const checkoutSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { clearCheckout, leaveMessageCheckout, clearLeaveMessage, assignRefID, assignOrderID, selectPayment } = checkoutSlice.actions
+export const { clearCheckout, leaveMessageCheckout, clearLeaveMessage } = checkoutSlice.actions
 
 export const checkoutSelector = (state: any) => state.checkout
 
