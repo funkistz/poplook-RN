@@ -33,6 +33,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const isFocused = useIsFocused();
     const addressId = route.params.param.id;
     const isUpdate = route.params.param.is_update;
+    const ischeckout = route.params.param.is_checkout;
 
     const [isOpen, setIsOpen] = useState(false);
     const onClose = () => {
@@ -57,6 +58,9 @@ export default function AddressDetailPage({ route }: { route: any }) {
                 dispatch(getAddressOne(addressId))
 
             }
+
+            dispatch(getAddressCountries(country.id_shop));
+            dispatch(getStates({ code: country.country_iso_code, id_shop: country.id_shop }));
         }
 
     }, [isFocused])
@@ -156,9 +160,6 @@ export default function AddressDetailPage({ route }: { route: any }) {
 
                         if (isCheckout) {
 
-
-                            // dispatch(getCartStep1(param))
-                            // navigation.pop(3);
                             if (isUpdate) {
                                 const param = {
                                     gift: "",
@@ -169,7 +170,13 @@ export default function AddressDetailPage({ route }: { route: any }) {
                             } else {
                                 navigation.goBack();
                             }
-
+                        } else if (ischeckout) {
+                            const param = {
+                                gift: "",
+                                address_id: addressId
+                            }
+                            dispatch(getCartStep1(param))
+                            navigation.navigate('CheckoutExPage', { screen: 'CheckoutExPage' });
                         } else {
                             navigation.goBack();
                         }
