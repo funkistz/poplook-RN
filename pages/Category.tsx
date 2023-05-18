@@ -251,7 +251,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
             console.log('useEffect.......', params)
 
-            // dispatch(getFilterList(params))
+            dispatch(getFilterList(params))
 
         }
     }, [isModalFilter])
