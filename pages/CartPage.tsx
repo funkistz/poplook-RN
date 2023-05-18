@@ -43,7 +43,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} >
                 {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}
                 {cart && !cart.id_cart ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}
-                {cart && cart.data && cart.data.product_list &&
+                {cart && cart.data && cart.data.product_list.length > 0 &&
                     <>
                         <ScrollView flex={1} pt={4}>
                             {cart.data.product_list.map((product: any, index: any) => {
@@ -51,12 +51,6 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                             })
                             }
                         </ScrollView>
-
-                    </>
-                }
-
-                {cart && cart.data && cart.data.totalItemInCart != 0 &&
-                    <>
                         <HStack px="1" py="2" mt={4} bg={'white'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                             <HStack alignItems="center" w="40%">
                                 <Text fontSize="15" color="black" pl={2} bold> SubTotal</Text>
@@ -84,8 +78,8 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                         <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
                             <Button w={'100%'} style={styles.footer} onPress={() => checkoutPage()}>NEXT</Button>
                         </HStack>
-                    </>
 
+                    </>
                 }
             </Flex>
 
