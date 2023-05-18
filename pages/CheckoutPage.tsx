@@ -73,25 +73,34 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [voucher, setVoucher] = React.useState('');
 
     useEffect(() => {
-
-        const param = {
-            gift: gift,
-            address_id: address ? address.id : ''
-        }
-
-        dispatch(getCartStep1(param))
-
-        if (text_message) {
-            setMessage('1')
-            setLeaveMessage(text_message)
-        }
-
-        if (gift_option) {
-            setGift('0')
-            if (gift_message) {
-                setGiftMessage(gift_message)
+        const unsubscribe = navigation.addListener('focus', () => {
+            const param = {
+                gift: gift,
+                address_id: address ? address.id : ''
             }
-        }
+
+            dispatch(getCartStep1(param))
+
+            if (text_message) {
+                setMessage('1')
+                setLeaveMessage(text_message)
+            }
+
+            if (gift_option) {
+                setGift('0')
+                if (gift_message) {
+                    setGiftMessage(gift_message)
+                }
+            }
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
+
+    useEffect(() => {
+
+
 
     }, [])
 

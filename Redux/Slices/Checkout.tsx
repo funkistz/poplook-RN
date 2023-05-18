@@ -44,6 +44,42 @@ const initialState: CheckoutState = {
     shipping_fee: ''
 }
 
+export const assignCheckoutAddress: any = createAsyncThunk(
+    "checkout/assignCheckoutAddress",
+    async ({ gift, gift_wrap_id, gift_message, address_id }: any, { getState, rejectWithValue, dispatch }) => {
+        try {
+            const state: any = getState();
+            const id_cart = state.cart.id_cart;
+            const id_gift = gift_wrap_id ? gift_wrap_id : '';
+            const message = gift_message ? gift_message : '';
+            const gift_value = gift ? gift : '';
+            let id_address = address_id ? address_id : 0;
+
+            const response = await CartService.cartStep1(id_cart, id_gift, message, gift_value);
+            let data = await response.json()
+
+            console.log('assignCheckoutAddress', data.data)
+
+            if (response.status == 200) {
+                if (data.code == 200) {
+
+                    if (data.data.address_delivery) {
+                        id_address = data.data.address_delivery.id;
+                    }
+                    return data
+                } else {
+                    return rejectWithValue(data)
+                }
+            } else {
+                return rejectWithValue(data)
+            }
+        } catch (e: any) {
+            console.log("Error", e.response.data)
+            rejectWithValue(e.response.data)
+        }
+    }
+)
+
 export const getCartStep1: any = createAsyncThunk(
     "checkout/step1",
     async ({ gift, gift_wrap_id, gift_message, address_id }: any, { getState, rejectWithValue, dispatch }) => {
@@ -92,7 +128,7 @@ export const getCartStep2: any = createAsyncThunk(
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
-            const id_address = state.cart.address ? state.cart.address.id : address_id;
+            let id_address = state.cart.address ? state.cart.address.id : address_id;
 
             const response = await CartService.cartStep2(id_cart, id_address);
             let data = await response.json()
@@ -101,10 +137,14 @@ export const getCartStep2: any = createAsyncThunk(
             if (response.status == 200) {
                 if (data.code == 200) {
 
+                    if (!id_address) {
+                        id_address = data.data.address_delivery.id;
+                    }
+
                     const param = {
                         address_id: id_address
                     }
-
+                    console.log("getCartStep3", param)
                     dispatch(getCartStep3(param))
                     return data
                 } else {

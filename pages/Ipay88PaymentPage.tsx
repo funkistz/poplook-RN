@@ -103,7 +103,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                 const param = {
                     id: orderId
                 };
-                
+
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'OrderSuccessPage', params: param }]
