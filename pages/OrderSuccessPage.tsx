@@ -32,7 +32,7 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
             setShipping(json.data.shipping_details);
             setBilling(json.data.billing_details);
             setProducts(json.data.product_details);
-            setMessages(json.data.order_message[0]);
+            setMessages(json.data.order_message? json.data.order_message[0] : json.data.order_message);
             setGiftMessages(json.data.order_details);
         }
         orderHistoryDetails().catch(console.error);

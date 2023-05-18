@@ -42,7 +42,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [amount, setAmount] = useState<any>('');
     const [transId, setTransId] = useState<any>('');
     const [paymentMethod, setPaymentMethod] = React.useState('');
-    const [paymentState, setPaymentState] = React.useState('');
 
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
@@ -289,20 +288,66 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         console.log('cartstep5', json)
 
         if (json.status == 200 && json.data) {
-            setPaymentState(json.data.payment_state)
 
-            if (paymentState == '42' || paymentState == '18') {
+            if (json.data.payment_state == '42' || json.data.payment_state == '18') {
 
                 const param = {
                     id: orderId
                 };
 
-                navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage', param: param })
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'OrderSuccessPage', params: param }]
+                });
             } else {
-                navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'Main',
+                            state: {
+                                routes: [{
+                                    name: 'My Account',
+                                    state: {
+                                        routes: [{
+                                            name: 'SettingPage',
+                                            state: {
+                                                routes: [{
+                                                    name: 'OrderHistoryListPage'
+                                                }],
+                                            },
+                                        }],
+                                    },
+                                }],
+                            },
+                        },
+                    ],
+                });
             }
         } else {
-            navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
+            navigation.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: 'Main',
+                        state: {
+                            routes: [{
+                                name: 'My Account',
+                                state: {
+                                    routes: [{
+                                        name: 'SettingPage',
+                                        state: {
+                                            routes: [{
+                                                name: 'OrderHistoryListPage'
+                                            }],
+                                        },
+                                    }],
+                                },
+                            }],
+                        },
+                    },
+                ],
+            });
         }
     }
 
