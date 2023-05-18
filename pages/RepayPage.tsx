@@ -16,18 +16,17 @@ import GeneralService from '../Services/GeneralService';
 import SkeletonRepay from '../components/SkeletonRepay';
 import CmsModal from '../components/Modals/Cms';
 import CmsService from '../Services/CmsService';
-import { assignRefID } from '../Redux/Slices/Checkout';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function RepayPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
     const cartId = route.params.params.id;
-    const country = useSelector((storeState: any) => storeState.session.country);
     const currency = useSelector((storeState: any) => storeState.session.currencySign);
     const user = useSelector((storeState: any) => storeState.session.user);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
-    const reference_id = useSelector((storeState: any) => storeState.checkout.ref_id);
+
     const [address, setAddress] = useState<any>({});
     const [carrier, setCarrier] = useState<any>({});
     const [payment, setPayment] = useState<any>([]);
@@ -35,20 +34,17 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [vouchers, setVouchers] = useState<any>([]);
     const [url, setUrl] = useState<any>('');
     const [appUrl, setAppUrl] = useState<any>('');
-    const [refId, setRefId] = useState<any>('');
     const [data, setData] = useState<any>();
-    const [paymentMethod, setPaymentMethod] = React.useState('');
-    const [paymentState, setPaymentState] = React.useState('');
     const [paymentType, setPaymentType] = React.useState('');
     const [paymentChild, setPaymentChild] = React.useState('');
     const [result, setResult] = useState('');
-    const [status, setStatus] = useState<any>('');
     const [amount, setAmount] = useState<any>('');
     const [transId, setTransId] = useState<any>('');
     const [termAgree, setTermAgree] = useState(false)
     const [isCmsModalVisible, setCmsModalVisible] = useState(false);
     const [cms, setCms] = useState<any>({});
     const [isLoading, setIsLoading] = useState(false);
+    const [referenceId, setReferenceId] = useState('');
 
     useEffect(() => {
 
@@ -85,8 +81,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         if (nextAppState === 'background' || nextAppState === 'inactive') {
             console.log('back')
         } else if (nextAppState === 'active') {
-            console.log('active', refId)
-            await getPaymentInfo(reference_id)
+            const refId = await AsyncStorage.getItem('referenceId');
+            await getPaymentInfo(refId)
         }
     }
 
@@ -132,7 +128,9 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             setIsLoading(false)
             setUrl(json.data.redirect_url);
             setAppUrl(json.data.app_payment_url);
-            dispatch(assignRefID(json.data.reference_id))
+
+            setReferenceId(json.data.reference_id);
+            await AsyncStorage.setItem('referenceId', json.data.reference_id);
 
             await handlePaymentURL(json.data.redirect_url)
         }
@@ -169,7 +167,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         console.log('repayIpay', json);
 
         if (json.code == '200') {
-            // processIpay88Browser()
             const params = {
                 form: json.data.results,
                 order_id: data.id_order,
@@ -190,64 +187,12 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         }
     }
 
-    const processIpay88 = () => {
-
-        try {
-            const params: any = {
-                paymentId: paymentId(),
-                referenceNo: cartId,
-                amount: data.totalPriceWt,
-                currency: country.currency_iso_code,
-                productDescription: "Reference No: " + data.id_order,
-                userName: user.name,
-                userEmail: user.email,
-                userContact: "0123456789",
-                remark: "Test",
-                utfLang: "UTF-8",
-                country: country.country_iso_code,
-            };
-
-            PaymentService.ProcessIpay88(params);
-
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    const processIpay88Browser = async () => {
-
-        try {
-
-            const params: any = {
-                paymentId: paymentId(),
-                referenceNo: cartId,
-                amount: data.totalPriceWt,
-                currency: country.currency_iso_code,
-                productDescription: "Reference No: " + data.id_order,
-                userName: user.name,
-                userEmail: user.email,
-                userContact: "0123456789",
-                remark: "Test",
-                utfLang: "UTF-8",
-                country: country.country_iso_code,
-            };
-
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'Ipay88PaymentPage', params: params }]
-            });
-
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
     const eghl = async (data: any) => {
 
         const response = await PaymentService.repayEghl(data.id_order, user.id_customer);
         const json = await response.json();
 
-        console.log('repayEghl', json.data.results);
+        console.log('repayEghl', json.data);
 
         const param = {
             form: json.data.results,
@@ -269,7 +214,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const response = await PaymentService.repayEnets(data.id_order, user.id_customer);
         const json = await response.json();
 
-        console.log('repayEnets', json.data.results)
+        console.log('repayEnets', json.data)
 
         const param = {
             form: json.data.results,
@@ -290,7 +235,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const response = await PaymentService.repayIpayUsd(data.id_order, user.id_customer, paymentId());
         const json = await response.json();
 
-        console.log('repayIpayUSD', json.data.results);
+        console.log('repayIpayUSD', json.data);
 
         const param = {
             form: json.data.results,
@@ -308,12 +253,11 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     }
 
     const paypal = async (data: any) => {
-        console.log('paypal')
 
         const response = await PaymentService.repayPaypal(data.id_order, user.id_customer, paymentId());
         const json = await response.json();
 
-        console.log('repayPaypal', json.data.results);
+        console.log('repayPaypal', json.data);
 
         const param = {
             form: json.data.results,
@@ -331,24 +275,36 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     }
 
     const redirectPayment = () => {
+
         if (paymentType && termAgree) {
-            if (shopId == '1') {
-                if (paymentType == '16') {
-                    atome()
-                } else if (paymentType == '2' || paymentType == '3' || paymentType == '8') {
-                    ipay(data)
-                }
-            } else if (shopId == '2') {
-                if (paymentType == '4') {
-                    eghl(data)
+
+            if (paymentType == '2' || paymentType == '8') {
+                if (paymentChild) {
+                    if (shopId == '1') {
+                        ipay(data)
+                    }
                 } else {
-                    enets(data)
+                    GeneralService.toast({ description: 'Please select payment type' });
                 }
             } else {
-                if (paymentType == '1') {
-                    paypal(data)
+                if (shopId == '1') {
+                    if (paymentType == '16') {
+                        atome()
+                    } else if (paymentType == '3') {
+                        ipay(data)
+                    }
+                } else if (shopId == '2') {
+                    if (paymentType == '4') {
+                        eghl(data)
+                    } else {
+                        enets(data)
+                    }
                 } else {
-                    ipayUSD(data)
+                    if (paymentType == '1') {
+                        paypal(data)
+                    } else {
+                        ipayUSD(data)
+                    }
                 }
             }
         } else {
@@ -375,20 +331,66 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         console.log('cartstep5', json)
 
         if (json.status == 200 && json.data) {
-            setPaymentState(json.data.payment_state)
 
-            if (paymentState == '42' || paymentState == '18') {
+            if (json.data.payment_state == '42' || json.data.payment_state == '18') {
 
                 const param = {
                     id: data.id_order
                 };
 
-                navigation.navigate('OrderSuccessPage', { screen: 'OrderSuccessPage', param: param })
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'OrderSuccessPage', params: param }]
+                });
             } else {
-                navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'Main',
+                            state: {
+                                routes: [{
+                                    name: 'My Account',
+                                    state: {
+                                        routes: [{
+                                            name: 'SettingPage',
+                                            state: {
+                                                routes: [{
+                                                    name: 'OrderHistoryListPage'
+                                                }],
+                                            },
+                                        }],
+                                    },
+                                }],
+                            },
+                        },
+                    ],
+                });
             }
         } else {
-            navigation.navigate('OrderHistoryListPage', { screen: 'OrderHistoryListPage' })
+            navigation.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: 'Main',
+                        state: {
+                            routes: [{
+                                name: 'My Account',
+                                state: {
+                                    routes: [{
+                                        name: 'SettingPage',
+                                        state: {
+                                            routes: [{
+                                                name: 'OrderHistoryListPage'
+                                            }],
+                                        },
+                                    }],
+                                },
+                            }],
+                        },
+                    },
+                ],
+            });
         }
     }
 
