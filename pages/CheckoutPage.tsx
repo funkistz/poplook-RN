@@ -17,6 +17,7 @@ import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
 import Ipay88Container from '../components/Payment/Ipay88Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { clearCart } from '../Redux/Slices/Cart';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -217,8 +218,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                     if (json.code == 200 && json.data) {
 
+                        dispatch(clearCart())
+                        dispatch(clearLeaveMessage())
+
                         if (shopId == '1') {
-                            dispatch(clearLeaveMessage())
                             ipay(json.data)
                         }
                     }
@@ -239,6 +242,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                 if (json.code == 200 && json.data) {
 
+                    dispatch(clearCart())
                     dispatch(clearLeaveMessage())
 
                     if (shopId == '1') {
