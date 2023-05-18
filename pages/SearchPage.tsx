@@ -96,14 +96,6 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
         navigation.setOptions({ title: "Search '" + route.params.keyword + "' "});
     }, [])
 
-    useEffect(() => {
-        const params = {
-            keyword: route.params.keyword,
-            sort: "0"
-        };
-        dispatch(getSearch(params))
-    }, [session])
-
     return (
         <>
             {(!product.isLoading || product.items.length > 0) &&
