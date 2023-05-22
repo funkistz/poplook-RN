@@ -685,26 +685,29 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                             }
                         </ScrollView>
 
-                        <HStack style={{ height: 60, paddingVertical: 5 }}  >
-                            <IconButton size='lg' variant="ghost" width={win.width / 5} onPress={() => addtoWishlist()}>
-                                <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={24}></Wishlist>
-                            </IconButton>
-                            <IconButton size='lg' variant="ghost" width={win.width / 5}
-                                _icon={{
-                                    color: "black",
-                                    as: IonIcon,
-                                    name: "share-social-outline",
-                                    size: 'xl'
-                                }}
-                                onPress={shareUrl}
-                            />
-                            <Box w={win.width * 3 / 5}>
+                        <Flex direction='row' style={styles.footerWrapper}>
+                            <Box style={styles.footerIconWrapper}>
+                                <IconButton size='lg' variant="ghost" onPress={() => addtoWishlist()}>
+                                    <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={24}></Wishlist>
+                                </IconButton>
+                            </Box>
+                            <Box style={styles.footerIconWrapper}>
+                                <IconButton size='lg' variant="ghost"
+                                    _icon={{
+                                        color: "black",
+                                        as: IonIcon,
+                                        name: "share-social-outline",
+                                        size: 'xl'
+                                    }}
+                                    onPress={shareUrl}
+                                />
+                            </Box>
+                            <Box style={styles.addtoCartWrapper}>
                                 <Button isDisabled={quantityAvailable == 0 ? true : false} onPress={() => addToCartF()} style={styles.addtoCartBtn}>
                                     ADD TO CART
                                 </Button>
                             </Box>
-
-                        </HStack>
+                        </Flex>
                     </Flex>
                 </>
             }
@@ -740,6 +743,23 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 }
 
 const styles = StyleSheet.create({
+    footerWrapper: {
+        backgroundColor: 'white',
+        height: 60
+    },
+    footerIconWrapper: {
+        padding: 6
+    },
+    addtoCartWrapper: {
+        flexGrow: 1,
+        padding: 6
+    },
+    addtoCartBtn: {
+        backgroundColor: '#1cad48',
+        borderRadius: 30,
+        height: '100%',
+        marginRight: 5,
+    },
     chip: {
         marginHorizontal: 2,
         backgroundColor: '#fff',
@@ -803,12 +823,6 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         position: 'relative',
         borderRadius: 10,
-    },
-    addtoCartBtn: {
-        backgroundColor: '#1cad48',
-        borderRadius: 30,
-        height: '100%',
-        marginRight: 5,
     },
     container: {
         flex: 1,
