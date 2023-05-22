@@ -178,10 +178,14 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
                                     <View mx={5} >
                                         <View style={{ flexDirection: 'row'}}>
                                             <Text color='black'bold fontSize={15}>By Phone: </Text>
+                                            <Text color='black' fontSize={15}>+606-253 2750</Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'row'}}>
+                                            <Text color='black'bold fontSize={15}>Whatsapp: </Text>
                                             <Text color='black' fontSize={15}>+60196933958</Text>
                                         </View>
-                                        <Text color='black' mt={4} fontSize={15}>Monday to Friday </Text>
-                                        <Text color='black' fontSize={15}>10am - 6am GMT + 8</Text>
+                                        <Text color='black' mt={4} fontSize={15}>Monday - Friday</Text>
+                                        <Text color='black' fontSize={15}>9.00AM - 5.00PM GMT +8</Text>
                                         <View style={{ flexDirection: 'row' }} mt={4}>
                                             <Text color='black'bold fontSize={15}>By Email: </Text>
                                             <Text color='black' fontSize={15}>service@poplook.com</Text>
@@ -189,7 +193,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
                                     </View>
                                     <HStack px="1" py="2" mt={4}  bg={'gray.100'}  justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                                         <HStack alignItems="center" w="100%">
-                                            <Text fontSize="15" color="dark" pl={2} bold>Send Us A Message</Text>
+                                            <Text fontSize="15" color="black" pl={2} bold>Send Us A Message</Text>
                                         </HStack>
                                     </HStack>
                                     <View  mx={5}>
