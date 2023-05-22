@@ -317,12 +317,14 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 errors={errors}
                             />
 
+                            {!isUpdate && <View marginBottom={10}></View>}
+
                             {isUpdate &&
                                 <HStack>
                                     <Spacer></Spacer>
                                     <Button
-                                        mt={5}
-                                        mb={10}
+                                        mt={2}
+                                        mb={5}
                                         width={150}
                                         variant='link'
                                         style={styles.button_delete}
