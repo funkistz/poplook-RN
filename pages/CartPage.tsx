@@ -43,41 +43,44 @@ export default function CartPage({ route, navigation }: { route: any, navigation
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} >
                 {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}
                 {cart && !cart.id_cart ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}
-                {cart && cart.data && cart.data.product_list.length > 0 &&
+                {cart && cart.data && cart.data.product_list &&
                     <>
-                        <ScrollView flex={1} pt={4}>
-                            {cart.data.product_list.map((product: any, index: any) => {
-                                return <CartList key={index} product={product}></CartList>
-                            })
-                            }
-                        </ScrollView>
-                        <HStack px="1" py="2" mt={4} bg={'white'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
-                            <HStack alignItems="center" w="40%">
-                                <Text fontSize="15" color="black" pl={2} bold> SubTotal</Text>
+                        {cart.data.product_list.length > 0 && <>
+                            <ScrollView flex={1} pt={4}>
+                                {cart.data.product_list.map((product: any, index: any) => {
+                                    return <CartList key={index} product={product}></CartList>
+                                })
+                                }
+                            </ScrollView>
+                            <HStack px="1" py="2" mt={4} bg={'white'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+                                <HStack alignItems="center" w="40%">
+                                    <Text fontSize="15" color="black" pl={2} bold> SubTotal</Text>
+                                </HStack>
+                                <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
+                                    <Text color='black' bold>{session.country.currency_sign} {cart.data.totalProductsWt}</Text>
+                                </HStack>
                             </HStack>
-                            <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
-                                <Text color='black' bold>{session.country.currency_sign} {cart.data.totalProductsWt}</Text>
+                            <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+                                <HStack alignItems="center" w="40%">
+                                    <Text fontSize="15" color="black" pl={2} bold> Shipping</Text>
+                                </HStack>
+                                <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
+                                    <Text color='black' bold>{Number(cart.data.shipping_price) == 0 ? 'Free Shipping' : session.country.currency_sign + ' ' + cart.data.shipping_price}</Text>
+                                </HStack>
                             </HStack>
-                        </HStack>
-                        <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
-                            <HStack alignItems="center" w="40%">
-                                <Text fontSize="15" color="black" pl={2} bold> Shipping</Text>
+                            <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+                                <HStack alignItems="center" w="40%">
+                                    <Text fontSize="15" color="black" pl={2} bold> TOTAL PAYABLE</Text>
+                                </HStack>
+                                <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
+                                    <Text color='black' bold>{session.country.currency_sign} {(Number(cart.data.totalProductsWt) + Number(cart.data.shipping_price)).toFixed(2)}</Text>
+                                </HStack>
                             </HStack>
-                            <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
-                                <Text color='black' bold>{Number(cart.data.shipping_price) == 0 ? 'Free Shipping' : session.country.currency_sign + ' ' + cart.data.shipping_price}</Text>
+                            <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
+                                <Button w={'100%'} style={styles.footer} onPress={() => checkoutPage()}>NEXT</Button>
                             </HStack>
-                        </HStack>
-                        <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
-                            <HStack alignItems="center" w="40%">
-                                <Text fontSize="15" color="black" pl={2} bold> TOTAL PAYABLE</Text>
-                            </HStack>
-                            <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
-                                <Text color='black' bold>{session.country.currency_sign} {(Number(cart.data.totalProductsWt) + Number(cart.data.shipping_price)).toFixed(2)}</Text>
-                            </HStack>
-                        </HStack>
-                        <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
-                            <Button w={'100%'} style={styles.footer} onPress={() => checkoutPage()}>NEXT</Button>
-                        </HStack>
+                        </>
+                        }
 
                     </>
                 }
