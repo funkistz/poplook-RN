@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, Input, FormControl, Icon } from "native-base";
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-export default function InputLabel({ name, variant = 'outline', placeholder, values, text, onChangeText, onBlur, touched, errors, icon, type= 'text',autoCapitalize = "sentences" }: any) {
+export default function InputLabel({ name, variant = 'outline', placeholder, values, text, onChangeText, onBlur, touched, errors, icon, type= 'text',autoCapitalize = "sentences", keyboardType= false }: any) {
 
     useEffect(() => {
 
@@ -23,6 +23,7 @@ export default function InputLabel({ name, variant = 'outline', placeholder, val
                 style={styles.input}
                 size="lg"
                 autoCapitalize={autoCapitalize}
+                keyboardType={keyboardType ? 'numeric' : 'default'}
                 InputLeftElement={icon ? <Icon as={IonIcon} name={icon} ml={2} color='#000' /> : <></>}
             />
             {touched[name] && errors[name] &&
