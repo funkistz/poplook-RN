@@ -10,6 +10,7 @@ import RNInsider from 'react-native-insider';
 import InsiderCallbackType from 'react-native-insider/src/InsiderCallbackType';
 // import { ExecutionEnvironment } from 'expo-constants';
 import { Alert, Platform, PermissionsAndroid, StatusBar } from 'react-native';
+import SplashScreen from 'react-native-splash-screen'
 
 export default function App() {
 
@@ -21,6 +22,7 @@ export default function App() {
   // }, []);
 
   useEffect(() => {
+    SplashScreen.hide()
 
     // console.log('ExecutionEnvironment', ExecutionEnvironment.Standalone);
 

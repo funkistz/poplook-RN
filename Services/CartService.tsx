@@ -21,7 +21,7 @@ const CartService = {
         return APIService.deleteMethod('Carts/removeProduct', params);
     },
 
-    async cartStep1(cartId: String | Number, giftId: String, giftMesssage: String, gift: Number|String) {
+    async cartStep1(cartId: String | Number, giftId: String, giftMesssage: String, gift: Number | String) {
 
         const params = {
             id_cart: String(cartId),
@@ -57,6 +57,8 @@ const CartService = {
             // gift_message: cartId.toString(),
         };
 
+        console.log('cartStep3', params);
+
         return APIService.getMethod('Carts/OrderStep3', params);
 
     },
@@ -64,27 +66,27 @@ const CartService = {
     async cartStep4(cartId: String | Number, paymentType: String, message: any) {
 
         const params = {
-          id_cart: cartId,
-          payment: paymentType,
-          message: message,
-          // gift: cartId.toString(),
-          // gift_message: cartId.toString(),
-          // is_store_customer: cartId.toString(),
+            id_cart: cartId,
+            payment: paymentType,
+            message: message,
+            // gift: cartId.toString(),
+            // gift_message: cartId.toString(),
+            // is_store_customer: cartId.toString(),
         };
-    
+
         return APIService.getMethod('Carts/OrderStep4', params);
     },
-    
+
     async cartStep5(orderId: String | Number, status: any, paymentType: any, transactionId: any, amount: any) {
-    
+
         const params = {
-          id_order: String(orderId),
-          transaction_status: status,
-          payment_type: String(paymentType),
-          transaction_id: String(transactionId),
-          total_paid: amount,
+            id_order: String(orderId),
+            transaction_status: status,
+            payment_type: String(paymentType),
+            transaction_id: String(transactionId),
+            total_paid: amount,
         };
-    
+
         return APIService.getMethod('Carts/OrderStep5', params);
     }
 

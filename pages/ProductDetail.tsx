@@ -62,7 +62,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ['30%', '50%'], []);
     const handleSheetChanges = useCallback((index: number) => {
-        if(index == -1) {
+        if (index == -1) {
             setBackdropVisible(false)
         }
     }, []);
@@ -104,7 +104,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     };
 
     const changeProductId = (item: any) => {
-        navigation.push('ProductDetailPage', {product_id: item} )
+        navigation.push('ProductDetailPage', { product_id: item })
     }
 
     const selectProductId = async (item: any) => {
@@ -269,8 +269,8 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     }
 
     const chooseColor = (item: any) => {
-        if(item !== route.params.product_id) {
-            navigation.push('ProductDetailPage', {product_id: item} )
+        if (item !== route.params.product_id) {
+            navigation.push('ProductDetailPage', { product_id: item })
         }
     }
 
@@ -384,7 +384,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                     </>
                                 }
 
-                                {quantityAvailable == 0 && <Text style={{color: '#a94442', fontSize: 18, marginTop: 20,}}>This product is not available.</Text>}
+                                {quantityAvailable == 0 && <Text style={{ color: '#a94442', fontSize: 18, marginTop: 20, }}>This product is not available.</Text>}
 
                                 <TouchableOpacity onPress={toggleModalStore} >
                                     <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' mb={6} mt={6}> Check in store availability </Text>
@@ -396,8 +396,8 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <ScrollView horizontal={true}>
                                             <HStack mb={4}>
                                                 {colorRelated && colorRelated.map((res: any) => {
-                                                    return   <TouchableOpacity onPress={() => chooseColor(res.id_product)} key={res.id_color + '_' + 1} disabled={res.id_product === route.params.product_id ? true : false}>
-                                                            <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
+                                                    return <TouchableOpacity onPress={() => chooseColor(res.id_product)} key={res.id_color + '_' + 1} disabled={res.id_product === route.params.product_id ? true : false}>
+                                                        <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
                                                     </TouchableOpacity>
                                                 })}
                                             </HStack>
@@ -702,26 +702,29 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                             }
                         </ScrollView>
 
-                        <HStack style={{ height: 60, paddingVertical: 5}}  >
-                            <IconButton size='lg' variant="ghost" width={win.width / 5} onPress={() => addtoWishlist(null, attribute)}>
-                                <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={24}></Wishlist>
-                            </IconButton>
-                            <IconButton size='lg' variant="ghost" width={win.width / 5}
-                                _icon={{
-                                    color: "black",
-                                    as: IonIcon,
-                                    name: "share-social-outline",
-                                    size: 'xl'
-                                }}
-                                onPress={shareUrl}
-                            />
-                            <Box w={win.width * 3 / 5}>
+                        <Flex direction='row' style={styles.footerWrapper}>
+                            <Box style={styles.footerIconWrapper}>
+                                <IconButton size='lg' variant="ghost" onPress={() => addtoWishlist(null, attribute)}>
+                                    <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={24}></Wishlist>
+                                </IconButton>
+                            </Box>
+                            <Box style={styles.footerIconWrapper}>
+                                <IconButton size='lg' variant="ghost"
+                                    _icon={{
+                                        color: "black",
+                                        as: IonIcon,
+                                        name: "share-social-outline",
+                                        size: 'xl'
+                                    }}
+                                    onPress={shareUrl}
+                                />
+                            </Box>
+                            <Box style={styles.addtoCartWrapper}>
                                 <Button isDisabled={quantityAvailable == 0 ? true : false} onPress={() => addToCartF()} style={styles.addtoCartBtn}>
                                     ADD TO CART
                                 </Button>
                             </Box>
-
-                        </HStack>
+                        </Flex>
                     </Flex>
                 </>
             }
@@ -735,7 +738,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 enablePanDownToClose
                 backdropComponent={() => (
                     <>
-                        {backdropVisible &&  <Backdrop
+                        {backdropVisible && <Backdrop
                             onPress={() => {
                                 setBackdropVisible(false);
                                 bottomSheetRef.current?.close();
@@ -743,9 +746,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                             opacity={0}
                         />}
                     </>
-                    
+
                 )}
-                // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5 }}
+            // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5 }}
             >
                 <View style={styles.contentContainer}>
                     <Text color={'black'} bold mb={2}>Select Size: </Text>
@@ -757,6 +760,23 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 }
 
 const styles = StyleSheet.create({
+    footerWrapper: {
+        backgroundColor: 'white',
+        height: 60
+    },
+    footerIconWrapper: {
+        padding: 6
+    },
+    addtoCartWrapper: {
+        flexGrow: 1,
+        padding: 6
+    },
+    addtoCartBtn: {
+        backgroundColor: '#1cad48',
+        borderRadius: 30,
+        height: '100%',
+        marginRight: 5,
+    },
     chip: {
         marginHorizontal: 2,
         backgroundColor: '#fff',
@@ -820,12 +840,6 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         position: 'relative',
         borderRadius: 10,
-    },
-    addtoCartBtn: {
-        backgroundColor: '#1cad48',
-        borderRadius: 30,
-        height: '100%',
-        marginRight: 5,
     },
     container: {
         flex: 1,

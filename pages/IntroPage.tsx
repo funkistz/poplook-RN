@@ -28,6 +28,14 @@ export default function PageIntroPage() {
     const submit = () => {
         dispatch(intro(true))
         navigation.navigate('Main', { screen: 'HomePage' });
+        navigation.reset({
+            index: 0,
+            routes: [
+                {
+                    name: 'Main',
+                },
+            ],
+        });
     }
 
 

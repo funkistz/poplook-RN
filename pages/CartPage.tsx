@@ -43,7 +43,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} >
                 {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}
                 {cart && !cart.id_cart ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}
-                {cart && cart.data && cart.data.product_list &&
+                {cart && cart.data && cart.data.product_list && cart.data.product_list.length > 0 &&
                     <>
                         {cart.data.product_list.length > 0 && <>
                             <ScrollView flex={1} pt={4}>

@@ -17,8 +17,6 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
         form: form
     };
 
-    const [currentUrl, setCurrentUrl] = useState('');
-    const [paymentState, setPaymentState] = React.useState('');
     const [status, setSatus] = React.useState('');
     const [newStatus, setnewSatus] = React.useState('');
 
@@ -101,9 +99,8 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
         console.log('cartstep5', json)
 
         if (json.status == 200 && json.data) {
-            setPaymentState(json.data.payment_state)
 
-            if (paymentState == '31' || paymentState == '28') {
+            if (json.data.payment_state == '31' || json.data.payment_state == '28') {
 
                 const param = {
                     id: orderId
@@ -115,28 +112,28 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                 });
             } else {
                 navigation.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: 'Main',
-                        state: {
-                            routes: [{
-                                name: 'My Account',
-                                state: {
-                                    routes: [{
-                                        name: 'SettingPage',
-                                        state: {
-                                            routes: [{
-                                                name: 'OrderHistoryListPage'
-                                            }],
-                                        },
-                                    }],
-                                },
-                            }],
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'Main',
+                            state: {
+                                routes: [{
+                                    name: 'My Account',
+                                    state: {
+                                        routes: [{
+                                            name: 'SettingPage',
+                                            state: {
+                                                routes: [{
+                                                    name: 'OrderHistoryListPage'
+                                                }],
+                                            },
+                                        }],
+                                    },
+                                }],
+                            },
                         },
-                    },
-                ],
-            });
+                    ],
+                });
             }
         } else {
             navigation.reset({

@@ -8,8 +8,9 @@ import { getAddressList } from '../Redux/Slices/Address';
 import Address from '../components/Address';
 import AddressList from '../components/AddressList';
 import { useNavigation } from '@react-navigation/native';
-import { getCartStep1 } from '../Redux/Slices/Checkout';
+import { assignCheckoutAddress } from '../Redux/Slices/Checkout';
 import AddressAdd from '../components/Modals/AddressAdd';
+import CartService from '../Services/CartService'
 
 export default function AddressListPage({ route, onToggle }: any) {
 
@@ -19,6 +20,7 @@ export default function AddressListPage({ route, onToggle }: any) {
     const isFocused = useIsFocused();
     const [isModalVisible, setModalVisible] = useState(false);
     const { isCheckout } = route.params;
+    const id_cart = useSelector((storeState: any) => storeState.cart.id_cart);
 
     useEffect(() => {
 
@@ -58,16 +60,14 @@ export default function AddressListPage({ route, onToggle }: any) {
         navigation.navigate('AddressDetailPage', { screen: 'AddressDetailPage', param: param });
     }
 
-    const chooseAddress = (address: any) => {
+    const chooseAddress = async (address: any) => {
 
-        const param = {
-            gift: "",
-            address_id: address.id_address
+        const fetchData = async () => {
+            const response = await CartService.cartStep2(id_cart, address.id_address);
+            const json = await response.json();
+            navigation.goBack();
         }
-
-        dispatch(getCartStep1(param))
-
-        navigation.goBack();
+        fetchData().catch(console.error);
 
     }
 
@@ -86,7 +86,7 @@ export default function AddressListPage({ route, onToggle }: any) {
                 />
                 <ScrollView>
                     <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}  >
-                        <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600 }}  _pressed={{  backgroundColor: '#1cad48' }}
+                        <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600 }} _pressed={{ backgroundColor: '#1cad48' }}
                             onPress={() => isCheckout ? addAddressCheckoutPage() : addAddressPage()}>ADD NEW ADDRESS</Button>
                     </HStack>
                     {address && address.data != null && address.data.length > 0 &&
