@@ -101,13 +101,16 @@ export const getCartStep1: any = createAsyncThunk(
 
                     if (data.data.address_delivery) {
                         id_address = data.data.address_delivery.id;
+                    } else if (data.data.address_list) {
+                        const dataAddress = data.data.address_list.length > 0 ? data.data.address_list[0].id_address : null;
+                        id_address = dataAddress
                     }
 
                     const param = {
                         address_id: id_address
                     }
 
-                    dispatch(getCartStep2(param))
+                    await dispatch(getCartStep2(param))
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -128,7 +131,7 @@ export const getCartStep2: any = createAsyncThunk(
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
-            let id_address = state.cart.address ? state.cart.address.id : address_id;
+            let id_address = address_id;
 
             const response = await CartService.cartStep2(id_cart, id_address);
             let data = await response.json()
@@ -142,9 +145,9 @@ export const getCartStep2: any = createAsyncThunk(
                     }
 
                     const param = {
-                        address_id: id_address
+                        address_id: id_address,
+                        cart_id: data.data.carrier_list[0].id_carrier
                     }
-                    console.log("getCartStep3", param)
                     dispatch(getCartStep3(param))
                     return data
                 } else {
@@ -162,12 +165,13 @@ export const getCartStep2: any = createAsyncThunk(
 
 export const getCartStep3: any = createAsyncThunk(
     "checkout/step3",
-    async ({ address_id }: any, { getState, rejectWithValue }) => {
+    async ({ address_id, cart_id }: any, { getState, rejectWithValue }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
             const id_address = address_id;
-            const id_carrier = state.checkout.carrier[0].id_carrier;
+            // const id_carrier = state.checkout.carrier[0].id_carrier;
+            const id_carrier = cart_id;
 
             const response = await CartService.cartStep3(id_cart, id_address, id_carrier);
             let data = await response.json()
@@ -253,12 +257,13 @@ export const checkoutSlice = createSlice({
         builder.addCase(getCartStep1.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
+            const dataAddress = payload.data.address_list.length > 0 ? payload.data.address_list[0] : null;
             if (payload.data) {
                 temp.id_cart = payload.data.id_cart;
                 temp.id_gift = Object.keys(payload.data.gift_wrap.product_val);
-                temp.address = payload.data.address_delivery;
+                temp.address = payload.data.address_delivery ? payload.data.address_delivery : dataAddress;
                 temp.product = payload.data.product_list;
-                temp.carrier = payload.data.carrier_list;
+                // temp.carrier = payload.data.carrier_list ? payload.dara.carrier_list : null;
                 temp.total_price = payload.data.totalPriceWt;
                 temp.total_product = payload.data.totalProductsWt;
                 temp.voucher = payload.data.voucher_list;

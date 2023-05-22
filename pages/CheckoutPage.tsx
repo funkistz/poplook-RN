@@ -50,7 +50,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const country = useSelector((storeState: any) => storeState.session.country);
     const user = useSelector((storeState: any) => storeState.session.user);
     const address = useSelector((storeState: any) => storeState.checkout.address);
-    const carrier = useSelector((storeState: any) => storeState.checkout.address ? storeState.checkout.carrier[0] : '');
+    // const carrier = useSelector((storeState: any) => storeState.checkout.address ? storeState.checkout.carrier[0] : '');
+    const carrier = useSelector((storeState: any) => storeState.checkout.carrier[0]);
     const payment = useSelector((storeState: any) => storeState.checkout.payment);
     const product = useSelector((storeState: any) => storeState.checkout.product);
     const gift_wrap_id = useSelector((storeState: any) => storeState.checkout.id_gift);
