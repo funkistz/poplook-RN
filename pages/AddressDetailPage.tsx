@@ -28,6 +28,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
 
     const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address_selected);
+    const addressUser = useSelector((storeState: any) => storeState.address);
     const { isCheckout } = route.params;
 
     const isFocused = useIsFocused();
@@ -343,7 +344,9 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                     my={3}
                                     style={styles.button}
                                     _text={{ fontSize: 14, fontWeight: 600 }}
-                                    disabled={!isValid}
+                                    isDisabled={!isValid}
+                                    isLoading={addressUser.isLoading && !addressUser.isFinish}
+                                    isLoadingText="SAVE ADDRESS"
                                     _pressed={{ backgroundColor: '#1cad48' }}
                                     onPress={() => handleSubmit()}>SAVE ADDRESS
                                 </Button>

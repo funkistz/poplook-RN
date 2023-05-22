@@ -18,7 +18,6 @@ export default function RegisterPage({ visible, onToggle }: any) {
 
     useEffect(() => {
 
-
     }, [])
 
     const navigation: any = useNavigation();
@@ -31,6 +30,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
     const [optin ,setOptin] = useState(true)
     const [terms ,setTerms] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || date;
@@ -70,6 +70,8 @@ export default function RegisterPage({ visible, onToggle }: any) {
                             async (values) => {
                                 if(!terms) return  GeneralService.toast({ description: 'You must agree to accepting and consenting privacy policy before register.' }); 
 
+                                setIsLoading(true)
+
                                 const data = {
                                     firstname: values.firstname,
                                     lastname: values.lastname,
@@ -82,6 +84,8 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                 }
                                 const response = await AuthService.register('0', shopId , data);
                                 const json = await response.json();
+
+                                setIsLoading(false)
 
                                 if (json.code == 201 && json.data) {
                                     GeneralService.toast({ description: json.message, type: json.status });
@@ -253,7 +257,9 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     mb={3}
                                     style={styles.button}
                                     _text={{ fontSize: 14, fontWeight: 600 }}
-                                    disabled={!isValid}
+                                    isDisabled={!isValid}
+                                    isLoading={isLoading}
+                                    isLoadingText="SIGN UP"
                                     _pressed={{  backgroundColor: '#1cad48' }}
                                     onPress={() => handleSubmit()}>SIGN UP
                                 </Button>

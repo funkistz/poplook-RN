@@ -17,12 +17,14 @@ export default function LoginPage() {
     const navigation: any = useNavigation();
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const cart = useSelector((storeState: any) => storeState.cart);
+    const session = useSelector((storeState: any) => storeState.session);
     const { isFetching, isSuccess, isError, errorMessage } = useSelector(
         userSelector
     );
 
     useEffect(() => {
         // dispatch(intro(false))
+        console.log('session....', session)
     }, []);
 
     useEffect(() => {
@@ -105,13 +107,14 @@ export default function LoginPage() {
                                 </HStack>
                             </HStack>
                             
-
                             <Button
                                 bg={'#1cad48'}
                                 mb={3}
                                 style={styles.button}
                                 _text={{ fontSize: 14, fontWeight: 600 }}
-                                disabled={!isValid}
+                                isDisabled={!isValid}
+                                isLoading={session.loginLoading && !session.loginFinish}
+                                isLoadingText="LOGIN"
                                 _pressed={{  backgroundColor: '#1cad48' }}
                                 onPress={() => handleSubmit()}>LOGIN
                             </Button>

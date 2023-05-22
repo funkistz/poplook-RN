@@ -132,8 +132,8 @@ export const delWishlist: any = createAsyncThunk(
             let data = await response.json()
             // console.log("data", data)
 
-            if (response.status == 201) {
-                if (data.code == 201) {
+            if (response.status == 200) {
+                if (data.code == 200) {
                     dispatch(getWishList())
                     return data
                 } else {

@@ -19,8 +19,7 @@ import { background, color } from 'native-base/lib/typescript/theme/styled-syste
 import BottomSheet from '@gorhom/bottom-sheet';
 import { WEB_URL } from "@env"
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import { addToWishlist, getWishList } from '../Redux/Slices/Wishlist';
-import GeneralService from '../Services/GeneralService';
+import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlist';
 
 const win = Dimensions.get('window');
 
@@ -63,7 +62,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ['30%', '50%'], []);
     const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
         if (index == -1) {
             setBackdropVisible(false)
         }
@@ -79,7 +77,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         if (type == 'cart') {
             await addToCartF(size);
         } else {
-            await addtoWishlist(size)
+            await addtoWishlist(size, attribute)
             await dispatch(getWishList())
         }
         setSizeSelected(size);
@@ -185,27 +183,46 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         dispatch(addToCart(params));
     }
 
-    const addtoWishlist = async (id_product_attribute = null) => {
-        if (session.user == null) {
-            return GeneralService.toast({ description: 'To use Wishlist function, please log in to your account.' });
-        }
+    const addtoWishlist = async (id_product_attribute = null, item: any) => {
+
         setType('wishlist');
 
-        if (hasSize) {
-            if (!sizeSelected && !id_product_attribute) {
-                bottomSheetRef.current?.snapToIndex(0);
-                setBackdropVisible(true);
+        const idProducts = item.map((res:any) => res.id_product);
+        if(idProducts.length > 0) {
+            const uniqueIdProducts = idProducts.filter((value:any, index:any, self:any) => {
+                return self.indexOf(value) === index;
+            });
+
+            const filter = wishlist.data.product_list.find((res:any) => res.id_product === uniqueIdProducts.toString());
+
+            if(filter != undefined) {
+                const params = {
+                    id_product: filter.id_product,
+                    id_product_attribute: filter.id_product_attribute,
+                }
+        
+                await dispatch(delWishlist(params))
                 return;
             }
-        }
+            
+            
+            if (hasSize) {
+                if (!sizeSelected && !id_product_attribute) {
+                    bottomSheetRef.current?.snapToIndex(0);
+                    setBackdropVisible(true);
+                    return;
+                }
+            }
 
-        const params = {
-            id_product: product.id,
-            id_product_attribute: id_product_attribute ? id_product_attribute : sizeSelected,
-            quantity: 1
-        }
+            const params = {
+                id_product: product.id,
+                id_product_attribute: id_product_attribute ? id_product_attribute : sizeSelected,
+                quantity: 1
+            }
 
-        await dispatch(addToWishlist(params));
+            await dispatch(addToWishlist(params));
+
+        }
     }
 
     const styleItaddtoWishlist = async (id_product_attribute = null, item: any) => {
@@ -227,7 +244,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         }
 
         await dispatch(addToWishlist(params));
-        await dispatch(getWishList())
+        // await dispatch(getWishList())
     }
 
     const shareUrl = async () => {
@@ -687,7 +704,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
                         <Flex direction='row' style={styles.footerWrapper}>
                             <Box style={styles.footerIconWrapper}>
-                                <IconButton size='lg' variant="ghost" onPress={() => addtoWishlist()}>
+                                <IconButton size='lg' variant="ghost" onPress={() => addtoWishlist(null, attribute)}>
                                     <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={24}></Wishlist>
                                 </IconButton>
                             </Box>

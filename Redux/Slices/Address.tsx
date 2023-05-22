@@ -7,11 +7,16 @@ import GeneralService from '../../Services/GeneralService'
 export interface AddressState {
     id_customer: any | null,
     data: {} | null;
+    isLoading: boolean;
+    isFinish: boolean;
+
 }
 
 const initialState: AddressState = {
     id_customer: null,
-    data: {}
+    data: {},
+    isLoading: false,
+    isFinish: false,
 }
 
 export const getAddressList: any = createAsyncThunk(
@@ -165,27 +170,53 @@ export const addressSlice = createSlice({
         }).addCase(addAddress.fulfilled, (state, { payload }) => {
             GeneralService.toast({ description: payload.message });
             const temp: any = {};
+            temp.isLoading = false;
+            temp.isFinish = true;
             if (payload.data) {
                 state = { ...state, ...temp }
             }
             return state;
         }).addCase(addAddress.pending, (state, { payload }) => {
-        }).addCase(addAddress.rejected, (state, { payload }) => {
+            const temp: any = {};
+            temp.isLoading = true;
+            temp.isFinish = false;
+            state = { ...state, ...temp }
 
+            return state;
+        }).addCase(addAddress.rejected, (state, { payload }) => {
+            const temp: any = {};
+            temp.isLoading = false;
+            temp.isFinish = true;
             GeneralService.toast({ description: payload.message });
+            state = { ...state, ...temp }
+
+            return state;
 
         }).addCase(updateAddress.fulfilled, (state, { payload }) => {
             GeneralService.toast({ description: payload.message });
             const temp: any = {};
+            temp.isLoading = false;
+            temp.isFinish = true;
             if (payload.data) {
                 state = { ...state, ...temp }
             }
             return state;
         }).addCase(updateAddress.pending, (state, { payload }) => {
-        }).addCase(updateAddress.rejected, (state, { payload }) => {
+            const temp: any = {};
+            temp.isLoading = true;
+            temp.isFinish = false;
+            state = { ...state, ...temp }
 
-            console.log('payload', payload);
+            return state;
+
+        }).addCase(updateAddress.rejected, (state, { payload }) => {
+            const temp: any = {};
+            temp.isLoading = false;
+            temp.isFinish = true;
             GeneralService.toast({ description: payload.message });
+            state = { ...state, ...temp }
+
+            return state;
 
         }).addCase(deleteAddress.fulfilled, (state, { payload }) => {
             GeneralService.toast({ description: payload.message });

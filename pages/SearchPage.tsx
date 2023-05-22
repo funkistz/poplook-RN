@@ -9,7 +9,7 @@ import { ThunkDispatch } from '@reduxjs/toolkit';
 import SkeletonLoading from '../components/SkeletonProductList';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { addToWishlist, getWishList } from '../Redux/Slices/Wishlist';
+import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlist';
 import SizeList from '../components/Products/SizeList';
 
 export default function SearchPage({ route, navigation }: { route: any, navigation: any }) {
@@ -17,12 +17,12 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.search);
     const session = useSelector((storeState: any) => storeState.session);
+    const wishlist = useSelector((storeState: any) => storeState.wishlist);
 
      // Bottom sheet
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ['30%', '50%'], []);
     const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
         if(index == -1) {
             setAttributeList([])
             setBackdropVisible(false)
@@ -70,7 +70,19 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
 
     const addtoWishlist = async (id_product_attribute = null, item:any) => {
 
-        setAttributeList(item)    
+        const filter = wishlist.data.product_list.find((res:any) => res.id_product === item.id_product);
+
+        if(filter != undefined) {
+            const params = {
+                id_product: filter.id_product,
+                id_product_attribute: filter.id_product_attribute,
+            }
+    
+            await dispatch(delWishlist(params))
+            return;
+        } 
+
+        setAttributeList(item)
 
         if (item.attribute_list.length > 0) {
             if (!id_product_attribute) {
@@ -86,10 +98,7 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
             quantity: 1
         }
 
-        console.log('params: ', params)
-
         await dispatch(addToWishlist(params));
-        await dispatch(getWishList())
     }
 
     useEffect(() => {

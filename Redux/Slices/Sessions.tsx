@@ -191,35 +191,43 @@ export const sessionSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(loginUser.fulfilled, (state, { payload }) => {
-            // reduce the collection by the id property into a shape of { 1: { ...user }}
-            console.log('action fulfilled', payload);
-
             const temp: any = {};
             temp.user = payload.data;
             temp.isFetching = false;
             temp.isSuccess = true;
+            temp.loginLoading = false;
+            temp.loginFinish = true;
 
             state = { ...state, ...temp }
 
             GeneralService.toast({ description: payload.message });
 
-            // console.log('ppppppppp........', state)
-
             return state;
         }).addCase(loginUser.pending, (state, { payload }) => {
-            // reduce the collection by the id property into a shape of { 1: { ...user }}
+            const temp: any = {};
+            temp.isFetching = true;
+            temp.isError = false;
+            temp.isSuccess = false;
+            temp.errorMessage = null;
+            temp.loginLoading = true;
+            temp.loginFinish = false;
 
-            state.isFetching = true;
-            state.isError = false;
-            state.isSuccess = false;
-            state.errorMessage = null;
+            state = { ...state, ...temp }
+
+            return state;
         }).addCase(loginUser.rejected, (state, { payload }) => {
-            // reduce the collection by the id property into a shape of { 1: { ...user }}
-            state.isFetching = false;
-            state.isError = true;
-            state.errorMessage = payload.message;
+            const temp: any = {};
+            temp.isFetching = false
+            temp.isError = true;
+            temp.loginLoading = false;
+            temp.loginFinish = true;
+            temp.errorMessage = payload.message;
+
+            state = { ...state, ...temp }
 
             GeneralService.toast({ description: payload.message });
+
+            return state;
         })
     },
 })
