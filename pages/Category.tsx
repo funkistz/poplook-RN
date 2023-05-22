@@ -11,7 +11,7 @@ import FilterModal from '../components/Modals/Filter';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { scroll, reset, getFilterList } from '../Redux/Slices/ProductList';
-import { addToWishlist, getWishList } from '../Redux/Slices/Wishlist';
+import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlist';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SizeList from '../components/Products/SizeList';
 
@@ -21,6 +21,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const product = useSelector((storeState: any) => storeState.productList);
     const session = useSelector((storeState: any) => storeState.session);
+    const wishlist = useSelector((storeState: any) => storeState.wishlist);
 
 
     // Define
@@ -40,7 +41,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ['30%', '50%'], []);
     const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
         if (index == -1) {
             setAttributeList([])
             setBackdropVisible(false)
@@ -205,23 +205,35 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
     const addtoWishlist = async (id_product_attribute = null, item: any) => {
 
-        setAttributeList(item)
+        const filter = wishlist.data.product_list.find((res:any) => res.id_product === item.id_product);
 
-        if (item.attribute_list.length > 0) {
-            if (!id_product_attribute) {
-                bottomSheetRef.current?.snapToIndex(0);
-                setBackdropVisible(true);
-                return;
+        if(filter == undefined) {
+            setAttributeList(item)
+
+            if (item.attribute_list.length > 0) {
+                if (!id_product_attribute) {
+                    bottomSheetRef.current?.snapToIndex(0);
+                    setBackdropVisible(true);
+                    return;
+                }
             }
-        }
+
+            const params = {
+                id_product: item.id_product,
+                id_product_attribute: id_product_attribute ? id_product_attribute : 0,
+                quantity: 1
+            }
+
+            await dispatch(addToWishlist(params));
+            return;
+        } 
 
         const params = {
-            id_product: item.id_product,
-            id_product_attribute: id_product_attribute ? id_product_attribute : 0,
-            quantity: 1
+            id_product: filter.id_product,
+            id_product_attribute: filter.id_product_attribute,
         }
 
-        await dispatch(addToWishlist(params));
+        await dispatch(delWishlist(params))
     }
 
 
@@ -249,15 +261,12 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 sort_option: sort.toString(),
             }
 
-            console.log('useEffect.......', params)
-
             dispatch(getFilterList(params))
 
         }
     }, [isModalFilter])
 
     useEffect(() => {
-        console.log('asdasdasd')
         const Reset = dispatch(reset(product))
         if (Reset) {
             const params = {

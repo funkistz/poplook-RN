@@ -131,8 +131,8 @@ export const delWishlist: any = createAsyncThunk(
             let data = await response.json()
             // console.log("data", data)
 
-            if (response.status == 201) {
-                if (data.code == 201) {
+            if (response.status == 200) {
+                if (data.code == 200) {
                     dispatch(getWishList())
                     return data
                 } else {
@@ -208,7 +208,7 @@ export const wishlistSlice = createSlice({
             }
 
 
-            // console.log('stategetwishlist', state);
+            console.log('stategetwishlist', state);
             return state;
         })
         .addCase(getWishList.pending, (state, { payload }) => {
@@ -232,7 +232,7 @@ export const wishlistSlice = createSlice({
     
         })
         .addCase(delWishlist.rejected, (state, { payload }) => {
-            console.log('payload', payload);
+            console.log('payload reject', payload);
             // GeneralService.toast({ description: payload.message });
         })
 
