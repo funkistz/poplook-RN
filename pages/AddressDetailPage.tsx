@@ -57,7 +57,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                 dispatch(getStates({ code: country.country_iso_code, id_shop: country.id_shop }));
                 dispatch(clearAddress());
                 dispatch(getAddressOne(addressId))
-
+                navigation.setOptions({ title: "Update Address" });
             }
 
             dispatch(getAddressCountries(country.id_shop));
