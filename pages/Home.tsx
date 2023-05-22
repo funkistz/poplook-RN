@@ -10,6 +10,7 @@ import { getWishList } from '../Redux/Slices/Wishlist';
 import { useFocusEffect } from '@react-navigation/native';
 import AuthService from '../Services/AuthService';
 import { customerDetails } from '../Redux/Slices/Sessions';
+import { getCart } from '../Redux/Slices/Cart';
 
 const win = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -29,6 +30,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             dispatch(getWishList())
+            dispatch(getCart())
             if (session.intro == false || session.intro == undefined) {
                 navigation.reset({
                     index: 0,
