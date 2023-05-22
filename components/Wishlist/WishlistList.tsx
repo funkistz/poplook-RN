@@ -41,7 +41,6 @@ export default function WishlistList({ product, currency }: any) {
         }
 
         await dispatch(delWishlist(params))
-        // await dispatch(getWishList())
     }
 
     const alertDelete = (product: any) => {

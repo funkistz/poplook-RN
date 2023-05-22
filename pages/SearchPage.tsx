@@ -72,33 +72,33 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
 
         const filter = wishlist.data.product_list.find((res:any) => res.id_product === item.id_product);
 
-        if(filter == undefined) {
-            setAttributeList(item)
-
-            if (item.attribute_list.length > 0) {
-                if (!id_product_attribute) {
-                    bottomSheetRef.current?.snapToIndex(0);
-                    setBackdropVisible(true);
-                    return;
-                }
-            }
-
+        if(filter != undefined) {
             const params = {
-                id_product: item.id_product,
-                id_product_attribute: id_product_attribute ? id_product_attribute : 0,
-                quantity: 1
+                id_product: filter.id_product,
+                id_product_attribute: filter.id_product_attribute,
             }
-
-            await dispatch(addToWishlist(params));
+    
+            await dispatch(delWishlist(params))
             return;
         } 
 
-        const params = {
-            id_product: filter.id_product,
-            id_product_attribute: filter.id_product_attribute,
+        setAttributeList(item)
+
+        if (item.attribute_list.length > 0) {
+            if (!id_product_attribute) {
+                bottomSheetRef.current?.snapToIndex(0);
+                setBackdropVisible(true);
+                return;
+            }
         }
 
-        await dispatch(delWishlist(params))
+        const params = {
+            id_product: item.id_product,
+            id_product_attribute: id_product_attribute ? id_product_attribute : 0,
+            quantity: 1
+        }
+
+        await dispatch(addToWishlist(params));
     }
 
     useEffect(() => {
