@@ -57,7 +57,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                 dispatch(getStates({ code: country.country_iso_code, id_shop: country.id_shop }));
                 dispatch(clearAddress());
                 dispatch(getAddressOne(addressId))
-
+                navigation.setOptions({ title: "Update Address" });
             }
 
             dispatch(getAddressCountries(country.id_shop));
@@ -209,150 +209,150 @@ export default function AddressDetailPage({ route }: { route: any }) {
                             </AlertDialog.Content>
                         </AlertDialog>
 
-                        <ScrollView flex={1} style={styles.container}>
-                            <InputLabel
-                                placeholder="Firstname"
-                                name="firstname"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                text="Contact *"
-                                touched={touched}
-                                errors={errors}
-                            />
-                            <InputLabel
-                                placeholder="Surname"
-                                name="lastname"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                // text="Surname*"
-                                touched={touched}
-                                errors={errors}
-                                secureTextEntry={false}
-                            />
-                            <InputLabel
-                                // placeholder="Enter your phone"
-                                name="phone"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                text="Telephone*"
-                                touched={touched}
-                                errors={errors}
-                                icon='call'
-                                keyboardType={true}
-                            />
+                        <Flex flex={1} >
+                            <ScrollView flex={1} flexGrow={1} style={styles.container}>
+                                <InputLabel
+                                    placeholder="Firstname"
+                                    name="firstname"
+                                    values={values}
+                                    onChangeText={handleChange}
+                                    onBlur={setFieldTouched}
+                                    text="Contact *"
+                                    touched={touched}
+                                    errors={errors}
+                                />
+                                <InputLabel
+                                    placeholder="Surname"
+                                    name="lastname"
+                                    values={values}
+                                    onChangeText={handleChange}
+                                    onBlur={setFieldTouched}
+                                    // text="Surname*"
+                                    touched={touched}
+                                    errors={errors}
+                                    secureTextEntry={false}
+                                />
+                                <InputLabel
+                                    // placeholder="Enter your phone"
+                                    name="phone"
+                                    values={values}
+                                    onChangeText={handleChange}
+                                    onBlur={setFieldTouched}
+                                    text="Telephone*"
+                                    touched={touched}
+                                    errors={errors}
+                                    icon='call'
+                                />
 
-                            <InputLabel
-                                placeholder="Company"
-                                name="company"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                text="Company"
-                                touched={touched}
-                                errors={errors}
-                            />
+                                <InputLabel
+                                    placeholder="Company"
+                                    name="company"
+                                    values={values}
+                                    onChangeText={handleChange}
+                                    onBlur={setFieldTouched}
+                                    text="Company"
+                                    touched={touched}
+                                    errors={errors}
+                                />
 
-                            <InputLabel
-                                placeholder="Line 1"
-                                name="address1"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                text="Address *"
-                                touched={touched}
-                                errors={errors}
-                            />
-                            <InputLabel
-                                placeholder="Line 2"
-                                name="address2"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                // text="Address (Line 2)*"
-                                touched={touched}
-                                errors={errors}
-                            />
-                            <FormSelect
-                                name="id_country"
-                                values={values}
-                                onChange={setFieldValue}
-                                onBlur={setFieldTouched}
-                                text="Country*"
-                                touched={touched}
-                                errors={errors}
-                                data={countries}
-                            />
-                            {shopId == 1 &&
+                                <InputLabel
+                                    placeholder="Line 1"
+                                    name="address1"
+                                    values={values}
+                                    onChangeText={handleChange}
+                                    onBlur={setFieldTouched}
+                                    text="Address *"
+                                    touched={touched}
+                                    errors={errors}
+                                />
+                                <InputLabel
+                                    placeholder="Line 2"
+                                    name="address2"
+                                    values={values}
+                                    onChangeText={handleChange}
+                                    onBlur={setFieldTouched}
+                                    // text="Address (Line 2)*"
+                                    touched={touched}
+                                    errors={errors}
+                                />
                                 <FormSelect
-                                    name="id_state"
+                                    name="id_country"
                                     values={values}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
-                                    text="State*"
+                                    text="Country*"
                                     touched={touched}
                                     errors={errors}
-                                    data={states}
+                                    data={countries}
                                 />
-                            }
+                                {shopId == 1 &&
+                                    <FormSelect
+                                        name="id_state"
+                                        values={values}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        text="State*"
+                                        touched={touched}
+                                        errors={errors}
+                                        data={states}
+                                    />
+                                }
 
-                            <InputLabel
-                                // placeholder="Enter your city"
-                                name="city"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                text="Town / City*"
-                                touched={touched}
-                                errors={errors}
-                            />
-                            <InputLabel
-                                // placeholder="Enter your postcode"
-                                name="postcode"
-                                values={values}
-                                onChangeText={handleChange}
-                                onBlur={setFieldTouched}
-                                text="Postcode*"
-                                touched={touched}
-                                errors={errors}
-                                keyboardType={true}
-                            />
+                                <InputLabel
+                                    // placeholder="Enter your city"
+                                    name="city"
+                                    values={values}
+                                    onChangeText={handleChange}
+                                    onBlur={setFieldTouched}
+                                    text="Town / City*"
+                                    touched={touched}
+                                    errors={errors}
+                                />
+                                <InputLabel
+                                    // placeholder="Enter your postcode"
+                                    name="postcode"
+                                    values={values}
+                                    onChangeText={handleChange}
+                                    onBlur={setFieldTouched}
+                                    text="Postcode*"
+                                    touched={touched}
+                                    errors={errors}
+                                />
 
-                            {isUpdate &&
-                                <HStack>
-                                    <Spacer></Spacer>
-                                    <Button
-                                        mt={5}
-                                        mb={10}
-                                        width={150}
-                                        variant='link'
-                                        style={styles.button_delete}
-                                        colorScheme="danger"
-                                        onPress={() => setIsOpen(!isOpen)}
-                                        _text={{ fontSize: 14, fontWeight: 600 }}>DELETE ADDRESS
-                                    </Button>
-                                </HStack>
-                            }
+                                {isUpdate &&
+                                    <HStack>
+                                        <Spacer></Spacer>
+                                        <Button
+                                            mt={5}
+                                            mb={10}
+                                            width={150}
+                                            variant='link'
+                                            style={styles.button_delete}
+                                            colorScheme="danger"
+                                            onPress={() => setIsOpen(!isOpen)}
+                                            _text={{ fontSize: 14, fontWeight: 600 }}>DELETE ADDRESS
+                                        </Button>
+                                    </HStack>
+                                }
 
+                                <View height={10}></View>
 
-                        </ScrollView>
+                            </ScrollView>
+                            <Stack px={3}>
+                                <Button
+                                    bg={'#1cad48'}
+                                    my={3}
+                                    style={styles.button}
+                                    _text={{ fontSize: 14, fontWeight: 600 }}
+                                    isDisabled={!isValid}
+                                    isLoading={addressUser.isLoading && !addressUser.isFinish}
+                                    isLoadingText="SAVE ADDRESS"
+                                    _pressed={{ backgroundColor: '#1cad48' }}
+                                    onPress={() => handleSubmit()}>SAVE ADDRESS
+                                </Button>
 
-                        <Stack px={3}>
-                            <Button
-                                bg={'#1cad48'}
-                                my={3}
-                                style={styles.button}
-                                _text={{ fontSize: 14, fontWeight: 600 }}
-                                isDisabled={!isValid}
-                                isLoading={addressUser.isLoading && !addressUser.isFinish}
-                                isLoadingText="SAVE ADDRESS"
-                                _pressed={{  backgroundColor: '#1cad48' }}
-                                onPress={() => handleSubmit()}>SAVE ADDRESS
-                            </Button>
-
-                        </Stack>
+                            </Stack>
+                        </Flex>
                     </Flex>
                 )}
             </Formik>
@@ -382,6 +382,7 @@ const styles = StyleSheet.create({
         sizes: 'md',
     },
     container: {
-        padding: 15
+        padding: 15,
+        paddingTop: 30
     },
 })

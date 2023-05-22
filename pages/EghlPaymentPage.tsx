@@ -18,7 +18,6 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
     };
 
     const [status, setSatus] = React.useState('');
-    const [newStatus, setnewSatus] = React.useState('');
 
     const handleNavigationStateChange = (navState: any) => {
         console.log('changeurl', navState)
@@ -31,6 +30,10 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
         if (_url.includes('callback_mobile.php')) {
             getSearchParamFromURLEghl(_url)
+        }
+
+        if (_url == 'https://poplook.com/modules/sgcreditcard/callback_mobile.php?return_url=1') {
+            confirmSuccess()
         }
 
     };
@@ -48,7 +51,7 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
             setSatus(params.status);
             cartStep5(params.status)
-        }
+        } 
 
     }
 
@@ -65,16 +68,12 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
             setSatus(params.TxnStatus);
             cartStep5(params.TxnStatus)
-        }
+        } 
 
     }
 
-    const alertCancelOrder = () => {
-        Alert.alert('Are you sure to close the payment screen?', '', [
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
+    const confirmSuccess = () => {
+        Alert.alert('Thank you. Your payment is successful', '', [
             {
                 text: 'OK',
                 onPress: () => cartStep5(0)
@@ -86,10 +85,12 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
         console.log('txnstatus', data)
 
+        let newStatus = ''
+
         if (data == '1') {
-            setnewSatus('0')
+            newStatus = '0';
         } else {
-            setnewSatus('1')
+            newStatus = '1';
         }
 
         console.log(orderId, newStatus, paymentType, transId, amount)
@@ -98,7 +99,7 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
         console.log('cartstep5', json)
 
-        if (json.status == 200 && json.data) {
+        if (json.code == 200 && json.data) {
 
             if (json.data.payment_state == '31' || json.data.payment_state == '28') {
 
