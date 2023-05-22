@@ -24,7 +24,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     const dispatch = useDispatch()
     const session = useSelector((storeState: any) => storeState.session);
-    const x = useSelector((storeState: any) => storeState.wishlist);
     const [banners, setBanners] = useState<any[]>([]);
 
     useEffect(() => {

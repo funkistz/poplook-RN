@@ -228,7 +228,7 @@ export const wishlistSlice = createSlice({
             })
 
             .addCase(delWishlist.fulfilled, (state, { payload }) => {
-                GeneralService.toast({ description: payload.message });
+                // GeneralService.toast({ description: payload.message });
                 return state;
             })
             .addCase(delWishlist.pending, (state, { payload }) => {
