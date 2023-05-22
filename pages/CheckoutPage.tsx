@@ -23,27 +23,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
-    const [gift, setGift] = React.useState('');
-    const [message, setMessage] = React.useState('');
-    const [paymentType, setPaymentType] = React.useState('');
-    const [paymentChild, setPaymentChild] = React.useState('');
-    const [isAddressModalVisible, setAdressModalVisible] = useState(false);
-    const [isCmsModalVisible, setCmsModalVisible] = useState(false);
-    const [url, setUrl] = useState<any>('');
-    const [appUrl, setAppUrl] = useState<any>('');
-    const [giftMessage, setGiftMessage] = useState('');
-    const [leaveMessage, setLeaveMessage] = useState('');
-    const [cms, setCms] = useState<any>({});
-    const [termAgree, setTermAgree] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [amount, setAmount] = useState<any>('');
-    const [transId, setTransId] = useState<any>('');
-
-    const [appState, setAppState] = useState(AppState.currentState);
-    const [referenceId, setReferenceId] = useState('');
-    const [orderId, setOrderId] = useState('');
-    const [paymentChoose, setPaymentChoose] = useState('');
-
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
@@ -66,31 +45,58 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const credit_store_list = useSelector((storeState: any) => storeState.checkout.storeCredit);
     const text_message = useSelector((storeState: any) => storeState.checkout.message);
 
+    const [gift, setGift] = React.useState(gift_option ? '1' : '0');
+    const [message, setMessage] = React.useState('');
+    const [paymentType, setPaymentType] = React.useState('');
+    const [paymentChild, setPaymentChild] = React.useState('');
+    const [isAddressModalVisible, setAdressModalVisible] = useState(false);
+    const [isCmsModalVisible, setCmsModalVisible] = useState(false);
+    const [url, setUrl] = useState<any>('');
+    const [appUrl, setAppUrl] = useState<any>('');
+    const [giftMessage, setGiftMessage] = useState(gift_message);
+    const [leaveMessage, setLeaveMessage] = useState('');
+    const [cms, setCms] = useState<any>({});
+    const [termAgree, setTermAgree] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [amount, setAmount] = useState<any>('');
+    const [transId, setTransId] = useState<any>('');
+
+    const [appState, setAppState] = useState(AppState.currentState);
+    const [referenceId, setReferenceId] = useState('');
+    const [orderId, setOrderId] = useState('');
+    const [paymentChoose, setPaymentChoose] = useState('');
+
     // Voucher
     const [voucher, setVoucher] = React.useState('');
 
     useEffect(() => {
+        console.log('from navigation text_message', text_message);
+
         const unsubscribe = navigation.addListener('focus', () => {
-
-            const param = {
-                gift: gift,
-                address_id: address ? address.id : ''
-            }
-
-            dispatch(getCartStep1(param))
 
             if (text_message) {
                 setMessage('1')
                 setLeaveMessage(text_message)
             }
-
+            console.log('');
             if (gift_option) {
-                setGift('0')
+                // setGift('1')
                 if (gift_message) {
-                    setGiftMessage(gift_message)
+                    // setGiftMessage(gift_message)
                 }
             }
+
+            const param = {
+                gift: gift_option,
+                gift_wrap_id: gift_wrap_id,
+                gift_message: gift_message,
+                address_id: address ? address.id : ''
+            }
+
+            dispatch(getCartStep1(param))
         });
+
+        AppState.addEventListener('change', handleAppStateChange);
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
@@ -98,35 +104,46 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     useEffect(() => {
 
-        if (text_message) {
-            setMessage('1')
-            setLeaveMessage(text_message)
+        if (giftMessage != gift_message) {
+
+            const timeOutId = setTimeout(() => {
+                const param = {
+                    gift_message: giftMessage
+                }
+
+                dispatch(getGiftMessage(param));
+
+            }, 500);
+
+            return () => clearTimeout(timeOutId);
         }
 
-        if (gift_option) {
-            setGift('0')
-            if (gift_message) {
-                setGiftMessage(gift_message)
-            }
-        }
+    }, [giftMessage])
+
+    useEffect(() => {
 
         const timeOutId = setTimeout(() => {
-
-            const param = {
-                gift_message: giftMessage
-            }
-
-            dispatch(getGiftMessage(param));
             dispatch(leaveMessageCheckout(leaveMessage))
-
         }, 500);
-
-        AppState.addEventListener('change', handleAppStateChange);
 
         return () => clearTimeout(timeOutId);
 
+    }, [leaveMessage])
 
-    }, [leaveMessage, giftMessage])
+    useEffect(() => {
+        if (gift != gift_option) {
+            console.log('from gift', gift);
+            const param = {
+                gift: gift,
+                gift_wrap_id: gift_wrap_id,
+                gift_message: giftMessage,
+                address_id: address ? address.id : null
+            }
+            dispatch(getCartStep1(param))
+        }
+
+    }, [gift])
+
 
     const handleAppStateChange = async (nextAppState: any) => {
 
@@ -139,7 +156,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
             if (paymentChoose == 'atome') {
                 getPaymentInfo(refId, orderId)
-            } 
+            }
         }
     }
 
@@ -676,26 +693,22 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                         onChange={(nextValue) => {
                                             setGift(nextValue);
 
-                                            const param = {
-                                                gift: gift,
-                                                gift_wrap_id: gift_wrap_id,
-                                                gift_message: giftMessage,
-                                                address_id: address ? address.id : null
+                                            if (nextValue == '0') {
+                                                setGiftMessage('');
                                             }
 
-                                            dispatch(getCartStep1(param))
                                         }}
                                     >
                                         <HStack>
-                                            <Radio value="1" backgroundColor={'white'} marginLeft={3} _text={{ color: 'black', fontSize: 14 }} size="md">No</Radio>
-                                            <Radio value="0" backgroundColor={'white'} marginLeft={3} _text={{ color: 'black', fontSize: 14 }} size="md">Yes</Radio>
+                                            <Radio value="0" backgroundColor={'white'} marginLeft={3} _text={{ color: 'black', fontSize: 14 }} size="md">No</Radio>
+                                            <Radio value="1" backgroundColor={'white'} marginLeft={3} _text={{ color: 'black', fontSize: 14 }} size="md">Yes</Radio>
                                         </HStack>
                                     </Radio.Group>
                                 </HStack>
                             </>
                         }
 
-                        {gift && (gift == '0') ? <>
+                        {gift && (gift == '1') ? <>
                             <VStack>
                                 <Box borderRadius={10}>
                                     <HStack>
