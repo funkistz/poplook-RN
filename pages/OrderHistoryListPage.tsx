@@ -86,7 +86,7 @@ export default function OrderHistoryListPage() {
                                     <Text style={styles.normal}>Date</Text>
                                     <Text style={styles.normal}>Status</Text>
                                     <Text style={styles.normal}>Tracking No</Text>
-                                    <Text style={styles.normal}>Delivery No</Text>
+                                    <Text style={styles.normal}>Delivery Info</Text>
                                 </VStack>
                                 <VStack>
                                     <Text style={styles.bold}># {item.id_order}</Text>
