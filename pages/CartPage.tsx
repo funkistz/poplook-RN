@@ -1,17 +1,13 @@
 import { StyleSheet, View, Dimensions } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
 import BannerService from '../Services/BannerService';
-import { Flex, Center, Image, Box, HStack, IconButton, Icon, FlatList, ScrollView, Text, Button } from 'native-base';
+import { Flex, Center, Image, Box, HStack, IconButton, Icon, FlatList, ScrollView, Text, Button, Badge } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { addToCart, clearCart, getCart } from '../Redux/Slices/Cart';
 import CartList from '../components/Cart/CartList';
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
-import { background, position } from 'native-base/lib/typescript/theme/styled-system';
-import AuthService from '../Services/AuthService';
-import { persistor } from '../Redux/app';
-
 export default function CartPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
@@ -41,6 +37,16 @@ export default function CartPage({ route, navigation }: { route: any, navigation
     return (
         <>
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} >
+
+                {cart && cart.data && cart.data.cart_messages && 
+                <>
+                    {cart.data.cart_messages.map((message: any, index: any) => {
+                        return <Badge colorScheme="success" variant={'subtle'} bgColor={'green.100'} padding={2} marginX={3} marginY={1} key={index}>{ message }</Badge>
+                    })
+                    }
+                </>
+                }
+
                 {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}
                 {cart && !cart.id_cart ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}
                 {cart && cart.data && cart.data.product_list && cart.data.product_list.length > 0 &&
