@@ -84,7 +84,7 @@ const TabNavigator = () => {
           name="Cart"
           options={{
             tabBarBadge: totalItem,
-            tabBarBadgeStyle: { backgroundColor: '#1cad48', color: 'white' }
+            tabBarBadgeStyle: { backgroundColor: '#1cad48', color: 'white', fontSize: 10 }
           }}
           children={props => <AppStack initialRoute='CartPage' {...props} />}
         />

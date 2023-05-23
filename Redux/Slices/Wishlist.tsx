@@ -4,6 +4,7 @@ import AuthService from '../../Services/AuthService'
 import CartService from '../../Services/CartService'
 import GeneralService from '../../Services/GeneralService'
 import WishlistService from '../../Services/WishlistService'
+import { getCart } from './Cart'
 
 export interface WishlistState {
     // id_wishlist: Number | null,
@@ -43,7 +44,7 @@ export const getWishList: any = createAsyncThunk(
 
 export const addToCart: any = createAsyncThunk(
     "wishlist/addCart",
-    async ({ id_product, id_product_attribute, quantity }: any, { getState, rejectWithValue }) => {
+    async ({ id_product, id_product_attribute, quantity }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const user = state.session.user;
@@ -66,7 +67,7 @@ export const addToCart: any = createAsyncThunk(
 
             if (response.status == 201) {
                 if (data.code == 201) {
-
+                    dispatch(getCart())
                     return data
                 } else {
                     return rejectWithValue(data)

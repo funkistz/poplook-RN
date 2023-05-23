@@ -100,15 +100,19 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                         <Box alignItems="center" shadow={1} borderRadius={8} pb={6} pt={6} backgroundColor='white'>
 
                             <Text color='#32CD32' fontSize={12} mb={2} >Please scan your membership barcode at checkout</Text>
-                            <Barcode
-                                format="CODE128B"
-                                value={user.id_customer.toString()}
-                                style={{ marginBottom: 0 }}
-                                width={3}
-                                maxWidth={Dimensions.get('window').width / 2 * 3}
-                                height={50}
-                            />
-                            <Text color='#000' fontSize={16} mt={1} >{user.id_customer}</Text>
+                            {user.id_entity &&
+                                <>
+                                    <Barcode
+                                        format="CODE128B"
+                                        value={user.id_entity.split(' ')[0].toString()}
+                                        style={{ marginBottom: 0 }}
+                                        width={3}
+                                        maxWidth={Dimensions.get('window').width / 2 * 3}
+                                        height={50}
+                                    />
+                                    <Text color='#000' fontSize={16} mt={1} >{user.id_entity}</Text>
+                                </>
+                            }
                         </Box>
                     </Box>
                 }
@@ -135,7 +139,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                             <Spacer />
                         </HStack>
                     </TouchableOpacity>
-                    <Text style={styles.version}>App Version {Platform.OS == 'ios' ?  IOS_VERSION : ANDROID_VERSION}</Text>
+                    <Text style={styles.version}>App Version {Platform.OS == 'ios' ? IOS_VERSION : ANDROID_VERSION}</Text>
                 </View>
             </ScrollView>
         </View>
