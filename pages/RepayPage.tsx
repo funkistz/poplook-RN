@@ -45,6 +45,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [cms, setCms] = useState<any>({});
     const [isLoading, setIsLoading] = useState(false);
     const [referenceId, setReferenceId] = useState('');
+    const [paymentChoose, setPaymentChoose] = useState('');
+    const [orderId, setOrderId] = useState('');
 
     useEffect(() => {
 
@@ -69,10 +71,18 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             if (json.data.voucher_list) {
                 setVouchers(json.data.voucher_list);
             }
+
+            setOrderId(json.data.id_order);
+            await AsyncStorage.setItem('orderId', json.data.id_order.toString());
+
         }
         repay().catch(console.error);
 
-        AppState.addEventListener('change', handleAppStateChange);
+        const appState = AppState.addEventListener('change', handleAppStateChange);
+
+        return () => {
+            appState.remove()
+        };
 
     }, [])
 
@@ -81,8 +91,13 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         if (nextAppState === 'background' || nextAppState === 'inactive') {
             console.log('back')
         } else if (nextAppState === 'active') {
+
             const refId = await AsyncStorage.getItem('referenceId');
-            await getPaymentInfo(refId)
+            const paymentChoose = await AsyncStorage.getItem('paymentChoose');
+
+            if (paymentChoose == '16') {
+                getPaymentInfo(refId)
+            }
         }
     }
 
@@ -132,15 +147,12 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             setReferenceId(json.data.reference_id);
             await AsyncStorage.setItem('referenceId', json.data.reference_id);
 
-            await handlePaymentURL(json.data.redirect_url)
+            handlePaymentURL(result ? json.data.app_payment_url :json.data.redirect_url)
         }
 
-        // handlePaymentURL(result == 'No' ? appUrl : url)
     }
 
     const getPaymentInfo = async (refId: any) => {
-
-        console.log('refid', refId)
 
         const response = await PaymentService.getPaymentInfo(refId);
         const json = await response.json();
@@ -150,12 +162,12 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         setTransId(json.paymentTransaction);
         setAmount(json.amount);
 
+        const order_id = await AsyncStorage.getItem('orderId')
+
         if (json.status == 'PAID') {
-            console.log('idorder', data.id_order)
-            await cartStep5(data.id_order, '1', 'atome', json.paymentTransaction, json.amount)
+            cartStep5(order_id, '1', 'atome', json.paymentTransaction, json.amount)
         } else {
-            console.log('idorder', data.id_order)
-            await cartStep5(data.id_order, '0', 'atome', json.paymentTransaction, json.amount)
+            cartStep5(order_id, '0', 'atome', json.paymentTransaction, json.amount)
         }
     }
 
@@ -274,9 +286,13 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     }
 
-    const redirectPayment = () => {
+    const redirectPayment = async () => {
+
 
         if (paymentType && termAgree) {
+
+            setPaymentChoose(paymentType);
+            await AsyncStorage.setItem('paymentChoose', paymentType.toString());
 
             if (paymentType == '2' || paymentType == '8') {
                 if (paymentChild) {
@@ -319,23 +335,17 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const cartStep5 = async (orderId: any, status: any, paymentMethod: any, transId: any, amount: any) => {
 
-        console.log('id order', orderId)
-        console.log('status', status)
-        console.log('paymenttyupe', paymentMethod)
-        console.log('transid', transId)
-        console.log('amount', amount)
-
         const response = await CartService.cartStep5(orderId, status, paymentMethod, transId, amount);
         const json = await response.json();
 
         console.log('cartstep5', json)
 
-        if (json.status == 200 && json.data) {
+        if (json.code == 200 && json.data) {
 
             if (json.data.payment_state == '42' || json.data.payment_state == '18') {
 
                 const param = {
-                    id: data.id_order
+                    id: orderId
                 };
 
                 navigation.reset({
