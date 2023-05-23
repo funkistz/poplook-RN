@@ -38,10 +38,15 @@ const APIService = {
     async injectParams(params: any, isString = true) {
 
         let id_shop = 1;
+        let device_type = 'android';
 
         const state: any = store.getState();
         if (state && state.session && state.session.country) {
             id_shop = Number(state.session.country.id_shop);
+        }
+
+        if (state.session && state.session.device_type) {
+            device_type = state.session.device_type;
         }
 
         let data: any = {
@@ -49,7 +54,7 @@ const APIService = {
             apikey: API_KEY,
             id_lang: 1,
             id_shop: id_shop,
-            device_type: 'apps',
+            device_type: device_type,
             api_version: 'apps',
             app_version: IOS_VERSION,
             shop: id_shop,
