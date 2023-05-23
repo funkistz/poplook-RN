@@ -147,7 +147,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
             setReferenceId(json.data.reference_id);
             await AsyncStorage.setItem('referenceId', json.data.reference_id);
 
-            handlePaymentURL(result ? json.data.app_payment_url :json.data.redirect_url)
+            handlePaymentURL(result ? json.data.app_payment_url : json.data.redirect_url)
         }
 
     }
@@ -364,11 +364,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                                     state: {
                                         routes: [{
                                             name: 'SettingPage',
-                                            state: {
-                                                routes: [{
-                                                    name: 'OrderHistoryListPage'
-                                                }],
-                                            },
+                                            params: { redirect: 'order-history' },
                                         }],
                                     },
                                 }],
@@ -389,11 +385,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                                 state: {
                                     routes: [{
                                         name: 'SettingPage',
-                                        state: {
-                                            routes: [{
-                                                name: 'OrderHistoryListPage'
-                                            }],
-                                        },
+                                        params: { redirect: 'order-history' },
                                     }],
                                 },
                             }],

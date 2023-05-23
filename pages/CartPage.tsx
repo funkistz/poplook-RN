@@ -8,6 +8,7 @@ import { addToCart, clearCart, getCart } from '../Redux/Slices/Cart';
 import CartList from '../components/Cart/CartList';
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
+
 export default function CartPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
@@ -38,13 +39,13 @@ export default function CartPage({ route, navigation }: { route: any, navigation
         <>
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} >
 
-                {cart && cart.data && cart.data.cart_messages && 
-                <>
-                    {cart.data.cart_messages.map((message: any, index: any) => {
-                        return <Badge colorScheme="success" variant={'subtle'} bgColor={'green.100'} padding={2} marginX={3} marginY={1} key={index}>{ message }</Badge>
-                    })
-                    }
-                </>
+                {cart && cart.data && cart.data.cart_messages &&
+                    <>
+                        {cart.data.cart_messages.map((message: any, index: any) => {
+                            return <Badge colorScheme="success" variant={'subtle'} bgColor={'green.100'} padding={2} marginX={3} marginY={1} key={index}>{message}</Badge>
+                        })
+                        }
+                    </>
                 }
 
                 {cart && cart.data && cart.data.totalItemInCart == 0 ? <Text style={styles.bold} mt={10}>Your shopping bag is empty.</Text> : null}

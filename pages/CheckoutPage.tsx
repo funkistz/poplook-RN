@@ -101,7 +101,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         return unsubscribe;
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
-        
+
     }, [navigation]);
 
     useEffect(() => {
@@ -141,7 +141,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             clearTimeout(timeOutId)
             appState.remove()
         };
-            
+
 
     }, [leaveMessage])
 
@@ -335,11 +335,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                     state: {
                                         routes: [{
                                             name: 'SettingPage',
-                                            state: {
-                                                routes: [{
-                                                    name: 'OrderHistoryListPage'
-                                                }],
-                                            },
+                                            params: { redirect: 'order-history' },
                                         }],
                                     },
                                 }],
@@ -360,11 +356,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 state: {
                                     routes: [{
                                         name: 'SettingPage',
-                                        state: {
-                                            routes: [{
-                                                name: 'OrderHistoryListPage'
-                                            }],
-                                        },
+                                        params: { redirect: 'order-history' },
                                     }],
                                 },
                             }],
