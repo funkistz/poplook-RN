@@ -8,7 +8,7 @@ import GeneralService from '../../Services/GeneralService';
 
 export default function ProductCard({ product, route, openWishlist, hideWishlist = false }: any) {
 
-    const { navigate } = useNavigation<any>();
+    const navigation:any = useNavigation();
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
     const session = useSelector((storeState: any) => storeState.session);
 
@@ -18,13 +18,13 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
             product_id: product.id_product
         };
 
-        if (route) {
-            route(product.id_product)
-        } else {
-            navigate('ProductDetailPage', params);
-        }
+        // if (route) {
+        //     route(product.id_product)
+        // } else {
+        //     navigate('ProductDetailPage', params);
+        // }
 
-
+        navigation.push('ProductDetailPage', params)
     }
 
     const clickedWishlist = () => {

@@ -14,10 +14,12 @@ import ShippingTo from '../components/ShippingTo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { IOS_VERSION, ANDROID_VERSION } from "@env"
+import { CommonActions } from '@react-navigation/native';
 
 export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch()
+    const session = useSelector((storeState: any) => storeState.session);
     const { user } = useSelector(
         userSelector
     );
@@ -64,12 +66,19 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
     }
 
     const logoutUser = () => {
+        
         persistor.purge().then(() => {
             dispatch(logout())
             dispatch(getWishList())
             dispatch(clearCart())
             dispatch(clearCheckout())
             dispatch(clearAddress())
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: session.user != null ? 'Main' : 'Login' }],
+                })
+            );
         });
     }
 
