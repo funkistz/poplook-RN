@@ -29,7 +29,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             dispatch(getWishList())
-            dispatch(getCart())
             if (session.intro == false || session.intro == undefined) {
                 navigation.reset({
                     index: 0,
@@ -54,9 +53,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     useFocusEffect(
         React.useCallback(() => {
-            if (session.user != null) {
-                dispatch(getWishList())
-            }
             getCurrentIdCart()
             getVersion().catch(console.error);
         }, [])
