@@ -104,11 +104,11 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                                 <>
                                     <Barcode
                                         format="CODE128B"
-                                        value={user.id_entity.split(' ')[0].toString()}
+                                        value={user.id_entity}
                                         style={{ marginBottom: 0 }}
-                                        width={3}
-                                        maxWidth={Dimensions.get('window').width / 2 * 3}
-                                        height={50}
+                                        width={Dimensions.get('window').width / (1.3)}
+                                        maxWidth={Dimensions.get('window').width / (1.3)}
+                                        height={60}
                                     />
                                     <Text color='#000' fontSize={16} mt={1} >{user.id_entity}</Text>
                                 </>
