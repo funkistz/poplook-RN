@@ -14,10 +14,12 @@ import ShippingTo from '../components/ShippingTo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { IOS_VERSION, ANDROID_VERSION } from "@env"
+import { CommonActions } from '@react-navigation/native';
 
 export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch()
+    const session = useSelector((storeState: any) => storeState.session);
     const { user } = useSelector(
         userSelector
     );
@@ -64,12 +66,19 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
     }
 
     const logoutUser = () => {
+        
         persistor.purge().then(() => {
             dispatch(logout())
             dispatch(getWishList())
             dispatch(clearCart())
             dispatch(clearCheckout())
             dispatch(clearAddress())
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: session.user != null ? 'Main' : 'Login' }],
+                })
+            );
         });
     }
 
@@ -104,11 +113,11 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                                 <>
                                     <Barcode
                                         format="CODE128B"
-                                        value={user.id_entity.split(' ')[0].toString()}
+                                        value={user.id_entity}
                                         style={{ marginBottom: 0 }}
-                                        width={3}
-                                        maxWidth={Dimensions.get('window').width / 2 * 3}
-                                        height={50}
+                                        width={Dimensions.get('window').width / (1.3)}
+                                        maxWidth={Dimensions.get('window').width / (1.3)}
+                                        height={60}
                                     />
                                     <Text color='#000' fontSize={16} mt={1} >{user.id_entity}</Text>
                                 </>
