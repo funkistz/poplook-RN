@@ -9,6 +9,7 @@ import ShippingMethod from '../components/ShippingMethod';
 import AddressModal from '../components/Modals/AddressList';
 import CartService from '../Services/CartService';
 import { handlePaymentURL } from 'react-native-atome-paylater';
+import { isAtomeAppInstalled } from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
 import GeneralService from '../Services/GeneralService';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -61,8 +62,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const [isLoading, setIsLoading] = useState(false);
     const [amount, setAmount] = useState<any>('');
     const [transId, setTransId] = useState<any>('');
+    const [result, setResult] = useState('');
 
-    const [appState, setAppState] = useState(AppState.currentState);
     const [referenceId, setReferenceId] = useState('');
     const [orderId, setOrderId] = useState('');
     const [paymentChoose, setPaymentChoose] = useState('');
@@ -97,10 +98,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             dispatch(getCartStep1(param))
         });
 
-        AppState.addEventListener('change', handleAppStateChange);
+        return unsubscribe;
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
-        return unsubscribe;
+        
     }, [navigation]);
 
     useEffect(() => {
@@ -127,7 +128,20 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             dispatch(leaveMessageCheckout(leaveMessage))
         }, 500);
 
-        return () => clearTimeout(timeOutId);
+        const appState = AppState.addEventListener('change', handleAppStateChange);
+
+        const init = async () => {
+            const installed = await isAtomeAppInstalled();
+            setResult(installed ? 'Yes' : 'No')
+            console.log('install ke tak', installed);
+        };
+        init().catch(console.error);
+
+        return () => {
+            clearTimeout(timeOutId)
+            appState.remove()
+        };
+            
 
     }, [leaveMessage])
 
@@ -151,6 +165,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         if (nextAppState === 'background' || nextAppState === 'inactive') {
             console.log('back')
         } else if (nextAppState === 'active') {
+
             const refId = await AsyncStorage.getItem('referenceId');
             const orderId = await AsyncStorage.getItem('orderId');
             const paymentChoose = await AsyncStorage.getItem('paymentChoose');
@@ -229,8 +244,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                     const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                     const json = await response.json();
 
-                    console.log('cartstep4', json.data)
-
                     setPaymentChoose(json.data.payment_selected.payment_method);
                     await AsyncStorage.setItem('paymentChoose', json.data.payment_selected.payment_method);
 
@@ -249,8 +262,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             } else {
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                 const json = await response.json();
-
-                console.log('cartstep4', json.data.id_order)
 
                 setPaymentChoose(json.data.payment_selected.payment_method);
                 await AsyncStorage.setItem('paymentChoose', json.data.payment_selected.payment_method);
@@ -294,12 +305,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     }
 
     const cartStep5 = async (orderId: any, status: any, paymentMethod: any, transId: any, amount: any) => {
-
-        console.log('id order', orderId)
-        console.log('status', status)
-        console.log('paymenttyupe', paymentMethod)
-        console.log('transid', transId)
-        console.log('amount', amount)
 
         const response = await CartService.cartStep5(orderId, status, paymentMethod, transId, amount);
         const json = await response.json();
@@ -436,7 +441,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             setReferenceId(json.data.reference_id);
             await AsyncStorage.setItem('referenceId', json.data.reference_id);
 
-            await handlePaymentURL(json.data.redirect_url)
+            handlePaymentURL(result ? json.data.app_payment_url : json.data.redirect_url)
         }
     }
 
