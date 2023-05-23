@@ -188,12 +188,13 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
         setType('wishlist');
 
         const idProducts = item.map((res:any) => res.id_product);
-        if(idProducts.length > 0) {
-            const uniqueIdProducts = idProducts.filter((value:any, index:any, self:any) => {
-                return self.indexOf(value) === index;
-            });
+        const uniqueIdProducts = idProducts.filter((value:any, index:any, self:any) => {
+            return self.indexOf(value) === index;
+        });
 
-            const filter = wishlist.data.product_list.find((res:any) => res.id_product === uniqueIdProducts.toString());
+        if(wishlist.id_product.length > 0) {
+            const check = uniqueIdProducts.length > 0 ? uniqueIdProducts.toString() : product.id;
+            const filter = wishlist.data.product_list.find((res:any) => res.id_product === check);
 
             if(filter != undefined) {
                 const params = {
@@ -204,25 +205,23 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 await dispatch(delWishlist(params))
                 return;
             }
-            
-            
-            if (hasSize) {
-                if (!sizeSelected && !id_product_attribute) {
-                    bottomSheetRef.current?.snapToIndex(0);
-                    setBackdropVisible(true);
-                    return;
-                }
-            }
-
-            const params = {
-                id_product: product.id,
-                id_product_attribute: id_product_attribute ? id_product_attribute : sizeSelected,
-                quantity: 1
-            }
-
-            await dispatch(addToWishlist(params));
-
         }
+        
+        if (hasSize) {
+            if (!sizeSelected && !id_product_attribute) {
+                bottomSheetRef.current?.snapToIndex(0);
+                setBackdropVisible(true);
+                return;
+            }
+        }
+
+        const params = {
+            id_product: product.id,
+            id_product_attribute: id_product_attribute ? id_product_attribute : sizeSelected,
+            quantity: 1
+        }
+
+        await dispatch(addToWishlist(params));
     }
 
     const styleItaddtoWishlist = async (id_product_attribute = null, item: any) => {

@@ -70,17 +70,23 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
 
     const addtoWishlist = async (id_product_attribute = null, item:any) => {
 
-        const filter = wishlist.data.product_list.find((res:any) => res.id_product === item.id_product);
+        if(wishlist.id_product.length > 0) {
 
-        if(filter != undefined) {
-            const params = {
-                id_product: filter.id_product,
-                id_product_attribute: filter.id_product_attribute,
-            }
-    
-            await dispatch(delWishlist(params))
-            return;
-        } 
+            const filter = wishlist.data.product_list.find((res:any) => res.id_product === item.id_product);
+
+            if(filter != undefined) {
+                const params = {
+                    id_product: filter.id_product,
+                    id_product_attribute: filter.id_product_attribute,
+                }
+        
+                await dispatch(delWishlist(params))
+                return;
+            } 
+
+        }
+
+        
 
         setAttributeList(item)
 
