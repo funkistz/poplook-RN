@@ -29,7 +29,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (isError) {
-            
+
         }
         if (isSuccess) {
             navigation.navigate('Home', { screen: 'HomePage' });
@@ -86,9 +86,23 @@ export default function LoginPage() {
                                 icon="mail-outline"
                                 touched={touched}
                                 errors={errors}
-                                type="email"
+                                type="text"
                                 autoCapitalize="none"
                             />
+                            {/* <Box w="100%" style={{ borderBottomColor: '#dedede', borderBottomWidth: 1 }}>
+                                <Input
+                                    placeholder="Email"
+                                    value={values['email'] ? values['email'].toLowerCase() : ''}
+                                    onChangeText={handleChange('email')}
+                                    onBlur={() => setFieldTouched('email')}
+                                    style={styles.input}
+                                    type="text"
+                                />
+
+                            </Box>
+                            {touched['email'] && errors['email'] &&
+                                <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors['email']}</Text>
+                            } */}
                             <CustomInput
                                 placeholder="Password"
                                 name="password"
@@ -101,12 +115,12 @@ export default function LoginPage() {
                                 type='password'
                             />
 
-                            <HStack style={{marginVertical: 20}}>
-                                <HStack w={'50%'} style={{flex: 1, justifyContent: 'flex-end'}} h={30}>
+                            <HStack style={{ marginVertical: 20 }}>
+                                <HStack w={'50%'} style={{ flex: 1, justifyContent: 'flex-end' }} h={30}>
                                     <Text style={styles.forgot_password} onPress={() => forgotPassword()}>Forgot Password?</Text>
                                 </HStack>
                             </HStack>
-                            
+
                             <Button
                                 bg={'#1cad48'}
                                 mb={3}
@@ -115,7 +129,7 @@ export default function LoginPage() {
                                 isDisabled={!isValid}
                                 isLoading={session.loginLoading && !session.loginFinish}
                                 isLoadingText="LOGIN"
-                                _pressed={{  backgroundColor: '#1cad48' }}
+                                _pressed={{ backgroundColor: '#1cad48' }}
                                 onPress={() => handleSubmit()}>LOGIN
                             </Button>
                             <Button
@@ -125,7 +139,7 @@ export default function LoginPage() {
                                 borderWidth={1}
                                 _text={{ color: "#1cad48", fontSize: 14, fontWeight: 600 }}
                                 onPress={() => register()}
-                                _pressed={{  backgroundColor: '#fff' }}
+                                _pressed={{ backgroundColor: '#fff' }}
                             >NEW HERE? SIGN UP
                             </Button>
 
@@ -183,7 +197,7 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight: '400',
         fontSize: 16,
-        textAlign:'right',
+        textAlign: 'right',
         paddingTop: 5,
     }
 })

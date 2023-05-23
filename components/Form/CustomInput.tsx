@@ -6,38 +6,33 @@ import * as yup from 'yup'
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function CustomInput({ name, variant = 'unstyled', placeholder, values, onChangeText, onBlur, icon, touched,
-errors, type = 'text', readOnly = false, showIcon = true, autoCapitalize = "sentences" }: any) {
-
-    useEffect(() => {
-
-
-    }, [])
+    errors, type = 'text', readOnly = false, showIcon = true, autoCapitalize = "sentences" }: any) {
 
     return (
         <>
-            <Box w="100%" style={{borderBottomColor: '#dedede', borderBottomWidth: 1}}>
+            <Box w="100%" style={{ borderBottomColor: '#dedede', borderBottomWidth: 1 }}>
                 <Input
-                        variant={variant}
-                        placeholder={placeholder}
-                        value={values[name]}
-                        onChangeText={onChangeText(name)}
-                        onBlur={() => onBlur(name)}
-                        style={styles.input}
-                        type={type}
-                        isReadOnly={readOnly}
-                        InputLeftElement={
-                            showIcon && (
-                                <Icon as={IonIcon} name={icon} size={5} ml="2" color="muted.900" />
-                            )
-                        }
-                        autoCapitalize={autoCapitalize}
+                    variant={variant}
+                    placeholder={placeholder}
+                    value={values[name]}
+                    onChangeText={onChangeText(name)}
+                    onBlur={() => onBlur(name)}
+                    style={styles.input}
+                    type={type}
+                    isReadOnly={readOnly}
+                    InputLeftElement={
+                        showIcon && (
+                            <Icon as={IonIcon} name={icon} size={5} ml="2" color="muted.900" />
+                        )
+                    }
+                    autoCapitalize={autoCapitalize}
 
-                    />
-                        
-                </Box>
-                {touched[name] && errors[name] &&
-                    <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors[name]}</Text>
-                }
+                />
+
+            </Box>
+            {touched[name] && errors[name] &&
+                <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors[name]}</Text>
+            }
         </>
     );
 }
