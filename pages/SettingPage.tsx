@@ -23,6 +23,8 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
     const { user } = useSelector(
         userSelector
     );
+    const params = route.params;
+    console.log('route', route);
 
     const categories = [
         { id: 0, key: "personal", title: "Personal Information", icon: "person-outline" },
@@ -66,7 +68,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
     }
 
     const logoutUser = () => {
-        
+
         persistor.purge().then(() => {
             dispatch(logout())
             dispatch(getWishList())
@@ -94,6 +96,12 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                 onPress: () => logoutUser()
             },
         ]);
+    }
+
+    if (params && params.redirect == 'order-history') {
+        navigation.navigate('My Account', {
+            screen: 'OrderHistoryListPage',
+        });
     }
 
     return (

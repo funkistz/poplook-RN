@@ -46,7 +46,7 @@ const initialState: SessionState = {
     country: dummy,
     currencySign: 'RM',
     id_lang: '1',
-    device_type: 'Android',
+    device_type: 'android',
     isFetching: false,
     isSuccess: false,
     isError: false,
@@ -159,10 +159,11 @@ export const sessionSlice = createSlice({
             return state;
         },
         profile: (state, action) => {
-            state = {...state,  
+            state = {
+                ...state,
                 user: {
-                    ...state.user, 
-                    newsletter: action.payload.newsletter, 
+                    ...state.user,
+                    newsletter: action.payload.newsletter,
                     name: action.payload.firstname,
                     lastname: action.payload.lastname,
                     email: action.payload.email
@@ -185,6 +186,13 @@ export const sessionSlice = createSlice({
             console.log('action intro', action.payload)
             const temp: any = {};
             temp.intro = action.payload;
+            state = { ...state, ...temp }
+            return state;
+        },
+        assignDeviceType: (state, action) => {
+            console.log('assignDeviceType', action.payload)
+            const temp: any = {};
+            temp.device_type = action.payload;
             state = { ...state, ...temp }
             return state;
         }
@@ -233,7 +241,7 @@ export const sessionSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { changeCountry, logout, profile, intro } = sessionSlice.actions
+export const { changeCountry, logout, profile, intro, assignDeviceType } = sessionSlice.actions
 
 export const userSelector = (state: any) => state.session
 

@@ -16,7 +16,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
     const data = {
         form: form
     };
-    
+
     const [status, setSatus] = React.useState('');
 
     const handleNavigationStateChange = (navState: any) => {
@@ -67,11 +67,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                                         state: {
                                             routes: [{
                                                 name: 'SettingPage',
-                                                state: {
-                                                    routes: [{
-                                                        name: 'OrderHistoryListPage'
-                                                    }],
-                                                },
+                                                params: { redirect: 'order-history' },
                                             }],
                                         },
                                     }],
@@ -117,11 +113,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                                     state: {
                                         routes: [{
                                             name: 'SettingPage',
-                                            state: {
-                                                routes: [{
-                                                    name: 'OrderHistoryListPage'
-                                                }],
-                                            },
+                                            params: { redirect: 'order-history' },
                                         }],
                                     },
                                 }],
@@ -142,11 +134,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
                                 state: {
                                     routes: [{
                                         name: 'SettingPage',
-                                        state: {
-                                            routes: [{
-                                                name: 'OrderHistoryListPage'
-                                            }],
-                                        },
+                                        params: { redirect: 'order-history' },
                                     }],
                                 },
                             }],

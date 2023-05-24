@@ -51,7 +51,7 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
             setSatus(params.status);
             cartStep5(params.status)
-        } 
+        }
 
     }
 
@@ -68,7 +68,7 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
             setSatus(params.TxnStatus);
             cartStep5(params.TxnStatus)
-        } 
+        }
 
     }
 
@@ -123,11 +123,7 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                                     state: {
                                         routes: [{
                                             name: 'SettingPage',
-                                            state: {
-                                                routes: [{
-                                                    name: 'OrderHistoryListPage'
-                                                }],
-                                            },
+                                            params: { redirect: 'order-history' },
                                         }],
                                     },
                                 }],
@@ -148,11 +144,7 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
                                 state: {
                                     routes: [{
                                         name: 'SettingPage',
-                                        state: {
-                                            routes: [{
-                                                name: 'OrderHistoryListPage'
-                                            }],
-                                        },
+                                        params: { redirect: 'order-history' },
                                     }],
                                 },
                             }],

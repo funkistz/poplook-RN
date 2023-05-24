@@ -5,14 +5,18 @@ import OrderHistoryService from '../Services/OrderHistoryService';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import GeneralService from '../Services/GeneralService';
+import Spinner from '../components/Spinner';
 
 export default function OrderHistoryListPage() {
 
     const customerId = useSelector((storeState: any) => storeState.session.user.id_customer);
     const navigation: any = useNavigation();
     const [orders, setOrders] = useState<any>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
+
+        setIsLoading(true)
 
         const getOrderHistoryList = async () => {
             const response = await OrderHistoryService.orderHistoryList(customerId);
@@ -20,7 +24,10 @@ export default function OrderHistoryListPage() {
 
             console.log('order', json)
 
-            setOrders(json.data);
+            if (json.code == 200) {
+                setIsLoading(false)
+                setOrders(json.data);
+            }
         }
         getOrderHistoryList().catch(console.error);
 
@@ -70,7 +77,7 @@ export default function OrderHistoryListPage() {
     return (
         <>
             <ScrollView bgColor={'white'} p={6}>
-                {orders.order_histories && orders.total_items != 0 && (orders.order_histories.map((item: any, index: any) => {
+                {!isLoading && orders.order_histories && orders.total_items != 0 && (orders.order_histories.map((item: any, index: any) => {
                     return <>
                         <TouchableOpacity key={index} onPress={() => orderHistoryDetailsPage(item.id_order)}>
                             <HStack py={3} px={0} m={0}>
@@ -79,7 +86,7 @@ export default function OrderHistoryListPage() {
                                     <Text style={styles.normal}>Date</Text>
                                     <Text style={styles.normal}>Status</Text>
                                     <Text style={styles.normal}>Tracking No</Text>
-                                    <Text style={styles.normal}>Delivery No</Text>
+                                    <Text style={styles.normal}>Delivery Info</Text>
                                 </VStack>
                                 <VStack>
                                     <Text style={styles.bold}># {item.id_order}</Text>
@@ -107,13 +114,23 @@ export default function OrderHistoryListPage() {
                                 </HStack>) : <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" paddingX={65}></HStack>}
                         </TouchableOpacity></>
                 }))}
-                {orders.total_items == 0 &&
+                {!isLoading && orders.total_items == 0 &&
                     <>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: 'white' }}>
                             <Text style={styles.bold} mt={10}>Your order history is empty.</Text>
                         </View>
                     </>
 
+                }
+
+                { isLoading && 
+                    <>
+                        <HStack backgroundColor={'white'} h={'100%'}>
+                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                                <Spinner spin={isLoading}/>
+                            </View>
+                        </HStack>
+                    </>
                 }
             </ScrollView>
         </>

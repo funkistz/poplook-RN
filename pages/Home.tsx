@@ -11,6 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AuthService from '../Services/AuthService';
 import { customerDetails } from '../Redux/Slices/Sessions';
 import { getCart } from '../Redux/Slices/Cart';
+import { assignDeviceType } from '../Redux/Slices/Sessions';
 
 const win = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -27,7 +28,15 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     const [banners, setBanners] = useState<any[]>([]);
 
     useEffect(() => {
+
+        if (Platform.OS === "ios") {
+            dispatch(assignDeviceType('ios'));
+        } else {
+            dispatch(assignDeviceType('android'));
+        }
+
         const unsubscribe = navigation.addListener('focus', () => {
+            console.log('session', session);
             dispatch(getWishList())
             if (session.intro == false || session.intro == undefined) {
                 navigation.reset({
