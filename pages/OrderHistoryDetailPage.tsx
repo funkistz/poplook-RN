@@ -28,7 +28,7 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
             setShipping(json.data.shipping_details);
             setBilling(json.data.billing_details);
             setProducts(json.data.product_details);
-            setMessages(json.data.order_message);
+            setMessages(json.data.order_message == '' ? json.data.order_message : json.data.order_message[0]);
         }
         orderHistoryDetails().catch(console.error);
 
@@ -73,6 +73,14 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
                 <Divider/>
 
                 <Address address={shipping} title='Billing'></Address> 
+                <Divider/>
+
+                <HStack py={3}>
+                    <VStack paddingRight={8}>
+                        <Text style={styles.bold} mb={2}>Notes on Order</Text>
+                        <Text style={styles.normal}>{messages.message ? messages.message : 'No message available'}</Text>
+                    </VStack>
+                </HStack>
                 <Divider/>
 
                 <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
