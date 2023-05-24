@@ -42,7 +42,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                         <HStack px="1" py="3" justifyContent="space-between" alignItems="center" w="100%" maxW="100%" color="purple.100">
                             <HStack alignItems="center" w="30%"></HStack>
                             <Center w="40%">
-                                <Text fontSize="16" fontWeight="500" color="dark" >
+                                <Text fontSize="16" fontWeight="500" color="black" >
                                     FILTER/SORT
                                 </Text>
                             </Center>
@@ -105,7 +105,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                         </ScrollView>
                     </View>
 
-                    <View style={{ flex: 1, }} >
+                    <View style={{ flex: 1, marginBottom: 10 }} >
                         <HStack px={2} pt={3} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                             <HStack alignItems="center" w="50%">
                                 <Button

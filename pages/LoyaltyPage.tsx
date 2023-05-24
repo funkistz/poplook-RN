@@ -15,6 +15,7 @@ export default function LoyaltyPage({ route , navigation} : { route: any,  navig
 
     // data user
     const { user } = useSelector(userSelector);
+    const session = useSelector((storeState: any) => storeState.session);
     const isFocused = useIsFocused();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [data, setData] = useState<any>({ 
@@ -69,6 +70,7 @@ export default function LoyaltyPage({ route , navigation} : { route: any,  navig
                 {data.tier == 1 && 
                     <>
                         <Image mt={30} style={{width: '100%', height: 110}} source={{uri: "https://poplook.com/assets/img/loyalty/PL_LP_DASHBOARD_FA_BRONZE_07.jpg"}} alt="Rewards" size="sm" />
+                        
                         <View style={{flexDirection: 'row'}}>
                             <Heading my={10} size={'md'} color='black' style={{textTransform: 'uppercase'}}>Welcome to </Heading>
                             <Heading my={10} size={'md'} color='#CD7F32' style={{textTransform: 'uppercase'}}>Bronze</Heading>
@@ -235,13 +237,12 @@ export default function LoyaltyPage({ route , navigation} : { route: any,  navig
                     <>
                         <View style={styles.spend}>
                             <Text color='black' fontSize={14}>Spend </Text>
-                            <Text color='black' bold fontSize={14}>RM {data.spendmore} </Text>
+                            <Text color='black' bold fontSize={14}>{session.country.currency_sign} {data.spendmore} </Text>
                             <Text color='black' fontSize={14}>to level up! </Text>
                         </View>
 
                         <View style={{flexDirection: 'row', marginVertical: 20}}>
                             <Heading size={'md'} color='black' style={{textTransform: 'uppercase'}}>Towards </Heading>
-                            {/* <Heading size={'md'} color='#808080' style={{textTransform: 'uppercase'}}>Silver</Heading> */}
                             <Heading size={'md'} color='black' style={{textTransform: 'uppercase'}}>Silver</Heading>
                         </View>
 
@@ -264,7 +265,7 @@ export default function LoyaltyPage({ route , navigation} : { route: any,  navig
 
                         <View style={styles.spend}>
                             <Text color='black' fontSize={14}>Spend </Text>
-                            <Text color='black' bold fontSize={14}>RM {data.spendmore} </Text>
+                            <Text color='black' bold fontSize={14}>{session.country.currency_sign} {data.spendmore} </Text>
                             <Text color='black' fontSize={14}>to level up! </Text>
                         </View>
 
@@ -356,6 +357,7 @@ export default function LoyaltyPage({ route , navigation} : { route: any,  navig
 
     useEffect(() => {
         setIsLoading(true)
+        console.log('session', session)
         if(isFocused) {
             fetchLoyalty().catch(console.error);
         }
@@ -383,11 +385,12 @@ export default function LoyaltyPage({ route , navigation} : { route: any,  navig
                             navigationState={{ index, routes }}
                             renderScene={renderScene}
                             onIndexChange={setIndex}
-                            renderTabBar={props => <TabBar {...props} style={{backgroundColor: '#00000011', marginHorizontal: 20 , marginVertical: 20, borderRadius: 10 , height: 40}} 
+                            renderTabBar={props => <TabBar {...props} style={{backgroundColor: '#f2f2f2', marginHorizontal: 20 , marginVertical: 20, borderRadius: 10 , height: 40}} 
                             indicatorStyle={styles.indicator}
                             labelStyle={{ fontWeight: '600', fontSize: 11, height: 40}}
                             activeColor={'black'}
                             inactiveColor={'black'} 
+                            pressColor='#f2f2f2'
                             contentContainerStyle={{justifyContent: "center"}}
                         />
                     }/>
@@ -462,8 +465,8 @@ const styles = StyleSheet.create({
         marginBottom: 3 ,
         marginVertical:10, 
         borderLeftWidth: 3, 
-        borderLeftColor: '#00000011',
+        borderLeftColor: '#f2f2f2',
         borderRightWidth: 3, 
-        borderRightColor: '#00000011'
+        borderRightColor: '#f2f2f2'
     }
 })
