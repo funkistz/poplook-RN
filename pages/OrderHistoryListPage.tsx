@@ -17,21 +17,21 @@ export default function OrderHistoryListPage() {
     useEffect(() => {
 
         setIsLoading(true)
-
-        const getOrderHistoryList = async () => {
-            const response = await OrderHistoryService.orderHistoryList(customerId);
-            const json = await response.json();
-
-            console.log('order', json)
-
-            if (json.code == 200) {
-                setIsLoading(false)
-                setOrders(json.data);
-            }
-        }
-        getOrderHistoryList().catch(console.error);
+        getOrderHistoryList()
 
     }, [])
+
+    const getOrderHistoryList = async () => {
+        const response = await OrderHistoryService.orderHistoryList(customerId);
+        const json = await response.json();
+
+        console.log('order', json)
+
+        if (json.code == 200) {
+            setIsLoading(false)
+            setOrders(json.data);
+        }
+    }
 
     const orderHistoryDetailsPage = (id_order: any) => {
 
@@ -72,6 +72,8 @@ export default function OrderHistoryListPage() {
         } else {
             GeneralService.toast({ description: json.message, type: json.status });
         }
+
+        await getOrderHistoryList()
     }
 
     return (
