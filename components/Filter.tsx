@@ -30,12 +30,12 @@ export default function Filter({ clicked, removeItem, product, listSizeColor }: 
         <>
             <HStack px="1" pt="3" pb={product.length > 0 ? 0 : 3} justifyContent="space-between" alignItems="center" w="100%" maxW="100%" backgroundColor={'white'}>
                 <HStack alignItems="center" w="40%">
-                    <Text fontSize="15" color="dark" pl={2}> Products</Text>
+                    <Text fontSize="15" color="black" pl={2}> Products</Text>
                 </HStack>
                 <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
                     <TouchableOpacity onPress={clicked} >
                         <HStack>
-                            <Text fontSize="15" color="dark" pr={2} >Filter</Text>
+                            <Text fontSize="15" color="black" pr={2} >Filter</Text>
                             <Icon as={<IonIcon name='filter-outline' />} size="5" color={'black'} />
                         </HStack>
                     </TouchableOpacity>

@@ -68,29 +68,30 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
             <Heading size={'xl'} color='black' my={3}>Benefits</Heading>
             <Text color='black' fontSize={18}> Starts collecting your points now!</Text>
 
-            {data.tier == 1 &&
-                <>
-                    <Image mt={30} style={{ width: '100%', height: 110 }} source={{ uri: "https://poplook.com/assets/img/loyalty/PL_LP_DASHBOARD_FA_BRONZE_07.jpg" }} alt="Rewards" size="sm" />
-                    <View style={{ flexDirection: 'row' }}>
-                        <Heading my={10} size={'md'} color='black' style={{ textTransform: 'uppercase' }}>Welcome to </Heading>
-                        <Heading my={10} size={'md'} color='#CD7F32' style={{ textTransform: 'uppercase' }}>Bronze</Heading>
-                    </View>
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                        <Box w={'30%'} px={1}>
-                            <Center>
-                                <Image style={styles.rewardsImg} source={{ uri: "https://poplook.com/assets/img/loyalty/PL_LP_DASHBOARD_FA_BRONZE_10.jpg" }} alt="Birthday Discount" size="sm" />
-                                <Text style={styles.rewardsText}>Birthday Discount</Text>
-                            </Center>
-                        </Box>
-                        <Box w={'30%'} px={1}>
-                            <Center w={'100%'}>
-                                <Image style={styles.rewardsImg} source={{ uri: "https://poplook.com/assets/img/loyalty/PL_LP_DASHBOARD_FA_BRONZE_11.jpg" }} alt="Exclusive Promotions" size="sm" />
-                                <Text style={styles.rewardsText}>Exclusive Promotions</Text>
-                            </Center>
-                        </Box>
-                    </View>
-                </>
-            }
+                {data.tier == 1 && 
+                    <>
+                        <Image mt={30} style={{width: '100%', height: 110}} source={{uri: "https://poplook.com/assets/img/loyalty/PL_LP_DASHBOARD_FA_BRONZE_07.jpg"}} alt="Rewards" size="sm" />
+                        
+                        <View style={{flexDirection: 'row'}}>
+                            <Heading my={10} size={'md'} color='black' style={{textTransform: 'uppercase'}}>Welcome to </Heading>
+                            <Heading my={10} size={'md'} color='#CD7F32' style={{textTransform: 'uppercase'}}>Bronze</Heading>
+                        </View>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
+                            <Box w={'30%'} px={1}>
+                                <Center>
+                                    <Image style={styles.rewardsImg} source={{uri: "https://poplook.com/assets/img/loyalty/PL_LP_DASHBOARD_FA_BRONZE_10.jpg"}} alt="Birthday Discount" size="sm" />
+                                    <Text style={styles.rewardsText}>Birthday Discount</Text>
+                                </Center>
+                            </Box>
+                            <Box w={'30%'} px={1}>
+                                <Center w={'100%'}>
+                                    <Image style={styles.rewardsImg} source={{uri: "https://poplook.com/assets/img/loyalty/PL_LP_DASHBOARD_FA_BRONZE_11.jpg"}} alt="Exclusive Promotions" size="sm" />
+                                    <Text style={styles.rewardsText}>Exclusive Promotions</Text>
+                                </Center>
+                            </Box>
+                        </View>
+                    </>
+                }
 
             {data.tier == 2 &&
                 <>
@@ -241,10 +242,9 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
                             <Text color='black' fontSize={14}>to level up! </Text>
                         </View>
 
-                        <View style={{ flexDirection: 'row', marginVertical: 20 }}>
-                            <Heading size={'md'} color='black' style={{ textTransform: 'uppercase' }}>Towards </Heading>
-                            {/* <Heading size={'md'} color='#808080' style={{textTransform: 'uppercase'}}>Silver</Heading> */}
-                            <Heading size={'md'} color='black' style={{ textTransform: 'uppercase' }}>Silver</Heading>
+                        <View style={{flexDirection: 'row', marginVertical: 20}}>
+                            <Heading size={'md'} color='black' style={{textTransform: 'uppercase'}}>Towards </Heading>
+                            <Heading size={'md'} color='black' style={{textTransform: 'uppercase'}}>Silver</Heading>
                         </View>
 
 
@@ -382,15 +382,16 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
             <>
                 <View style={{ flex: 1, backgroundColor: 'white' }}>
                     <TabView
-                        navigationState={{ index, routes }}
-                        renderScene={renderScene}
-                        onIndexChange={setIndex}
-                        renderTabBar={props => <TabBar {...props} style={{ backgroundColor: '#00000011', marginHorizontal: 20, marginVertical: 20, borderRadius: 10, height: 40 }}
+                            navigationState={{ index, routes }}
+                            renderScene={renderScene}
+                            onIndexChange={setIndex}
+                            renderTabBar={props => <TabBar {...props} style={{backgroundColor: '#f2f2f2', marginHorizontal: 20 , marginVertical: 20, borderRadius: 10 , height: 40}} 
                             indicatorStyle={styles.indicator}
                             labelStyle={{ fontWeight: '600', fontSize: 11, height: 40 }}
                             activeColor={'black'}
-                            inactiveColor={'black'}
-                            contentContainerStyle={{ justifyContent: "center" }}
+                            inactiveColor={'black'} 
+                            pressColor='#f2f2f2'
+                            contentContainerStyle={{justifyContent: "center"}}
                         />
                         } />
                 </View>
@@ -458,14 +459,14 @@ const styles = StyleSheet.create({
         height: 5,
     },
     indicator: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        height: 34,
-        marginBottom: 3,
-        marginVertical: 10,
-        borderLeftWidth: 3,
-        borderLeftColor: '#00000011',
-        borderRightWidth: 3,
-        borderRightColor: '#00000011'
+        backgroundColor: 'white', 
+        borderRadius: 10, 
+        height: 34, 
+        marginBottom: 3 ,
+        marginVertical:10, 
+        borderLeftWidth: 3, 
+        borderLeftColor: '#f2f2f2',
+        borderRightWidth: 3, 
+        borderRightColor: '#f2f2f2'
     }
 })

@@ -67,7 +67,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='RepayPage' component={RepayPage} options={{ title: 'Payment' }} />
             <Stack.Screen name='StoreCreditPage' component={StoreCreditPage} options={{ title: 'Store Credit' }} />
             <Stack.Screen name='LoyaltyPage' component={LoyaltyPage} options={{ title: 'Loyalty' }} />
-            <Stack.Screen name='RewardsPage' component={RewardsPage} options={{ title: 'Reward' }} />
+            <Stack.Screen name='RewardsPage' component={RewardsPage} options={{ title: 'Rewards' }} />
             <Stack.Screen name='FaqPage' component={FaqPage} options={{ title: 'FAQ' }} />
             <Stack.Screen name='WishlistPage' component={WishlistPage} options={{ title: 'Wishlist' }} />
             <Stack.Screen name='CustomerServicePage' component={CustomerServicePage} options={{ title: 'Customer Service' }} />

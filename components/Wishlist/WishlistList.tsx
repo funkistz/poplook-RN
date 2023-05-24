@@ -100,7 +100,7 @@ export default function WishlistList({ product, currency }: any) {
                                 Add to Bag
                             </Button>
                         </Box>
-                        <Box w={'20%'} px={2}>
+                        <Box w={'20%'} px={1}>
                             <IconButton
                                 size={'sm'}
                                 onPress={() => alertDelete(product)}

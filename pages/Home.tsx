@@ -38,7 +38,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         const unsubscribe = navigation.addListener('focus', () => {
             console.log('session', session);
             dispatch(getWishList())
-            dispatch(getCart())
             if (session.intro == false || session.intro == undefined) {
                 navigation.reset({
                     index: 0,
@@ -63,9 +62,6 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     useFocusEffect(
         React.useCallback(() => {
-            if (session.user != null) {
-                dispatch(getWishList())
-            }
             getCurrentIdCart()
             getVersion().catch(console.error);
         }, [])
