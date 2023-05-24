@@ -316,7 +316,7 @@ export const checkoutSlice = createSlice({
 
         }).addCase(getCartStep1.rejected, (state, { payload }) => {
             console.log('payloadreject1', payload);
-            GeneralService.toast({ description: payload.message });
+            // GeneralService.toast({ description: payload.message });
         }).addCase(getCartStep2.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
@@ -340,7 +340,7 @@ export const checkoutSlice = createSlice({
 
         }).addCase(getCartStep2.rejected, (state, { payload }) => {
             console.log('payloapayloadreject2', payload);
-            GeneralService.toast({ description: payload.message });
+            // GeneralService.toast({ description: payload.message });
         }).addCase(getCartStep3.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
