@@ -111,23 +111,20 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                 </AspectRatio>
 
                 <Center>
-                    <HStack mt={2} py={0} mb={4}>
-                        <VStack style={{ width: hideWishlist ? 160 : 140, height: 50 }}>
+                    <Flex direction='row' style={{height: 60,paddingHorizontal: 15,}} mt={2}>
+                        <Box style={{flexGrow: 1 }}>
                             {product.collection_name &&
                                 <Text fontWeight={300} color='black' fontSize={11} >{product.collection_name}</Text>
                             }
                             <Text fontWeight={300} numberOfLines={2} color='black' fontSize={13}>{product.name}</Text>
                             {price()}
-                        </VStack>
-
-                        {!hideWishlist && <>
-                            <Box alignItems="center" style={{ width: 40, height: 50 }} >
-                                <IconButton aria-label="wishlist" onPress={() => clickedWishlist()}>
-                                    <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
-                                </IconButton>
-                            </Box>
-                        </>}
-                    </HStack>
+                        </Box>
+                        {!hideWishlist && <Box>
+                            <IconButton aria-label="wishlist" onPress={() => clickedWishlist()}>
+                                <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
+                            </IconButton>
+                        </Box> }
+                    </Flex>
                 </Center>
             </Box>
         </TouchableOpacity>

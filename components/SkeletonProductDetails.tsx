@@ -1,5 +1,5 @@
 import { Box, HStack,VStack, Skeleton, IconButton, Text, View, Flex, ScrollView } from 'native-base';
-import { Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const win = Dimensions.get('window');
 
@@ -17,22 +17,34 @@ export default function SkeletonProductDetails() {
                         <Skeleton size="5" px="5" rounded="full" startColor="muted.300" width={'40%'}/>
                     </VStack>
                 </ScrollView>
-                
 
-                <HStack backgroundColor={'white'} >
-                    <View width={win.width / 5} m={1} >
-                        <Skeleton size="10" rounded="full" startColor="muted.300" width={win.width / 5}/>
-                    </View>
-                    <View width={win.width / 5}  m={1}>
-                        <Skeleton size="10" rounded="full" startColor="muted.300" width={win.width / 5}/>
-                    </View>
-                    <View width={win.width * 3 / 5}  m={1} >
-                        <Skeleton width={win.width * 3 / 6} startColor="muted.300" borderRadius={20} />
-                    </View>
-                </HStack>
+                <Flex direction='row' style={styles.footerWrapper}>
+                    <Box style={styles.footerIconWrapper} m={1}>
+                        <Skeleton size="10" rounded="full" startColor="muted.300" width={50}/>
+                    </Box>
+                    <Box style={styles.footerIconWrapper} m={1}>
+                        <Skeleton size="10" rounded="full" startColor="muted.300" width={50}/>
+                    </Box>
+                    <Box style={styles.addtoCartWrapper} m={1}>
+                        <Skeleton startColor="muted.300" borderRadius={20} />
+                    </Box>
+                </Flex>
             </Flex>
             
             
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    footerWrapper: {
+        backgroundColor: 'white',
+    },
+    footerIconWrapper: {
+        padding: 6
+    },
+    addtoCartWrapper: {
+        flexGrow: 1,
+        padding: 6
+    },
+});
