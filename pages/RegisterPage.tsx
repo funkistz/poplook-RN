@@ -125,6 +125,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                 .oneOf([true])
 
                         })}
+                        validateOnMount
                     >
                         {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
                             <>
@@ -233,7 +234,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
 
                                 <HStack mt={1}>
                                     <HStack w={'8%'}>
-                                        <Checkbox value="terms" isChecked={terms} style={styles.checkbox} onChange={setTerms} accessibilityLabel="Terms"></Checkbox>
+                                        <Checkbox value="terms" name='terms' isChecked={terms} style={styles.checkbox} onChange={setTerms} accessibilityLabel="Terms"></Checkbox>
                                     </HStack>
                                     <HStack w={'92%'} >
                                         <Text color={'black'} fontSize={12}>I am accepting and consenting to the practices described in the

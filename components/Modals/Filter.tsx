@@ -51,7 +51,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                                     onPress={onToggle}
                                     mr={3}
                                     _pressed={{
-                                        backgroundColor: "gray"
+                                        backgroundColor: "white"
                                     }}
                                 >
                                     <IonIcon name='close-outline' size={20} color='black' />
@@ -69,6 +69,9 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                                         <Button size='sm' variant="outline"
                                             style={selectedSort == item.id ? styles.btnClicked : styles.btn}
                                             onPress={() => sortClick(item.id)}
+                                            _pressed={{
+                                                backgroundColor: "white"
+                                            }}
                                         >
                                             <Text style={selectedSort == item.id ? styles.TextClicked : styles.Text}> {item.name}</Text>
                                         </Button>
@@ -82,7 +85,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                                     return <Box w={'25%'} px={1} key={index}>
                                         <Button size='sm' variant="outline"
                                             style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
-                                            onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })}>
+                                            onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })} _pressed={{backgroundColor: "white" }} >
                                             <Text style={selectedAttribute.includes(item.id_combination) ? styles.TextClicked : styles.Text}> {item.name}</Text>
                                         </Button>
                                     </Box>
@@ -95,7 +98,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                                     return <Box w={'25%'} px={1} key={index}>
                                         <Button size='sm' variant="outline"
                                             style={selectedColor.includes(item.id_combination) ? styles.btnClicked : styles.btn}
-                                            onPress={() => attributeClick({ data: item.id_combination, type: 'color' })}>
+                                            onPress={() => attributeClick({ data: item.id_combination, type: 'color' })} _pressed={{backgroundColor: "white" }} >
                                             <Text style={selectedColor.includes(item.id_combination) ? styles.TextClicked : styles.Text}> {item.name}</Text>
                                         </Button>
                                     </Box>

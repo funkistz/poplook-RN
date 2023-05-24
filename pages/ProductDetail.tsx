@@ -703,7 +703,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
                         <Flex direction='row' style={styles.footerWrapper}>
                             <Box style={styles.footerIconWrapper}>
-                                <IconButton size='lg' variant="ghost" onPress={() => addtoWishlist(null, attribute)}>
+                                <IconButton size='lg' variant="ghost" onPress={() => addtoWishlist(null, attribute)} _pressed={{ backgroundColor: "white" }}>
                                     <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={24}></Wishlist>
                                 </IconButton>
                             </Box>
@@ -716,6 +716,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         size: 'xl'
                                     }}
                                     onPress={shareUrl}
+                                    _pressed={{
+                                        backgroundColor: "white"
+                                    }}
                                 />
                             </Box>
                             <Box style={styles.addtoCartWrapper}>

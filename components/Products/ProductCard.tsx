@@ -120,7 +120,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                             {price()}
                         </Box>
                         {!hideWishlist && <Box>
-                            <IconButton aria-label="wishlist" onPress={() => clickedWishlist()}>
+                            <IconButton aria-label="wishlist" onPress={() => clickedWishlist()} _pressed={{ backgroundColor: "white" }}>
                                 <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
                             </IconButton>
                         </Box> }

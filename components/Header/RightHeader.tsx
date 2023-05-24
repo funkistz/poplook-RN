@@ -66,7 +66,7 @@ export default function RightHeader({ navigation }: { navigation: any }) {
             <IconButton
                 onPress={() => navigation.navigate('Home', { screen: 'WishlistPage' })}
                 _pressed={{
-                    backgroundColor: "gray"
+                    backgroundColor: "black"
                 }}
                 icon={<>
                     <Wishlist like={false} size={24} />
@@ -82,7 +82,7 @@ export default function RightHeader({ navigation }: { navigation: any }) {
             <IconButton
                 onPress={toggleModal}
                 _pressed={{
-                    backgroundColor: "gray"
+                    backgroundColor: "red"
                 }}
                 icon={<IonIcon name="search-outline" size={24} color="black" />
                 }

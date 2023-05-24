@@ -185,6 +185,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                     }
                 }
                 validationSchema={validation}
+                validateOnMount
             >
                 {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
                     <Flex flex={1} backgroundColor='white'>
