@@ -1,7 +1,7 @@
 import { ScrollView, Image, Center, Box, Text, Heading, Button, HStack, VStack } from 'native-base';
 import { View, useWindowDimensions, StyleSheet, TouchableHighlight, Dimensions } from 'react-native';
 import FullWidthImage from 'react-native-fullwidth-image';
-
+import { useSelector } from 'react-redux';
 
 const Table = () => {
     return <>
@@ -172,6 +172,7 @@ export default function RewardsPage({ route , navigation} : { route: any,  navig
         navigation.navigate('FaqPage', { screen: 'FaqPage' });
     }
 
+    const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
 
     return <>
         <View style={{backgroundColor: 'white'}}>
@@ -241,7 +242,16 @@ export default function RewardsPage({ route , navigation} : { route: any,  navig
                     <Table />
 
                     <View style={{width: '90%', marginVertical: 20 }}>
-                        <FullWidthImage  source={{uri: "https://poplook.com/assets/img/loyalty_temp/RM_GRAPH.png"}}/>
+                        { shopId == '1' &&
+                            <FullWidthImage  source={{uri: "https://poplook.com/assets/img/loyalty_temp/RM_GRAPH.png"}}/>
+                        }
+                        { shopId == '2' &&
+                            <FullWidthImage  source={{uri: "https://poplook.com/assets/img/loyalty_temp/SGD_GRAPH.png"}}/>
+                        }
+                        { shopId == '3' &&
+                            <FullWidthImage  source={{uri: "https://poplook.com/assets/img/loyalty_temp/USD_GRAPH.png"}}/>
+                        }
+                        
                     </View>
 
                     

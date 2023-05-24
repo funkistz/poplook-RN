@@ -253,7 +253,7 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
                                 <Divider style={styles.divider} />
                             </Box>
                             <Box w={'60%'}>
-                                <Text style={styles.levelup}> Level up to unclock</Text>
+                                <Text style={styles.levelup}> Level up to unlock</Text>
                             </Box>
                             <Box w={'20%'} flex={1} justifyContent="center">
                                 <Divider style={styles.divider} />
@@ -281,7 +281,7 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
                                 <Divider style={styles.divider} />
                             </Box>
                             <Box w={'60%'}>
-                                <Text style={styles.levelup}> Level up to unclock</Text>
+                                <Text style={styles.levelup}> Level up to unlock</Text>
                             </Box>
                             <Box w={'20%'} flex={1} justifyContent="center">
                                 <Divider style={styles.divider} />
