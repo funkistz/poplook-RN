@@ -353,7 +353,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
                     <View style={styles.contentContainer}>
                         {show && Platform.OS === 'ios' && (
                             <DateTimePicker
-                                value={date}
+                                value={date == null ? new Date() : date}
                                 mode={'date'}
                                 display={'spinner'}
                                 onChange={onChange}
