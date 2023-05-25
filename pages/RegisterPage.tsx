@@ -7,7 +7,7 @@ import InputLabel from '../components/Form/InputLabel';
 import GeneralService from '../Services/GeneralService';
 import CmsService from '../Services/CmsService';
 import RegisterService from '../Services/RegisterService';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { format } from 'date-fns'
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -29,7 +29,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
     const shopId = useSelector((storeState: any) => storeState.session.id_shop);
 
     const [cms, setCms] = useState<any>({});
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState<any>(null);
     const [show, setShow] = useState(false);
     const [newsletter ,setNewsletter] = useState(true)
     const [optin ,setOptin] = useState(true)
@@ -54,13 +54,19 @@ export default function RegisterPage({ visible, onToggle }: any) {
     };
 
     const showMode = () => {
-        setShow(true);
         if (Platform.OS === 'android') {
-        } else {
-            bottomSheetRef.current?.snapToIndex(0);
-            setBackdropVisible(true);
-    
-        }
+            DateTimePickerAndroid.open({
+                value: date == null ? new Date() : date,
+                onChange,
+                mode: 'date',
+                maximumDate: new Date()
+                
+            });
+            return;
+        } 
+        setShow(true);
+        bottomSheetRef.current?.snapToIndex(0);
+        setBackdropVisible(true);
     };
 
 
@@ -81,7 +87,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
     const displayDate = () => {
         const today = new Date();
 
-        if(moment(date).format('DD MMMM YYYY') == moment(today).format('DD MMMM YYYY')) {
+        if(date == null) {
             return <Text style={{ marginRight: 'auto', color:'#666', fontSize: 16 }}>Enter date of birth</Text>
         }
 
