@@ -1,11 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import AuthService from '../../Services/AuthService'
 import CartService from '../../Services/CartService'
 import GeneralService from '../../Services/GeneralService'
-import { Message } from 'yup'
 import { Alert } from 'react-native'
-
+import { delToCart } from '../../Redux/Slices/Cart';
 export interface CheckoutState {
     id_cart: Number | null,
     id_gift: Number | null,
@@ -94,7 +91,7 @@ export const getCartStep1: any = createAsyncThunk(
             const response = await CartService.cartStep1(id_cart, id_gift, message, gift_value);
             let data = await response.json()
 
-            console.log('step1response', data.data)
+            console.log('step1', data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -165,7 +162,7 @@ export const getCartStep2: any = createAsyncThunk(
 
 export const getCartStep3: any = createAsyncThunk(
     "checkout/step3",
-    async ({ address_id, cart_id }: any, { getState, rejectWithValue }) => {
+    async ({ address_id, cart_id }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
@@ -184,7 +181,43 @@ export const getCartStep3: any = createAsyncThunk(
                     return rejectWithValue(data)
                 }
             } else {
-                return rejectWithValue(data)
+                const state: any = getState();
+                const products = state.checkout.product
+
+                for (let i = 0; i < products.length; i++) {
+
+                    if (products[i].active == 0 || products[i].quantity_available == 0) {
+
+                        const id_product = products[i].id_product
+                        const id_product_attribute = products[i].id_product_attribute
+
+                        Alert.alert('Item out of stock', data.message + ' and will be remove from your cart.', [
+                            {
+                                text: 'Proceed',
+                                onPress: async () => {
+                                    const params = {
+                                        id_cart: state.checkout.id_cart,
+                                        id_product: id_product,
+                                        id_product_attribute: id_product_attribute,
+                                    }
+
+                                    await dispatch(delToCart(params))
+
+                                    const param = {
+                                        gift: state.checkout.gift_option ? '1' : '0',
+                                        gift_wrap_id: state.checkout.id_gift[0],
+                                        gift_message: state.checkout.gift_message,
+                                        address_id: state.checkout.address
+                                    }
+        
+                                    await dispatch(getCartStep1(param))
+
+                                }
+                            },
+                        ]);
+
+                    }
+                }
             }
         } catch (e: any) {
             console.log("Error", e.response.data)
@@ -283,6 +316,7 @@ export const checkoutSlice = createSlice({
 
         }).addCase(getCartStep1.rejected, (state, { payload }) => {
             console.log('payloadreject1', payload);
+            // GeneralService.toast({ description: payload.message });
         }).addCase(getCartStep2.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
@@ -306,6 +340,7 @@ export const checkoutSlice = createSlice({
 
         }).addCase(getCartStep2.rejected, (state, { payload }) => {
             console.log('payloapayloadreject2', payload);
+            // GeneralService.toast({ description: payload.message });
         }).addCase(getCartStep3.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
@@ -328,9 +363,8 @@ export const checkoutSlice = createSlice({
             return state;
         }).addCase(getCartStep3.pending, (state, { payload }) => {
 
-        }).addCase(getCartStep3.rejected, (state, { payload }) => {
-            console.log('payloadreject3', payload);
-            // GeneralService.toast({ description: payload.message });
+        }).addCase(getCartStep3.rejected, (state, { payload}) => {
+
         }).addCase(getGiftMessage.fulfilled, (state, { payload }) => {
 
             const temp: any = {};

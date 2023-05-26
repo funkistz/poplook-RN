@@ -446,13 +446,14 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                             </Radio.Group>
                             {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
 
-                            <Box bg="#fff" mt={4} mb={2}>
-                                <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} mr={2} size='lg'>
-                                    <Text color={'black'} fontSize={14} pr={6} ml={2}>I agree with the
-                                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
-                                        <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and I adhere to them unconditionally.</Text>
-                                </Checkbox>
-                            </Box>
+                            <Box bg="#fff" mt={4} mb={4}>
+                            <Checkbox value='terms' isChecked={termAgree} onChange={setTermAgree} style={styles.checkbox} mr={2} size='lg'>
+                                <Text color={'black'} fontSize={12} pr={6} ml={2}>I agree with the
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('term')}> Terms of Service</Link> and
+                                    <Link _text={{ color: '#1cad48', fontSize: 12 }} onPress={() => toggleCmsModal('privacypolicy')}> Privacy Policy</Link> and
+                                    I adhere to them unconditionally.</Text>
+                            </Checkbox>
+                        </Box>
 
                             <Divider bg="#ccc" mb={4} />
 

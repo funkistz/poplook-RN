@@ -18,7 +18,7 @@ import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
 import Ipay88Container from '../components/Payment/Ipay88Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { clearCart } from '../Redux/Slices/Cart';
+import { clearCart, delToCart } from '../Redux/Slices/Cart';
 
 export default function CheckoutPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -176,7 +176,19 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         }
     }
 
-    // Voucher
+    const toggleAddressModal = () => {
+        console.log('toggleAddressModal');
+
+        navigation.navigate('AddressListExPage', { screen: 'AddressListExPage', isCheckout: true });
+    };
+
+    const toggleCmsModal = async (key: any) => {
+        setCmsModalVisible(!isCmsModalVisible);
+        const response = await CmsService.getCmsDetails(key);
+        const json = await response.json();
+        setCms(json.data[0]);
+    };
+
     const validateVoucher = async () => {
         const params = {
             code: voucher,
@@ -222,19 +234,42 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         }
     }
 
-    const toggleAddressModal = () => {
-        console.log('toggleAddressModal');
+    const outStock = (message: any) => {
+        for (let i = 0; i < product.length; i++) {
+    
+            if (product[i].active == 0 || product[i].quantity_available == 0) {
 
-        navigation.navigate('AddressListExPage', { screen: 'AddressListExPage', isCheckout: true });
-    };
+                const id_product = product[i].id_product
+                const id_product_attribute = product[i].id_product_attribute
+    
+                Alert.alert('Item out of stock', message + ' and will be remove from your cart.', [
+                    {
+                        text: 'Proceed',
+                        onPress: async () => {
+                            const params = {
+                                id_cart: cartId,
+                                id_product: id_product,
+                                id_product_attribute: id_product_attribute,
+                            }
+    
+                            dispatch(delToCart(params))
+    
+                            const param = {
+                                gift: gift_option,
+                                gift_wrap_id: gift_wrap_id,
+                                gift_message: gift_message,
+                                address_id: address ? address.id : ''
+                            }
 
-    const toggleCmsModal = async (key: any) => {
-        setCmsModalVisible(!isCmsModalVisible);
-        const response = await CmsService.getCmsDetails(key);
-        const json = await response.json();
-        setCms(json.data[0]);
-    };
-
+                            dispatch(getCartStep1(param))
+                        }
+                    },
+                ]);
+    
+            }
+        }
+    }
+    
     const cartStep4 = async () => {
 
         if (paymentType && termAgree) {
@@ -244,17 +279,19 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                     const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                     const json = await response.json();
 
-                    setPaymentChoose(json.data.payment_selected.payment_method);
-                    await AsyncStorage.setItem('paymentChoose', json.data.payment_selected.payment_method);
-
                     if (json.code == 200 && json.data) {
 
                         dispatch(clearCart())
                         dispatch(clearLeaveMessage())
 
+                        setPaymentChoose(json.data.payment_selected.payment_method);
+                        await AsyncStorage.setItem('paymentChoose', json.data.payment_selected.payment_method);
+
                         if (shopId == '1') {
                             ipay(json.data)
                         }
+                    } else {
+                        outStock(json.message)
                     }
                 } else {
                     GeneralService.toast({ description: 'Please select payment type' });
@@ -263,16 +300,16 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                 const json = await response.json();
 
-                setPaymentChoose(json.data.payment_selected.payment_method);
-                await AsyncStorage.setItem('paymentChoose', json.data.payment_selected.payment_method);
-
-                setOrderId(json.data.id_order);
-                await AsyncStorage.setItem('orderId', json.data.id_order.toString());
-
                 if (json.code == 200 && json.data) {
 
                     dispatch(clearCart())
                     dispatch(clearLeaveMessage())
+
+                    setPaymentChoose(json.data.payment_selected.payment_method);
+                    await AsyncStorage.setItem('paymentChoose', json.data.payment_selected.payment_method);
+
+                    setOrderId(json.data.id_order);
+                    await AsyncStorage.setItem('orderId', json.data.id_order.toString());
 
                     if (shopId == '1') {
                         if (paymentType == '16') {
@@ -293,6 +330,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             ipayUsd(json.data)
                         }
                     }
+                } else {
+                    outStock(json.message)
                 }
             }
         } else {
