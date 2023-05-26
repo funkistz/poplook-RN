@@ -88,6 +88,7 @@ export default function LoginPage() {
                                 errors={errors}
                                 type="text"
                                 autoCapitalize="none"
+                                autoCorrect={false}
                             />
                             {/* <Box w="100%" style={{ borderBottomColor: '#dedede', borderBottomWidth: 1 }}>
                                 <Input

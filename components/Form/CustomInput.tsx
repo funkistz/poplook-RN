@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function CustomInput({ name, variant = 'unstyled', placeholder, values, onChangeText, onBlur, icon, touched,
-    errors, type = 'text', readOnly = false, showIcon = true, autoCapitalize = "sentences" }: any) {
+    errors, type = 'text', readOnly = false, showIcon = true, autoCapitalize = "sentences", autoCorrect }: any) {
 
     return (
         <>
@@ -20,6 +20,7 @@ export default function CustomInput({ name, variant = 'unstyled', placeholder, v
                     style={styles.input}
                     type={type}
                     isReadOnly={readOnly}
+                    autoCorrect={autoCorrect}
                     InputLeftElement={
                         showIcon && (
                             <Icon as={IonIcon} name={icon} size={5} ml="2" color="muted.900" />
