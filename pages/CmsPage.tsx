@@ -25,7 +25,7 @@ export default function CmsPage({ route, navigation }: { route: any, navigation:
         <>
             <WebView
                 originWhitelist={['*']}
-                source={{ html: '<style>h1,h2,h3,h4,p,span {font-size: 35px !important} a { color: #1cad48 !important;} </style><div style="padding: 0 30px">'  +cms.content+'</>' }}
+                source={{ html: '<style>h1,h2,h3,h4,p,span, ul li{font-size: 35px !important}  a { color: #1cad48 !important;} </style><div style="padding: 0 30px">'  +cms.content+'</>' }}
             />
             
         </>

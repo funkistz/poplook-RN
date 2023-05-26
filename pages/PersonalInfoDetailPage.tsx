@@ -138,6 +138,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
                             }
                             onSubmit={(values, { resetForm }) => submit(values,resetForm)}
                             validationSchema={validation}
+                            validateOnMount
                         >
                             {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
                                 <>

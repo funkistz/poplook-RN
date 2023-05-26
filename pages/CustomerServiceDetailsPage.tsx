@@ -57,8 +57,12 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
                     font-size: 40;
                 } 
                 p,span { 
-                    font-size: 30 ;
+                    font-size: 3 ;
                     // padding-left: 20px;
+                }
+
+                a {
+                    color: #1cad48 !important;
                 }
             </style>    
         </head>

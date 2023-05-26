@@ -24,7 +24,6 @@ export default function LoginPage() {
 
     useEffect(() => {
         // dispatch(intro(false))
-        console.log('session....', session)
     }, []);
 
     useEffect(() => {
@@ -74,6 +73,7 @@ export default function LoginPage() {
                             .min(3, 'Password must be at least 3 characters')
                             .required('Password is required'),
                     })}
+                    // validateOnMount
                 >
                     {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
                         <>
