@@ -47,6 +47,7 @@ export default function PageIntroPage() {
                     bg={'#1cad48'}
                     style={styles.search}
                     _text={{ fontSize: 14, fontWeight: 600 }}
+                    _pressed={{ backgroundColor: '#1cad48' }}
                     onPress={submit}
                 >Continue
                 </Button>
