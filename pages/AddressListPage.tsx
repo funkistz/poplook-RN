@@ -26,7 +26,6 @@ export default function AddressListPage({ route, onToggle }: any) {
 
         if (isFocused) {
             dispatch(getAddressList());
-            // console.log('addresslist', address)
         }
 
     }, [isFocused])
@@ -77,7 +76,7 @@ export default function AddressListPage({ route, onToggle }: any) {
 
     return (
         <>
-            <Flex flex={isCheckout ? 0 : 1} backgroundColor='white'>
+            <Flex flex={1} backgroundColor='white'>
                 <AddressAdd
                     visible={isModalVisible}
                     onToggle={toggleModal}
@@ -102,7 +101,7 @@ export default function AddressListPage({ route, onToggle }: any) {
                     {address.data == null &&
                         <>
                             <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: 'white' }}>
-                                <Text color='black' fontSize={14}>No address available.</Text>
+                                <Text style={styles.no_data} mt={10}>No address available.</Text>
                             </View>
 
                         </>
@@ -119,6 +118,11 @@ export default function AddressListPage({ route, onToggle }: any) {
 const styles = StyleSheet.create({
     bold: {
         fontSize: 13,
+        color: 'black'
+    },
+    no_data: {
+        fontSize: 14,
+        fontWeight: 'bold',
         color: 'black'
     },
     normal: {

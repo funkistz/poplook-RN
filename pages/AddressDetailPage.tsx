@@ -10,7 +10,7 @@ import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { Formik } from 'formik';
 import * as yup from 'yup'
 import InputLabel from '../components/Form/InputLabel';
-import { addAddress, updateAddress, deleteAddress } from '../Redux/Slices/Address';
+import { addAddress, updateAddress, deleteAddress, getAddressList } from '../Redux/Slices/Address';
 import { clearAddress, getAddressOne } from '../Redux/Slices/AdressSelected';
 import { useNavigation } from '@react-navigation/native';
 import { persistor } from '../Redux/app';
@@ -39,6 +39,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const onClose = () => {
         dispatch(deleteAddress(addressId));
+        dispatch(getAddressList());
         setIsOpen(false);
         navigation.goBack();
     };
