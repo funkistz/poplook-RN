@@ -8,7 +8,7 @@ export default function ProductDetail({ product }: { product: any }) {
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
 
     return (
-        <Box borderRadius={10}>
+        <Box borderRadius={10} mb={1}>
             <HStack>
                 <AspectRatio w="30%" ratio={3 / 4}>
                     <Image resizeMode="cover" borderRadius={10} source={{ uri: product.image_url }} alt="image" />

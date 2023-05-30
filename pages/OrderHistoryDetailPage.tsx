@@ -69,10 +69,20 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
                     onPress={() => downloadReturnForm()}>DOWNLOAD RETURN FORM
                 </Button>
 
-                <Address address={shipping} title='Shipping'></Address>
+                <HStack py={3}>
+                    <VStack paddingRight={8}>
+                        <Text style={styles.bold}>Shipping Address</Text>
+                        <Address address={shipping}></Address>
+                    </VStack>
+                </HStack>
                 <Divider/>
 
-                <Address address={shipping} title='Billing'></Address> 
+                <HStack py={3}>
+                    <VStack paddingRight={8}>
+                        <Text style={styles.bold}>Billing Address</Text>
+                        <Address address={shipping}></Address>
+                    </VStack>
+                </HStack>
                 <Divider/>
 
                 <HStack py={3}>
