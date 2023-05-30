@@ -640,7 +640,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             <>
                                 <TouchableOpacity onPress={toggleAddressModal}>
                                     <Text style={styles.bold}>Shipping Address</Text>
-                                    <Address address={address} title='Shipping'></Address>
+                                    <Address address={address}></Address>
                                 </TouchableOpacity>
                             </>
                         }
