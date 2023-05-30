@@ -6,7 +6,7 @@ import { delToCart } from '../../Redux/Slices/Cart';
 export interface CheckoutState {
     id_cart: Number | null,
     id_gift: Number | null,
-    address: Object,
+    address: {} | null
     carrier: Array<any>,
     payment: Array<any>,
     product: Array<any>,
@@ -25,7 +25,7 @@ export interface CheckoutState {
 const initialState: CheckoutState = {
     id_cart: null,
     id_gift: null,
-    address: {},
+    address: null,
     carrier: [],
     payment: [],
     product: [],
@@ -79,14 +79,13 @@ export const assignCheckoutAddress: any = createAsyncThunk(
 
 export const getCartStep1: any = createAsyncThunk(
     "checkout/step1",
-    async ({ gift, gift_wrap_id, gift_message, address_id }: any, { getState, rejectWithValue, dispatch }) => {
+    async ({ gift, gift_wrap_id, gift_message }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
             const id_gift = gift_wrap_id ? gift_wrap_id : '';
             const message = gift_message ? gift_message : '';
             const gift_value = gift ? gift : '';
-            let id_address = address_id ? address_id : 0;
 
             const response = await CartService.cartStep1(id_cart, id_gift, message, gift_value);
             let data = await response.json()
@@ -96,11 +95,22 @@ export const getCartStep1: any = createAsyncThunk(
             if (response.status == 200) {
                 if (data.code == 200) {
 
+                    let id_address = null;
+
                     if (data.data.address_delivery) {
-                        id_address = data.data.address_delivery.id;
+                        id_address = data.data.address_delivery ? data.data.address_delivery.id : null;
                     } else if (data.data.address_list) {
                         const dataAddress = data.data.address_list.length > 0 ? data.data.address_list[0].id_address : null;
                         id_address = dataAddress
+                    }
+
+                    if (id_address == null ) {
+                        Alert.alert('', 'You do not have shipping address yet, please add a new one.', [
+                            {
+                                text: 'OK',
+                                style: 'cancel'
+                            },
+                        ]);
                     }
 
                     const param = {
@@ -364,6 +374,7 @@ export const checkoutSlice = createSlice({
         }).addCase(getCartStep3.pending, (state, { payload }) => {
 
         }).addCase(getCartStep3.rejected, (state, { payload}) => {
+            // GeneralService.toast({ description: payload.message });
 
         }).addCase(getGiftMessage.fulfilled, (state, { payload }) => {
 

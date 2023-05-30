@@ -631,14 +631,16 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                         {!address &&
                             <><TouchableOpacity onPress={toggleAddressModal}>
-                                <Text style={styles.bold} marginY={3}>Please Add Address</Text>
+                                <Text style={styles.bold}>Shipping Address</Text>
+                                <Text style={styles.red} marginY={3} color={'red.600'}>Please Add Address</Text>
                             </TouchableOpacity>
                             </>
                         }
                         {address &&
                             <>
                                 <TouchableOpacity onPress={toggleAddressModal}>
-                                    <Address address={address} title='Shipping'></Address>
+                                    <Text style={styles.bold}>Shipping Address</Text>
+                                    <Address address={address}></Address>
                                 </TouchableOpacity>
                             </>
                         }
@@ -930,6 +932,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black'
     },
+    red: {
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
     normal: {
         fontSize: 14,
         color: 'black'
@@ -964,6 +970,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
         overflow: 'hidden',
-    }
+    },
+    button_delete: {
+        borderRadius: 10,
+        sizes: 'md',
+    },
 })
 

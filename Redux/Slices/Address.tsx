@@ -166,6 +166,16 @@ export const addressSlice = createSlice({
 
         }).addCase(getAddressList.rejected, (state, { payload }) => {
             console.log('payload', payload);
+
+            if (payload.code == 404) {
+                const temp: any = {};
+                // temp.id_cart = null;
+                temp.data = null;
+
+                state = { ...state, ...temp }
+                return state;
+            }
+
             // GeneralService.toast({ description: payload.message });
         }).addCase(addAddress.fulfilled, (state, { payload }) => {
             GeneralService.toast({ description: payload.message });

@@ -1,19 +1,15 @@
-import { StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView} from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import BannerService from '../Services/BannerService';
-import { Flex, Center, Image, Box, HStack, IconButton, Icon, FlatList, ScrollView, Text, VStack, Button, Spacer, Stack, View, AlertDialog } from 'native-base';
+import { Flex, HStack, ScrollView, Button, Spacer, Stack, View, AlertDialog } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
-import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { Formik } from 'formik';
 import * as yup from 'yup'
 import InputLabel from '../components/Form/InputLabel';
-import { addAddress, updateAddress, deleteAddress } from '../Redux/Slices/Address';
+import { addAddress, updateAddress, deleteAddress, getAddressList } from '../Redux/Slices/Address';
 import { clearAddress, getAddressOne } from '../Redux/Slices/AdressSelected';
 import { useNavigation } from '@react-navigation/native';
-import { persistor } from '../Redux/app';
 import { getAddressCountries, getStates } from '../Redux/Slices/Infos';
 import FormSelect from '../components/Form/FormSelect';
 import { getCartStep1 } from '../Redux/Slices/Checkout';
@@ -39,6 +35,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const onClose = () => {
         dispatch(deleteAddress(addressId));
+        dispatch(getAddressList());
         setIsOpen(false);
         navigation.goBack();
     };
@@ -211,7 +208,9 @@ export default function AddressDetailPage({ route }: { route: any }) {
                         </AlertDialog>
 
                         <Flex flex={1} >
+
                             <ScrollView flex={1} flexGrow={1} style={styles.container}>
+                            <KeyboardAvoidingView behavior="padding">
                                 <InputLabel
                                     placeholder="Firstname"
                                     name="firstname"
@@ -337,8 +336,9 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 }
 
                                 <View height={10}></View>
-
+                                </KeyboardAvoidingView>
                             </ScrollView>
+
                             <Stack px={3}>
                                 <Button
                                     bg={'#1cad48'}
@@ -351,8 +351,8 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                     _pressed={{ backgroundColor: '#1cad48' }}
                                     onPress={() => handleSubmit()}>SAVE ADDRESS
                                 </Button>
-
                             </Stack>
+                            
                         </Flex>
                     </Flex>
                 )}
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
         sizes: 'md',
     },
     container: {
-        padding: 15,
-        paddingTop: 30
+        padding: 25,
+        paddingTop: 15
     },
 })
