@@ -31,7 +31,16 @@ export default function FaqPage({ route , navigation} : { route: any,  navigatio
         const response = await LoyaltyService.getFaqRewards();
         const json = await response.json();
         console.log('JSON: ', json.data)
-        setData(json.data[10])
+
+        for (let i = 0; i < json.data.length; i++) {
+
+            if (json.data[i].link_rewrite == 'poplook-rewards') {
+
+                const data = json.data[i]
+                setData(data)
+            }
+        }
+
         setIsLoading(false)
     }
     return <>
@@ -48,7 +57,7 @@ export default function FaqPage({ route , navigation} : { route: any,  navigatio
                 <>
                         <WebView
                         originWhitelist={['*']}
-                        source={{ html: '<style>h1,h2,h3,h4,p,span {font-size: 35px !important} a { color: #1cad48`} </style><div style="padding: 0 30px">'  + data.content+'</>' }}
+                        source={{ html: '<style>h1,h2,h3,h4,p,span {font-size: 35px !important} a { color: #1cad48} </style><div style="padding: 0 30px">'  + data.content+'</>' }}
                         style={{flex: 1}}
                     />
                 </>

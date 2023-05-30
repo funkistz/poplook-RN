@@ -253,6 +253,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
                                             style={styles.button}
                                             _text={{ fontSize: 14, fontWeight: 600 }}
                                             isDisabled={!isValid}
+                                            _pressed={{ backgroundColor: '#1cad48' }}
                                             onPress={() => handleSubmit()}>Send
                                         </Button>
                                     </View>
