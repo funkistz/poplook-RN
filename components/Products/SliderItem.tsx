@@ -46,7 +46,7 @@ export default function SliderItem(props: any) {
                         <Vimeo
                             videoId={props.source.uri.split("/").pop()}
                             params={'autoplay=0'}
-                        // reference='https://poplook.com'
+                            reference='https://poplook.com'
                         />
                     </Box>
                 </>
