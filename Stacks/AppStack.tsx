@@ -29,6 +29,8 @@ import CustomerServicePage from '../pages/CustomerServicePage';
 import CustomerServiceDetailsPage from '../pages/CustomerServiceDetailsPage';
 import WebviewPage from '../pages/EghlPaymentPage';
 import ForgotPassword from '../pages/ForgotPassword';
+import DeleteAccountPage from '../pages/DeleteAccountPage';
+import DeleteAccountSuccessPage from '../pages/DeleteAccountSuccessPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -72,6 +74,8 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='WishlistPage' component={WishlistPage} options={{ title: 'Wishlist' }} />
             <Stack.Screen name='CustomerServicePage' component={CustomerServicePage} options={{ title: 'Customer Service' }} />
             <Stack.Screen name='CustomerServiceDetailsPage' component={CustomerServiceDetailsPage} options={{ title: 'Customer Service' }} />
+            <Stack.Screen name='DeleteAccountPage' component={DeleteAccountPage} options={{ title: 'Delete My Account' }} />
+            <Stack.Screen name='DeleteAccountSuccessPage' component={DeleteAccountSuccessPage} options={{ title: 'Confirmation Delete Account' }} />
         </Stack.Navigator>
     )
 }

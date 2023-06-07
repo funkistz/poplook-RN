@@ -38,6 +38,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-native": "0.71.8",
     "react-native-atome-paylater": "^1.0.0",
+    "react-native-dialog": "^9.3.0",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-fast-image": "^8.6.3",
     "react-native-fullwidth-image": "^0.1.3",
