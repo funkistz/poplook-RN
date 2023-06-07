@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert, ActivityIndicator, AppState } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert, ActivityIndicator, AppState, Dimensions } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
@@ -70,6 +70,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     // Voucher
     const [voucher, setVoucher] = React.useState('');
+    
+    const win = Dimensions.get('window');
 
     useEffect(() => {
         console.log('from navigation text_message', text_message);
@@ -810,8 +812,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                     <HStack>
                                         <Radio value={item.id} my="2" backgroundColor={'white'} _text={{ color: 'black', fontSize: 14 }} size="md">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
 
-                                            {item.id == 2 || item.id == 8 ?
-                                                <Select selectedValue={paymentChild} mt={1} minWidth="190" placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
+                                            {(paymentType == '2' && item.id == 2)  || (paymentType == '8' && item.id == 8) ?
+                                                <Select selectedValue={paymentChild} minWidth={win.width/3} placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
 
                                                     {item.options.map((option: any) => {
                                                         return (

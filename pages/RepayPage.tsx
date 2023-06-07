@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Alert, StyleSheet, AppState, ActivityIndicator } from 'react-native';
+import { Alert, StyleSheet, AppState, ActivityIndicator, Dimensions } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, VStack, Divider, Checkbox, Link, Radio, Select, Box, CheckIcon } from "native-base";
 import OrderHistoryService from '../Services/OrderHistoryService';
 import { useSelector, useDispatch } from 'react-redux';
@@ -47,6 +47,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const [referenceId, setReferenceId] = useState('');
     const [paymentChoose, setPaymentChoose] = useState('');
     const [orderId, setOrderId] = useState('');
+
+    const win = Dimensions.get('window');
 
     useEffect(() => {
 
@@ -426,8 +428,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                                         <HStack>
                                             <Radio key={index} value={item.id} my="2" backgroundColor={'white'} _text={{ color: 'black', fontSize: 14 }} size="md">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
 
-                                                {item.id == 2 || item.id == 8 ?
-                                                    <Select safeArea selectedValue={paymentChild} mt={1} minWidth="190" placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
+                                                {(paymentType == '2' && item.id == 2)  || (paymentType == '8' && item.id == 8)?
+                                                    <Select safeArea selectedValue={paymentChild} mt={1} minWidth={win.width/3} placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
 
                                                         {item.options.map((option: any, index: any) => {
                                                             return (
