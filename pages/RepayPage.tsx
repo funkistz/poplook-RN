@@ -405,7 +405,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                         <View style={styles.container} pt={4}>
                             <Ipay88Container></Ipay88Container>
 
-                            <Address address={address} title='Shipping'></Address>
+                            <Text style={styles.bold}>Shipping Address</Text>
+                            <Address address={address}></Address>
                             <Divider bg="#ccc" />
 
                             {/* <Address address={address} title='Billing'></Address>
