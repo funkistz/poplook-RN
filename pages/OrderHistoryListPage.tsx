@@ -99,7 +99,7 @@ export default function OrderHistoryListPage() {
                                 </VStack>
                             </HStack>
                             {item.valid && item.valid == '0' ? (
-                                <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" justifyContent="center">
+                                <HStack borderBottomWidth="1" _dark={{ borderColor: "#ccc" }} borderColor="muted.100" justifyContent="center">
                                     <Button
                                         mb={5}
                                         style={styles.button}
@@ -113,7 +113,7 @@ export default function OrderHistoryListPage() {
                                         _text={{ fontSize: 13, fontWeight: 600 }}
                                         onPress={() => cancelOrder(item.id_order)}>CANCEL
                                     </Button>
-                                </HStack>) : <HStack borderBottomWidth="1" _dark={{ borderColor: "grey" }} borderColor="muted.100" paddingX={65}></HStack>}
+                                </HStack>) : <HStack borderBottomWidth="1" _dark={{ borderColor: "#ccc" }} borderColor="muted.100" paddingX={65}></HStack>}
                         </TouchableOpacity></>
                 }))}
                 {!isLoading && orders.total_items == 0 &&

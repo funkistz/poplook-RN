@@ -75,7 +75,7 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
                         <Address address={shipping}></Address>
                     </VStack>
                 </HStack>
-                <Divider/>
+                <Divider bg="#ccc"/>
 
                 <HStack py={3}>
                     <VStack paddingRight={8}>
@@ -83,7 +83,7 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
                         <Address address={shipping}></Address>
                     </VStack>
                 </HStack>
-                <Divider/>
+                <Divider bg="#ccc"/>
 
                 <HStack py={3}>
                     <VStack paddingRight={8}>
@@ -91,22 +91,22 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
                         <Text style={styles.normal}>{messages.message ? messages.message : 'No message available'}</Text>
                     </VStack>
                 </HStack>
-                <Divider/>
+                <Divider bg="#ccc"/>
 
-                <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
+                <VStack style={styles.border} _dark={{ borderColor: "#ccc" }} py={3}>
                     <Text paddingBottom={3} style={styles.bold}>Description</Text>
                     {products.map((item: any, index: any) => {
                         return <ProductDetail product={item}></ProductDetail>
                     })}
                 </VStack>
-                <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
+                <VStack style={styles.border} _dark={{ borderColor: "#ccc" }} py={3}>
                     <HStack>
                     <Text style={styles.bold}>Shipping</Text>
                     <Spacer/>
                     <Text style={styles.bold}>{currency} {details.carrier_price}</Text>
                     </HStack>
                 </VStack>
-                <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
+                <VStack style={styles.border} _dark={{ borderColor: "#ccc" }} py={3}>
                     <HStack>
                     <Spacer/>
                     <Text style={styles.bold}>TOTAL {currency} {details.total_paid}</Text>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     },
     border: {
         borderBottomWidth: 1,
-        borderColor: 'muted.100',
+        borderColor: '#ccc',
         paddingRight: 8
     }
 })
