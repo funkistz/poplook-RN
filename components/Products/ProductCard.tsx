@@ -57,7 +57,7 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
     return (
         <TouchableOpacity onPress={() => goToProductPage(product)}>
             <Box p={3} borderRadius={10} >
-                <AspectRatio w="100%" ratio={3 / 4}>
+                <AspectRatio w="100%" ratio={2/3}>
                     {product && product.image_url &&
                         <>
                             <ImageBackground

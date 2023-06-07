@@ -361,7 +361,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 <>
                     <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} style={{ position: 'relative' }}>
                         <ScrollView flex={1}>
-                            <VStack h={500} alignItems="center"  >
+                            <VStack h={imageHeight} alignItems="center"  >
                                 <SliderBox
                                     LoaderComponent={() => <></>}
                                     sliderBoxHeight={imageHeight}
