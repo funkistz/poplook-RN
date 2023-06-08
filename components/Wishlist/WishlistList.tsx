@@ -72,7 +72,7 @@ export default function WishlistList({ product, currency }: any) {
         <TouchableOpacity onPress={goToProductPage}>
             <Flex style={styles.container}>
                 <Box w={100}>
-                    <AspectRatio ratio={3 / 5}>
+                    <AspectRatio ratio={2/3}>
                         <Image resizeMode="cover" borderRadius={10} source={{
                             uri: product.image_url
                         }} alt="image" />
@@ -87,7 +87,7 @@ export default function WishlistList({ product, currency }: any) {
                     {product.attributes_small && (
                         <Text color='black' >Size: {product.attributes_small}</Text>
                     )}
-                    <Text color='black'>Ref No: {product.reference}</Text>
+                    {/* <Text color='black'>Ref No: {product.reference}</Text> */}
                     <Text color='black'>Quantity: {product.quantity}</Text>
                     <Text color='black'>Total: {currency.prefix}{product.price}</Text>
                     <HStack mt={2}>
