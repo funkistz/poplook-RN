@@ -755,7 +755,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                     <HStack>
                                         {gift_wrap &&
                                             <>
-                                                <AspectRatio w="40%" ratio={4 / 4}>
+                                                <AspectRatio w="40%" ratio={2/3}>
                                                     <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
                                                 </AspectRatio>
 
@@ -853,7 +853,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                             {product.map((item: any, index: any) => {
                                 return <>
                                     <Box key={index} marginRight={2}>
-                                        <AspectRatio w="100%" ratio={3 / 4} size={'130px'}>
+                                        <AspectRatio w="100%" ratio={2/3} size={'130px'}>
                                             <ImageBackground
                                                 source={{ uri: item.image_url }}
                                                 style={{ flex: 1 }}
