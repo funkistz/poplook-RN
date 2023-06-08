@@ -14,8 +14,25 @@ import { scroll, reset, getFilterList } from '../Redux/Slices/ProductList';
 import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlist';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SizeList from '../components/Products/SizeList';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function CategoryPage({ route, navigation }: { route: any, navigation: any }) {
+
+    const [isFocus, setIsFocus] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+
+            setTimeout(
+                () => setIsFocus(true),
+                100
+            );
+
+            return () => {
+                // setIsFocus(false);
+            };
+        }, [])
+    );
 
     // Redux
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
@@ -205,19 +222,19 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
     const addtoWishlist = async (id_product_attribute = null, item: any) => {
 
-        if(wishlist.id_product.length > 0) {
+        if (wishlist.id_product.length > 0) {
 
-            const filter = wishlist.data.product_list.find((res:any) => res.id_product === item.id_product);
+            const filter = wishlist.data.product_list.find((res: any) => res.id_product === item.id_product);
 
-            if(filter != undefined) {
+            if (filter != undefined) {
                 const params = {
                     id_product: filter.id_product,
                     id_product_attribute: filter.id_product_attribute,
                 }
-        
+
                 await dispatch(delWishlist(params))
                 return;
-            } 
+            }
         }
 
         setAttributeList(item)
@@ -242,6 +259,8 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
     // useEffect
     useEffect(() => {
+
+        console.log('dataroute', route.params.category_name)
         // Init Data
         getSize().catch(console.error)
         getColor().catch(console.error)
@@ -290,126 +309,136 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
     }, [combine])  // Important
 
+    useEffect(() => {
+        if (route.params.category_id == 264) {
+            navigation.setOptions({ title: route.params.category_name });
+        }
+    }, [])
+
     return (
         <>
-            <FilterModal
-                visible={isModalFilter}
-                onToggle={toggleModal}
-                submitBtn={submitBtn}
-                sortData={getSort}
-                attributeData={listSize}
-                colorData={listColor}
-                sortClick={clickSort}
-                attributeClick={clickFilter}
-                clearAllClick={clearAll}
-                selectedSort={sort}
-                selectedAttribute={attribute}
-                selectedColor={color}
-            />
+            {isFocus &&
+                <>
+                    <FilterModal
+                        visible={isModalFilter}
+                        onToggle={toggleModal}
+                        submitBtn={submitBtn}
+                        sortData={getSort}
+                        attributeData={listSize}
+                        colorData={listColor}
+                        sortClick={clickSort}
+                        attributeClick={clickFilter}
+                        clearAllClick={clearAll}
+                        selectedSort={sort}
+                        selectedAttribute={attribute}
+                        selectedColor={color}
+                    />
 
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
-                {(product.isSuccess && listSizeColor.length > 0) &&
-                    <>
-                        <Filter clicked={toggleModal} removeItem={clickRemoveItem} product={combine} listSizeColor={listSizeColor} />
-
-                        {product.count > 1 &&
+                    <View style={{ flex: 1, backgroundColor: 'white' }}>
+                        {(product.isSuccess && listSizeColor.length > 0) &&
                             <>
-                                {(product.items.length > 1) &&
+                                <Filter clicked={toggleModal} removeItem={clickRemoveItem} product={combine} listSizeColor={listSizeColor} />
+
+                                {product.count > 1 &&
                                     <>
-                                        <FlatList
-                                            numColumns={2}
-                                            data={product.items}
-                                            // mb={10}
-                                            renderItem={({ item }) => <Box w="50%">
-                                                <ProductCard product={item} openWishlist={addtoWishlist}></ProductCard>
-                                            </Box>}
-                                            keyExtractor={(item: any) => item.id_product}
-                                            onEndReached={scrollMore}
-                                            onEndReachedThreshold={0.1}
-                                            ListFooterComponent={() => <Spinner spin={product.isLoading}></Spinner>}
-                                        />
+                                        {(product.items.length > 1) &&
+                                            <>
+                                                <FlatList
+                                                    numColumns={2}
+                                                    data={product.items}
+                                                    // mb={10}
+                                                    renderItem={({ item }) => <Box w="50%">
+                                                        <ProductCard product={item} openWishlist={addtoWishlist}></ProductCard>
+                                                    </Box>}
+                                                    keyExtractor={(item: any) => item.id_product}
+                                                    onEndReached={scrollMore}
+                                                    onEndReachedThreshold={0.1}
+                                                    ListFooterComponent={() => <Spinner spin={product.isLoading}></Spinner>}
+                                                />
+                                            </>
+                                        }
+
+                                        {(product.items == 0) &&
+                                            <>
+                                                <SkeletonProductList filter={false} containerOnly={true} />
+                                            </>
+                                        }
                                     </>
                                 }
 
-                                {(product.items == 0) &&
+                                {(product.count == 0) &&
                                     <>
-                                        <SkeletonProductList filter={false} containerOnly={true} />
+                                        {!product.isLoading &&
+                                            <>
+                                                <HStack backgroundColor={'white'} h={'100%'}>
+                                                    <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
+                                                        <View style={{ flexDirection: 'row', marginBottom: 2 }}>
+                                                            <Text color='black' bold fontSize={20}>No Result</Text>
+                                                        </View>
+                                                        <Text color='black' fontSize={13}>0 Filtered Items</Text>
+                                                    </View>
+                                                </HStack>
+                                            </>
+
+                                        }
+
+                                        {product.isLoading &&
+                                            <>
+                                                <SkeletonProductList filter={false} containerOnly={true} />
+                                            </>
+
+                                        }
+
                                     </>
                                 }
                             </>
                         }
 
-                        {(product.count == 0) &&
+                        {(!product.isSuccess && product.isLoading && product.count == 0 || listSizeColor.length == 0) &&
                             <>
-                                {!product.isLoading &&
-                                    <>
-                                        <HStack backgroundColor={'white'} h={'100%'}>
-                                            <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
-                                                <View style={{ flexDirection: 'row', marginBottom: 2 }}>
-                                                    <Text color='black' bold fontSize={20}>No Result</Text>
-                                                </View>
-                                                <Text color='black' fontSize={13}>0 Filtered Items</Text>
-                                            </View>
-                                        </HStack>
-                                    </>
-
-                                }
-
-                                {product.isLoading &&
-                                    <>
-                                        <SkeletonProductList filter={false} containerOnly={true} />
-                                    </>
-
-                                }
-
+                                <SkeletonProductList filter={false} containerOnly={false} />
                             </>
                         }
-                    </>
-                }
+                    </View>
+                    <BottomSheet
+                        ref={bottomSheetRef}
+                        index={-1}
+                        snapPoints={snapPoints}
+                        onChange={handleSheetChanges}
+                        enablePanDownToClose
+                        backdropComponent={() => (
+                            <>
+                                {backdropVisible && <Backdrop
+                                    onPress={() => {
+                                        setBackdropVisible(false);
+                                        bottomSheetRef.current?.close();
+                                    }}
+                                    opacity={0}
+                                />}
+                            </>
 
-                {(!product.isSuccess && product.isLoading && product.count == 0 || listSizeColor.length == 0) &&
-                    <>
-                        <SkeletonProductList filter={false} containerOnly={false} />
-                    </>
-                }
-            </View>
-            <BottomSheet
-                ref={bottomSheetRef}
-                index={-1}
-                snapPoints={snapPoints}
-                onChange={handleSheetChanges}
-                enablePanDownToClose
-                backdropComponent={() => (
-                    <>
-                        {backdropVisible && <Backdrop
-                            onPress={() => {
-                                setBackdropVisible(false);
-                                bottomSheetRef.current?.close();
-                            }}
-                            opacity={0}
-                        />}
-                    </>
+                        )}
+                    // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
+                    >
 
-                )}
-            // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
-            >
+                        {attributeList.length == 0 &&
+                            <>
+                                <Spinner spin={true} />
+                            </>
+                        }
 
-                {attributeList.length == 0 &&
-                    <>
-                        <Spinner spin={true} />
-                    </>
-                }
+                        {attributeList.length != 0 &&
+                            <>
+                                <View style={styles.contentContainer}>
+                                    <Text color={'black'} bold mb={2}>Select Size: </Text>
+                                    <SizeList attribute={attributeList.attribute_list} setSizeSelected={(size: any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
+                                </View>
+                            </>
+                        }
 
-                {attributeList.length != 0 &&
-                    <>
-                        <View style={styles.contentContainer}>
-                            <Text color={'black'} bold mb={2}>Select Size: </Text>
-                            <SizeList attribute={attributeList.attribute_list} setSizeSelected={(size: any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
-                        </View>
-                    </>
-                }
-
-            </BottomSheet>
+                    </BottomSheet>
+                </>
+            }
         </>
 
     );

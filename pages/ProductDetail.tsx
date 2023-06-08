@@ -20,11 +20,27 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { WEB_URL } from "@env"
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlist';
+import { useFocusEffect } from '@react-navigation/native';
 
 const win = Dimensions.get('window');
 
 export default function ProductDetailPage({ route, navigation, product_id }: any) {
 
+    const [isFocus, setIsFocus] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+
+            setTimeout(
+                () => setIsFocus(true),
+                100
+            );
+
+            return () => {
+                // setIsFocus(false);
+            };
+        }, [])
+    );
 
     // Details
     const [product, setProduct] = useState<any>({});
@@ -348,6 +364,8 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
 
     return (
+        <>
+        {isFocus &&
         <View style={styles.container}>
             <StoreAvailabilityModal
                 visible={isModalStore}
@@ -758,7 +776,10 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 </View>
             </BottomSheet>
         </View>
+        }
+        </>
     );
+    
 }
 
 const styles = StyleSheet.create({
