@@ -5,9 +5,9 @@ import ProductService from '../../Services/ProductService';
 import Spinner from '../Spinner';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-export default function StoreAvailabilityModal({ visible, onToggle, size, reference, product }: { visible: boolean, onToggle: any, size: any, reference: any, product: any }) {
+const win = Dimensions.get('window');
 
-    const win = Dimensions.get('window');
+export default function StoreAvailabilityModal({ visible, onToggle, size, reference, product }: { visible: boolean, onToggle: any, size: any, reference: any, product: any }) {
 
     const [available, setAvailable] = useState<any>([]);
     const [select, setSelect] = useState<any>('');
@@ -103,49 +103,43 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                         </>
                     }
 
-                    <Text style={{ color: 'gray', fontSize: 12, lineHeight: 16 }} mt={3}>*Availability is as 10 am this morning. Please call store to reserve this item.</Text>
+                    <Text style={{ color: 'gray', fontSize: 12, lineHeight: 16 }} my={2}>*Availability is as 10 am this morning. Please call store to reserve this item.</Text>
 
                     {available &&
                         <>
-                            <Box>
-                                
+                            {(!isLoading && available.length > 0) &&
 
-                                {(!isLoading && available.length > 0) &&
+                                <>
+                                <ScrollView>
+                                    <Flex style={styles.container}>
+                                            <Text color={'black'} my={2}>Available at:</Text>
+                                            {available.map((res: any) => {
+                                                return <>
+                                                    <Divider bg={'blueGray.200'} />
+                                                    <HStack mt={2}>
+                                                        <Box w={'80%'}>
+                                                            <Text color={'black'}>{res.store}</Text>
+                                                        </Box>
+                                                    </HStack>
+                                                    <Text style={{ color: 'gray', fontSize: 14 }} my={2}>{res.store_address}</Text>
+                                                </>
 
-                                    <>
-                                        <Box style={{ height: 600 }}>
-                                            <Text color={'black'} mt={4} pb={3}>Available at:</Text>
-                                            <ScrollView showsVerticalScrollIndicator={false}>
-                                                {available.map((res: any) => {
-                                                    return <>
-                                                        <Divider bg={'blueGray.200'} />
-                                                        <HStack mt={2}>
-                                                            <Box w={'80%'}>
-                                                                <Text color={'black'}>{res.store}</Text>
-                                                            </Box>
-                                                            <Box w={'20%'}>
-                                                            </Box>
-                                                        </HStack>
-                                                        <Text style={{ color: 'gray', fontSize: 14 }} my={5}>{res.store_address}</Text>
-                                                    </>
+                                            })}
+                                        
+                                    </Flex>
+                                </ScrollView>
 
-                                                })}
-                                            </ScrollView>
-                                        </Box>
+                                </>
 
-                                    </>
+                            }
 
-                                }
-
-                                {isLoading &&
-                                    <>
-                                        <Center>
-                                            <Spinner spin={isLoading}></Spinner>
-                                        </Center>
-                                    </>
-                                }
-
-                            </Box>
+                            {isLoading &&
+                                <>
+                                    <Center>
+                                        <Spinner spin={isLoading}></Spinner>
+                                    </Center>
+                                </>
+                            }
                         </>
                     }
 
@@ -172,11 +166,14 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: 'black',
     },
-
     stock: {
         color: 'white',
         backgroundColor: '#1cad48',
         textAlign: 'center',
         borderRadius: 10,
-    }
+    },
+    container: {
+        flexDirection: 'column',
+        padding: 1
+    },
 });
