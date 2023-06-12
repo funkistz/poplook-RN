@@ -90,11 +90,11 @@ export default function PersonalInfoPage({ route, navigation }: { route: any, na
                                 disabled
                             />
                         </HStack>
-                        {/* <TouchableOpacity onPress={() => deleteAccount()}>
+                        <TouchableOpacity onPress={() => deleteAccount()}>
                             <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" >
                                 <Text color="black" fontSize={16}>Request Account Deletion</Text>
                             </HStack>
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
                     </View>
 
                 </ScrollView>
