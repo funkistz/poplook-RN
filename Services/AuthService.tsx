@@ -84,6 +84,16 @@ const AuthService = {
         return APIService.getMethod(url, params);
 
     },
+    async deleteAccount(data: any) {
+
+        const params = {
+            email: data,
+        };
+
+        const url = 'UserAuth/account_deletion';
+
+        return APIService.postMethod(url, params);
+    },
     
 
 
