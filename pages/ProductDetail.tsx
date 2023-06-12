@@ -21,6 +21,7 @@ import { WEB_URL } from "@env"
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlist';
 import { useFocusEffect } from '@react-navigation/native';
+import SizeGuideModal from '../components/Modals/SizeGuide';
 
 const win = Dimensions.get('window');
 
@@ -69,6 +70,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     // Modal
     const [isModalStore, setModalStore] = useState(false);
+    const [isModalSizeGuide, setModalSizeGuide] = useState(false);
     const [isModalDetails, setModalDetails] = useState(false);
     const [isModalDelivery, setModalDelivery] = useState(false);
     const [isModalCare, setModalCare] = useState(false);
@@ -106,6 +108,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const toggleModalStore = () => {
         setModalStore(!isModalStore);
     };
+
+    const toggleModalSizeGuide = () => {
+        setModalSizeGuide(!isModalSizeGuide);
+    };
+
     const toggleModalDetails = () => {
         setModalDetails(!isModalDetails);
     };
@@ -139,8 +146,6 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
         const response = await ProductService.getProduct(params);
         const json = await response.json();
-
-        // console.log('jsonn: ', json);
 
         const screenWidth = Dimensions.get('window').width;
 
@@ -375,6 +380,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 product={product}
             />
 
+            <SizeGuideModal
+                visible={isModalSizeGuide}
+                onToggle={toggleModalSizeGuide}
+            />              
+
             {isLoading &&
                 <>
                     <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} style={{ position: 'relative' }}>
@@ -393,18 +403,22 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                 <Text color={'black'} fontSize={18}>{product.name}</Text>
                                 {price()}
                                 {product.discount_text != null && <Text px={3} py={1} style={{ color: 'white', fontSize: 10, backgroundColor: 'black', textAlign: 'center' }}>{product.discount_text}</Text>}
-
+                                
+                                {quantityAvailable == 0 && <Text style={{ color: '#a94442', fontSize: 18, marginTop: 20, }}>This product is not available.</Text>}
+                                
                                 {attribute.length > 0 && quantityAvailable > 0 &&
                                     <>
                                         <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
                                         <SizeList attribute={attribute} setSizeSelected={setSizeSelected} sizeSelected={sizeSelected}></SizeList>
+
+                                        <TouchableOpacity onPress={toggleModalSizeGuide} >
+                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' > Size Guide </Text>
+                                        </TouchableOpacity>
                                     </>
                                 }
 
-                                {quantityAvailable == 0 && <Text style={{ color: '#a94442', fontSize: 18, marginTop: 20, }}>This product is not available.</Text>}
-
                                 <TouchableOpacity onPress={toggleModalStore} >
-                                    <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' mb={6} mt={6}> Check in store availability </Text>
+                                    <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' mb={6}> Check in store availability </Text>
                                 </TouchableOpacity>
 
                                 {colorRelated &&
@@ -870,6 +884,6 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         // alignItems: 'center',
-        padding: 20
+        padding: 15
     },
 });
