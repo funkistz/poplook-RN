@@ -25,7 +25,7 @@ export default function DeleteAccountSuccessPage() {
                 dispatch(clearCheckout())
                 dispatch(clearAddress())
             });
-          }, 5000); 
+          }, 9000); 
       
         return () => clearTimeout(timer);
 
@@ -43,7 +43,7 @@ export default function DeleteAccountSuccessPage() {
                         <Text color='#000' fontSize={17} mb={3} fontWeight='bold'>Dear {user.name},</Text>
                     </HStack>
                     <HStack>
-                        <Text color='#000' fontSize={16} mb={3}>We've received your request to delete your account. The deletion will be complete in 1-3 working days. You will receive a confirmation email on deletion. Thank you.</Text>
+                        <Text color='#000' fontSize={16} mb={3} textAlign={'justify'}>We've received your request to delete your account and has been processed. The deletion will be complete in 1-3 working days. We’re really sorry to see you go, but if you change your mind, we’ll be here to welcome you back. Thank you.</Text>
                     </HStack>
                     </>  
                 }
