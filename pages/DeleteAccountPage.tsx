@@ -33,12 +33,13 @@ export default function DeleteAccountPage({ navigation }: { navigation: any }) {
             const json = await response.json();
 
             if (json.code == 200) {
+
+                setVisible(false);
+                navigation.navigate('DeleteAccountSuccessPage', { screen: 'DeleteAccountSuccessPage'})
+
+            } else {
                 GeneralService.toast({ description: json.message });
             }
-
-            setVisible(false);
-
-            navigation.navigate('DeleteAccountSuccessPage', { screen: 'DeleteAccountSuccessPage'})
 
         } else {
             Alert.alert('Please enter your email')
@@ -61,7 +62,7 @@ export default function DeleteAccountPage({ navigation }: { navigation: any }) {
             </Dialog.Input>
             {/* {error ? <Text style={{ color: 'red' }}>{error}</Text> : null} */}
             <Dialog.Button label="Cancel" onPress={handleCancel} />
-            <Dialog.Button label="Delete" onPress={handleDelete} />
+            <Dialog.Button label="Delete" color={'red'} onPress={handleDelete} />
       </Dialog.Container>
 
         <ScrollView p={6}>
@@ -71,19 +72,19 @@ export default function DeleteAccountPage({ navigation }: { navigation: any }) {
                     <Text color='#000' fontSize={17} mb={3} fontWeight='bold'>Dear {user.name},</Text>
                 </HStack>
                 <HStack>
-                    <Text color='#000' fontSize={16} mb={3}>We are sorry to see you go, but if you have made up your mind do take note that when your account is deleted:</Text>
+                    <Text color='#000' textAlign={'justify'} fontSize={16} mb={3}>We are sorry to see you go, but if you have made up your mind do take note that when your account is deleted:</Text>
                 </HStack>
                 <HStack>
-                    <Text color='#000' fontSize={16} mb={3}>1. All your data will be removed and any points earned for the account will be forfeited.</Text>
+                    <Text color='#000'  textAlign={'justify'} fontSize={16} mb={3}>{'\u25AA'} All your data will be removed and any points earned for the account will be forfeited.</Text>
                 </HStack>
                 <HStack>
-                    <Text color='#000' fontSize={16} mb={3}>2. After successful deletion of your account, you will not be able to access your Poplook account.</Text>
+                    <Text color='#000' textAlign={'justify'} fontSize={16} mb={3}>{'\u25AA'} After successful deletion of your account, you will not be able to access your Poplook account.</Text>
                 </HStack>
                 <HStack>
-                    <Text color='#000' fontSize={16} mb={3}>3. You will no longer be able to track any purchases, return and/or exchange online.</Text>
+                    <Text color='#000' textAlign={'justify'} fontSize={16} mb={3}>{'\u25AA'} You will no longer be able to track any purchases, return and/or exchange online.</Text>
                 </HStack>
                 <HStack>
-                    <Text color='#000' fontSize={16} mb={3}>4. You will no longer receive e-mails for promotions from Poplook.</Text>
+                    <Text color='#000' textAlign={'justify'} fontSize={16} mb={3}>{'\u25AA'} You will no longer receive e-mails for promotions from Poplook.</Text>
                 </HStack>
                 </>  
             }
