@@ -19,7 +19,6 @@ import AddressListPage from '../pages/AddressListPage';
 import AddressDetailPage from '../pages/AddressDetailPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import RepayPage from '../pages/RepayPage';
-import IpayPage from '../pages/IpayPage';
 import StoreCreditPage from '../pages/StoreCreditPage';
 import LoyaltyPage from '../pages/LoyaltyPage';
 import RewardsPage from '../pages/RewardsPage';

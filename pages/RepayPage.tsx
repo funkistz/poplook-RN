@@ -11,7 +11,6 @@ import { isAtomeAppInstalled } from 'react-native-atome-paylater';
 import { handlePaymentURL } from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
 import CartService from '../Services/CartService';
-import Ipay88Container from '../components/Payment/Ipay88Container';
 import GeneralService from '../Services/GeneralService';
 import SkeletonRepay from '../components/SkeletonRepay';
 import CmsModal from '../components/Modals/Cms';
@@ -405,7 +404,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                 <>
                     <ScrollView backgroundColor='white'>
                         <View style={styles.container} pt={4}>
-                            <Ipay88Container></Ipay88Container>
 
                             <Text style={styles.bold}>Shipping Address</Text>
                             <Address address={address}></Address>

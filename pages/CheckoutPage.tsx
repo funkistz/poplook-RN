@@ -16,7 +16,6 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
-import Ipay88Container from '../components/Payment/Ipay88Container';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { clearCart, delToCart } from '../Redux/Slices/Cart';
 
@@ -629,7 +628,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} safeAreaBottom>
                 <ScrollView>
                     <View style={styles.container} pt={4}>
-                        <Ipay88Container></Ipay88Container>
 
                         {!address &&
                             <><TouchableOpacity onPress={toggleAddressModal}>
