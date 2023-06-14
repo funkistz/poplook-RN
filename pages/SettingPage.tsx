@@ -9,12 +9,12 @@ import { clearCheckout } from '../Redux/Slices/Checkout';
 import { clearAddress } from '../Redux/Slices/Address';
 import Barcode from '@kichiyaki/react-native-barcode-generator';
 import { userSelector } from '../Redux/Slices/Sessions';
-import { getCountries } from '../Redux/Slices/Infos';
 import ShippingTo from '../components/ShippingTo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { IOS_VERSION, ANDROID_VERSION } from "@env"
 import { CommonActions } from '@react-navigation/native';
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -38,7 +38,8 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
         { id: 8, key: "shipping", title: "Shipping Information", icon: "cube-outline" },
         { id: 9, key: "term", title: "Terms and Conditions", icon: "reader-outline" },
         { id: 10, key: "privacypolicy", title: "Privacy Policy", icon: "shield-checkmark-outline" },
-        // { id: 11, key: "visitourstore", title: "Visit our Store", icon: "home-outline" }
+        { id: 11, key: "visitourstore", title: "Visit Our Stores", icon: "storefront-outline" },
+        { id: 12, key: "followus", title: "Follow Us", icon: "ios-person-add-outline" }
     ];
 
     const goToDetailsPage = (id: any, key: any, title: any) => {
@@ -63,8 +64,10 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
             navigation.navigate('StoreCreditPage', { screen: 'StoreCreditPage', params: params });
         } else if (id == 5) {
             navigation.navigate('LoyaltyPage', { screen: 'LoyaltyPage', params: params });
-        // } else if (id == 11) {
-        //     navigation.navigate('VisitStorePage', { screen: 'VisitStorePage', params: params });
+        } else if (id == 11) {
+            navigation.navigate('VisitStorePage', { screen: 'VisitStorePage', params: params });
+        } else if (id == 12) {
+            navigation.navigate('FollowUsPage', { screen: 'FollowUsPage', params: params });
         } else {
             //
         }
@@ -143,7 +146,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                     {categories.map((item, index) => {
                         return <TouchableOpacity key={index} onPress={() => goToDetailsPage(item.id, item.key, item.title)}>
                             <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
-                                <Icon as={IonIcon} name={item.icon} size="6" color='black' />
+                                { item.id != 11 ? <Icon as={IonIcon} name={item.icon} size="6" color='black'/> : <Icons name={item.icon} size={24} color="black"/>}
                                 <Text pl={3} color="black" fontSize={16}>{item.title}</Text>
                                 <Spacer />
                                 <IonIcon name="chevron-forward-outline" size={20} color="#777" />
