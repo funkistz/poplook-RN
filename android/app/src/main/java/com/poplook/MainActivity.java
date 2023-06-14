@@ -4,7 +4,6 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
-import com.ipay88.IPay88Package;
 import org.devio.rn.splashscreen.SplashScreen;
 import android.os.Bundle;
 public class MainActivity extends ReactActivity {
