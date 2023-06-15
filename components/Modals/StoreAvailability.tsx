@@ -93,7 +93,7 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                                     return <Button onPress={() => chooseSize(res.attribute_name)} key={index} style={styles.chip} variant="outline" size='sm'
                                         bg={(select == res.attribute_name) ? '#000' : '#fff'}
                                         borderColor={(select == res.attribute_name) ? '#000' : '#ccc'}
-                                        width={(res.attribute_name.includes("Year") ? (win.width / 5) + 2 : (win.width / 6 - 2))}
+                                        width={Platform.OS == "ios" ? res.attribute_name.includes("Year") ? (win.width / 5) : (win.width/ 6 - 2.5) :  res.attribute_name.includes("Year") ? (win.width / 5) + 2: (win.width/ 6 - 2.5)}
                                         _text={{ color: getTextColor(res.attribute_name), fontSize: 13 }}
                                         >
                                         {res.attribute_name}

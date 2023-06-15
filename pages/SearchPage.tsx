@@ -231,7 +231,7 @@ export default function SearchPage({ route, navigation }: { route: any, navigati
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
-        padding: 20
+        padding: 15
     },
 })
 

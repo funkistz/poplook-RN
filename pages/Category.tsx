@@ -447,6 +447,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
-        padding: 20
+        padding: 15
     },
 });
