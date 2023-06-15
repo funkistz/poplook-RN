@@ -35,35 +35,35 @@ export default function App() {
         switch (type) {
           case InsiderCallbackType.NOTIFICATION_OPEN:
             console.log('[INSIDER][NOTIFICATION_OPEN]: ', data);
-            Alert.alert('[INSIDER][NOTIFICATION_OPEN]:', JSON.stringify(data));
+            // Alert.alert('[INSIDER][NOTIFICATION_OPEN]:', JSON.stringify(data));
             break;
           case InsiderCallbackType.INAPP_BUTTON_CLICK:
             console.log('[INSIDER][INAPP_BUTTON_CLICK]: ', data);
-            Alert.alert(
-              '[INSIDER][INAPP_BUTTON_CLICK]: ',
-              JSON.stringify(data),
-            );
+            // Alert.alert(
+            //   '[INSIDER][INAPP_BUTTON_CLICK]: ',
+            //   JSON.stringify(data),
+            // );
             break;
           case InsiderCallbackType.TEMP_STORE_PURCHASE:
             console.log('[INSIDER][TEMP_STORE_PURCHASE]: ', data);
-            Alert.alert(
-              '[INSIDER][TEMP_STORE_PURCHASE]: ',
-              JSON.stringify(data),
-            );
+            // Alert.alert(
+            //   '[INSIDER][TEMP_STORE_PURCHASE]: ',
+            //   JSON.stringify(data),
+            // );
             break;
           case InsiderCallbackType.TEMP_STORE_ADDED_TO_CART:
             console.log('[INSIDER][TEMP_STORE_ADDED_TO_CART]: ', data);
-            Alert.alert(
-              '[INSIDER][TEMP_STORE_ADDED_TO_CART]: ',
-              JSON.stringify(data),
-            );
+            // Alert.alert(
+            //   '[INSIDER][TEMP_STORE_ADDED_TO_CART]: ',
+            //   JSON.stringify(data),
+            // );
             break;
           case InsiderCallbackType.TEMP_STORE_CUSTOM_ACTION:
             console.log('[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ', data);
-            Alert.alert(
-              '[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ',
-              JSON.stringify(data),
-            );
+            // Alert.alert(
+            //   '[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ',
+            //   JSON.stringify(data),
+            // );
             break;
         }
       },
@@ -83,8 +83,8 @@ export default function App() {
       const fineLocationGranted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: "Application Camera Permission",
-          message: "The application requires access to the camera.",
+          title: "Application Location Permission", 
+          message: "The application requires location permission to get device location.",
           buttonNeutral: "Ask Later",
           buttonNegative: "Cancel",
           buttonPositive: "OK",
@@ -126,14 +126,14 @@ export default function App() {
         switch (type) {
           case InsiderCallbackType.NOTIFICATION_OPEN:
             console.log("[INSIDER][NOTIFICATION_OPEN]: ", data);
-            Alert.alert("[INSIDER][NOTIFICATION_OPEN]:", JSON.stringify(data));
+            // Alert.alert("[INSIDER][NOTIFICATION_OPEN]:", JSON.stringify(data));
             break;
           case InsiderCallbackType.TEMP_STORE_CUSTOM_ACTION:
             console.log("[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ", data);
-            Alert.alert(
-              "[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ",
-              JSON.stringify(data)
-            );
+            // Alert.alert(
+            //   "[INSIDER][TEMP_STORE_CUSTOM_ACTION]: ",
+            //   JSON.stringify(data)
+            // );
             break;
         }
       }
