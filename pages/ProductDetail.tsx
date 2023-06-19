@@ -78,7 +78,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     // Bottom sheet
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const snapPoints = useMemo(() => ['30%', '50%'], []);
+    const snapPoints = useMemo(() => ['35%'], []);
     const handleSheetChanges = useCallback((index: number) => {
         if (index == -1) {
             setBackdropVisible(false)
