@@ -754,7 +754,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                         {gift_wrap &&
                                             <>
                                                 <AspectRatio w="40%" ratio={2/3}>
-                                                    <Image resizeMode="cover" borderRadius={10} source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
+                                                    <Image resizeMode="cover" source={{ uri: gift_wrap.product_val[gift_wrap_id].image_url_tumb[0] }} />
                                                 </AspectRatio>
 
                                                 <VStack m={3} flexShrink={1}>
@@ -855,7 +855,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                             <ImageBackground
                                                 source={{ uri: item.image_url }}
                                                 style={{ flex: 1 }}
-                                                borderRadius={10}
                                                 resizeMode="cover">
                                                 <View style={styles.quantity_view}>
                                                     <Button size='sm'

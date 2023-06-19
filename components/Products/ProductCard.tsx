@@ -63,7 +63,6 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                             <ImageBackground
                                 source={{ uri: Array.isArray(product.image_url) ? product.image_url[0] : product.image_url }}
                                 style={{ flex: 1 }}
-                                borderRadius={10}
                                 resizeMode="cover">
                                 {product.discount_text != null && product.quantity > 0 &&
                                     <View style={{

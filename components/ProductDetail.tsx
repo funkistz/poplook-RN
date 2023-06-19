@@ -11,7 +11,7 @@ export default function ProductDetail({ product }: { product: any }) {
         <Box borderRadius={10} mb={1}>
             <HStack>
                 <AspectRatio w="30%" ratio={2/3}>
-                    <Image resizeMode="cover" borderRadius={10} source={{ uri: product.image_url }} alt="image" />
+                    <Image resizeMode="cover" source={{ uri: product.image_url }} alt="image" />
                 </AspectRatio>
 
                 <VStack mx={3} mt={1} flexShrink={1}>

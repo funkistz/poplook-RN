@@ -63,7 +63,7 @@ export default function CartList({ product }: any) {
                 <Flex style={styles.container}>
                     <Box w={100}>
                         <AspectRatio ratio={2/3}>
-                            <Image resizeMode="cover" borderRadius={10} source={{
+                            <Image resizeMode="cover" source={{
                                 uri: product.image_url
                             }} alt="image" />
                         </AspectRatio>
