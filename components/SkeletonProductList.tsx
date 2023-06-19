@@ -8,7 +8,7 @@ export function Body () {
                     <Skeleton h="full" startColor="muted.300" />
                 </Box>
                 <HStack px={3} width={'70%'} >
-                    <VStack  style={{ width: 140, height: 30}}>
+                    <VStack  style={{ width: 125, height: 30}}>
                     <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" />
                     <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" mt={2} />
                     </VStack>
@@ -25,42 +25,7 @@ export function Body () {
                     <Skeleton h="full" startColor="muted.300" />
                 </Box>
                 <HStack px={3} width={'70%'} >
-                    <VStack  style={{ width: 140, height: 30}}>
-                    <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" />
-                    <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" mt={2} />
-                    </VStack>
-
-                    <Box alignItems="center" style={{ width: 40, height: 30 }} >
-                        <Skeleton size="6" rounded="full" startColor="muted.300" />
-                    </Box>
-                </HStack>
-            </VStack>
-        </HStack>
-
-        <HStack h={270} mt={30}>
-            <VStack w="50%">
-                <Box w={'100%'} p={3}>
-                    <Skeleton h="full" startColor="muted.300" />
-                </Box>
-                <HStack px={3} width={'70%'} >
-                    <VStack  style={{ width: 140, height: 30}}>
-                    <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" />
-                    <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" mt={2} />
-                    </VStack>
-
-                    <Box alignItems="center" style={{ width: 40, height: 30 }} >
-                        <Skeleton size="6" rounded="full" startColor="muted.300" />
-                    </Box>
-                </HStack>
-            </VStack>
-
-
-            <VStack w="50%">
-                <Box w={'100%'} p={3}>
-                    <Skeleton h="full" startColor="muted.300" />
-                </Box>
-                <HStack px={3} width={'70%'} >
-                    <VStack  style={{ width: 140, height: 30}}>
+                    <VStack  style={{ width: 125, height: 30}}>
                     <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" />
                     <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" mt={2} />
                     </VStack>
@@ -78,7 +43,7 @@ export function Body () {
                     <Skeleton h="full" startColor="muted.300" />
                 </Box>
                 <HStack px={3} width={'70%'} >
-                    <VStack  style={{ width: 140, height: 30}}>
+                    <VStack  style={{ width: 125, height: 30}}>
                     <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" />
                     <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" mt={2} />
                     </VStack>
@@ -95,7 +60,42 @@ export function Body () {
                     <Skeleton h="full" startColor="muted.300" />
                 </Box>
                 <HStack px={3} width={'70%'} >
-                    <VStack  style={{ width: 140, height: 30}}>
+                    <VStack  style={{ width: 125, height: 30}}>
+                    <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" />
+                    <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" mt={2} />
+                    </VStack>
+
+                    <Box alignItems="center" style={{ width: 40, height: 30 }} >
+                        <Skeleton size="6" rounded="full" startColor="muted.300" />
+                    </Box>
+                </HStack>
+            </VStack>
+        </HStack>
+
+        <HStack h={270} mt={30}>
+            <VStack w="50%">
+                <Box w={'100%'} p={3}>
+                    <Skeleton h="full" startColor="muted.300" />
+                </Box>
+                <HStack px={3} width={'70%'} >
+                    <VStack  style={{ width: 125, height: 30}}>
+                    <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" />
+                    <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" mt={2} />
+                    </VStack>
+
+                    <Box alignItems="center" style={{ width: 40, height: 30 }} >
+                        <Skeleton size="6" rounded="full" startColor="muted.300" />
+                    </Box>
+                </HStack>
+            </VStack>
+
+
+            <VStack w="50%">
+                <Box w={'100%'} p={3}>
+                    <Skeleton h="full" startColor="muted.300" />
+                </Box>
+                <HStack px={3} width={'70%'} >
+                    <VStack  style={{ width: 125, height: 30}}>
                     <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" />
                     <Skeleton h="1" flex="0.5" rounded="full" startColor="muted.300" mt={2} />
                     </VStack>
