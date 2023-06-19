@@ -28,6 +28,8 @@ const win = Dimensions.get('window');
 
 export default function ProductDetailPage({ route, navigation, product_id }: any) {
 
+    const cart = useSelector((storeState: any) => storeState.cart);
+
     const [isFocus, setIsFocus] = useState(false);
 
     useFocusEffect(
@@ -388,7 +390,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
             <SizeGuideModal
                 visible={isModalSizeGuide}
                 onToggle={toggleModalSizeGuide}
-            />              
+            />            
 
             {isLoading &&
                 <>
@@ -755,7 +757,11 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                 }}
                             />
                             <Box style={styles.addtoCartWrapper}>
-                                <Button isDisabled={quantityAvailable == 0 ? true : false} onPress={() => addToCartF()} style={styles.addtoCartBtn}>
+                                <Button isDisabled={quantityAvailable == 0 ? true : false} 
+                                    onPress={() => addToCartF()} 
+                                    style={styles.addtoCartBtn}
+                                    isLoading={cart.cartLoading}
+                                    isLoadingText="ADD TO CART">
                                     ADD TO CART
                                 </Button>
                             </Box>

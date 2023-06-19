@@ -9,12 +9,14 @@ import { useDispatch } from 'react-redux'
 export interface CartState {
     id_cart: Number | null,
     total_item: 0,
+    cartLoading: boolean,
     data: {} | null
 }
 
 const initialState: CartState = {
     id_cart: null,
     total_item: 0,
+    cartLoading: false,
     data: {}
 }
 
@@ -146,17 +148,28 @@ export const cartSlice = createSlice({
             if (payload.data) {
                 temp.id_cart = payload.data.id_cart;
                 temp.total_item = payload.data.totalItemInCart;
+                temp.cartLoading = false;
                 // temp.data = { ...state.data, totalItemInCart: payload.data.totalItemInCart }
                 state = { ...state, ...temp }
             }
             return state;
         })
             .addCase(addToCart.pending, (state, { payload }) => {
+                const temp: any = {};
+                temp.cartLoading = true;
+
+                state = { ...state, ...temp }
+
+                return state;
             })
             .addCase(addToCart.rejected, (state, { payload }) => {
-
                 GeneralService.toast({ description: payload.message });
+                const temp: any = {};
+                temp.cartLoading = true;
 
+                state = { ...state, ...temp }
+
+                return state;
             })
 
             .addCase(getCart.fulfilled, (state, { payload }) => {
