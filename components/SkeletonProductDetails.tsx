@@ -19,19 +19,13 @@ export default function SkeletonProductDetails() {
                 </ScrollView>
 
                 <Flex direction='row' style={styles.footerWrapper}>
-                    <Box style={styles.footerIconWrapper} m={1}>
-                        <Skeleton size="10" rounded="full" startColor="muted.300" width={50}/>
-                    </Box>
-                    <Box style={styles.footerIconWrapper} m={1}>
-                        <Skeleton size="10" rounded="full" startColor="muted.300" width={50}/>
-                    </Box>
-                    <Box style={styles.addtoCartWrapper} m={1}>
-                        <Skeleton startColor="muted.300" borderRadius={20} />
+                    <Skeleton size="10" rounded="full" startColor="muted.300" mt={3} ml={1} width={50}/>
+                    <Skeleton size="10" rounded="full" startColor="muted.300"  mt={3} ml={1} width={50}/>
+                    <Box style={styles.addtoCartWrapper} mt={1}>
+                        <Skeleton startColor="muted.300" borderRadius={20}/>
                     </Box>
                 </Flex>
             </Flex>
-            
-            
         </>
     );
 }
@@ -39,6 +33,7 @@ export default function SkeletonProductDetails() {
 const styles = StyleSheet.create({
     footerWrapper: {
         backgroundColor: 'white',
+        height: 60
     },
     footerIconWrapper: {
         padding: 6
