@@ -22,6 +22,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlist';
 import { useFocusEffect } from '@react-navigation/native';
 import SizeGuideModal from '../components/Modals/SizeGuide';
+import GeneralService from '../Services/GeneralService';
 
 const win = Dimensions.get('window');
 
@@ -205,6 +206,10 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     }
 
     const addtoWishlist = async (id_product_attribute = null, item: any) => {
+
+        if (session.user == null) {
+            return GeneralService.toast({ description: 'To use Wishlist function, please log in to your account.' });
+        }
 
         setType('wishlist');
 
