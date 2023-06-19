@@ -53,13 +53,13 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                 {cart && cart.data && cart.data.product_list && cart.data.product_list.length > 0 &&
                     <>
                         {cart.data.product_list.length > 0 && <>
-                            <ScrollView flex={1} pt={4}>
+                            <ScrollView flex={1}>
                                 {cart.data.product_list.map((product: any, index: any) => {
                                     return <CartList key={index} product={product}></CartList>
                                 })
                                 }
                             </ScrollView>
-                            <HStack px="1" py="2" justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+                            <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                                 <HStack alignItems="center" w="40%">
                                     <Text fontSize="15" color="black" pl={2} bold> SubTotal</Text>
                                 </HStack>
