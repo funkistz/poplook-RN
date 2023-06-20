@@ -1,29 +1,26 @@
-import { StyleSheet, TouchableOpacity, Switch, Dimensions, FlatList, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, FlatList, Linking, Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, ScrollView, View, HStack, Spacer, Flex, Center, Icon, Box, Button, Select, CheckIcon, FormControl, Input,TextArea } from "native-base";
+import { Text, View, VStack, HStack, Flex, Icon, Box, Button, Select, CheckIcon, Input,TextArea } from "native-base";
 import { useIsFocused } from '@react-navigation/native';
-import Spinner from '../components/Spinner';
 import WebView from 'react-native-webview';
-import CustomInput from '../components/Form/CustomInput';
-import { ErrorMessage, Formik } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup'
 import OrderHistoryService from '../Services/OrderHistoryService';
 import { useSelector } from 'react-redux';
 import CmsService from '../Services/CmsService';
 import GeneralService from '../Services/GeneralService';
-
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import Icons from 'react-native-vector-icons/FontAwesome5';
 
 export default function CustomerServiceDetailsPage({ route , navigation} : { route: any,  navigation: any }) {
 
     const win = Dimensions.get('window');
     const isFocused = useIsFocused();
     const [details, setDetails] = useState<any>([]);
-    const [order, setOrder] = useState("");
     const [keyboard, setKeyboard] = useState<boolean>(false);
     const [listOrderId, setListOrderId] = useState<any>([]);
     
     const session = useSelector((storeState: any) => storeState.session);
-
 
     const htmlContent = (data: any) => {
         return `   
@@ -130,7 +127,17 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
         }
     }
 
+    const medias = [
+        { id: 0, title: "Facebook", url: "https://www.facebook.com/poplook", icon: 'facebook-f' },
+        { id: 1, title: "Twitter", url: "https://www.twitter.com/poplookshop", icon: 'logo-twitter'},
+        { id: 2, title: "Instagram", url: "https://www.instagram.com/poplook", icon: 'logo-instagram' },
+        { id: 3, title: "Youtube", url: "https://www.youtube.com/c/POPLOOKChannel", icon: 'logo-youtube' },
+        { id: 4, title: "Tiktok", url: "https://www.tiktok.com/@poplookshop", icon: 'tiktok' }
+    ];
 
+    const goToSocialMediaPage = (url: any) => {
+        Linking.openURL(url); 
+    }
 
     useEffect(() => {
         if(isFocused) {
@@ -194,6 +201,22 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
                                             <Text color='black'bold fontSize={15}>By Email: </Text>
                                             <Text color='black' fontSize={15}>service@poplook.com</Text>
                                         </View>
+                                        <View style={{ flexDirection: 'row' }} mt={4}>
+                                            <Text color='black'bold fontSize={15} marginRight={3}>Connect with Us</Text>
+                                        </View>
+                                        <VStack marginTop={2} >
+                                            <HStack>
+                                                {medias.map((item: any, index: any) => {
+                                                    return <>
+                                                        <TouchableOpacity key={index} onPress={() => goToSocialMediaPage(item.url)}>
+                                                            <Box key={index} marginRight={4}>
+                                                                { (item.id != 4 && item.id != 0) ? <Icon as={IonIcon} name={item.icon} size="6" color='black'/> : <Icons name={item.icon} size={20} color="black"/>}
+                                                            </Box>
+                                                        </TouchableOpacity>
+                                                    </>;
+                                                })}
+                                            </HStack>
+                                        </VStack>
                                     </View>
                                     <HStack px="1" py="2" mt={4}  bg={'gray.100'}  justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                                         <HStack alignItems="center" w="100%">

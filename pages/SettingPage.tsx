@@ -38,8 +38,7 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
         { id: 8, key: "shipping", title: "Shipping Information", icon: "cube-outline" },
         { id: 9, key: "term", title: "Terms and Conditions", icon: "reader-outline" },
         { id: 10, key: "privacypolicy", title: "Privacy Policy", icon: "shield-checkmark-outline" },
-        { id: 11, key: "visitourstore", title: "Visit Our Stores", icon: "storefront-outline" },
-        // { id: 12, key: "followus", title: "Follow Us", icon: "ios-person-add-outline" }
+        { id: 11, key: "visitourstore", title: "Visit Our Stores", icon: "storefront-outline" }
     ];
 
     const goToDetailsPage = (id: any, key: any, title: any) => {
@@ -66,8 +65,6 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
             navigation.navigate('LoyaltyPage', { screen: 'LoyaltyPage', params: params });
         } else if (id == 11) {
             navigation.navigate('VisitStorePage', { screen: 'VisitStorePage', params: params });
-        } else if (id == 12) {
-            navigation.navigate('FollowUsPage', { screen: 'FollowUsPage', params: params });
         } else {
             //
         }
