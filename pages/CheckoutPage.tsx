@@ -45,6 +45,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const voucher_list = useSelector((storeState: any) => storeState.checkout.voucher);
     const credit_store_list = useSelector((storeState: any) => storeState.checkout.storeCredit);
     const text_message = useSelector((storeState: any) => storeState.checkout.message);
+    const free_order = useSelector((storeState: any) => storeState.checkout.free_order);
 
     const [gift, setGift] = React.useState(gift_option ? '1' : '0');
     const [message, setMessage] = React.useState('');
@@ -297,6 +298,27 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 } else {
                     GeneralService.toast({ description: 'Please select payment type' });
                 }
+            } else if (paymentType == '0') {
+                const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
+                const json = await response.json();
+
+                console.log('step4freeorder', json.data)
+
+                if (json.code == 200 && json.data) {
+
+                    dispatch(clearCart())
+                    dispatch(clearLeaveMessage())
+
+                    const param = {
+                        id: json.data.id_order
+                    };
+    
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'OrderSuccessPage', params: param }]
+                    });
+                }
+            
             } else {
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                 const json = await response.json();
@@ -412,6 +434,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         if (shopId == 1) {
             if (paymentType == '16') {
                 return 'atome';
+            } else if (paymentType == '0') {
+                return 'free_order';
             } else {
                 return 'ipay88'
             }
@@ -420,13 +444,17 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 return 'sgd_cc';
             } else if (paymentType == '5') {
                 return 'enets'
+            } else if (paymentType == '0') {
+                return 'free_order';
             }
         } else if (shopId == 3) {
             if (paymentType == '1') {
                 return 'usd_paypal';
+            } else if (paymentType == '0') {
+                return 'free_order';
             } else {
                 return 'usd_cc'
-            }
+            } 
         }
 
         return paymentType;
@@ -709,7 +737,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                         <Spacer />
 
                                         <HStack>
-                                            <Text color='black' mt={2} mr={3} bold>RM {res.reduction_amount}</Text>
+                                            <Text color='black' mt={2} mr={3} bold>RM {res.value_real}</Text>
                                             <TouchableOpacity style={{ paddingHorizontal: 8, paddingVertical: 5, }} onPress={() => alertDeleteVoucher(res.id_cart_rule)}>
                                                 <IonIcon name="trash-outline" size={26} color="black" />
                                             </TouchableOpacity>
@@ -801,34 +829,51 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         <Divider bg="#ccc" />
 
                         <Text style={styles.bold} py={3} pt={4}>Payment Method</Text>
-                        <Radio.Group name="paymentMethod" onChange={nextValue => {
-                            setPaymentChild('')
-                            setPaymentType(nextValue);
-                        }}>
-                            {payment && payment.map((item: any) => {
-                                return <>
-                                    <HStack>
-                                        <Radio value={item.id} my="2" backgroundColor={'white'} _text={{ color: 'black', fontSize: 14 }} size="md">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
 
-                                            {(paymentType == '2' && item.id == 2)  || (paymentType == '8' && item.id == 8) ?
-                                                <Select selectedValue={paymentChild} minWidth={win.width/3} placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
+                        {payment && 
+                            <Radio.Group name="paymentMethod" onChange={nextValue => {
+                                setPaymentChild('')
+                                setPaymentType(nextValue);
+                            }}>
+                                {payment && payment.map((item: any) => {
+                                    return <>
+                                        <HStack>
+                                            <Radio value={item.id} my="2" backgroundColor={'white'} _text={{ color: 'black', fontSize: 14 }} size="md">{item.name}</Radio><Spacer /><Box width="2/4" maxWidth="200">
 
-                                                    {item.options.map((option: any) => {
-                                                        return (
-                                                            <Select.Item value={option.value} label={option.name} />
+                                                {(paymentType == '2' && item.id == 2)  || (paymentType == '8' && item.id == 8) ?
+                                                    <Select selectedValue={paymentChild} minWidth={win.width/3} placeholder="Select Payment Type" color={'black'} _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={1} /> }} onValueChange={itemValue => setPaymentChild(itemValue)}>
 
-                                                        );
-                                                    })}
-                                                </Select>
+                                                        {item.options.map((option: any) => {
+                                                            return (
+                                                                <Select.Item value={option.value} label={option.name} />
 
-                                                : ''}
+                                                            );
+                                                        })}
+                                                    </Select>
 
-                                        </Box>
-                                    </HStack>
+                                                    : ''}
 
-                                </>
-                            })}
-                        </Radio.Group>
+                                            </Box>
+                                        </HStack>
+
+                                    </>
+                                })}
+                            </Radio.Group>
+                        }
+
+                        {!payment && (free_order == 1) &&
+                            <HStack>
+                                <Radio.Group name="paymentMethod" onChange={nextValue => {
+                                    setPaymentChild('')
+                                    setPaymentType(nextValue);
+                                    }}>
+                                    <Radio value="0" my="2" backgroundColor={'white'} _text={{ color: 'black', fontSize: 14 }} size="md">Free Order</Radio><Spacer />
+                                    <Box width="2/4" maxWidth="200">
+                                    </Box>
+                                </Radio.Group>
+                            </HStack>
+                        }
+
                         {/* <Text color={'black'}>{paymentType} {paymentChild}</Text> */}
                         <Spacer />
 
@@ -975,4 +1020,5 @@ const styles = StyleSheet.create({
         sizes: 'md',
     },
 })
+
 

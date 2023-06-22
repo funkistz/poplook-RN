@@ -20,6 +20,7 @@ export interface CheckoutState {
     total_product: String,
     discount: String
     shipping_fee: String,
+    free_order: any
 }
 
 const initialState: CheckoutState = {
@@ -38,7 +39,8 @@ const initialState: CheckoutState = {
     total_price: '',
     total_product: '',
     discount: '',
-    shipping_fee: ''
+    shipping_fee: '',
+    free_order: ''
 }
 
 export const assignCheckoutAddress: any = createAsyncThunk(
@@ -366,6 +368,7 @@ export const checkoutSlice = createSlice({
                 temp.shipping_fee = payload.data.shipping_price;
                 temp.gift_option = payload.data.gift_wrap_exist;
                 temp.discount = payload.data.totalDiscountsWt;
+                temp.free_order = payload.data.free_order;
                 state = { ...state, ...temp }
             }
 
