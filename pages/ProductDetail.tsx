@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Image, TouchableOpacity, Share, PixelRatio, Modal, Animated } from 'react-native';
+import { StyleSheet, View, Dimensions, Image, TouchableOpacity, Share, TouchableWithoutFeedback, Modal, Alert } from 'react-native';
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { VStack, HStack, Center, Flex, Spacer, Box, ScrollView, Button, IconButton, Text, Divider, Backdrop, Icon } from 'native-base';
 import ProductService from '../Services/ProductService';
@@ -25,7 +25,8 @@ import SizeGuideModal from '../components/Modals/SizeGuide';
 import GeneralService from '../Services/GeneralService';
 import Carousel from 'react-native-reanimated-carousel';
 import CarouselItem from '../components/Products/CarouselItem';
-import { Vimeo } from 'react-native-vimeo-iframe';
+import Animated, { Layout, ZoomIn, FadeIn } from 'react-native-reanimated';
+import ImageView from "react-native-image-viewing";
 
 const win = Dimensions.get('window');
 
@@ -52,8 +53,13 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     // Details
     const [product, setProduct] = useState<any>({});
     const [images, setImages] = useState<any>([]);
+    const [imagesOnly, setImagesOnly] = useState<any>([]);
     const [carouselItems, setCarouselItems] = useState<any>([]);
     const [vimeoUrl, setVimeoUrl] = useState<any>([]);
+    const [imagePreviewShow, setImagePreviewShow] = useState<any>(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState<any>(0);
+    const [ref, setRef] = useState<any>();
+    const scrollPosition = useRef(0)
 
     useEffect(() => {
 
@@ -76,7 +82,15 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     const [attribute, setAttribute] = useState([]);
     const [colorRelated, setColorRelated] = useState([]);
     const [shownHere, setShownHere] = useState<any>([]);
-    const [imageHeight, setImageHeight] = useState<any>(0);
+
+    // setImageHeight(height * screenWidth / width);
+
+    const [imageHeight, setImageHeight] = useState<any>((760 * win.width / 506));
+
+    useEffect(() => {
+        setImageHeight(760 * win.width / 506);
+    }, [win])
+
     const [isLoading, setIsLoading] = useState<any>(false);
     const [details, setDetails] = useState<any>('');
     const [measurements, setMeasurements] = useState<any>([]);
@@ -195,15 +209,16 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 // temp.push(<CarouselItem imageHeight={imageHeight} uri={image} />);
                 temp = [...temp, <CarouselItem imageHeight={imageHeight} uri={image} />]
                 // temp.push(<Text>xxxx</Text>);
-                console.log('temp' ,temp)
-                
+                console.log('temp', temp)
+
 
             })
         }
 
-        console.log('temp2' ,temp)
+        console.log('temp2', temp)
 
         setCarouselItems(temp);
+        setImagesOnly([...images.map((url: any) => { return { uri: url } })]);
 
         if (json.data.video_url) {
             images.push(json.data.video_url);
@@ -418,6 +433,22 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     }, [])
 
 
+    const openImagePreview = () => {
+
+        if (currentImageIndex < (imagesOnly.length)) {
+            setImagePreviewShow(true);
+        }
+
+    }
+
+    const handleScroll = (event: any) => {
+        const positionX = event.nativeEvent.contentOffset.x;
+        const positionY = event.nativeEvent.contentOffset.y;
+
+        scrollPosition.current = positionY;
+        // GeneralService.toast({ title: positionY })
+    };
+
     return (
         <>
             {isFocus &&
@@ -435,33 +466,40 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                         onToggle={toggleModalSizeGuide}
                     />
 
+                    <ImageView
+                        images={imagesOnly}
+                        imageIndex={currentImageIndex}
+                        visible={imagePreviewShow}
+                        onRequestClose={() => setImagePreviewShow(false)}
+                    />
+
                     {isLoading &&
                         <>
                             <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} style={{ position: 'relative' }}>
-                                <ScrollView flex={1}>
-                                    {/* <Vimeo
-                                        style={{ width: '100%', height: imageHeight }}
-                                        videoId={vimeoUrl.split("/").pop()}
-                                        params={'autoplay=0'}
-                                        reference='https://poplook.com'
-                                    /> */}
+                                <ScrollView flex={1} ref={ref => { setRef(ref as any); }} onScroll={handleScroll}>
                                     <VStack h={imageHeight} alignItems="center"  >
-                                        {/* <Text color={'black'}>{images}</Text> */}
-                                        {/* {carouselItems && carouselItems[0]} */}
                                         {carouselItems && <>
-                                            {/* <Text color='dark.100'>{JSON.stringify(carouselItems.length)}</Text> */}
                                             <Carousel
-                                                // loop={true}
+                                                loop={false}
                                                 width={win.width}
+                                                height={imageHeight}
                                                 // autoPlay={true}
-                                                data={[...new Array(6).keys()]}
-                                                scrollAnimationDuration={1000}
-                                                onSnapToItem={(index) => console.log('current index:', index)}
-                                                renderItem={({ index }) => carouselItems[index]}
+                                                data={images}
+                                                scrollAnimationDuration={100}
+                                                // onScrollBegin={() => { GeneralService.toast({ title: 'xxx' }) }}
+                                                onSnapToItem={(index) => {
+                                                    setCurrentImageIndex(index)
+                                                    if (index == imagesOnly.length) {
+                                                        ref.scrollTo({
+                                                            y: scrollPosition.current + 1
+                                                        })
+                                                    }
+                                                }}
+                                                renderItem={({ index }) => <CarouselItem key={index} imageHeight={imageHeight} uri={images[index]}
+                                                    openPreview={openImagePreview}
+                                                />}
                                             />
-                                            
-                                            
-                                            </>}
+                                        </>}
                                         {/* <SliderBox
                                             LoaderComponent={() => <></>}
                                             sliderBoxHeight={imageHeight}
