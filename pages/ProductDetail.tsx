@@ -23,6 +23,9 @@ import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlis
 import { useFocusEffect } from '@react-navigation/native';
 import SizeGuideModal from '../components/Modals/SizeGuide';
 import GeneralService from '../Services/GeneralService';
+import Carousel from 'react-native-reanimated-carousel';
+import CarouselItem from '../components/Products/CarouselItem';
+import { Vimeo } from 'react-native-vimeo-iframe';
 
 const win = Dimensions.get('window');
 
@@ -49,6 +52,27 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
     // Details
     const [product, setProduct] = useState<any>({});
     const [images, setImages] = useState<any>([]);
+    const [carouselItems, setCarouselItems] = useState<any>([]);
+    const [vimeoUrl, setVimeoUrl] = useState<any>([]);
+
+    useEffect(() => {
+
+        let temp: any = [];
+
+        if (images) {
+            images.map((image: any) => {
+
+                // temp.push(<CarouselItem imageHeight={imageHeight} uri={image} />);
+                temp = [...temp, <CarouselItem imageHeight={imageHeight} uri={image} />]
+                // temp.push(<Text>xxxx</Text>);
+
+            })
+        }
+
+        setCarouselItems(temp);
+
+    }, [images])
+
     const [attribute, setAttribute] = useState([]);
     const [colorRelated, setColorRelated] = useState([]);
     const [shownHere, setShownHere] = useState<any>([]);
@@ -163,8 +187,27 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
         const images: any = json.data.image_url;
 
+        let temp: any = []
+
+        if (json.data.image_url) {
+            json.data.image_url.map((image: any) => {
+
+                // temp.push(<CarouselItem imageHeight={imageHeight} uri={image} />);
+                temp = [...temp, <CarouselItem imageHeight={imageHeight} uri={image} />]
+                // temp.push(<Text>xxxx</Text>);
+                console.log('temp' ,temp)
+                
+
+            })
+        }
+
+        console.log('temp2' ,temp)
+
+        setCarouselItems(temp);
+
         if (json.data.video_url) {
             images.push(json.data.video_url);
+            setVimeoUrl(json.data.video_url);
         }
 
         if (json.data.attribute_list && json.data.attribute_list.length > 0) {
@@ -215,26 +258,26 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
         setType('wishlist');
 
-        const idProducts = item.map((res:any) => res.id_product);
-        const uniqueIdProducts = idProducts.filter((value:any, index:any, self:any) => {
+        const idProducts = item.map((res: any) => res.id_product);
+        const uniqueIdProducts = idProducts.filter((value: any, index: any, self: any) => {
             return self.indexOf(value) === index;
         });
 
-        if(wishlist.id_product.length > 0) {
+        if (wishlist.id_product.length > 0) {
             const check = uniqueIdProducts.length > 0 ? uniqueIdProducts.toString() : product.id;
-            const filter = wishlist.data.product_list.find((res:any) => res.id_product === check);
+            const filter = wishlist.data.product_list.find((res: any) => res.id_product === check);
 
-            if(filter != undefined) {
+            if (filter != undefined) {
                 const params = {
                     id_product: filter.id_product,
                     id_product_attribute: filter.id_product_attribute,
                 }
-        
+
                 await dispatch(delWishlist(params))
                 return;
             }
         }
-        
+
         if (hasSize) {
             if (!sizeSelected && !id_product_attribute) {
                 bottomSheetRef.current?.snapToIndex(0);
@@ -377,430 +420,451 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
     return (
         <>
-        {isFocus &&
-        <View style={styles.container}>
-            <StoreAvailabilityModal
-                visible={isModalStore}
-                onToggle={toggleModalStore}
-                size={attribute}
-                reference={product.reference}
-                product={product}
-            />
+            {isFocus &&
+                <View style={styles.container}>
+                    <StoreAvailabilityModal
+                        visible={isModalStore}
+                        onToggle={toggleModalStore}
+                        size={attribute}
+                        reference={product.reference}
+                        product={product}
+                    />
 
-            <SizeGuideModal
-                visible={isModalSizeGuide}
-                onToggle={toggleModalSizeGuide}
-            />            
+                    <SizeGuideModal
+                        visible={isModalSizeGuide}
+                        onToggle={toggleModalSizeGuide}
+                    />
 
-            {isLoading &&
-                <>
-                    <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} style={{ position: 'relative' }}>
-                        <ScrollView flex={1}>
-                            <VStack h={imageHeight} alignItems="center"  >
-                                <SliderBox
-                                    LoaderComponent={() => <></>}
-                                    sliderBoxHeight={imageHeight}
-                                    resizeMethod={'resize'}
-                                    resizeMode={'cover'}
-                                    ImageComponent={(props: any) => <SliderItem imageHeight={imageHeight} {...props} />}
-                                    images={images} />
-                            </VStack>
-
-                            <VStack px={4} pt={4} backgroundColor={'white'} >
-                                <Text color={'black'} fontSize={18}>{product.name}</Text>
-                                {price()}
-                                {product.discount_text != null && <Text px={3} py={1} style={{ color: 'white', fontSize: 10, backgroundColor: 'black', textAlign: 'center' }}>{product.discount_text}</Text>}
-                                
-                                {quantityAvailable == 0 && <Text style={{ color: '#a94442', fontSize: 18, marginTop: 20, }}>This product is not available.</Text>}
-                                
-                                {attribute.length > 0 && quantityAvailable > 0 &&
-                                    <>
-                                        <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
-                                        <SizeList attribute={attribute} setSizeSelected={setSizeSelected} sizeSelected={sizeSelected}></SizeList>
-
-                                        <TouchableOpacity onPress={toggleModalSizeGuide} >
-                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' > Size Guide </Text>
-                                        </TouchableOpacity>
-                                    </>
-                                }
-
-                                <TouchableOpacity onPress={toggleModalStore} >
-                                    <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' mb={6}> Check in store availability </Text>
-                                </TouchableOpacity>
-
-                                {colorRelated &&
-                                    <>
-                                        <Text bold color={'black'} alignItems="center" mb={2}> Colours</Text>
-                                        <ScrollView horizontal={true}>
-                                            <HStack mb={4}>
-                                                {colorRelated && colorRelated.map((res: any) => {
-                                                    return <TouchableOpacity onPress={() => chooseColor(res.id_product)} key={res.id_color + '_' + 1} disabled={res.id_product === route.params.product_id ? true : false}>
-                                                        <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
-                                                    </TouchableOpacity>
-                                                })}
-                                            </HStack>
-                                        </ScrollView>
-                                    </>
-                                }
-
-
-                            </VStack>
-
-                            <VStack space={4} paddingBottom={5}>
-                                <View>
-                                    <TouchableOpacity activeOpacity={1} onPress={toggleModalDetails}>
-                                        <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
-                                            <Box width={'90%'} backgroundColor='red' pt={1}>
-                                                <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Details</Text>
-                                            </Box>
-                                            <Box width={'10%'} backgroundColor='red'>
-                                                <IonIcon
-                                                    name={'chevron-forward-outline'}
-                                                    size={30}
-                                                    color="#333"
-                                                />
-                                            </Box>
-                                        </HStack>
-                                    </TouchableOpacity>
-
-                                    <Modal
-                                        presentationStyle='formSheet'
-                                        animationType="slide"
-                                        transparent={false}
-                                        visible={isModalDetails}
-                                        onRequestClose={toggleModalDetails}
-                                    >
-                                        <View style={{ flex: 1, paddingVertical: 20 }}>
-                                            <HStack mb={4}>
-                                                <HStack w={'90%'}>
-                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Details</Text>
-                                                </HStack>
-                                                <HStack w={'10%'}>
-                                                    <TouchableOpacity onPress={toggleModalDetails}>
-                                                        <Icon
-                                                            size="6"
-                                                            color="black"
-                                                            as={<IonIcon name="close-outline" />}
-                                                        />
-                                                    </TouchableOpacity>
-                                                </HStack>
-                                            </HStack>
-                                            <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            {details &&
-                                                <>
-                                                    <View>
-                                                        <ScrollView>
-                                                            <WebView
-                                                                source={{ html: htmlContent(details) }}
-                                                                injectedJavaScript={injectedJavaScript}
-                                                                onMessage={handleWebViewMessage}
-                                                                style={{ height: heightDetails }}
-                                                                startInLoadingState={true}
-                                                            />
-                                                            <HStack pl={4} mb={5}>
-                                                                <View>
-                                                                    {shownHere &&
-                                                                        <>
-                                                                            <Text fontSize={15} color={'black'}>Shown here with:</Text>
-                                                                            <View style={{ marginVertical: 10 }}>
-                                                                                {shownHere.map((res: any) => {
-                                                                                    return <Chip
-                                                                                        key={res.id_product + '_' + 2}
-                                                                                        icon={() => null}
-                                                                                        mode='outlined'
-                                                                                        style={styles.shown}
-                                                                                        onPress={() => selectProductId(res.id_product)}
-                                                                                    >
-                                                                                        <Text style={styles.shownText}>{res.name}</Text>
-                                                                                    </Chip>
-                                                                                })}
-                                                                            </View>
-                                                                        </>
-                                                                    }
-
-                                                                    {motherDaughter &&
-                                                                        <>
-                                                                            <Text fontSize={15} color={'black'}>Shop Mother & Daughter:</Text>
-                                                                            <View style={{ marginVertical: 10 }}>
-                                                                                {motherDaughter.map((res: any) => {
-                                                                                    return <Chip
-                                                                                        key={res.id_product + '_' + 3}
-                                                                                        icon={() => null}
-                                                                                        mode='outlined'
-                                                                                        style={styles.shown}
-                                                                                        onPress={() => selectProductId(res.id_product)}
-                                                                                    >
-                                                                                        <Text style={styles.shownText}>{res.name}</Text>
-                                                                                    </Chip>
-                                                                                })}
-                                                                            </View>
-                                                                        </>
-                                                                    }
-                                                                    <Text color={'black'}>Reference Number: {reference}</Text>
-                                                                </View>
-                                                            </HStack>
-                                                        </ScrollView>
-                                                    </View>
-                                                </>
-                                            }
-                                        </View>
-                                    </Modal>
-
-                                    <TouchableOpacity activeOpacity={1} onPress={toggleModalMeasurements}>
-                                        <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
-                                            <Box width={'90%'} backgroundColor='red' pt={1}>
-                                                <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Measurements</Text>
-                                            </Box>
-                                            <Box width={'10%'} backgroundColor='red'>
-                                                <IonIcon
-                                                    name={'chevron-forward-outline'}
-                                                    size={30}
-                                                    color="#333"
-                                                />
-                                            </Box>
-                                        </HStack>
-                                    </TouchableOpacity>
-                                    <Modal
-                                        presentationStyle='formSheet'
-                                        animationType="slide"
-                                        transparent={false}
-                                        visible={isModalMeasurements}
-                                        onRequestClose={toggleModalMeasurements}
-                                    >
-                                        <View style={{ flex: 1, paddingVertical: 20 }}>
-                                            <HStack mb={4}>
-                                                <HStack w={'90%'}>
-                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Measurements</Text>
-                                                </HStack>
-                                                <HStack w={'10%'}>
-                                                    <TouchableOpacity onPress={toggleModalMeasurements}>
-                                                        <Icon
-                                                            size="6"
-                                                            color="black"
-                                                            as={<IonIcon name="close-outline" />}
-                                                        />
-                                                    </TouchableOpacity>
-                                                </HStack>
-                                            </HStack>
-                                            <Divider mb={4} style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            {measurements &&
-                                                <>
-                                                    <View>
-                                                        <ScrollView>
-                                                            <WebView
-                                                                source={{ html: htmlContent(measurements) }}
-                                                                injectedJavaScript={injectedJavaScript}
-                                                                style={{ height: win.height - 150 }}
-                                                                startInLoadingState={true}
-                                                            />
-                                                        </ScrollView>
-                                                    </View>
-                                                </>
-                                            }
-                                        </View>
-                                    </Modal>
-
-                                    <TouchableOpacity activeOpacity={1} onPress={toggleModalCare}>
-                                        <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
-                                            <Box width={'90%'} backgroundColor='red' pt={1}>
-                                                <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Care</Text>
-                                            </Box>
-                                            <Box width={'10%'} backgroundColor='red'>
-                                                <IonIcon
-                                                    name={'chevron-forward-outline'}
-                                                    size={30}
-                                                    color="#333"
-                                                />
-                                            </Box>
-                                        </HStack>
-                                    </TouchableOpacity>
-                                    <Modal
-                                        presentationStyle='formSheet'
-                                        animationType="slide"
-                                        transparent={false}
-                                        visible={isModalCare}
-                                        onRequestClose={toggleModalCare}
-                                        style={{ justifyContent: 'flex-end' }}
-                                    >
-                                        <View style={{ flex: 1, paddingVertical: 20 }}>
-                                            <HStack mb={4}>
-                                                <HStack w={'90%'}>
-                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Care</Text>
-                                                </HStack>
-                                                <HStack w={'10%'}>
-                                                    <TouchableOpacity onPress={toggleModalCare}>
-                                                        <Icon
-                                                            size="6"
-                                                            color="black"
-                                                            as={<IonIcon name="close-outline" />}
-                                                        />
-                                                    </TouchableOpacity>
-                                                </HStack>
-                                            </HStack>
-                                            <Divider mb={4} style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            {care &&
-                                                <>
-                                                    <View>
-                                                        <ScrollView>
-                                                            <WebView
-                                                                source={{ html: htmlContent(care) }}
-                                                                injectedJavaScript={injectedJavaScript}
-                                                                style={{ height: win.height - 150 }}
-                                                                startInLoadingState={true}
-                                                            />
-                                                        </ScrollView>
-                                                    </View>
-                                                </>
-                                            }
-                                        </View>
-                                    </Modal>
-
-                                    <TouchableOpacity activeOpacity={1} onPress={toggleModalDelivery}>
-                                        <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
-                                            <Box width={'90%'} backgroundColor='red' pt={1}>
-                                                <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Delivery & Returns</Text>
-                                            </Box>
-                                            <Box width={'10%'} backgroundColor='red'>
-                                                <IonIcon
-                                                    name={'chevron-forward-outline'}
-                                                    size={30}
-                                                    color="#333"
-                                                />
-                                            </Box>
-                                        </HStack>
-                                    </TouchableOpacity>
-                                    <Modal
-                                        presentationStyle='formSheet'
-                                        animationType="slide"
-                                        transparent={false}
-                                        visible={isModalDelivery}
-                                        onRequestClose={toggleModalDelivery}
-                                    >
-                                        <View style={{ flex: 1, paddingVertical: 20 }}>
-                                            <HStack mb={4}>
-                                                <HStack w={'90%'}>
-                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Delivery & Return</Text>
-                                                </HStack>
-                                                <HStack w={'10%'}>
-                                                    <TouchableOpacity onPress={toggleModalDelivery}>
-                                                        <Icon
-                                                            size="6"
-                                                            color="black"
-                                                            as={<IonIcon name="close-outline" />}
-                                                        />
-                                                    </TouchableOpacity>
-                                                </HStack>
-                                            </HStack>
-                                            <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
-                                            {delivery &&
-                                                <>
-                                                    <View>
-                                                        <ScrollView>
-                                                            <WebView
-                                                                source={{ html: htmlContent(delivery) }}
-                                                                injectedJavaScript={injectedJavaScript}
-                                                                style={{ height: win.height - 150 }}
-                                                                startInLoadingState={true}
-                                                            />
-                                                        </ScrollView>
-                                                    </View>
-                                                </>
-                                            }
-                                        </View>
-                                    </Modal>
-
-                                </View>
-                            </VStack>
-
-                            {styleItWith &&
-                                <>
-                                    <VStack pt={4} >
-                                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom: 10 }}>
-                                            <Box w={'20%'} flex={1} justifyContent="center">
-                                                <Divider style={styles.divider} />
-                                            </Box>
-                                            <Box w={'60%'}>
-                                                <Text style={styles.levelup}> Style it with</Text>
-                                            </Box>
-                                            <Box w={'20%'} flex={1} justifyContent="center">
-                                                <Divider style={styles.divider} />
-                                            </Box>
-                                        </View>
-                                        <HStack>
-                                            <ScrollView horizontal={true}>
-                                                {styleItWith && styleItWith.map((res: any) => {
-                                                    return <Box w={200} key={res.id_product + '_' + 4}>
-                                                        <ProductCard product={res} route={changeProductId} openWishlist={styleItaddtoWishlist} hideWishlist={true}></ProductCard>
-                                                    </Box>
-                                                })}
-                                            </ScrollView>
-                                        </HStack>
+                    {isLoading &&
+                        <>
+                            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} style={{ position: 'relative' }}>
+                                <ScrollView flex={1}>
+                                    {/* <Vimeo
+                                        style={{ width: '100%', height: imageHeight }}
+                                        videoId={vimeoUrl.split("/").pop()}
+                                        params={'autoplay=0'}
+                                        reference='https://poplook.com'
+                                    /> */}
+                                    <VStack h={imageHeight} alignItems="center"  >\
+                                        {/* {carouselItems && carouselItems[0]} */}
+                                        {carouselItems && <>
+                                            {/* <Text color='dark.100'>{JSON.stringify(carouselItems.length)}</Text> */}
+                                            <Carousel
+                                                loop={true}
+                                                width={win.width}
+                                                // autoPlay={true}
+                                                data={[...new Array(6).keys()]}
+                                                scrollAnimationDuration={1000}
+                                                onSnapToItem={(index) => console.log('current index:', index)}
+                                                renderItem={({ index }) => carouselItems[index]}
+                                            />
+                                            
+                                            
+                                            </>}
+                                        {/* <SliderBox
+                                            LoaderComponent={() => <></>}
+                                            sliderBoxHeight={imageHeight}
+                                            resizeMethod={'resize'}
+                                            resizeMode={'cover'}
+                                            ImageComponent={(props: any) => <SliderItem imageHeight={imageHeight} {...props} />}
+                                            images={images} /> */}
                                     </VStack>
-                                </>
-                            }
-                        </ScrollView>
 
-                        <Flex direction='row' style={styles.footerWrapper}>
-                            <IconButton size='lg' variant="ghost" onPress={() => addtoWishlist(null, attribute)} _pressed={{ backgroundColor: "white" }}>
-                                <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={26}></Wishlist>
-                            </IconButton>
-                            <IconButton size='lg' variant="ghost"
-                                _icon={{
-                                    color: "black",
-                                    as: IonIcon,
-                                    name: "share-social-outline",
-                                    size: 'xl'
-                                }}
-                                onPress={shareUrl}
-                                _pressed={{
-                                    backgroundColor: "white"
-                                }}
-                            />
-                            <Box style={styles.addtoCartWrapper}>
-                                <Button isDisabled={quantityAvailable == 0 ? true : false} 
-                                    onPress={() => addToCartF()} 
-                                    style={styles.addtoCartBtn}
-                                    isLoading={cart.cartLoading}
-                                    isLoadingText="ADD TO CART">
-                                    ADD TO CART
-                                </Button>
-                            </Box>
-                        </Flex>
-                    </Flex>
-                </>
-            }
-            {!isLoading && <SkeletonProductDetails />}
+                                    <VStack px={4} pt={4} backgroundColor={'white'} >
+                                        <Text color={'black'} fontSize={18}>{product.name}</Text>
+                                        {price()}
+                                        {product.discount_text != null && <Text px={3} py={1} style={{ color: 'white', fontSize: 10, backgroundColor: 'black', textAlign: 'center' }}>{product.discount_text}</Text>}
 
-            <BottomSheet
-                ref={bottomSheetRef}
-                index={-1}
-                snapPoints={snapPoints}
-                onChange={handleSheetChanges}
-                enablePanDownToClose
-                backdropComponent={() => (
-                    <>
-                        {backdropVisible && <Backdrop
-                            onPress={() => {
-                                setBackdropVisible(false);
-                                bottomSheetRef.current?.close();
-                            }}
-                            opacity={0}
-                        />}
-                    </>
+                                        {quantityAvailable == 0 && <Text style={{ color: '#a94442', fontSize: 18, marginTop: 20, }}>This product is not available.</Text>}
 
-                )}
-            // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5 }}
-            >
-                <View style={styles.contentContainer}>
-                    <Text color={'black'} bold mb={2}>Select Size: </Text>
-                    <SizeList attribute={attribute} setSizeSelected={(size: any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
+                                        {attribute.length > 0 && quantityAvailable > 0 &&
+                                            <>
+                                                <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
+                                                <SizeList attribute={attribute} setSizeSelected={setSizeSelected} sizeSelected={sizeSelected}></SizeList>
+
+                                                <TouchableOpacity onPress={toggleModalSizeGuide} >
+                                                    <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' > Size Guide </Text>
+                                                </TouchableOpacity>
+                                            </>
+                                        }
+
+                                        <TouchableOpacity onPress={toggleModalStore} >
+                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' mb={6}> Check in store availability </Text>
+                                        </TouchableOpacity>
+
+                                        {colorRelated &&
+                                            <>
+                                                <Text bold color={'black'} alignItems="center" mb={2}> Colours</Text>
+                                                <ScrollView horizontal={true}>
+                                                    <HStack mb={4}>
+                                                        {colorRelated && colorRelated.map((res: any) => {
+                                                            return <TouchableOpacity onPress={() => chooseColor(res.id_product)} key={res.id_color + '_' + 1} disabled={res.id_product === route.params.product_id ? true : false}>
+                                                                <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
+                                                            </TouchableOpacity>
+                                                        })}
+                                                    </HStack>
+                                                </ScrollView>
+                                            </>
+                                        }
+
+
+                                    </VStack>
+
+                                    <VStack space={4} paddingBottom={5}>
+                                        <View>
+                                            <TouchableOpacity activeOpacity={1} onPress={toggleModalDetails}>
+                                                <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
+                                                    <Box width={'90%'} backgroundColor='red' pt={1}>
+                                                        <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Details</Text>
+                                                    </Box>
+                                                    <Box width={'10%'} backgroundColor='red'>
+                                                        <IonIcon
+                                                            name={'chevron-forward-outline'}
+                                                            size={30}
+                                                            color="#333"
+                                                        />
+                                                    </Box>
+                                                </HStack>
+                                            </TouchableOpacity>
+
+                                            <Modal
+                                                presentationStyle='formSheet'
+                                                animationType="slide"
+                                                transparent={false}
+                                                visible={isModalDetails}
+                                                onRequestClose={toggleModalDetails}
+                                            >
+                                                <View style={{ flex: 1, paddingVertical: 20 }}>
+                                                    <HStack mb={4}>
+                                                        <HStack w={'90%'}>
+                                                            <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Details</Text>
+                                                        </HStack>
+                                                        <HStack w={'10%'}>
+                                                            <TouchableOpacity onPress={toggleModalDetails}>
+                                                                <Icon
+                                                                    size="6"
+                                                                    color="black"
+                                                                    as={<IonIcon name="close-outline" />}
+                                                                />
+                                                            </TouchableOpacity>
+                                                        </HStack>
+                                                    </HStack>
+                                                    <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
+                                                    {details &&
+                                                        <>
+                                                            <View>
+                                                                <ScrollView>
+                                                                    <WebView
+                                                                        source={{ html: htmlContent(details) }}
+                                                                        injectedJavaScript={injectedJavaScript}
+                                                                        onMessage={handleWebViewMessage}
+                                                                        style={{ height: heightDetails }}
+                                                                        startInLoadingState={true}
+                                                                    />
+                                                                    <HStack pl={4} mb={5}>
+                                                                        <View>
+                                                                            {shownHere &&
+                                                                                <>
+                                                                                    <Text fontSize={15} color={'black'}>Shown here with:</Text>
+                                                                                    <View style={{ marginVertical: 10 }}>
+                                                                                        {shownHere.map((res: any) => {
+                                                                                            return <Chip
+                                                                                                key={res.id_product + '_' + 2}
+                                                                                                icon={() => null}
+                                                                                                mode='outlined'
+                                                                                                style={styles.shown}
+                                                                                                onPress={() => selectProductId(res.id_product)}
+                                                                                            >
+                                                                                                <Text style={styles.shownText}>{res.name}</Text>
+                                                                                            </Chip>
+                                                                                        })}
+                                                                                    </View>
+                                                                                </>
+                                                                            }
+
+                                                                            {motherDaughter &&
+                                                                                <>
+                                                                                    <Text fontSize={15} color={'black'}>Shop Mother & Daughter:</Text>
+                                                                                    <View style={{ marginVertical: 10 }}>
+                                                                                        {motherDaughter.map((res: any) => {
+                                                                                            return <Chip
+                                                                                                key={res.id_product + '_' + 3}
+                                                                                                icon={() => null}
+                                                                                                mode='outlined'
+                                                                                                style={styles.shown}
+                                                                                                onPress={() => selectProductId(res.id_product)}
+                                                                                            >
+                                                                                                <Text style={styles.shownText}>{res.name}</Text>
+                                                                                            </Chip>
+                                                                                        })}
+                                                                                    </View>
+                                                                                </>
+                                                                            }
+                                                                            <Text color={'black'}>Reference Number: {reference}</Text>
+                                                                        </View>
+                                                                    </HStack>
+                                                                </ScrollView>
+                                                            </View>
+                                                        </>
+                                                    }
+                                                </View>
+                                            </Modal>
+
+                                            <TouchableOpacity activeOpacity={1} onPress={toggleModalMeasurements}>
+                                                <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
+                                                    <Box width={'90%'} backgroundColor='red' pt={1}>
+                                                        <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Measurements</Text>
+                                                    </Box>
+                                                    <Box width={'10%'} backgroundColor='red'>
+                                                        <IonIcon
+                                                            name={'chevron-forward-outline'}
+                                                            size={30}
+                                                            color="#333"
+                                                        />
+                                                    </Box>
+                                                </HStack>
+                                            </TouchableOpacity>
+                                            <Modal
+                                                presentationStyle='formSheet'
+                                                animationType="slide"
+                                                transparent={false}
+                                                visible={isModalMeasurements}
+                                                onRequestClose={toggleModalMeasurements}
+                                            >
+                                                <View style={{ flex: 1, paddingVertical: 20 }}>
+                                                    <HStack mb={4}>
+                                                        <HStack w={'90%'}>
+                                                            <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Measurements</Text>
+                                                        </HStack>
+                                                        <HStack w={'10%'}>
+                                                            <TouchableOpacity onPress={toggleModalMeasurements}>
+                                                                <Icon
+                                                                    size="6"
+                                                                    color="black"
+                                                                    as={<IonIcon name="close-outline" />}
+                                                                />
+                                                            </TouchableOpacity>
+                                                        </HStack>
+                                                    </HStack>
+                                                    <Divider mb={4} style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
+                                                    {measurements &&
+                                                        <>
+                                                            <View>
+                                                                <ScrollView>
+                                                                    <WebView
+                                                                        source={{ html: htmlContent(measurements) }}
+                                                                        injectedJavaScript={injectedJavaScript}
+                                                                        style={{ height: win.height - 150 }}
+                                                                        startInLoadingState={true}
+                                                                    />
+                                                                </ScrollView>
+                                                            </View>
+                                                        </>
+                                                    }
+                                                </View>
+                                            </Modal>
+
+                                            <TouchableOpacity activeOpacity={1} onPress={toggleModalCare}>
+                                                <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
+                                                    <Box width={'90%'} backgroundColor='red' pt={1}>
+                                                        <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Care</Text>
+                                                    </Box>
+                                                    <Box width={'10%'} backgroundColor='red'>
+                                                        <IonIcon
+                                                            name={'chevron-forward-outline'}
+                                                            size={30}
+                                                            color="#333"
+                                                        />
+                                                    </Box>
+                                                </HStack>
+                                            </TouchableOpacity>
+                                            <Modal
+                                                presentationStyle='formSheet'
+                                                animationType="slide"
+                                                transparent={false}
+                                                visible={isModalCare}
+                                                onRequestClose={toggleModalCare}
+                                                style={{ justifyContent: 'flex-end' }}
+                                            >
+                                                <View style={{ flex: 1, paddingVertical: 20 }}>
+                                                    <HStack mb={4}>
+                                                        <HStack w={'90%'}>
+                                                            <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Care</Text>
+                                                        </HStack>
+                                                        <HStack w={'10%'}>
+                                                            <TouchableOpacity onPress={toggleModalCare}>
+                                                                <Icon
+                                                                    size="6"
+                                                                    color="black"
+                                                                    as={<IonIcon name="close-outline" />}
+                                                                />
+                                                            </TouchableOpacity>
+                                                        </HStack>
+                                                    </HStack>
+                                                    <Divider mb={4} style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
+                                                    {care &&
+                                                        <>
+                                                            <View>
+                                                                <ScrollView>
+                                                                    <WebView
+                                                                        source={{ html: htmlContent(care) }}
+                                                                        injectedJavaScript={injectedJavaScript}
+                                                                        style={{ height: win.height - 150 }}
+                                                                        startInLoadingState={true}
+                                                                    />
+                                                                </ScrollView>
+                                                            </View>
+                                                        </>
+                                                    }
+                                                </View>
+                                            </Modal>
+
+                                            <TouchableOpacity activeOpacity={1} onPress={toggleModalDelivery}>
+                                                <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
+                                                    <Box width={'90%'} backgroundColor='red' pt={1}>
+                                                        <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Delivery & Returns</Text>
+                                                    </Box>
+                                                    <Box width={'10%'} backgroundColor='red'>
+                                                        <IonIcon
+                                                            name={'chevron-forward-outline'}
+                                                            size={30}
+                                                            color="#333"
+                                                        />
+                                                    </Box>
+                                                </HStack>
+                                            </TouchableOpacity>
+                                            <Modal
+                                                presentationStyle='formSheet'
+                                                animationType="slide"
+                                                transparent={false}
+                                                visible={isModalDelivery}
+                                                onRequestClose={toggleModalDelivery}
+                                            >
+                                                <View style={{ flex: 1, paddingVertical: 20 }}>
+                                                    <HStack mb={4}>
+                                                        <HStack w={'90%'}>
+                                                            <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 18, paddingBottom: 5 }}>Delivery & Return</Text>
+                                                        </HStack>
+                                                        <HStack w={'10%'}>
+                                                            <TouchableOpacity onPress={toggleModalDelivery}>
+                                                                <Icon
+                                                                    size="6"
+                                                                    color="black"
+                                                                    as={<IonIcon name="close-outline" />}
+                                                                />
+                                                            </TouchableOpacity>
+                                                        </HStack>
+                                                    </HStack>
+                                                    <Divider style={{ width: '95%', alignSelf: 'center', backgroundColor: '#ccc' }}></Divider>
+                                                    {delivery &&
+                                                        <>
+                                                            <View>
+                                                                <ScrollView>
+                                                                    <WebView
+                                                                        source={{ html: htmlContent(delivery) }}
+                                                                        injectedJavaScript={injectedJavaScript}
+                                                                        style={{ height: win.height - 150 }}
+                                                                        startInLoadingState={true}
+                                                                    />
+                                                                </ScrollView>
+                                                            </View>
+                                                        </>
+                                                    }
+                                                </View>
+                                            </Modal>
+
+                                        </View>
+                                    </VStack>
+
+                                    {styleItWith &&
+                                        <>
+                                            <VStack pt={4} >
+                                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom: 10 }}>
+                                                    <Box w={'20%'} flex={1} justifyContent="center">
+                                                        <Divider style={styles.divider} />
+                                                    </Box>
+                                                    <Box w={'60%'}>
+                                                        <Text style={styles.levelup}> Style it with</Text>
+                                                    </Box>
+                                                    <Box w={'20%'} flex={1} justifyContent="center">
+                                                        <Divider style={styles.divider} />
+                                                    </Box>
+                                                </View>
+                                                <HStack>
+                                                    <ScrollView horizontal={true}>
+                                                        {styleItWith && styleItWith.map((res: any) => {
+                                                            return <Box w={200} key={res.id_product + '_' + 4}>
+                                                                <ProductCard product={res} route={changeProductId} openWishlist={styleItaddtoWishlist} hideWishlist={true}></ProductCard>
+                                                            </Box>
+                                                        })}
+                                                    </ScrollView>
+                                                </HStack>
+                                            </VStack>
+                                        </>
+                                    }
+                                </ScrollView>
+
+                                <Flex direction='row' style={styles.footerWrapper}>
+                                    <IconButton size='lg' variant="ghost" onPress={() => addtoWishlist(null, attribute)} _pressed={{ backgroundColor: "white" }}>
+                                        <Wishlist like={wishlist.id_product.includes(route.params.product_id)} size={26}></Wishlist>
+                                    </IconButton>
+                                    <IconButton size='lg' variant="ghost"
+                                        _icon={{
+                                            color: "black",
+                                            as: IonIcon,
+                                            name: "share-social-outline",
+                                            size: 'xl'
+                                        }}
+                                        onPress={shareUrl}
+                                        _pressed={{
+                                            backgroundColor: "white"
+                                        }}
+                                    />
+                                    <Box style={styles.addtoCartWrapper}>
+                                        <Button isDisabled={quantityAvailable == 0 ? true : false}
+                                            onPress={() => addToCartF()}
+                                            style={styles.addtoCartBtn}
+                                            isLoading={cart.cartLoading}
+                                            isLoadingText="ADD TO CART">
+                                            ADD TO CART
+                                        </Button>
+                                    </Box>
+                                </Flex>
+                            </Flex>
+                        </>
+                    }
+                    {!isLoading && <SkeletonProductDetails />}
+
+                    <BottomSheet
+                        ref={bottomSheetRef}
+                        index={-1}
+                        snapPoints={snapPoints}
+                        onChange={handleSheetChanges}
+                        enablePanDownToClose
+                        backdropComponent={() => (
+                            <>
+                                {backdropVisible && <Backdrop
+                                    onPress={() => {
+                                        setBackdropVisible(false);
+                                        bottomSheetRef.current?.close();
+                                    }}
+                                    opacity={0}
+                                />}
+                            </>
+
+                        )}
+                    // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5 }}
+                    >
+                        <View style={styles.contentContainer}>
+                            <Text color={'black'} bold mb={2}>Select Size: </Text>
+                            <SizeList attribute={attribute} setSizeSelected={(size: any) => setSizeSelectedModal(size)} sizeSelected={sizeSelected}></SizeList>
+                        </View>
+                    </BottomSheet>
                 </View>
-            </BottomSheet>
-        </View>
-        }
+            }
         </>
     );
-    
+
 }
 
 const styles = StyleSheet.create({
