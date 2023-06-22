@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, Dimensions, Alert, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, ScrollView, View, HStack, Box, Spacer, Icon, Select } from "native-base";
+import { Text, ScrollView, View, HStack, Box, Spacer, Icon, Select, Button, Flex, Center } from "native-base";
 import { logout } from '../Redux/Slices/Sessions';
 import { useDispatch, useSelector } from 'react-redux';
 import { persistor } from '../Redux/app';
@@ -14,27 +14,35 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { IOS_VERSION, ANDROID_VERSION } from "@env"
 import { CommonActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function SettingPage({ route, navigation }: { route: any, navigation: any }) {
+export default function SettingPage({ route }: { route: any }) {
 
     const dispatch = useDispatch()
     const session = useSelector((storeState: any) => storeState.session);
-    const { user } = useSelector(
-        userSelector
-    );
+    const { user } = useSelector(userSelector);
     const params = route.params;
-    console.log('route', route);
+    const navigation: any = useNavigation();
 
-    const categories = [
+    const accounts = [
         { id: 0, key: "personal", title: "Personal Information", icon: "person-outline" },
         { id: 1, key: "address", title: "My Addresses", icon: "navigate-outline" },
         { id: 2, key: "order", title: "Order History", icon: "reorder-four-outline" },
         // { id: 3, key: "voucher", title: "My Vouchers", icon: "gift-outline" },
         { id: 4, key: "credit", title: "Store Credit", icon: "wallet-outline" },
         { id: 5, key: "loyalty", title: "Loyalty", icon: "card-outline" },
-        { id: 6, key: "about", title: "About Us", icon: "information-circle-outline" },
+        // { id: 6, key: "about", title: "About Us", icon: "information-circle-outline" },
         { id: 7, key: "customerservice", title: "Customer Service", icon: "people-outline" },
+        // { id: 8, key: "shipping", title: "Shipping Information", icon: "cube-outline" },
+        // { id: 9, key: "term", title: "Terms and Conditions", icon: "reader-outline" },
+        // { id: 10, key: "privacypolicy", title: "Privacy Policy", icon: "shield-checkmark-outline" },
+        // { id: 11, key: "visitourstore", title: "Visit Our Stores", icon: "storefront-outline" }
+    ];
+
+    const supports = [
+        { id: 6, key: "about", title: "About Us", icon: "information-circle-outline" },
+        // { id: 7, key: "customerservice", title: "Customer Service", icon: "people-outline" },
         { id: 8, key: "shipping", title: "Shipping Information", icon: "cube-outline" },
         { id: 9, key: "term", title: "Terms and Conditions", icon: "reader-outline" },
         { id: 10, key: "privacypolicy", title: "Privacy Policy", icon: "shield-checkmark-outline" },
@@ -107,10 +115,16 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
         });
     }
 
+    const goToLoginPage = () => {
+
+        navigation.navigate('LoginPage', { screen: 'LoginPage' });
+    }
+
     return (
-        <View backgroundColor='white'>
+        <Flex flex={1} backgroundColor='white'>
             <ScrollView>
                 {user &&
+                <>
                     <Box p={5} >
                         <HStack space={3} >
                             <IonIcon name="person-circle-outline" size={24} color="black" />
@@ -135,34 +149,66 @@ export default function SettingPage({ route, navigation }: { route: any, navigat
                             }
                         </Box>
                     </Box>
-                }
-                <Box px={6} mb={6} >
-                    <ShippingTo></ShippingTo>
-                </Box>
+                
+                    <Box px={6} mb={6} >
+                        <ShippingTo></ShippingTo>
+                    </Box>
+                </>
+                }  
+
+                {!user && 
+                    <>
+                    <Box p={5} >
+                    <Box alignItems="center" shadow={1} borderRadius={8} pb={6} pt={6} backgroundColor='white'>
+                        <Text color='#1cad48' fontSize={16} marginX={5} marginTop={4} marginBottom={2}>Get the most out of Poplook app by creating or signing in to your account now.</Text>
+                        <HStack style={{ paddingVertical: 5, marginHorizontal: 30, marginVertical: 5}}>
+                            <Button bg={'#1cad48'} w={'100%'} _text={{ fontSize: 14, fontWeight: 600 }} _pressed={{ backgroundColor: '#1cad48' }} onPress={() => goToLoginPage()}>LOG IN / SIGN UP</Button>
+                        </HStack>     
+                    </Box>
+                    </Box>
+                    </>
+                }  
+                      
                 <View style={styles.container}>
-                    {categories.map((item, index) => {
-                        return <TouchableOpacity key={index} onPress={() => goToDetailsPage(item.id, item.key, item.title)}>
+                    {user && <>
+                        {accounts.map((item, index) => {
+                            return <TouchableOpacity key={index} onPress={() => goToDetailsPage(item.id, item.key, item.title)}>
+                                <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
+                                    { item.id != 11 ? <Icon as={IonIcon} name={item.icon} size="6" color='black'/> : <Icons name={item.icon} size={24} color="black"/>}
+                                    <Text pl={3} color="black" fontSize={16}>{item.title}</Text>
+                                    <Spacer />
+                                    <IonIcon name="chevron-forward-outline" size={20} color="#777" />
+                                </HStack>
+                            </TouchableOpacity>
+                        })}
+                        <TouchableOpacity onPress={() => alertLogout()}>
                             <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
-                                { item.id != 11 ? <Icon as={IonIcon} name={item.icon} size="6" color='black'/> : <Icons name={item.icon} size={24} color="black"/>}
-                                <Text pl={3} color="black" fontSize={16}>{item.title}</Text>
+                                <Icon as={IonIcon} name="log-out-outline" size="6" color='#FF0000' />
+                                <Text pl={3} color="#FF0000" fontSize={16}>
+                                    Logout
+                                </Text>
                                 <Spacer />
-                                <IonIcon name="chevron-forward-outline" size={20} color="#777" />
                             </HStack>
                         </TouchableOpacity>
-                    })}
-                    <TouchableOpacity onPress={() => alertLogout()}>
-                        <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
-                            <Icon as={IonIcon} name="log-out-outline" size="6" color='#000000' />
-                            <Text pl={3} color="#FF0000" fontSize={16}>
-                                Logout
-                            </Text>
-                            <Spacer />
-                        </HStack>
-                    </TouchableOpacity>
+                        </>
+                    }
+                    {!user && <>
+                        {supports.map((item, index) => {
+                            return <TouchableOpacity key={index} onPress={() => goToDetailsPage(item.id, item.key, item.title)}>
+                                <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
+                                    { item.id != 11 ? <Icon as={IonIcon} name={item.icon} size="6" color='black'/> : <Icons name={item.icon} size={24} color="black"/>}
+                                    <Text pl={3} color="black" fontSize={16}>{item.title}</Text>
+                                    <Spacer />
+                                    <IonIcon name="chevron-forward-outline" size={20} color="#777" />
+                                </HStack>
+                            </TouchableOpacity>
+                        })}
+                        </>
+                    }
                     <Text style={styles.version}>App Version {Platform.OS == 'ios' ? IOS_VERSION : ANDROID_VERSION}</Text>
                 </View>
             </ScrollView>
-        </View>
+        </Flex>
     )
 }
 
@@ -180,5 +226,11 @@ const styles = StyleSheet.create({
     version: {
         color: 'black',
         marginTop: 10,
+    },
+    title: {
+        color: '#1cad48',
+        paddingTop: 50,
+        fontSize: 16,
+        fontWeight: '600'
     }
 })

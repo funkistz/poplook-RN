@@ -1,15 +1,13 @@
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Text, Input, Box, Button, ScrollView, View, HStack } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
-import AuthService from '../Services/AuthService';
 import CustomInput from '../components/Form/CustomInput';
-import GeneralService from '../Services/GeneralService';
 import { intro, loginUser, userSelector } from '../Redux/Slices/Sessions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import ShippingTo from '../components/ShippingTo';
 
 export default function LoginPage() {
@@ -23,17 +21,18 @@ export default function LoginPage() {
     );
 
     useEffect(() => {
+        console.log('status', isSuccess, isError)
+        console.log('user', session)
         // dispatch(intro(false))
     }, []);
 
     useEffect(() => {
-        if (isError) {
-
-        }
-        if (isSuccess) {
-            navigation.navigate('Home', { screen: 'HomePage' });
-        }
-    }, [isError, isSuccess]);
+        // if (isError) {
+        // }
+        // if (isSuccess) {
+        //     navigation.navigate('Home', { screen: 'HomePage' });
+        // }
+    }, []);
 
     const register = () => {
 
@@ -61,8 +60,17 @@ export default function LoginPage() {
                         async (values) => {
                             Keyboard.dismiss();
                             dispatch(loginUser(values));
+
+                            navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 0,
+                                    routes: [{ name: session.user != null ? 'My Account' : 'Main' }], // Replace with the name of your main tab navigator
+                                })
+                            );
+                            
                         }
                     }
+
                     validationSchema={yup.object().shape({
                         email: yup
                             .string()

@@ -64,10 +64,6 @@ const TabNavigator = () => {
           iconName = focused
             ? 'person-circle'
             : 'person-circle-outline';
-        } else if (route.name === 'Login') {
-          iconName = focused
-            ? 'settings'
-            : 'settings-outline';
         }
 
         // You can return any component that you like here!
@@ -93,12 +89,15 @@ const TabNavigator = () => {
         <Tab.Screen name="Cart" children={props => <AppStack initialRoute='CartPage' {...props} />} />
       }
 
-      {sessions && sessions.user &&
+      <Tab.Screen name="My Account" children={props => <AppStack initialRoute='SettingPage' {...props} />} />
+      {/* <Tab.Screen name="Login" children={props => <AppStack initialRoute='LoginPage' {...props} />} /> */}
+
+      {/* {sessions && sessions.user &&
         <Tab.Screen name="My Account" children={props => <AppStack initialRoute='SettingPage' {...props} />} />
       }
       {!sessions || !sessions.user &&
         <Tab.Screen name="Login" children={props => <AppStack initialRoute='LoginPage' {...props} />} />
-      }
+      } */}
     </Tab.Navigator>
   )
     ;
