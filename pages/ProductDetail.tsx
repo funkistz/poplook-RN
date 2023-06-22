@@ -445,12 +445,13 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         params={'autoplay=0'}
                                         reference='https://poplook.com'
                                     /> */}
-                                    <VStack h={imageHeight} alignItems="center"  >\
+                                    <VStack h={imageHeight} alignItems="center"  >
+                                        {/* <Text color={'black'}>{images}</Text> */}
                                         {/* {carouselItems && carouselItems[0]} */}
                                         {carouselItems && <>
                                             {/* <Text color='dark.100'>{JSON.stringify(carouselItems.length)}</Text> */}
                                             <Carousel
-                                                loop={true}
+                                                // loop={true}
                                                 width={win.width}
                                                 // autoPlay={true}
                                                 data={[...new Array(6).keys()]}
