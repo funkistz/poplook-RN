@@ -34,7 +34,7 @@ export default function ForgotPassword() {
                             const json = await response.json();
                             console.log('json', json)
                             if(json.code == 200) {
-                                navigation.navigate('Login', { screen: 'LoginPage' });
+                                navigation.navigate('LoginPage', { screen: 'LoginPage' });
                             }
 
                             GeneralService.toast({ description: json.message, type:json.status });

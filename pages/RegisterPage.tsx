@@ -137,7 +137,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
 
                                     if (json.code == 201 && json.data) {
                                         GeneralService.toast({ description: json.message, type: json.status });
-                                        navigation.navigate('Login', { screen: 'LoginPage' });
+                                        navigation.navigate('LoginPage', { screen: 'LoginPage' });
                                     } else {
                                         GeneralService.toast({ description: json.message, type: json.status });
                                     }
