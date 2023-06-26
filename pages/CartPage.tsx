@@ -31,7 +31,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
 
 
     const checkoutPage = () => {
-        user ? navigation.navigate('CheckoutExPage', { screen: 'CheckoutExPage' }) : navigation.navigate('Login', { screen: 'LoginPage' });
+        user ? navigation.navigate('CheckoutExPage', { screen: 'CheckoutExPage' }) : navigation.navigate('LoginPage', { screen: 'LoginPage' });
     }
 
 
