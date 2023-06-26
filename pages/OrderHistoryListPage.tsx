@@ -9,7 +9,7 @@ import Spinner from '../components/Spinner';
 
 export default function OrderHistoryListPage() {
 
-    const customerId = useSelector((storeState: any) => storeState.session.user.id_customer);
+    const customerId = useSelector((storeState: any) => storeState.session.user ? storeState.session.user.id_customer : '');
     const navigation: any = useNavigation();
     const [orders, setOrders] = useState<any>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);

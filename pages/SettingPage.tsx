@@ -89,7 +89,7 @@ export default function SettingPage({ route }: { route: any }) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
-                    routes: [{ name: session.user != null ? 'Main' : 'Login' }],
+                    routes: [{ name: session.user != null ? 'Main' : 'My Account' }],
                 })
             );
         });
