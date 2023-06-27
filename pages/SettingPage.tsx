@@ -32,12 +32,12 @@ export default function SettingPage({ route }: { route: any }) {
         // { id: 3, key: "voucher", title: "My Vouchers", icon: "gift-outline" },
         { id: 4, key: "credit", title: "Store Credit", icon: "wallet-outline" },
         { id: 5, key: "loyalty", title: "Loyalty", icon: "card-outline" },
-        // { id: 6, key: "about", title: "About Us", icon: "information-circle-outline" },
+        { id: 6, key: "about", title: "About Us", icon: "information-circle-outline" },
         { id: 7, key: "customerservice", title: "Customer Service", icon: "people-outline" },
-        // { id: 8, key: "shipping", title: "Shipping Information", icon: "cube-outline" },
-        // { id: 9, key: "term", title: "Terms and Conditions", icon: "reader-outline" },
-        // { id: 10, key: "privacypolicy", title: "Privacy Policy", icon: "shield-checkmark-outline" },
-        // { id: 11, key: "visitourstore", title: "Visit Our Stores", icon: "storefront-outline" }
+        { id: 8, key: "shipping", title: "Shipping Information", icon: "cube-outline" },
+        { id: 9, key: "term", title: "Terms and Conditions", icon: "reader-outline" },
+        { id: 10, key: "privacypolicy", title: "Privacy Policy", icon: "shield-checkmark-outline" },
+        { id: 11, key: "visitourstore", title: "Visit Our Stores", icon: "storefront-outline" }
     ];
 
     const supports = [

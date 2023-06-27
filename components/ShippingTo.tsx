@@ -66,7 +66,7 @@ export default function ShippingTo() {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: session.user != null ? 'Main' : 'LoginPage' }], // Replace with the name of your main tab navigator
+                routes: [{ name: session.user != null ? 'Main' : 'My Account' }], // Replace with the name of your main tab navigator
             })
         );
     }
