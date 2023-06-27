@@ -22,7 +22,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
     const cartId = route.params.params.id;
-    const currency = useSelector((storeState: any) => storeState.session.currencySign);
+    const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const user = useSelector((storeState: any) => storeState.session.user);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
 
