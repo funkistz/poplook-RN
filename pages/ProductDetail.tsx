@@ -209,13 +209,13 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                 // temp.push(<CarouselItem imageHeight={imageHeight} uri={image} />);
                 temp = [...temp, <CarouselItem imageHeight={imageHeight} uri={image} />]
                 // temp.push(<Text>xxxx</Text>);
-                console.log('temp', temp)
+                // console.log('temp', temp)
 
 
             })
         }
 
-        console.log('temp2', temp)
+        // console.log('temp2', temp)
 
         setCarouselItems(temp);
         setImagesOnly([...images.map((url: any) => { return { uri: url } })]);
@@ -863,7 +863,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <Button isDisabled={quantityAvailable == 0 ? true : false}
                                             onPress={() => addToCartF()}
                                             style={styles.addtoCartBtn}
-                                            isLoading={cart.cartLoading}
+                                            // isLoading={cart.cartLoading}
                                             isLoadingText="ADD TO CART">
                                             ADD TO CART
                                         </Button>

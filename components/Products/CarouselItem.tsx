@@ -77,6 +77,8 @@ export default function CarouselItem(props: any) {
                                     style={{ width: '100%', height: '100%' }}
                                     videoId={props.uri.split("/").pop()}
                                     params={'autoplay=0'}
+                                    overScrollMode="never" 
+                                    androidLayerType="hardware" 
                                     reference='https://poplook.com'
                                 />
                             </React.Fragment>
