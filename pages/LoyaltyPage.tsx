@@ -63,6 +63,7 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
     }
 
     const FirstRoute = () => <>
+    <ScrollView>
         <Center flex={1} backgroundColor={'white'}>
             <Text color='black' fontSize={18}> Get to know your</Text>
             <Heading size={'xl'} color='black' my={3}>Benefits</Heading>
@@ -198,10 +199,12 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
                 MORE ABOUT THE REWARDS
             </Button>
         </Center>
+        </ScrollView>
     </>;
 
     const SecondRoute = () =>
         <>
+        <ScrollView>
             <Center flex={1} backgroundColor={'white'}>
                 <Text color='black' fontSize={24}>Your Details</Text>
                 <Text mt={2} w={'80%'} textAlign={'center'} color='black' fontSize={14}> Every purchase this year gets you closer to the next level</Text>
@@ -345,6 +348,7 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
                     }
                 </View>
             </Center>
+        </ScrollView>
         </>;
 
     const renderScene = SceneMap({
