@@ -80,7 +80,7 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
   return (
     <>
       <TabView style={{ height: "100%", width: "100%" }}
-        lazy
+        lazy={true}
         navigationState={{ index, routes }}
         renderScene={SceneMap(scenes)}
         renderTabBar={renderTabBar}

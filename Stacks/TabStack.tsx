@@ -71,6 +71,7 @@ const TabNavigator = () => {
       },
       tabBarActiveTintColor: '#16a34a',
       tabBarInactiveTintColor: '#000000',
+      lazy: true
     })}>
       <Tab.Screen name="Home" children={props => <AppStack initialRoute='HomePage' {...props} />} />
       <Tab.Screen name="Categories" children={props => <AppStack initialRoute='CategoriesPage' {...props} />} />
