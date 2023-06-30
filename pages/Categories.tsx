@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import CategoryService from '../Services/CategoryService';
 import { Center, Box, Text } from 'native-base';
@@ -7,7 +7,11 @@ import Menus from '../components/Menus';
 
 export default function CategoriesPage({ route, navigation }: { route: any, navigation: any }) {
 
-    const [categories, setCategories] = useState(null);
+    const [categories, setCategories] = useState<any>(null);
+
+    const categoriesTemp = JSON.stringify(categories);
+    const categoriesJson = useMemo(() => JSON.parse(categoriesTemp), [categoriesTemp])
+
 
     useEffect(() => {
 
@@ -17,13 +21,9 @@ export default function CategoriesPage({ route, navigation }: { route: any, navi
                 const response = await CategoryService.getCategories();
                 const json = await response.json();
 
-                if (categories) {
-                    console.log('data sama ke', isEqual(categories, json.data));
-                }
+                console.log('tempCat', json.data);
 
-                if (JSON.stringify(categories) != JSON.stringify(json.data)) {
-                    setCategories(json.data);
-                }
+                setCategories(json.data);
             }
             fetchData().catch(console.error);
         });
@@ -58,8 +58,8 @@ export default function CategoriesPage({ route, navigation }: { route: any, navi
 
     return (
         <Center style={{ height: "100%", width: "100%" }}>
-            {!categories && <Text pt={10} color='black'>Loading...</Text>}
-            {categories && <Menus categories={categories} ></Menus>}
+            {!categoriesJson && <Text pt={10} color='black'>Loading...</Text>}
+            {categoriesJson && <Menus categories={categoriesJson} ></Menus>}
         </Center>
     );
 }

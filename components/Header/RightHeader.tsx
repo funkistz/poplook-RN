@@ -69,8 +69,9 @@ export default function RightHeader({ navigation }: { navigation: any }) {
                     backgroundColor: "white"
                 }}
                 icon={<>
-                    <Wishlist like={false} size={24} />
+                    <Wishlist key={1} like={false} size={24} />
                     <Badge
+                        key={2}
                         size={18}
                         style={styles.badge}
                         visible={true}
