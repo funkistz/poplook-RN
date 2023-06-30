@@ -10,7 +10,7 @@ import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import ShippingTo from '../components/ShippingTo';
 
-export default function LoginPage() {
+export default function LoginPage({ route }: { route: any }) {
 
     const navigation: any = useNavigation();
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
@@ -19,10 +19,14 @@ export default function LoginPage() {
     const { isFetching, isSuccess, isError, errorMessage } = useSelector(
         userSelector
     );
+    const params = route.params;
+
+    const { user } = useSelector(
+        userSelector
+    );
 
     useEffect(() => {
-        console.log('status', isSuccess, isError)
-        console.log('user', session)
+        
         // dispatch(intro(false))
     }, []);
 
@@ -46,6 +50,12 @@ export default function LoginPage() {
 
     }
 
+    if (params && params.redirect == 'login') {
+        navigation.navigate('My Account', {
+            screen: 'LoginPage',
+        });
+    }
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
@@ -64,7 +74,7 @@ export default function LoginPage() {
                             navigation.dispatch(
                                 CommonActions.reset({
                                     index: 0,
-                                    routes: [{ name: session.user != null ? 'My Account' : 'Main' }], // Replace with the name of your main tab navigator
+                                    routes: [{ name: 'Main' }], // Replace with the name of your main tab navigator
                                 })
                             );
                             

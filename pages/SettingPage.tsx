@@ -115,6 +115,12 @@ export default function SettingPage({ route }: { route: any }) {
         });
     }
 
+    if (params && params.redirect == 'login') {
+        navigation.navigate('My Account', {
+            screen: 'LoginPage',
+        });
+    }
+
     const goToLoginPage = () => {
 
         navigation.navigate('LoginPage', { screen: 'LoginPage' });
