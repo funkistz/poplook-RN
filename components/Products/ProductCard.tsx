@@ -69,7 +69,6 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                         flex: 1,
                                         justifyContent: 'flex-end',
                                         alignItems: 'center',
-                                        borderRadius: 10,
                                         overflow: 'hidden',
                                     }}>
                                         <Text py={1}
@@ -110,15 +109,15 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                 </AspectRatio>
 
                 <Center>
-                    <Flex direction='row' style={{height: 60,paddingHorizontal: 15,}} mt={2}>
-                        <Box style={{flexGrow: 1 }}>
+                    <Flex direction='row'>
+                        <Box style={{flexGrow: 1 }} width={'60%'} mt={3}>
                             {product.collection_name &&
-                                <Text fontWeight={300} color='black' fontSize={11} >{product.collection_name}</Text>
+                                <Text fontWeight={300} color='black' fontSize={11}>{product.collection_name}</Text>
                             }
                             <Text fontWeight={300} numberOfLines={2} color='black' fontSize={13}>{product.name}</Text>
                             {price()}
                         </Box>
-                        {!hideWishlist && <Box>
+                        {!hideWishlist && <Box width={'12%'} marginLeft={2}>
                             <IconButton aria-label="wishlist" onPress={() => clickedWishlist()} _pressed={{ backgroundColor: "white" }}>
                                 <Wishlist like={wishlist.id_product.includes(product.id_product)} size={20}></Wishlist>
                             </IconButton>
