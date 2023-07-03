@@ -867,7 +867,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <Button isDisabled={quantityAvailable == 0 ? true : false}
                                             onPress={() => addToCartF()}
                                             style={styles.addtoCartBtn}
-                                            // isLoading={cart.cartLoading}
+                                            isLoading={cart.cartLoading}
                                             isLoadingText="ADD TO CART">
                                             ADD TO CART
                                         </Button>
