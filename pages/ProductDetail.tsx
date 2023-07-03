@@ -495,6 +495,10 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                         })
                                                     }
                                                 }}
+                                                panGestureHandlerProps={{
+                                                    activeOffsetX: [-10, 10],
+                                                    failOffsetY: [-10, 10],
+                                                  }}
                                                 renderItem={({ index }) => <CarouselItem key={index} imageHeight={imageHeight} uri={images[index]}
                                                     openPreview={openImagePreview}
                                                 />}
