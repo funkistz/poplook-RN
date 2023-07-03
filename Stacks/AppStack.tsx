@@ -32,6 +32,7 @@ import DeleteAccountPage from '../pages/DeleteAccountPage';
 import DeleteAccountSuccessPage from '../pages/DeleteAccountSuccessPage';
 import VisitStorePage from '../pages/VisitStore';
 import FollowUsPage from '../pages/FollowUsPage';
+import { Image, Center, Box } from 'native-base';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,7 +49,23 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             headerBackTitle: ''
             // headerLeft: () => (<LeftHeader navigation={navigation}></LeftHeader>)
         }}>
-            <Stack.Screen name='HomePage' component={HomePage} options={{ title: 'Poplook' }} />
+
+            <Stack.Screen
+                name="HomePage"
+                component={HomePage}
+                options={{
+                    headerTitle: () => (
+                        <>
+                            <Box>
+                                <Center>
+                                    <Image style={{ width: 100, height: 29 }} source={{uri: "https://poplook.com/assets/img/logo.png"}} alt='Poplook Logo' size="sm" />
+                                </Center>
+                            </Box>
+                        </>
+                    )
+                }}
+            />
+
             <Stack.Screen name='CategoryPage' component={CategoryPage} options={{ title: route.params ? route.params.title : 'Category' }} />
             <Stack.Screen name='CategoriesPage' component={CategoriesPage} options={{ title: 'Categories' }} />
             <Stack.Screen name='ProductListPage' component={ProductListPage} options={{ title: 'Product' }} />

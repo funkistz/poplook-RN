@@ -4,8 +4,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NativeBaseProvider, Box } from "native-base";
-import { Flex, Center, Image, HStack, StatusBar, Text } from 'native-base';
+import { NativeBaseProvider, Box, Center, Image, Text  } from "native-base";
 import { Themed } from '../Providers/Themed';
 import AppStack from '../Stacks/AppStack';
 import { useSelector, useDispatch } from 'react-redux';
@@ -119,7 +118,24 @@ export default function TabStack() {
           <Stack.Screen name='AddressListExPage' component={AddressListPage} options={{ title: 'My Addresses', headerShown: true }} />
           <Stack.Screen name='ForceUpdatePage' component={ForceUpdatePage} options={{ title: 'Force Update', headerShown: true }} />
           <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation', headerShown: true }} />
-          <Stack.Screen name='IntroPage' component={IntroPage} options={{ title: 'Poplook', headerShown: true }} />
+          {/* <Stack.Screen name='IntroPage' component={IntroPage} options={{ title: 'Poplook', headerShown: true }} /> */}
+          <Stack.Screen
+                name="IntroPage"
+                component={IntroPage}
+                options={{
+                    headerTitle: () => (
+                        <>
+                            <Box>
+                                <Center>
+                                    <Image style={{ width: 100, height: 29 }} source={{uri: "https://poplook.com/assets/img/logo.png"}} alt='Poplook Logo' size="sm" />
+                                </Center>
+                            </Box>
+                        </>
+                    ),
+                    headerShown: true,
+                    headerTitleAlign: "center",
+                }}
+            />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
