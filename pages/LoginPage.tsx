@@ -1,6 +1,6 @@
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, Input, Box, Button, ScrollView, View, HStack } from "native-base";
+import { Text, Box, Button, View, HStack } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import CustomInput from '../components/Form/CustomInput';
@@ -14,29 +14,28 @@ export default function LoginPage({ route }: { route: any }) {
 
     const navigation: any = useNavigation();
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-    const cart = useSelector((storeState: any) => storeState.cart);
     const session = useSelector((storeState: any) => storeState.session);
-    const { isFetching, isSuccess, isError, errorMessage } = useSelector(
+    const { isSuccess, isError } = useSelector(
         userSelector
     );
     const params = route.params;
 
-    const { user } = useSelector(
-        userSelector
-    );
-
     useEffect(() => {
-        
-        // dispatch(intro(false))
-    }, []);
 
-    useEffect(() => {
-        // if (isError) {
-        // }
-        // if (isSuccess) {
-        //     navigation.navigate('Home', { screen: 'HomePage' });
-        // }
-    }, []);
+        if (isError) {
+            navigation.navigate('LoginPage', { screen: 'LoginPage'});
+        }
+
+        if (isSuccess) {
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: 'Main' }]
+                })
+            );
+        }
+
+    }, [isError, isSuccess]);
 
     const register = () => {
 
@@ -70,14 +69,6 @@ export default function LoginPage({ route }: { route: any }) {
                         async (values) => {
                             Keyboard.dismiss();
                             dispatch(loginUser(values));
-
-                            navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 0,
-                                    routes: [{ name: 'Main' }], // Replace with the name of your main tab navigator
-                                })
-                            );
-                            
                         }
                     }
 
@@ -91,7 +82,6 @@ export default function LoginPage({ route }: { route: any }) {
                             .min(3, 'Password must be at least 3 characters')
                             .required('Password is required'),
                     })}
-                    // validateOnMount
                 >
                     {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
                         <>
@@ -108,20 +98,6 @@ export default function LoginPage({ route }: { route: any }) {
                                 autoCapitalize="none"
                                 autoCorrect={false}
                             />
-                            {/* <Box w="100%" style={{ borderBottomColor: '#dedede', borderBottomWidth: 1 }}>
-                                <Input
-                                    placeholder="Email"
-                                    value={values['email'] ? values['email'].toLowerCase() : ''}
-                                    onChangeText={handleChange('email')}
-                                    onBlur={() => setFieldTouched('email')}
-                                    style={styles.input}
-                                    type="text"
-                                />
-
-                            </Box>
-                            {touched['email'] && errors['email'] &&
-                                <Text style={{ fontSize: 10, color: '#FF0D10' }}>{errors['email']}</Text>
-                            } */}
                             <CustomInput
                                 placeholder="Password"
                                 name="password"

@@ -23,7 +23,7 @@ export interface SessionState {
     isSuccess: boolean,
     isError: boolean,
     errorMessage: string | null,
-    intro: boolean,
+    intro: boolean
 }
 
 const dummy = {
@@ -51,7 +51,7 @@ const initialState: SessionState = {
     isSuccess: false,
     isError: false,
     errorMessage: "",
-    intro: false,
+    intro: false
 }
 
 export const loginUser: any = createAsyncThunk(
@@ -176,6 +176,8 @@ export const sessionSlice = createSlice({
             console.log('logout');
             const temp: any = {};
             temp.user = null;
+            temp.isSuccess = null;
+            temp.isError = null;
 
             GeneralService.toast({ description: 'Logout successfully' });
 
@@ -200,6 +202,7 @@ export const sessionSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(loginUser.fulfilled, (state, { payload }) => {
             const temp: any = {};
+
             temp.user = payload.data;
             temp.isFetching = false;
             temp.isSuccess = true;
@@ -213,6 +216,7 @@ export const sessionSlice = createSlice({
             return state;
         }).addCase(loginUser.pending, (state, { payload }) => {
             const temp: any = {};
+
             temp.isFetching = true;
             temp.isError = false;
             temp.isSuccess = false;
@@ -225,6 +229,7 @@ export const sessionSlice = createSlice({
             return state;
         }).addCase(loginUser.rejected, (state, { payload }) => {
             const temp: any = {};
+
             temp.isFetching = false
             temp.isError = true;
             temp.loginLoading = false;
