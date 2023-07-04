@@ -30,7 +30,7 @@ export default function WishlistPage ({ route , navigation} : { route: any,  nav
         { wishlist.id_product.length > 0 &&
             <>
                 <Center backgroundColor="white">
-                    <ScrollView height="100%" mt={10} mb={10}>
+                    <ScrollView height="100%" mt={5} mb={10}>
                         {wishlist && wishlist.data && wishlist.data.product_list &&
                             (wishlist.data.product_list.map((product: any, index: any) => {
                                 return <WishlistList key={index} product={product} currency={wishlist.data.currency}></WishlistList>
