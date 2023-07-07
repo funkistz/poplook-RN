@@ -25,6 +25,7 @@ import ImageView from "react-native-image-viewing";
 import { LayoutAnimation } from 'react-native';
 import { toggleAnimation } from '../components/Animation/toggleAnimation';
 import AutoHeightWebView from 'react-native-autoheight-webview'
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const win = Dimensions.get('window');
 
@@ -554,7 +555,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         }
 
                                         <TouchableOpacity onPress={toggleModalStore} >
-                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} my='1' mb={6}> Check in store availability </Text>
+                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5, marginBottom: 1 }} mb={7}> Check in store availability <Icons name="storefront-outline" size={20} color={'#1cad48'} style={{ paddingRight: 5, paddingTop: 3 }}/></Text>
                                         </TouchableOpacity>
 
                                         {colorRelated &&
@@ -575,7 +576,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
                                     <View>
                                         <TouchableOpacity activeOpacity={1} onPress={toggleModalDetails}>
-                                            <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
+                                            <HStack style={ !isModalDetails ? styles.bottomLine : styles.noBottomLine }>
                                                 <Box width={'90%'} backgroundColor='red' pt={1}>
                                                     <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10 }}>Details</Text>
                                                 </Box>
@@ -586,8 +587,8 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         </TouchableOpacity>
 
                                         {isModalDetails && 
-                                            <VStack space={4}>
-                                                <View style={{ flex: 1, paddingVertical: 10 }}>
+                                            <VStack style={styles.bottomLine}>
+                                                <View style={{ flex: 1, paddingVertical: 5 }}>
                                                     {details &&
                                                         <>
                                                             <View style={{ marginHorizontal: 20 }}>
@@ -652,7 +653,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                     
 
                                         <TouchableOpacity activeOpacity={1} onPress={toggleModalMeasurements}>
-                                            <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
+                                            <HStack style={ !isModalMeasurements ? styles.bottomLine : styles.noBottomLine }>
                                                 <Box width={'90%'} backgroundColor='red' pt={1}>
                                                     <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Measurements</Text>
                                                 </Box>
@@ -663,7 +664,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         </TouchableOpacity>
 
                                         {isModalMeasurements && 
-                                            <VStack space={4}>
+                                            <VStack style={styles.bottomLine}>
                                                 <View style={{ flex: 1, paddingVertical: 10 }}>
                                                     {measurements &&
                                                         <>
@@ -685,9 +686,9 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         }
 
                                         <TouchableOpacity activeOpacity={1} onPress={toggleModalCare}>
-                                            <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
+                                            <HStack style={ !isModalCare ? styles.bottomLine : styles.noBottomLine }>
                                                 <Box width={'90%'} backgroundColor='red' pt={1}>
-                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Care</Text>
+                                                    <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10 }}>Care</Text>
                                                 </Box>
                                                 <Box width={'10%'} backgroundColor='red'>
                                                     { !isModalCare ? <IonIcon name={'chevron-forward-outline'} size={30} color="#333"/> : <IonIcon name={'chevron-down-outline'} size={30} color="#333"/> }
@@ -696,7 +697,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         </TouchableOpacity>
 
                                         {isModalCare &&
-                                            <VStack space={4}>
+                                           <VStack style={styles.bottomLine}>
                                                  <View style={{ flex: 1, paddingVertical: 10 }}>
                                                     {care &&
                                                         <>
@@ -719,7 +720,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         }
 
                                         <TouchableOpacity activeOpacity={1} onPress={toggleModalDelivery}>
-                                            <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10, }}>
+                                            <HStack style={{ borderBottomColor: '#ccc', borderBottomWidth: 1, padding: 10 }}>
                                                 <Box width={'90%'} backgroundColor='red' pt={1}>
                                                     <Text bold style={{ color: 'black', fontSize: 16, paddingLeft: 10, }}>Delivery & Returns</Text>
                                                 </Box>
@@ -914,5 +915,13 @@ const styles = StyleSheet.create({
         flex: 1,
         // alignItems: 'center',
         padding: 15
+    },
+    bottomLine: {
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        padding: 10
+    },
+    noBottomLine: {
+        padding: 10
     },
 });
