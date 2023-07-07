@@ -62,7 +62,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
                     color: #1cad48 !important;
                 }
 
-                h1 {
+                h1, strong {
                     font-size: 15px
                 }
             </style>    
@@ -146,7 +146,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
 
             setDetails(route.params.params.data)
             fetchData(session.user.id_customer).catch(console.error);
-            navigation.setOptions({ title: route.params.params.id == 21 ? 'Contact Us' : route.params.params.title  });
+            navigation.setOptions({ title: route.params.params.id == 21 ? 'Contact Us' : route.params.params.title });
         }
         
         const keyboardDidShowListener = Keyboard.addListener(

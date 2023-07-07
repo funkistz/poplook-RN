@@ -75,7 +75,7 @@ export default function CustomerServicePage({ navigation} : { navigation: any })
                                 </HStack>
                             </TouchableOpacity>
                         })}
-                        <TouchableOpacity onPress={() => goToDetailsPage(dataCareer.id_cms, dataCareer.meta_title, dataCareer)}> 
+                        <TouchableOpacity onPress={() => goToDetailsPage(dataCareer.id_cms, (dataCareer.meta_title).charAt(0).toUpperCase() + (dataCareer.meta_title).slice(1).toLowerCase(), dataCareer)}> 
                                 <HStack borderBottomWidth="1" _dark={{ borderColor: "#dedede" }} borderColor="muted.100" py="3" alignItems="center">
                                     <Text color="black" fontSize={16}>Careers</Text>
                                     <Spacer />
