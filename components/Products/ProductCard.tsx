@@ -86,7 +86,6 @@ export default function ProductCard({ product, route, openWishlist, hideWishlist
                                         flex: 1,
                                         justifyContent: 'flex-end',
                                         alignItems: 'center',
-                                        borderRadius: 10,
                                         overflow: 'hidden',
                                     }}>
                                         <Text py={1}
