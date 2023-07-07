@@ -32,6 +32,7 @@ import DeleteAccountPage from '../pages/DeleteAccountPage';
 import DeleteAccountSuccessPage from '../pages/DeleteAccountSuccessPage';
 import VisitStorePage from '../pages/VisitStore';
 import FollowUsPage from '../pages/FollowUsPage';
+import DeliveryReturnsPage from '../pages/DeliveryReturnsPage';
 import { Image, Center, Box } from 'native-base';
 
 const Stack = createNativeStackNavigator();
@@ -96,6 +97,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='DeleteAccountSuccessPage' component={DeleteAccountSuccessPage} options={{ title: 'Confirmation Delete Account' }} />
             <Stack.Screen name='VisitStorePage' component={VisitStorePage} options={{ title: 'Visit Our Stores' }} />
             <Stack.Screen name='FollowUsPage' component={FollowUsPage} options={{ title: 'Follow Us' }} />
+            <Stack.Screen name='DeliveryReturnsPage' component={DeliveryReturnsPage} options={{ title: 'Delivery & Returns' }} />
         </Stack.Navigator>
     )
 }
