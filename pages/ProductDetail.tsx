@@ -588,7 +588,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
                                         {isModalDetails && 
                                             <VStack style={styles.bottomLine}>
-                                                <View style={{ flex: 1, paddingVertical: 5 }}>
+                                                <View style={{ flex: 1 }}>
                                                     {details &&
                                                         <>
                                                             <View style={{ marginHorizontal: 20 }}>
@@ -665,7 +665,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
                                         {isModalMeasurements && 
                                             <VStack style={styles.bottomLine}>
-                                                <View style={{ flex: 1, paddingVertical: 10 }}>
+                                                <View style={{ flex: 1 }}>
                                                     {measurements &&
                                                         <>
                                                             <View style={{ marginHorizontal: 20 }}>
@@ -698,7 +698,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
                                         {isModalCare &&
                                            <VStack style={styles.bottomLine}>
-                                                 <View style={{ flex: 1, paddingVertical: 10 }}>
+                                                 <View style={{ flex: 1 }}>
                                                     {care &&
                                                         <>
                                                             <View style={{ marginHorizontal: 20 }}>
