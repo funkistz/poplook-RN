@@ -61,6 +61,10 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
                 a {
                     color: #1cad48 !important;
                 }
+
+                h1 {
+                    font-size: 15px
+                }
             </style>    
         </head>
 
@@ -97,8 +101,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
     const fetchData = async (item:any) => {
         const response = await OrderHistoryService.orderHistoryList(item);
         const json = await response.json();
-        console.log('result: ......', json)
-        console.log('idasdas: ', json.data.order_histories)
+
         if(json.data.order_histories != "") {
             const orderIds = json.data.order_histories.map((order: any) => order.id_order);
             setListOrderId(orderIds)
@@ -113,8 +116,6 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
             message: values.message,
         };
 
-        // console.log('params: ', params)
-
         sendEmail(params).catch(console.error)
         resetForm();
     }
@@ -122,6 +123,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
     const sendEmail = async (item:any) => {
         const response = await CmsService.sendEmail(item);
         const json = await response.json();
+
         if(json.code == 200) {
             GeneralService.toast({ description: json.message });
         }
@@ -141,11 +143,12 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
 
     useEffect(() => {
         if(isFocused) {
-            console.log('params ', route.params.params.data)
+
             setDetails(route.params.params.data)
             fetchData(session.user.id_customer).catch(console.error);
             navigation.setOptions({ title: route.params.params.id == 21 ? 'Contact Us' : route.params.params.title  });
         }
+        
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             () => {
