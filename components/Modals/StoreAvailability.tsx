@@ -103,7 +103,7 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                         </>
                     }
 
-                    <Text style={{ color: 'gray', fontSize: 12, lineHeight: 16 }} my={2}>*Availability is as 10 am this morning. Please call store to reserve this item.</Text>
+                    <Text style={{ color: 'gray', fontSize: 12, lineHeight: 16 }} my={2}>*Availability is at 10 am this morning. Please call store to reserve this item.</Text>
 
                     {available &&
                         <>
