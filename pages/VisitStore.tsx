@@ -39,11 +39,11 @@ export default function VisitStorePage({ route } : { route: any }) {
     return (
         <>  
             <ScrollView p={6}>
-                <View style={{ flex: 1, paddingVertical: 20, marginBottom: 10 }}>
+                <View style={{ flex: 1, paddingVertical: 5, marginBottom: 10 }}>
                 {stores.map((item: any, index: any) => {
                     return <>
                         <HStack>
-                            <Box w={'100%'} mb={5}>
+                            <Box w={'100%'} mb={2}>
                                 <Center>
                                     <FullWidthImage  source={{ uri: item.href }} key={index}/>
                                     
@@ -56,7 +56,7 @@ export default function VisitStorePage({ route } : { route: any }) {
                         <HStack justifyContent={'center'}>
                             <Text color={'black'} textAlign={'center'}>{ item.address }</Text>
                         </HStack>
-                        <HStack justifyContent={'center'} mb={5}>
+                        <HStack justifyContent={'center'} mb={10}>
                             <Text color={'black'}><IonIcon name="call" size={18} color="black" /> { item.contact }</Text>
                         </HStack>
                     </>
