@@ -100,10 +100,10 @@ android {
         applicationId 'com.tiseno.poplook'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 700012
-        versionName '7.0.12'
+        versionCode 700013
+        versionName '7.0.13'
         manifestPlaceholders = ['partner': 'poplook']
-        versionCode 700012
+        versionCode 700013
     }
 
     splits {
@@ -165,6 +165,8 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+
+    implementation 'com.facebook.fresco:animated-gif:2.5.0'
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
