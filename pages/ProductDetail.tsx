@@ -555,7 +555,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         }
 
                                         <TouchableOpacity onPress={toggleModalStore} >
-                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5, marginBottom: 1 }} mb={7}> Check in store availability <Icons name="storefront-outline" size={20} color={'#1cad48'} style={{ paddingRight: 5, paddingTop: 3 }}/></Text>
+                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} mb={6} my='1'> Check in store availability</Text>
                                         </TouchableOpacity>
 
                                         {colorRelated &&
