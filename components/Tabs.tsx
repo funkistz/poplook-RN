@@ -87,6 +87,7 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
         onIndexChange={onIndexChange}
         // onTabPress={({ route, preventDefault }) => onTabPress(route)}
         initialLayout={{ width: layout.width }}
+        swipeEnabled={false}
       />
     </>);
 }
