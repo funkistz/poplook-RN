@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, TextInput, Dimensions } from 'react-native';
-import { Center, Button, Container, Divider, Flex, Heading, HStack, IconButton, Spacer, Stack, Text, VStack, FormControl, Input, ScrollView, Icon, FlatList, Box, Badge } from 'native-base';
+import { Modal, View, StyleSheet, TouchableOpacity, Platform, Dimensions, Linking } from 'react-native';
+import { Center, Button, Divider, Flex, HStack, Text, VStack, ScrollView, Icon, Box } from 'native-base';
 import ProductService from '../../Services/ProductService';
 import Spinner from '../Spinner';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -45,7 +45,32 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
         if (json) {
             
             setIsLoading(false)
-            setAvailable(json.length === 0  ? null : json)
+
+            const tempContact: any = [];
+            const tempAddress: any = [];
+
+            for (let i = 0; i < json.length; i++) {
+
+                const address = json[i].store_address
+                const store_name = json[i].store
+                const substr = '+';
+                const substr2 = 'Tel:';
+
+                const phone = address.substring(address.indexOf(substr))
+
+                const telno = phone.replace(/ /g, '')
+                const add = address.substring(0, address.indexOf(substr2))
+
+                tempContact.push({ contact: telno });
+                tempAddress.push({ address: add , store: store_name });
+            }
+
+            const startIndex = 0;
+            const existingArray = tempAddress
+            const newArray = tempContact;
+            const concatenatedArray = existingArray.slice(startIndex).map((obj: any, index: any) => ({ ...obj, ...newArray[index] }));
+
+            setAvailable(json.length === 0  ? null : concatenatedArray)
         }
 
     }
@@ -59,6 +84,13 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
 
         
     }, [select])
+
+    const phoneCall = (number: any) => {
+
+        const phoneNumber = `tel:${number}`;
+        Linking.openURL(phoneNumber);
+
+    };
 
     return (
         <>
@@ -108,29 +140,26 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                     {available &&
                         <>
                             {(!isLoading && available.length > 0) &&
-
                                 <>
                                 <ScrollView>
                                     <Flex style={styles.container}>
-                                            <Text color={'black'} my={2}>Available at:</Text>
-                                            {available.map((res: any) => {
-                                                return <>
-                                                    <Divider bg={'blueGray.200'} />
-                                                    <HStack mt={2}>
-                                                        <Box w={'80%'}>
-                                                            <Text color={'black'}>{res.store}</Text>
-                                                        </Box>
-                                                    </HStack>
-                                                    <Text style={{ color: 'gray', fontSize: 14 }} my={2}>{res.store_address}</Text>
-                                                </>
-
-                                            })}
-                                        
+                                        <Text color={'black'} my={2}>Available at:</Text>
+                                        {available.map((res: any, index: any) => {
+                                            return <>
+                                                <Divider bg={'blueGray.200'} />
+                                                <HStack mt={2}>
+                                                    <Box w={'80%'}>
+                                                        <Text color={'black'} key={index}>{res.store}</Text>
+                                                    </Box>
+                                                </HStack>
+                                                <VStack>
+                                                    <Text style={{ color: 'gray', fontSize: 14 }} my={2}>{res.address}<Text underline onPress={() => phoneCall(res.contact)} style={{ color: '#1cad48', fontSize: 14 }}>{res.contact}</Text></Text>
+                                                </VStack>
+                                            </>
+                                        })}
                                     </Flex>
                                 </ScrollView>
-
                                 </>
-
                             }
 
                             {isLoading &&
