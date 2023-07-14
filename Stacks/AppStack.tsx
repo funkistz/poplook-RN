@@ -70,7 +70,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='CategoryPage' component={CategoryPage} options={{ title: route.params ? route.params.title : 'Category' }} />
             <Stack.Screen name='CategoriesPage' component={CategoriesPage} options={{ title: 'Categories' }} />
             <Stack.Screen name='ProductListPage' component={ProductListPage} options={{ title: 'Product' }} />
-            <Stack.Screen name='ProductDetailPage' component={ProductDetailPage} options={{ title: 'Product' }} />
+            <Stack.Screen name='ProductDetailPage' component={ProductDetailPage} options={{ title: '' }} />
             <Stack.Screen name='SettingPage' component={SettingPage} options={{ title: 'Setting' }} />
             <Stack.Screen name='LoginPage' component={LoginPage} options={{ title: 'Login' }} />
             <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{ title: 'Forgot Password' }} />
