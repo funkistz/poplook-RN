@@ -104,11 +104,11 @@ export default function StoreAvailabilityModal({ visible, onToggle, size, refere
                 <View style={{ flex: 1, paddingHorizontal: 20, paddingVertical: 30 }}>
                     <HStack mb={4}>
                         <HStack w={'90%'}>
-                            <Text bold style={{ color: 'black', fontSize: 18 }}>Check in-store availability</Text>
+                            <Text bold style={{ color: 'black', fontSize: 18 }}>Check In-Store Availability</Text>
                         </HStack>
                         <HStack w={'10%'}>
                             <TouchableOpacity onPress={onToggle}>
-                                <Icon
+                                <Icon   
                                     size="6"
                                     color="black"
                                     as={<IonIcon name="close-outline" />}
