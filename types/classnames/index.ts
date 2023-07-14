@@ -5,6 +5,7 @@ declare module 'react-native-insider/src/InsiderCallbackType';
 declare module 'react-native-searchable-dropdown';
 declare module 'react-native-vector-icons/Ionicons';
 declare module 'react-native-select-dropdown';
+declare module 'react-native-snap-carousel';
 declare module '@env' {
     export const API_URL: string;
     export const WEB_URL: string;
