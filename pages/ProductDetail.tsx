@@ -14,6 +14,7 @@ import ProductCard from '../components/Products/ProductCard';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { WEB_URL } from "@env"
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import Icons from 'react-native-vector-icons/MaterialIcons';
 import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlist';
 import { useFocusEffect } from '@react-navigation/native';
 import SizeGuideModal from '../components/Modals/SizeGuide';
@@ -25,7 +26,7 @@ import ImageView from "react-native-image-viewing";
 import { LayoutAnimation } from 'react-native';
 import { toggleAnimation } from '../components/Animation/toggleAnimation';
 import AutoHeightWebView from 'react-native-autoheight-webview'
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Pagination } from 'react-native-snap-carousel';
 
 const win = Dimensions.get('window');
 
@@ -526,6 +527,18 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                     openPreview={openImagePreview}
                                                 />}
                                             />
+
+                                            <Pagination
+                                                dotsLength={images.length}
+                                                activeDotIndex={currentImageIndex}
+                                                containerStyle={styles.paginationContainer}
+                                                dotStyle={styles.dot}
+                                                inactiveDotStyle={styles.inactiveDot}
+                                                inactiveDotOpacity={0.6}
+                                                inactiveDotScale={0.8}
+                                            />
+
+                                            
                                         </>}
                                         {/* <SliderBox
                                             LoaderComponent={() => <></>}
@@ -555,8 +568,12 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         }
 
                                         <TouchableOpacity onPress={toggleModalStore} >
-                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 5 }} mb={6} my='1'> Check in store availability</Text>
-                                        </TouchableOpacity>
+                                            <HStack>
+                                            <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 1 }} mb={6} my='1'> Check in store availability</Text>
+                                            <Icons name={'store'}  size={22} color={'#1cad48'} style={{ paddingTop: 4 }}/>
+                                            </HStack>
+                                            
+                                        </TouchableOpacity>  
 
                                         {colorRelated &&
                                             <>
@@ -587,7 +604,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         </TouchableOpacity>
 
                                         {isModalDetails && 
-                                            <VStack style={styles.bottomLine}>
+                                            <VStack style={styles.openBottomLine}>
                                                 <View style={{ flex: 1 }}>
                                                     {details &&
                                                         <>
@@ -664,7 +681,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         </TouchableOpacity>
 
                                         {isModalMeasurements && 
-                                            <VStack style={styles.bottomLine}>
+                                            <VStack style={styles.openBottomLine}>
                                                 <View style={{ flex: 1 }}>
                                                     {measurements &&
                                                         <>
@@ -697,7 +714,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         </TouchableOpacity>
 
                                         {isModalCare &&
-                                           <VStack style={styles.bottomLine}>
+                                           <VStack style={styles.openBottomLine}>
                                                  <View style={{ flex: 1 }}>
                                                     {care &&
                                                         <>
@@ -919,9 +936,37 @@ const styles = StyleSheet.create({
     bottomLine: {
         borderBottomColor: '#ccc',
         borderBottomWidth: 1,
-        padding: 10
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        paddingTop: 10
     },
     noBottomLine: {
-        padding: 10
+        paddingLeft: 10,
+        paddingRight: 10,
+        // paddingBottom: 10,
+        paddingTop: 10
+    },
+    openBottomLine: {
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        // paddingTop: 10
+    },
+    paginationContainer: {
+        position: 'absolute',
+        bottom: 0,
+        paddingVertical: 10,
+    },
+    dot: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: 'rgba(0, 0, 0, 2.0)'
+    },
+    inactiveDot: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
     },
 });
