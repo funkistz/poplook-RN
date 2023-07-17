@@ -165,7 +165,7 @@ export const cartSlice = createSlice({
             .addCase(addToCart.rejected, (state, { payload }) => {
                 GeneralService.toast({ description: payload.message });
                 const temp: any = {};
-                temp.cartLoading = true;
+                temp.cartLoading = false;
 
                 state = { ...state, ...temp }
 
