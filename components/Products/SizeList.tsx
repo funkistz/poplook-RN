@@ -20,7 +20,7 @@ function SizeList({ attribute, setSizeSelected, sizeSelected }: any) {
                     borderColor={(sizeSelected == res.id_product_attribute) ? '#000' : '#ccc'}
                     width={Platform.OS == "ios" ? res.attribute_name.includes("Year") ? (win.width / 5) : (win.width/ 6 - 2.5) :  res.attribute_name.includes("Year") ? (win.width / 5) + 2: (win.width/ 6 - 2.5)}
                     _text={{ color: getTextColor(res.id_product_attribute), fontSize: 13 }}
-                    isDisabled={res.quantity == 0 ? true : false}
+                    isDisabled={res.quantity <= 0 ? true : false}
                     >
                     {res.attribute_name}
                 </Button>
