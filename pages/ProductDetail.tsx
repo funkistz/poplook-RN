@@ -570,7 +570,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                         <TouchableOpacity onPress={toggleModalStore} >
                                             <HStack>
                                             <Text underline color={'#1cad48'} alignItems="center" style={{ paddingRight: 1 }} mb={6} my='1'> Check in store availability</Text>
-                                            <Icons name={'store'}  size={22} color={'#1cad48'} style={{ paddingTop: 4 }}/>
+                                            {/* <Icons name={'store'}  size={22} color={'#1cad48'} style={{ paddingTop: 4 }}/> */}
                                             </HStack>
                                             
                                         </TouchableOpacity>  
