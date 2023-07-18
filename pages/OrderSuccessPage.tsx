@@ -78,29 +78,39 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
                         <Text style={styles.normal}>{details.payment_method}</Text>
                     </VStack>
                 </HStack>
-                <Divider/>
+                <Divider bg="#ccc"/>
 
-                <Address address={shipping} title='Shipping'></Address>
-                <Divider/>
+                <HStack py={2}>
+                    <VStack paddingRight={8}>
+                        <Text style={styles.bold}>Shipping Address</Text>
+                        <Address address={shipping}></Address>
+                    </VStack>
+                </HStack>
+                <Divider bg="#ccc"/>
 
-                <Address address={shipping} title='Billing'></Address> 
-                <Divider/>
+                <HStack py={2}>
+                    <VStack paddingRight={8}>
+                        <Text style={styles.bold}>Billing Address</Text>
+                        <Address address={shipping}></Address>
+                    </VStack>
+                </HStack>
+                <Divider bg="#ccc"/>
 
-                <HStack py={3}>
+                <HStack py={2}>
                     <VStack paddingRight={8}>
                         <Text style={styles.bold}>Gift Message</Text>
-                        <Text style={styles.normal}>{giftMessages.gift_message? giftMessages.gift_message : 'No messages available'}</Text>
+                        <Text py={2} style={styles.normal}>{giftMessages.gift_message? giftMessages.gift_message : 'No messages available'}</Text>
                     </VStack>
                 </HStack>
-                <Divider/>
+                <Divider bg="#ccc"/>
 
-                <HStack py={3}>
+                <HStack py={2}>
                     <VStack paddingRight={8}>
                         <Text style={styles.bold}>Order Message</Text>
-                        <Text style={styles.normal}>{messages.message ? messages.message : 'No message available'}</Text>
+                        <Text py={2} style={styles.normal}>{messages.message ? messages.message : 'No message available'}</Text>
                     </VStack>
                 </HStack>
-                <Divider/>
+                <Divider bg="#ccc"/>
 
                 <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
                     <Text paddingBottom={3} style={styles.bold}>Description</Text>
@@ -115,7 +125,7 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
                     <Text style={styles.bold}>{currency} {details.carrier_price}</Text>
                     </HStack>
                 </VStack>
-                <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
+                <VStack _dark={{ borderColor: "grey" }} py={3}>
                     <HStack>
                     <Spacer/>
                     <Text style={styles.bold}>TOTAL {currency} { details.total_paid }</Text>
@@ -159,7 +169,7 @@ const styles = StyleSheet.create({
     },
     border: {
         borderBottomWidth: 1,
-        borderColor: 'muted.100',
+        borderColor: '#ccc',
         paddingRight: 8
     },
     footer: {
