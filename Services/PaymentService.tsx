@@ -25,12 +25,13 @@ const PaymentService = {
 
     },
 
-    async payIpay(id_cart: any, customerId: any, paymentId: any) {
+    async payIpay(id_cart: any, customerId: any, paymentId: any, payment: any) {
 
         const params: any = {
             id_cart: id_cart,
             id_customer: customerId,
             id_payment: paymentId,
+            payment: payment,
             return_url: 'https://poplook.com/modules/ipay88induxive/ipay88_mobile_bridge.php',
             callback_url: 'https://poplook.com/modules/ipay88induxive/backend_response.php'
         };
@@ -39,12 +40,13 @@ const PaymentService = {
 
     },
 
-    async repayIpay(orderId: any, customerId: any, paymentId: any) {
+    async repayIpay(orderId: any, customerId: any, paymentId: any, payment: any) {
 
         const params: any = {
             id_order: orderId,
             id_customer: customerId,
             id_payment: paymentId,
+            payment: payment,
             return_url: 'https://poplook.com/modules/ipay88induxive/ipay88_mobile_bridge.php',
             callback_url: 'https://poplook.com/modules/ipay88induxive/backend_response.php'
         };
