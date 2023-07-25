@@ -302,8 +302,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                 const json = await response.json();
 
-                console.log('step4freeorder', json.data)
-
                 if (json.code == 200 && json.data) {
 
                     dispatch(clearCart())
@@ -436,6 +434,18 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 return 'atome';
             } else if (paymentType == '0') {
                 return 'free_order';
+            } else if (paymentType == '8') {
+                if (paymentChild == '538') {
+                    return 'tng'
+                } else if (paymentChild == '210') {
+                    return 'boost'
+                } else if (paymentChild == '912') {
+                    return 'setel'
+                } else if (paymentChild == '523') {
+                    return 'GrabPay'
+                } else if (paymentChild == '801') {
+                    return 'Shopee Pay'
+                }
             } else {
                 return 'ipay88'
             }
@@ -524,12 +534,26 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const ipay = async (data: any) => {
 
-        console.log('data checkout', data);
+        let payment = ''
+        
+        if (paymentType == '8') {
+            if (paymentChild == '538') {
+                payment = 'tng'
+            } else if (paymentChild == '210') {
+                payment = 'boost'
+            } else if (paymentChild == '912') {
+                payment = 'setel'
+            } else if (paymentChild == '523') {
+                payment = 'GrabPay'
+            } else if (paymentChild == '801') {
+                payment = 'Shopee Pay'
+            }
+        }
 
-        const response = await PaymentService.payIpay(data.id_cart, user.id_customer, paymentId());
+        const response = await PaymentService.payIpay(data.id_cart, user.id_customer, paymentId(), payment);
         const json = await response.json();
 
-        console.log('repayIpay', json);
+        console.log('payIpay', json);
 
         if (json.code == '200') {
             const params = {
