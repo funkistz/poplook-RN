@@ -174,7 +174,23 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const ipay = async (data: any) => {
 
-        const response = await PaymentService.repayIpay(data.id_order, user.id_customer, paymentId());
+        let payment = ''
+        
+        if (paymentType == '8') {
+            if (paymentChild == '538') {
+                payment = 'tng'
+            } else if (paymentChild == '210') {
+                payment = 'boost'
+            } else if (paymentChild == '912') {
+                payment = 'setel'
+            } else if (paymentChild == '523') {
+                payment = 'GrabPay'
+            } else if (paymentChild == '801') {
+                payment = 'Shopee Pay'
+            }
+        } 
+
+        const response = await PaymentService.repayIpay(data.id_order, user.id_customer, paymentId(), payment);
         const json = await response.json();
 
         console.log('repayIpay', json);
