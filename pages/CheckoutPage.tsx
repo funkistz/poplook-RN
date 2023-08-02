@@ -192,14 +192,15 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     };
 
     const validateVoucher = async () => {
+
         const params = {
             code: voucher,
             id_cart: cartId,
             id_shop: user.id_shop,
         }
 
-        const response = await VoucherService.validateVoucher(params);
-        const json = await response.json();
+        const response = await CartService.addVoucher(cartId, params);
+        const json = await response.data;
 
         if (json.code == 200) {
             setVoucher('');
@@ -222,14 +223,15 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         ]);
     }
     const delVoucher = async (id_cart_rule: any) => {
+
         const params = {
             id_cart: cartId,
             id_cart_rule: id_cart_rule,
         }
 
-        const response = await VoucherService.delValidateVoucher(params);
-        const json = await response.json();
-        console.log('json: ', json)
+        const response = await CartService.deleteVoucher(cartId, params);
+        const json = await response.data;
+
         if (json.code == 200) {
             dispatch(getCartStep1({ gift: gift, address_id: address ? address.id : null }))
             GeneralService.toast({ description: json.message });
@@ -279,7 +281,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             if (paymentType == '2' || paymentType == '8') {
                 if (paymentChild) {
                     const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
-                    const json = await response.json();
+                    const json = await response.data;
 
                     if (json.code == 200 && json.data) {
 
@@ -300,7 +302,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 }
             } else if (paymentType == '0') {
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
-                const json = await response.json();
+                const json = await response.data;
 
                 if (json.code == 200 && json.data) {
 
@@ -319,7 +321,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             
             } else {
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
-                const json = await response.json();
+                const json = await response.data;
 
                 if (json.code == 200 && json.data) {
 
@@ -366,8 +368,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const cartStep5 = async (orderId: any, status: any, paymentMethod: any, transId: any, amount: any) => {
 
-        const response = await CartService.cartStep5(orderId, status, paymentMethod, transId, amount);
-        const json = await response.json();
+        const response = await CartService.cartStep5(cartId, orderId, status, paymentMethod, transId, amount);
+        const json = await response.data;
 
         console.log('cartstep5', json)
 

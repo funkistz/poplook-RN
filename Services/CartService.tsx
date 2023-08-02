@@ -1,24 +1,34 @@
-import APIService from "./ApiService";
+import api from "./AxiosService";
 
 const CartService = {
 
     async getCart(cartId: String | Number) {
-        const param = {
-            id: String(cartId)
+
+        const url = 'cart/' + cartId;
+
+        return api.get(url)
+
+    },
+
+    async addToCart(cartId: String | Number, params: any) {
+
+        const url = 'cart/' + cartId;
+
+        return api.put(url, params);
+
+    },
+
+    async delToCart(cartId: any, id_product: any, id_product_attribute: any) {
+
+        const params = {
+            id_product: id_product,
+            id_product_attribute: id_product_attribute,
         };
 
-        return APIService.getMethod('Carts/cart', param);
-    },
+        const url = 'cart/' + cartId;
 
-    async addToCart(params: any) {
+        return api.delete(url, { data: params })
 
-        // console.log('addToCart', params);
-        return APIService.putMethod('Carts/add', params);
-    },
-
-    async delToCart(params: any) {
-        console.log('delToCart', params);
-        return APIService.deleteMethod('Carts/removeProduct', params);
     },
 
     async cartStep1(cartId: String | Number, giftId: String, giftMesssage: String, gift: Number | String) {
@@ -31,7 +41,10 @@ const CartService = {
             gift_wrap_id: giftId,
         };
 
-        return APIService.getMethod('Carts/OrderStep1', params);
+        const url = 'cart/' +cartId+ '/order_step1';
+
+        return api.get(url)
+
     },
 
     async cartStep2(cartId: String | Number, addressId: String) {
@@ -42,14 +55,17 @@ const CartService = {
             id_address_billing: String(addressId)
         };
 
-        return APIService.getMethod('Carts/OrderStep2', params);
+        const url = 'cart/' +cartId+ '/order_step2';
+
+        return api.get(url)
+
     },
 
     async cartStep3(cartId: String | Number, addressId: String, carrierId: String) {
 
         const params = {
-            id_cart: String(cartId),
-            id_address_delivery: String(addressId),
+            // id_cart: String(cartId),
+            // id_address_delivery: String(addressId),
             id_carrier: String(carrierId),
             // is_store_customer: cartId.toString(),
             // message: cartId.toString(),
@@ -57,27 +73,30 @@ const CartService = {
             // gift_message: cartId.toString(),
         };
 
-        console.log('cartStep3', params);
+        const url = 'cart/' +cartId+ '/order_step3';
 
-        return APIService.getMethod('Carts/OrderStep3', params);
+        return api.get(url, { params: params } )
 
     },
 
     async cartStep4(cartId: String | Number, paymentType: String, message: any) {
 
         const params = {
-            id_cart: cartId,
+            // id_cart: cartId,
             payment: paymentType,
-            message: message,
+            // message: message,
             // gift: cartId.toString(),
             // gift_message: cartId.toString(),
             // is_store_customer: cartId.toString(),
         };
 
-        return APIService.getMethod('Carts/OrderStep4', params);
+        const url = 'cart/' +cartId+ '/order_step4';
+
+        return api.get(url, { params: params } )
+
     },
 
-    async cartStep5(orderId: String | Number, status: any, paymentType: any, transactionId: any, amount: any) {
+    async cartStep5(cartId: String | Number, orderId: String | Number, status: any, paymentType: any, transactionId: any, amount: any) {
 
         const params = {
             id_order: String(orderId),
@@ -87,9 +106,23 @@ const CartService = {
             total_paid: amount,
         };
 
-        return APIService.getMethod('Carts/OrderStep5', params);
-    }
+        const url = 'cart/' +cartId+ '/order_step5';
 
+        return api.get(url,  { params: params } )
+        
+    },
+
+    async addVoucher(cartId: String | Number, params: any) {
+
+        return api.post('cart/' + cartId + '/validate_voucher', params);
+
+    },
+
+    async deleteVoucher(cartId: String | Number, params: any) {
+
+        return api.delete('cart/' + cartId + '/remove_voucher', { data: params });
+
+    }
 
 }
 

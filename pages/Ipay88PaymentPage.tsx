@@ -4,6 +4,7 @@ import { Alert } from 'react-native';
 import WebView from 'react-native-webview';
 import CartService from '../Services/CartService';
 import { MODULE_API } from '@env';
+import { useSelector } from 'react-redux';
 
 export default function Ipay88PaymentPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -12,6 +13,8 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
     const paymentType = route.params.payment_type;
     const transId = route.params.trans_id;
     const amount = route.params.amount;
+
+    const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
 
     const data = {
         form: form
@@ -84,8 +87,8 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
 
         console.log('txnstatus', status)
 
-        const response = await CartService.cartStep5(orderId, status, paymentType, transId, amount);
-        const json = await response.json();
+        const response = await CartService.cartStep5(cartId, orderId, status, paymentType, transId, amount);
+        const json = await response.data;
 
         console.log('cartstep5', json)
 

@@ -55,9 +55,7 @@ export const assignCheckoutAddress: any = createAsyncThunk(
             let id_address = address_id ? address_id : 0;
 
             const response = await CartService.cartStep1(id_cart, id_gift, message, gift_value);
-            let data = await response.json()
-
-            console.log('assignCheckoutAddress', data.data)
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -73,7 +71,6 @@ export const assignCheckoutAddress: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -90,9 +87,7 @@ export const getCartStep1: any = createAsyncThunk(
             const gift_value = gift ? gift : '';
 
             const response = await CartService.cartStep1(id_cart, id_gift, message, gift_value);
-            let data = await response.json()
-
-            console.log('step1', data)
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -128,7 +123,6 @@ export const getCartStep1: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -143,8 +137,7 @@ export const getCartStep2: any = createAsyncThunk(
             let id_address = address_id;
 
             const response = await CartService.cartStep2(id_cart, id_address);
-            let data = await response.json()
-            console.log("step2", data)
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -157,6 +150,7 @@ export const getCartStep2: any = createAsyncThunk(
                         address_id: id_address,
                         cart_id: data.data.carrier_list[0].id_carrier
                     }
+
                     dispatch(getCartStep3(param))
                     return data
                 } else {
@@ -166,7 +160,6 @@ export const getCartStep2: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -183,8 +176,7 @@ export const getCartStep3: any = createAsyncThunk(
             const id_carrier = cart_id;
 
             const response = await CartService.cartStep3(id_cart, id_address, id_carrier);
-            let data = await response.json()
-            console.log("step3", data)
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -232,7 +224,6 @@ export const getCartStep3: any = createAsyncThunk(
                 }
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -247,9 +238,7 @@ export const getGiftMessage: any = createAsyncThunk(
             const message = gift_message ? gift_message : '';
 
             const response = await CartService.cartStep1(id_cart, '', message, '');
-            let data = await response.json()
-
-            console.log('giftmessage', data.data)
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -261,7 +250,6 @@ export const getGiftMessage: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -322,12 +310,10 @@ export const checkoutSlice = createSlice({
                 state = { ...state, ...temp }
             }
 
-            console.log('statestep1baru', state);
             return state;
         }).addCase(getCartStep1.pending, (state, { payload }) => {
 
         }).addCase(getCartStep1.rejected, (state, { payload }) => {
-            console.log('payloadreject1', payload);
             // GeneralService.toast({ description: payload.message });
         }).addCase(getCartStep2.fulfilled, (state, { payload }) => {
 
@@ -346,12 +332,10 @@ export const checkoutSlice = createSlice({
                 state = { ...state, ...temp }
             }
 
-            console.log('statestep2', state);
             return state;
         }).addCase(getCartStep2.pending, (state, { payload }) => {
 
         }).addCase(getCartStep2.rejected, (state, { payload }) => {
-            console.log('payloapayloadreject2', payload);
             // GeneralService.toast({ description: payload.message });
         }).addCase(getCartStep3.fulfilled, (state, { payload }) => {
 
@@ -372,7 +356,6 @@ export const checkoutSlice = createSlice({
                 state = { ...state, ...temp }
             }
 
-            console.log('statestep3', state);
             return state;
         }).addCase(getCartStep3.pending, (state, { payload }) => {
 
@@ -391,7 +374,6 @@ export const checkoutSlice = createSlice({
         }).addCase(getGiftMessage.pending, (state, { payload }) => {
 
         }).addCase(getGiftMessage.rejected, (state, { payload }) => {
-            console.log('payloadrejectmessage', payload);
         })
     },
 })

@@ -4,6 +4,7 @@ import { Alert } from 'react-native';
 import WebView from 'react-native-webview';
 import CartService from '../Services/CartService';
 import { MODULE_API } from '@env';
+import { useSelector } from 'react-redux';
 
 export default function EghlPaymentPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -12,6 +13,8 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
     const paymentType = route.params.payment_type;
     const transId = route.params.trans_id;
     const amount = route.params.amount;
+
+    const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
 
     const data = {
         form: form
@@ -94,8 +97,8 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
         }
 
         console.log(orderId, newStatus, paymentType, transId, amount)
-        const response = await CartService.cartStep5(orderId, newStatus, paymentType, transId, amount);
-        const json = await response.json();
+        const response = await CartService.cartStep5(cartId, orderId, newStatus, paymentType, transId, amount);
+        const json = await response.data;
 
         console.log('cartstep5', json)
 
