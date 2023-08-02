@@ -9,7 +9,6 @@ import Spinner from '../components/Spinner';
 
 export default function OrderHistoryListPage() {
 
-    const customerId = useSelector((storeState: any) => storeState.session.user ? storeState.session.user.id_customer : '');
     const navigation: any = useNavigation();
     const [orders, setOrders] = useState<any>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -22,10 +21,9 @@ export default function OrderHistoryListPage() {
     }, [])
 
     const getOrderHistoryList = async () => {
-        const response = await OrderHistoryService.orderHistoryList(customerId);
-        const json = await response.json();
-
-        console.log('order', json)
+        
+        const response = await OrderHistoryService.orderHistoryList();
+        const json = await response.data;
 
         if (json.code == 200) {
             setIsLoading(false)
@@ -64,8 +62,9 @@ export default function OrderHistoryListPage() {
         ]);
 
     const cancelOrderHistory = async (orderId: any) => {
+
         const response = await OrderHistoryService.cancelOrderHistory(orderId);
-        const json = await response.json();
+        const json = await response.data;
 
         if (json.code == 200) {
             GeneralService.toast({ description: json.message, type: json.status });

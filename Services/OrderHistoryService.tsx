@@ -1,51 +1,38 @@
-import APIService from "./ApiService";
-import { API_URL, API_KEY } from "@env"
+import api from "./AxiosService";
 
 const OrderHistoryService = {
 
-  async orderHistoryList(customerId: any) {
+  async orderHistoryList() {
 
-    const url = 'Orders/histories/customer/';
+    const url = 'order';
 
-    return APIService.getMethod(url + customerId);
+    return api.get(url)
 
   },
 
   async orderHistoryDetails(orderId: any) {
 
-    const params = {
-      id: orderId
-    }
+    const url = 'order/' + orderId;
 
-    const url = 'Orders/order/';
+    return api.get(url)
 
-    return APIService.getMethod(url, params);
   },
 
   async cancelOrderHistory(orderId: any) {
 
-    const params = {
-      id_order: orderId,
-      apikey: API_KEY
-    }
+    const url = 'order/' + orderId + '/cancel';
 
-    const url = 'Orders/cancel/';
+    return api.post(url)
 
-    return APIService.postMethod(url, params);
   },
 
   async repay(cartId: any) {
 
-    const params = {
-      id_cart: cartId,
-      apikey: API_KEY
-    }
+    const url = 'order/' + cartId + '/repay';
 
-    const url = 'Orders/PayNowFromOrder';
+    return api.get(url)
 
-    return APIService.getMethod(url, params);
   }
-
 
 }
 

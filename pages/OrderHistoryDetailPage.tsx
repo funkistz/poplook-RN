@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Image, Linking } from 'react-native';
-import { Text, ScrollView, View, HStack, Button, Spacer, VStack, Box, AspectRatio, Divider } from "native-base";
+import { StyleSheet, Linking } from 'react-native';
+import { Text, ScrollView, View, HStack, Button, Spacer, VStack, Divider } from "native-base";
 import OrderHistoryService from '../Services/OrderHistoryService';
 import { useSelector } from 'react-redux';
 import ProductDetail from '../components/ProductDetail';
@@ -8,7 +8,6 @@ import Address from '../components/Address';
 
 export default function OrderHistoryDetailPage({ route} : { route: any }) {
 
-    const customerId = useSelector((storeState: any) => storeState.session.user.id_customer);
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const orderId = route.params.params.id;
     const url = 'https://poplook.com/application/download/POPLOOK_generic_returnform.pdf';
@@ -21,8 +20,9 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
     useEffect(() => {
 
         const orderHistoryDetails = async () => {
+
             const response = await OrderHistoryService.orderHistoryDetails(orderId);
-            const json = await response.json();
+            const json = await response.data;
 
             setDetails(json.data);
             setShipping(json.data.shipping_details);
