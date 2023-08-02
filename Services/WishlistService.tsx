@@ -1,16 +1,12 @@
-import APIService from "./ApiService";
+import api from "./AxiosService";
 
 const WishlistService = {
 
     async getWishlist(wishlistId: any) {
 
-        const param = {
-            customer: wishlistId,
-        };
+        const url = 'wishlist/' + wishlistId;
 
-        const url = 'Wishlists/list';
-
-        return APIService.getMethod(url, param);
+        return api.get(url)
 
     },
 
@@ -23,25 +19,25 @@ const WishlistService = {
             id_product_attribute: id_product_attribute
         };
 
-        const url = 'Wishlists/removeProduct';
+        const url = 'wishlist/' + id_wishlist;
 
-        return APIService.deleteMethod(url, params);
-
-    },
-
-    async addToWishlist(params: any) {
-
-        const url = 'Wishlists/addProduct';
-
-        return APIService.putMethod(url, params);
+        return api.delete(url, { data: params });
 
     },
 
-    async addToCart(params: any) {
+    async addToWishlist(wishlistId: any, params: any) {
 
-        const url = 'Wishlists/addProductCart';
+        const url = 'wishlist/' + wishlistId;
 
-        return APIService.putMethod(url, params);
+        return api.put(url, params);
+
+    },
+
+    async addToCart(wishlistId: any, params: any) {
+
+        const url = 'wishlist/' + wishlistId + '/add_to_cart';
+
+        return api.post(url, params);
 
     },
 

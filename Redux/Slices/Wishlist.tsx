@@ -1,7 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import AuthService from '../../Services/AuthService'
-import CartService from '../../Services/CartService'
 import GeneralService from '../../Services/GeneralService'
 import WishlistService from '../../Services/WishlistService'
 import { getCart } from './Cart'
@@ -26,7 +23,7 @@ export const getWishList: any = createAsyncThunk(
             const id_customer = state.session.user.id_customer;
 
             const response = await WishlistService.getWishlist(id_customer);
-            let data = await response.json()
+            let data = await response.data
 
             if (data.code == 200) {
                 return data
@@ -36,8 +33,7 @@ export const getWishList: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
-            rejectWithValue(e.response.data)
+            return rejectWithValue(e.response.data)
         }
     }
 )
@@ -48,6 +44,7 @@ export const addToCart: any = createAsyncThunk(
         try {
             const state: any = getState();
             const user = state.session.user;
+            const id_wishlist = user.id_wishlist.toString()
 
             const params = {
                 id_product: id_product,
@@ -58,12 +55,8 @@ export const addToCart: any = createAsyncThunk(
                 id_cart: user.id_cart
             }
 
-            // console.log('params: ', params)
-
-
-            const response = await WishlistService.addToCart(params);
-            let data = await response.json()
-            // console.log("data", data)
+            const response = await WishlistService.addToCart(id_wishlist, params);
+            let data = await response.data
 
             if (response.status == 201) {
                 if (data.code == 201) {
@@ -76,8 +69,7 @@ export const addToCart: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
-            rejectWithValue(e.response.data)
+            return rejectWithValue(e.response.data)
         }
     }
 )
@@ -97,11 +89,8 @@ export const addToWishlist: any = createAsyncThunk(
                 id_customer: user.id_customer.toString(),
             }
 
-
-            console.log('addToWishlist');
-            const response = await WishlistService.addToWishlist(params);
-            let data = await response.json()
-            console.log("data", data)
+            const response = await WishlistService.addToWishlist(user.id_wishlist.toString(), params);
+            let data = await response.data
 
             if (response.status == 201) {
                 if (data.code == 201) {
@@ -114,8 +103,7 @@ export const addToWishlist: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
-            rejectWithValue(e.response.data)
+            return rejectWithValue(e.response.data)
         }
     }
 )
@@ -127,11 +115,8 @@ export const delWishlist: any = createAsyncThunk(
             const state: any = getState();
             const user = state.session.user;
 
-            // console.log("state before", state)
-
             const response = await WishlistService.deleteWishlist(user.id_customer, user.id_wishlist, id_product, id_product_attribute);
-            let data = await response.json()
-            // console.log("data", data)
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -144,8 +129,7 @@ export const delWishlist: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
-            rejectWithValue(e.response.data)
+            return rejectWithValue(e.response.data)
         }
     }
 )
@@ -167,24 +151,24 @@ export const wishlistSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(addToCart.fulfilled, (state, { payload }) => {
-                console.log('addToCart fulfilled');
+
                 GeneralService.toast({ description: payload.message });
                 return state;
+
             })
             .addCase(addToCart.pending, (state, { payload }) => {
             })
             .addCase(addToCart.rejected, (state, { payload }) => {
-                console.log('addToCart rejected');
+
                 GeneralService.toast({ description: payload.message });
-
-
 
             })
 
             .addCase(addToWishlist.fulfilled, (state, { payload }) => {
-                console.log('payload: ', payload)
+
                 GeneralService.toast({ description: payload.message });
                 return state;
+
             })
             .addCase(addToWishlist.pending, (state, { payload }) => {
             })
@@ -192,33 +176,23 @@ export const wishlistSlice = createSlice({
 
                 GeneralService.toast({ description: payload.message });
 
-
-
             })
 
             .addCase(getWishList.fulfilled, (state, { payload }) => {
 
                 const temp: any = {};
-                // console.log('payload test: ', payload)
-                if (payload.code == 200) {
-                    temp.data = payload.data;
-                    temp.id_product = payload.data.product_list.map((product: any) => product.id_product);
-                    state = { ...state, ...temp }
-                } else if (payload.code == 404) {
-                    temp.data = {};
-                    temp.id_product = [];
-                    state = { ...state, ...temp }
-                }
 
-
-                // console.log('stategetwishlist', state);
+                temp.data = payload.data;
+                temp.id_product = payload.data.product_list.map((product: any) => product.id_product);
+                state = { ...state, ...temp }
+              
                 return state;
             })
             .addCase(getWishList.pending, (state, { payload }) => {
 
             })
             .addCase(getWishList.rejected, (state, { payload }) => {
-                console.log('payload', payload);
+
                 const temp: any = {};
                 temp.data = {};
                 temp.id_product = [];
@@ -235,7 +209,6 @@ export const wishlistSlice = createSlice({
 
             })
             .addCase(delWishlist.rejected, (state, { payload }) => {
-                console.log('payload', payload);
                 // GeneralService.toast({ description: payload.message });
             })
 
@@ -243,7 +216,6 @@ export const wishlistSlice = createSlice({
     },
 })
 
-// Action creators are generated for each case reducer function
 export const { } = wishlistSlice.actions
 
 export const wishlistSelector = (state: any) => state.wishlist
