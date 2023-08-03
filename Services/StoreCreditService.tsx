@@ -1,11 +1,12 @@
-import APIService from "./ApiService";
+import api from "./AxiosService";
 
 const StoreCreditService = {
 
-    async getStoreCredit(id_customer: any) {
-        const url = 'StoreCredits/list/customer/';
+    async getStoreCredit() {
+        
+        const url = 'store_credit';
 
-        return APIService.getMethod(url + id_customer , id_customer);
+        return api.get(url)
 
     },
 }

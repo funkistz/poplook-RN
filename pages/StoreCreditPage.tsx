@@ -21,9 +21,8 @@ export default function StoreCreditPage({ route } : { route: any }) {
 
     const fetchData = async () => {
 
-        const response = await StoreCreditService.getStoreCredit(user.id_customer);
-        const json = await response.json();
-
+        const response = await StoreCreditService.getStoreCredit();
+        const json = await response.data;
 
         if(json.code == 200) {
             setList(json.data.lists)
