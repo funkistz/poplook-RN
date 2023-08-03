@@ -60,9 +60,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         const repay = async () => {
             const response = await OrderHistoryService.repay(cartId);
-            const json = await response.json();
-
-            console.log('repay', json.data)
+            const json = await response.data;
 
             setAddress(json.data.address_delivery);
             setCarrier(json.data.carrier_list[0]);
@@ -352,8 +350,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
     const cartStep5 = async (orderId: any, status: any, paymentMethod: any, transId: any, amount: any) => {
 
-        const response = await CartService.cartStep5(orderId, status, paymentMethod, transId, amount);
-        const json = await response.json();
+        const response = await CartService.cartStep5(cartId, orderId, status, paymentMethod, transId, amount);
+        const json = await response.data;
 
         console.log('cartstep5', json)
 
