@@ -281,9 +281,19 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
             }
         }
 
+        let id_attribute = 0
+
+        if (id_product_attribute) {
+            id_attribute = id_product_attribute
+        } else if (!sizeSelected && !id_product_attribute) {
+            id_attribute = 0
+        } else {
+            id_attribute = sizeSelected
+        } 
+
         const params = {
             id_product: product.id,
-            id_product_attribute: id_product_attribute ? id_product_attribute : sizeSelected,
+            id_product_attribute: id_attribute,
             quantity: 1
         }
 
@@ -326,9 +336,19 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
             }
         }
 
+        let id_attribute = 0
+
+        if (id_product_attribute) {
+            id_attribute = id_product_attribute
+        } else if (!sizeSelected && !id_product_attribute) {
+            id_attribute = 0
+        } else {
+            id_attribute = sizeSelected
+        } 
+
         const params = {
             id_product: product.id,
-            id_product_attribute: id_product_attribute ? id_product_attribute : sizeSelected,
+            id_product_attribute: id_attribute,
             quantity: 1
         }
 
@@ -499,7 +519,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
 
                     {isLoading &&
                         <>
-                            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} style={{ position: 'relative' }}>
+                            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} style={{ position: 'relative' }} safeAreaBottom>
                                 <ScrollView flex={1} ref={ref => { setRef(ref as any); }} onScroll={handleScroll}>
                                     <VStack h={imageHeight} alignItems="center"  >
                                         {carouselItems && <>

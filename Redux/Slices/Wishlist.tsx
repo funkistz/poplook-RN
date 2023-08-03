@@ -27,13 +27,11 @@ export const getWishList: any = createAsyncThunk(
 
             if (data.code == 200) {
                 return data
-            } else if (data.code == 404) {
-                return data
             } else {
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            return rejectWithValue(e.response.data)
+            rejectWithValue(e.response.data)
         }
     }
 )
@@ -69,7 +67,7 @@ export const addToCart: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            return rejectWithValue(e.response.data)
+            rejectWithValue(e.response.data)
         }
     }
 )
@@ -103,7 +101,7 @@ export const addToWishlist: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            return rejectWithValue(e.response.data)
+            rejectWithValue(e.response.data)
         }
     }
 )
@@ -129,7 +127,7 @@ export const delWishlist: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            return rejectWithValue(e.response.data)
+            rejectWithValue(e.response.data)
         }
     }
 )
