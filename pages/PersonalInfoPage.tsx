@@ -27,9 +27,9 @@ export default function PersonalInfoPage({ route, navigation }: { route: any, na
             newsletter: !isEnabled ? 1 : 0,
         };
 
-        const response = await AuthService.updateUserInfo(params);
-        const json = await response.json();
-        console.log('json: ', json)
+        const response = await AuthService.updateUserInfo(details.id_customer, params);
+        const json = await response.data;
+        
         if (json.code == 200) {
             dispatch(profile(json.data))
         }

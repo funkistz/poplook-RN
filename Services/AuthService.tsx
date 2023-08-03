@@ -1,7 +1,8 @@
 import APIService from "./ApiService";
 import md5 from 'md5';
 import { useSelector } from 'react-redux';
-import { API_URL, API_KEY } from "@env"
+import { API_KEY } from "@env"
+import api from "./AxiosService";
 
 const AuthService = {
 
@@ -14,11 +15,12 @@ const AuthService = {
             shop: data.id_shop
         };
 
-        const url = 'UserAuth/login';
+        const url = 'login';
 
-        return APIService.getMethod(url, params);
+        return api.post(url, params); 
 
     },
+
     register(id_cart: String, shopId: String, data: any) {
 
         const params = {
@@ -33,6 +35,7 @@ const AuthService = {
         return APIService.putMethod(url, params);
 
     },
+
     userId() {
 
         const session = useSelector((storeState: any) => storeState.session);
@@ -44,6 +47,7 @@ const AuthService = {
         }
 
     },
+
     cartId() {
 
         const session = useSelector((storeState: any) => storeState.session);
@@ -55,24 +59,28 @@ const AuthService = {
         }
 
     },
-    updateUserInfo(params:any) {
 
-        const url = 'Customers/editProfile';
+    updateUserInfo(customerId: any , params:any) {
 
-        return APIService.postMethod(url, params);
+        const url = 'customers/' + customerId;
+
+        return api.put(url, params);
 
     },
+
     forgotPassword(params:any) {
 
         const url = 'UserAuth/forgetPassword'; 
 
         return APIService.getMethod(url, params);
     },
+
     getVersion() {
         const url = 'Devices/versionInfo'; 
 
         return APIService.getMethod(url);
     },
+
     async customerDetails(data: any) {
 
         const params = {

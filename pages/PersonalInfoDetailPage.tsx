@@ -60,8 +60,9 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
             id_customer: details.id_customer,
         };
 
-        const response = await AuthService.updateUserInfo(params);
-        const json = await response.json();
+        const response = await AuthService.updateUserInfo(details.id_customer, params);
+        const json = await response.data;
+
         if(json.code == 200) {
             GeneralService.toast({ description: json.message });
             dispatch(profile(json.data))
@@ -69,7 +70,6 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
             navigation.goBack();
             resetForm();
             
-
         }
     }
 
