@@ -1,4 +1,5 @@
 import APIService from "./ApiService";
+import api from "./AxiosService";
 
 const CmsService = {
 
@@ -20,9 +21,9 @@ const CmsService = {
 
     async sendEmail(params: any) {
 
-        const url = 'SendEmail/mailto';
+        const url = 'cms/send_email';
 
-        return APIService.getMethod(url, params);
+        return api.post(url, params)
     
     },
     

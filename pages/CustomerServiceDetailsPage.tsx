@@ -99,8 +99,8 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
     });
 
     const fetchData = async (item:any) => {
-        const response = await OrderHistoryService.orderHistoryList(item);
-        const json = await response.json();
+        const response = await OrderHistoryService.orderHistoryList();
+        const json = await response.data;
 
         if(json.data.order_histories != "") {
             const orderIds = json.data.order_histories.map((order: any) => order.id_order);
@@ -122,7 +122,7 @@ export default function CustomerServiceDetailsPage({ route , navigation} : { rou
 
     const sendEmail = async (item:any) => {
         const response = await CmsService.sendEmail(item);
-        const json = await response.json();
+        const json = await response.data;
 
         if(json.code == 200) {
             GeneralService.toast({ description: json.message });
