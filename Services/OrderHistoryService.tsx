@@ -6,7 +6,7 @@ const OrderHistoryService = {
 
     const url = 'order';
 
-    return api.get(url)
+    return await api.get(url)
 
   },
 
@@ -14,7 +14,7 @@ const OrderHistoryService = {
 
     const url = 'order/' + orderId;
 
-    return api.get(url)
+    return await api.get(url)
 
   },
 
@@ -22,7 +22,7 @@ const OrderHistoryService = {
 
     const url = 'order/' + orderId + '/cancel';
 
-    return api.post(url)
+    return await api.post(url)
 
   },
 
@@ -30,7 +30,7 @@ const OrderHistoryService = {
 
     const url = 'order/' + cartId + '/repay';
 
-    return api.get(url)
+    return await api.get(url)
 
   }
 

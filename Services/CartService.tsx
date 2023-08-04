@@ -6,7 +6,7 @@ const CartService = {
 
         const url = 'cart/' + cartId;
 
-        return api.get(url)
+        return await api.get(url)
 
     },
 
@@ -14,7 +14,7 @@ const CartService = {
 
         const url = 'cart/' + cartId;
 
-        return api.put(url, params);
+        return await api.put(url, params);
 
     },
 
@@ -27,7 +27,7 @@ const CartService = {
 
         const url = 'cart/' + cartId;
 
-        return api.delete(url, { data : params })
+        return await api.delete(url, { data : params })
 
     },
 
@@ -43,7 +43,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step1';
 
-        return api.get(url, { params : params })
+        return await api.get(url, { params : params })
 
     },
 
@@ -57,7 +57,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step2';
 
-        return api.get(url, { params : params })
+        return await api.get(url, { params : params })
 
     },
 
@@ -75,7 +75,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step3';
 
-        return api.get(url, { params : params } )
+        return await api.get(url, { params : params } )
 
     },
 
@@ -92,7 +92,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step4';
 
-        return api.get(url, { params : params } )
+        return await api.get(url, { params : params } )
 
     },
 
@@ -108,19 +108,19 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step5';
 
-        return api.get(url,  { params : params } )
+        return await api.get(url,  { params : params } )
         
     },
 
     async addVoucher(cartId: String | Number, params: any) {
 
-        return api.post('cart/' + cartId + '/validate_voucher', params);
+        return await api.post('cart/' + cartId + '/validate_voucher', params);
 
     },
 
     async deleteVoucher(cartId: String | Number, params: any) {
 
-        return api.delete('cart/' + cartId + '/remove_voucher', { data: params });
+        return await api.delete('cart/' + cartId + '/remove_voucher', { data: params });
 
     }
 

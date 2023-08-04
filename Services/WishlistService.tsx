@@ -6,7 +6,7 @@ const WishlistService = {
 
         const url = 'wishlist/' + wishlistId;
 
-        return api.get(url)
+        return await api.get(url)
 
     },
 
@@ -21,7 +21,7 @@ const WishlistService = {
 
         const url = 'wishlist/' + id_wishlist;
 
-        return api.delete(url, { data: params });
+        return await api.delete(url, { data: params });
 
     },
 
@@ -29,7 +29,7 @@ const WishlistService = {
 
         const url = 'wishlist/' + wishlistId;
 
-        return api.put(url, params);
+        return await api.put(url, params);
 
     },
 
@@ -37,7 +37,7 @@ const WishlistService = {
 
         const url = 'wishlist/' + wishlistId + '/add_to_cart';
 
-        return api.post(url, params);
+        return await api.post(url, params);
 
     },
 

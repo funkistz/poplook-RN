@@ -6,7 +6,7 @@ const StoreCreditService = {
         
         const url = 'store_credit';
 
-        return api.get(url)
+        return await api.get(url)
 
     },
 }

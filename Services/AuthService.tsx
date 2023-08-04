@@ -15,9 +15,11 @@ const AuthService = {
             shop: data.id_shop
         };
 
+        console.log('PARAMSLOGIN' ,params)
+
         const url = 'login';
 
-        return api.post(url, params); 
+        return await api.post(url, params); 
 
     },
 
@@ -60,11 +62,11 @@ const AuthService = {
 
     },
 
-    updateUserInfo(customerId: any , params:any) {
+    async updateUserInfo(customerId: any , params:any) {
 
         const url = 'customers/' + customerId;
 
-        return api.put(url, params);
+        return await api.put(url, params);
 
     },
 

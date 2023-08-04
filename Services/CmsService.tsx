@@ -23,7 +23,7 @@ const CmsService = {
 
         const url = 'cms/send_email';
 
-        return api.post(url, params)
+        return await api.post(url, params)
     
     },
     
