@@ -63,7 +63,7 @@ export default function AddressListPage({ route, onToggle }: any) {
 
         const fetchData = async () => {
             const response = await CartService.cartStep2(id_cart, address.id_address);
-            const json = await response.json();
+            const json = await response.data;
             navigation.goBack();
         }
         fetchData().catch(console.error);

@@ -27,11 +27,10 @@ export const getAddressList: any = createAsyncThunk(
             console.log('stateaddress', state);
             const id_customer = state.session.user.id_customer;
 
-            console.log("getcustomerid", id_customer)
+            const response = await AddressService.getAddressList();
+            let data = await response.data
 
-            const response = await AddressService.getAddressList(id_customer);
-            let data = await response.json()
-            console.log("addresslist", data)
+            console.log("addresslistBARU", data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -59,8 +58,7 @@ export const addAddress: any = createAsyncThunk(
             const id_customer = state.session.user.id_customer;
 
             const response = await AddressService.addAddress({ id_customer, id_address, firstname, lastname, company, address1, address2, id_country, id_state, city, postcode, phone });
-            let data = await response.json()
-            console.log("dataadd", data)
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -86,9 +84,8 @@ export const updateAddress: any = createAsyncThunk(
             const state: any = getState();
             const id_customer = state.session.user.id_customer;
 
-            const response = await AddressService.updateAddress({ id_customer, id_address, firstname, lastname, company, address1, address2, id_country, id_state, city, postcode, phone });
-            let data = await response.json()
-            console.log("address update", data)
+            const response = await AddressService.updateAddress(id_address, { id_customer, id_address, firstname, lastname, company, address1, address2, id_country, id_state, city, postcode, phone });
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -114,9 +111,8 @@ export const deleteAddress: any = createAsyncThunk(
             const state: any = getState();
             const id_customer = state.session.user.id_customer;
 
-            const response = await AddressService.deleteAddress({ id_address: id_address });
-            let data = await response.json()
-            console.log("address delete", data)
+            const response = await AddressService.deleteAddress(id_address);
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -153,7 +149,7 @@ export const addressSlice = createSlice({
         builder.addCase(getAddressList.fulfilled, (state, { payload }) => {
 
             const temp: any = [];
-            console.log('payloadgett', payload);
+
             if (payload.data) {
                 temp.data = payload.data;
                 temp.id_customer = payload.data[0].id_customer;
@@ -165,7 +161,6 @@ export const addressSlice = createSlice({
         }).addCase(getAddressList.pending, (state, { payload }) => {
 
         }).addCase(getAddressList.rejected, (state, { payload }) => {
-            console.log('payload', payload);
 
             if (payload.code == 404) {
                 const temp: any = {};
@@ -232,8 +227,7 @@ export const addressSlice = createSlice({
             GeneralService.toast({ description: payload.message });
         }).addCase(deleteAddress.pending, (state, { payload }) => {
         }).addCase(deleteAddress.rejected, (state, { payload }) => {
-
-            console.log('payload', payload);
+            
             GeneralService.toast({ description: payload.message });
 
         })

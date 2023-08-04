@@ -18,12 +18,9 @@ export const getAddressOne: any = createAsyncThunk(
         try {
 
             const state: any = getState();
-            console.log('statebarusangat', state)
-            console.log('idaddressredux', id_address)
 
             const response = await AddressService.getAddressOne(id_address);
-            let data = await response.json()
-            console.log("addressoneredux", data)
+            let data = await response.data
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -38,7 +35,6 @@ export const getAddressOne: any = createAsyncThunk(
 
 
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }

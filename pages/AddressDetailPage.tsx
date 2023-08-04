@@ -33,9 +33,10 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const ischeckout = route.params.param.is_checkout;
 
     const [isOpen, setIsOpen] = useState(false);
-    const onClose = () => {
+    const onClose = async () => {
+        
         dispatch(deleteAddress(addressId));
-        dispatch(getAddressList());
+        await dispatch(getAddressList());
         setIsOpen(false);
         navigation.goBack();
     };
@@ -150,10 +151,12 @@ export default function AddressDetailPage({ route }: { route: any }) {
                     async (values) => {
                         if (isUpdate) {
                             console.log('UPDATE', JSON.stringify({ ...values, id_address: addressId }))
-                            dispatch(updateAddress({ ...values, id_address: addressId }));
+                            dispatch(updateAddress({ id_address: addressId , ...values }));
+                            await dispatch(getAddressList());
                         } else {
                             console.log('ADD', JSON.stringify(values))
                             dispatch(addAddress(values));
+                            await dispatch(getAddressList());
                         }
 
                         if (isCheckout) {

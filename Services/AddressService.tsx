@@ -1,37 +1,37 @@
-import APIService from "./ApiService";
+import api from "./AxiosService";
 
 const AddressService = {
 
-    async getAddressList(customerId: String) {
-        const param = {
-            id: String(customerId)
-        };
+    async getAddressList() {
 
-        return APIService.getMethod('Addresses/customer', param);
+        const url = 'address';
+
+        return await api.get(url)
+
     },
 
     async getAddressOne(addressId: String) {
 
-        const param = {
-            id: String(addressId)
-        }
+        const url = 'address/' + addressId;
 
-        return APIService.getMethod('Addresses/address', param);
+        return await api.get(url)
+
     },
 
     async addAddress(params: any) {
 
-        return APIService.putMethod('Addresses/addAddress', params);
+        return await api.post('address', params);
     },
 
-    async updateAddress(params: any) {
+    async updateAddress(addressId: String, params: any) {
 
-        return APIService.postMethod('Addresses/updateAddress', params);
+        return await api.put('address/' + addressId, params);
     },
 
-    async deleteAddress(params: any) {
+    async deleteAddress(addressId: String) {
 
-        return APIService.deleteMethod('Addresses/deleteAddress', params);
+        return await api.delete('address/' + addressId);
+
     }
 }
 
