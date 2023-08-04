@@ -17,6 +17,10 @@ import Ipay88PaymentPage from '../pages/Ipay88PaymentPage';
 import ForceUpdatePage from '../pages/ForceUpdatePage';
 import OrderSuccessPage from '../pages/OrderSuccessPage';
 import IntroPage from '../pages/IntroPage';
+import ProductDetailPage from '../pages/ProductDetail';
+import RightHeader from '../components/Header/RightHeader';
+import CustomHeader from '../components/Header/CustomHeader';
+import LeftHeader from '../components/Header/LeftHeader';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -103,7 +107,7 @@ const TabNavigator = () => {
     ;
 }
 
-export default function TabStack() {
+export default function TabStack({ navigation }: { navigation: any }) {
 
 
   return (
@@ -118,22 +122,32 @@ export default function TabStack() {
           <Stack.Screen name='AddressListExPage' component={AddressListPage} options={{ title: 'My Addresses', headerShown: true }} />
           <Stack.Screen name='ForceUpdatePage' component={ForceUpdatePage} options={{ title: 'Force Update', headerShown: true }} />
           <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation', headerShown: true }} />
+          <Stack.Screen name='ProductDetailPage' component={ProductDetailPage} 
+              options={{
+                headerTintColor: 'black',
+                headerRight: () => (<CustomHeader></CustomHeader>),
+                // headerLeft: () => (<LeftHeader navigation={navigation}></LeftHeader>),
+                headerBackTitle: '',
+                headerShown: true,
+                title: ''
+              }}
+          /> 
           {/* <Stack.Screen name='IntroPage' component={IntroPage} options={{ title: 'Poplook', headerShown: true }} /> */}
           <Stack.Screen
                 name="IntroPage"
                 component={IntroPage}
                 options={{
-                    headerTitle: () => (
-                        <>
-                            <Box>
-                                <Center>
-                                    <Image style={{ width: 100, height: 29 }} source={{uri: "https://poplook.com/assets/img/logo.png"}} alt='Poplook Logo' size="sm" />
-                                </Center>
-                            </Box>
-                        </>
-                    ),
-                    headerShown: true,
-                    headerTitleAlign: "center",
+                  headerTitle: () => (
+                      <>
+                          <Box>
+                              <Center>
+                                  <Image style={{ width: 100, height: 29 }} source={{uri: "https://poplook.com/assets/img/logo.png"}} alt='Poplook Logo' size="sm" />
+                              </Center>
+                          </Box>
+                      </>
+                  ),
+                  headerShown: true,
+                  headerTitleAlign: "center",
                 }}
             />
         </Stack.Navigator>
