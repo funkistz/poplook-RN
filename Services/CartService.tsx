@@ -27,7 +27,7 @@ const CartService = {
 
         const url = 'cart/' + cartId;
 
-        return api.delete(url, { data: params })
+        return api.delete(url, { data : params })
 
     },
 
@@ -43,7 +43,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step1';
 
-        return api.get(url)
+        return api.get(url, { params : params })
 
     },
 
@@ -57,7 +57,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step2';
 
-        return api.get(url)
+        return api.get(url, { params : params })
 
     },
 
@@ -75,7 +75,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step3';
 
-        return api.get(url, { params: params } )
+        return api.get(url, { params : params } )
 
     },
 
@@ -92,7 +92,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step4';
 
-        return api.get(url, { params: params } )
+        return api.get(url, { params : params } )
 
     },
 
@@ -108,7 +108,7 @@ const CartService = {
 
         const url = 'cart/' +cartId+ '/order_step5';
 
-        return api.get(url,  { params: params } )
+        return api.get(url,  { params : params } )
         
     },
 

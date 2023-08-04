@@ -92,7 +92,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
             const param = {
                 gift: gift_option,
-                gift_wrap_id: gift_wrap_id,
+                gift_wrap_id: gift_wrap_id ? gift_wrap_id[0] : '',
                 gift_message: gift_message,
                 address_id: address ? address.id : ''
             }
@@ -152,10 +152,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             console.log('from gift', gift);
             const param = {
                 gift: gift,
-                gift_wrap_id: gift_wrap_id,
+                gift_wrap_id: gift_wrap_id ? gift_wrap_id[0] : '',
                 gift_message: giftMessage,
                 address_id: address ? address.id : null
             }
+            
             dispatch(getCartStep1(param))
         }
 
@@ -260,7 +261,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     
                             const param = {
                                 gift: gift_option,
-                                gift_wrap_id: gift_wrap_id,
+                                gift_wrap_id: gift_wrap_id ? gift_wrap_id[0] : '',
                                 gift_message: gift_message,
                                 address_id: address ? address.id : ''
                             }

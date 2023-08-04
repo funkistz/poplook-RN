@@ -22,6 +22,7 @@ export const getCart: any = createAsyncThunk(
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
+
             const response = await CartService.getCart(id_cart);
             let data = await response.data
 
@@ -134,7 +135,7 @@ export const cartSlice = createSlice({
                 temp.id_cart = payload.data.id_cart;
                 temp.total_item = payload.data.totalItemInCart;
                 temp.cartLoading = false;
-                // temp.data = { ...state.data, totalItemInCart: payload.data.totalItemInCart }
+
                 state = { ...state, ...temp }
             }
             return state;
@@ -174,7 +175,7 @@ export const cartSlice = createSlice({
 
             })
             .addCase(getCart.rejected, (state, { payload }) => {
-                console.log('payload', payload);
+                
                 // GeneralService.toast({ description: payload.message });
                 if (payload.code == 404) {
                     const temp: any = {};

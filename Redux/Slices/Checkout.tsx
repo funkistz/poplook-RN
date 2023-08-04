@@ -89,6 +89,8 @@ export const getCartStep1: any = createAsyncThunk(
             const response = await CartService.cartStep1(id_cart, id_gift, message, gift_value);
             let data = await response.data
 
+            console.log('cartstep1', data)
+
             if (response.status == 200) {
                 if (data.code == 200) {
 
@@ -139,6 +141,8 @@ export const getCartStep2: any = createAsyncThunk(
             const response = await CartService.cartStep2(id_cart, id_address);
             let data = await response.data
 
+            console.log('cartstep2', data)
+
             if (response.status == 200) {
                 if (data.code == 200) {
 
@@ -148,7 +152,7 @@ export const getCartStep2: any = createAsyncThunk(
 
                     const param = {
                         address_id: id_address,
-                        cart_id: data.data.carrier_list[0].id_carrier
+                        carrier_id: data.data.carrier_list[0].id_carrier
                     }
 
                     dispatch(getCartStep3(param))
@@ -167,16 +171,18 @@ export const getCartStep2: any = createAsyncThunk(
 
 export const getCartStep3: any = createAsyncThunk(
     "checkout/step3",
-    async ({ address_id, cart_id }: any, { getState, rejectWithValue, dispatch }) => {
+    async ({ address_id, carrier_id }: any, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const id_cart = state.cart.id_cart;
             const id_address = address_id;
             // const id_carrier = state.checkout.carrier[0].id_carrier;
-            const id_carrier = cart_id;
+            const id_carrier = carrier_id;
 
             const response = await CartService.cartStep3(id_cart, id_address, id_carrier);
             let data = await response.data
+
+            console.log('cartstep3', data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -209,7 +215,7 @@ export const getCartStep3: any = createAsyncThunk(
 
                                     const param = {
                                         gift: state.checkout.gift_option ? '1' : '0',
-                                        gift_wrap_id: state.checkout.id_gift[0],
+                                        gift_wrap_id: state.checkout.id_gift,
                                         gift_message: state.checkout.gift_message,
                                         address_id: state.checkout.address
                                     }
@@ -296,7 +302,6 @@ export const checkoutSlice = createSlice({
                 temp.id_gift = Object.keys(payload.data.gift_wrap.product_val);
                 temp.address = payload.data.address_delivery ? payload.data.address_delivery : dataAddress;
                 temp.product = payload.data.product_list;
-                // temp.carrier = payload.data.carrier_list ? payload.dara.carrier_list : null;
                 temp.total_price = payload.data.totalPriceWt;
                 temp.total_product = payload.data.totalProductsWt;
                 temp.voucher = payload.data.voucher_list;
@@ -309,6 +314,8 @@ export const checkoutSlice = createSlice({
 
                 state = { ...state, ...temp }
             }
+
+            console.log('STATE STEP 1', state)
 
             return state;
         }).addCase(getCartStep1.pending, (state, { payload }) => {
@@ -378,7 +385,6 @@ export const checkoutSlice = createSlice({
     },
 })
 
-// Action creators are generated for each case reducer function
 export const { clearCheckout, leaveMessageCheckout, clearLeaveMessage } = checkoutSlice.actions
 
 export const checkoutSelector = (state: any) => state.checkout
