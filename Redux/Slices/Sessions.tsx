@@ -3,6 +3,7 @@ import AuthService from '../../Services/AuthService'
 import GeneralService from '../../Services/GeneralService'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { assignCartId } from './Cart';
+import { assignWishlistId } from './Wishlist';
 
 export interface SessionState {
     user: {} | null,
@@ -67,6 +68,7 @@ export const loginUser: any = createAsyncThunk(
                 if (data.code == 200) {
 
                     dispatch(assignCartId(data.data.id_cart));
+                    dispatch(assignWishlistId(data.data.id_wishlist));
                     dispatch(assignToken(data.data.token))
 
                     return data

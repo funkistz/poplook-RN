@@ -4,13 +4,13 @@ import WishlistService from '../../Services/WishlistService'
 import { getCart } from './Cart'
 
 export interface WishlistState {
-    // id_wishlist: Number | null,
+    id_wishlist: Number | null,
     data: {} | null;
     id_product: any;
 }
 
 const initialState: WishlistState = {
-    // id_wishlist: null,
+    id_wishlist: null,
     data: {},
     id_product: []
 }
@@ -42,13 +42,13 @@ export const addToCart: any = createAsyncThunk(
         try {
             const state: any = getState();
             const user = state.session.user;
-            const id_wishlist = user.id_wishlist.toString()
+            const id_wishlist = state.wishlist.id_wishlist;
 
             const params = {
                 id_product: id_product,
                 id_product_attribute: id_product_attribute,
                 quantity: quantity.toString(),
-                id_wishlist: user.id_wishlist.toString(),
+                id_wishlist: id_wishlist,
                 id_customer: user.id_customer.toString(),
                 id_cart: user.id_cart
             }
@@ -78,21 +78,25 @@ export const addToWishlist: any = createAsyncThunk(
         try {
             const state: any = getState();
             const user = state.session.user;
+            const id_wishlist = state.wishlist.id_wishlist;
 
             const params = {
                 id_product: id_product,
                 id_product_attribute: id_product_attribute,
                 quantity: 1,
-                id_wishlist: user.id_wishlist.toString(),
+                id_wishlist: id_wishlist,
                 id_customer: user.id_customer.toString(),
             }
 
-            const response = await WishlistService.addToWishlist(user.id_wishlist.toString(), params);
+            const response = await WishlistService.addToWishlist(id_wishlist, params);
             let data = await response.data
+
+            console.log('ADD WISH' ,data)
 
             if (response.status == 201) {
                 if (data.code == 201) {
                     dispatch(getWishList())
+                    dispatch(assignWishlistId(data.data.id_wishlist));
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -112,9 +116,12 @@ export const delWishlist: any = createAsyncThunk(
         try {
             const state: any = getState();
             const user = state.session.user;
+            const id_wishlist = state.wishlist.id_wishlist;
 
-            const response = await WishlistService.deleteWishlist(user.id_customer, user.id_wishlist, id_product, id_product_attribute);
+            const response = await WishlistService.deleteWishlist(user.id_customer, id_wishlist, id_product, id_product_attribute);
             let data = await response.data
+
+            console.log('DELETE WISH' ,data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -136,6 +143,14 @@ export const wishlistSlice = createSlice({
     name: 'wishlist',
     initialState,
     reducers: {
+        assignWishlistId: (state, action) => {
+
+            const temp: any = {};
+            temp.id_wishlist = action.payload == '' ? '0' : action.payload;
+
+            state = { ...state, ...temp }
+            return state;
+        },
         clearCart: (state) => {
 
             console.log('clearcart');
@@ -151,6 +166,7 @@ export const wishlistSlice = createSlice({
             .addCase(addToCart.fulfilled, (state, { payload }) => {
 
                 GeneralService.toast({ description: payload.message });
+
                 return state;
 
             })
@@ -214,7 +230,7 @@ export const wishlistSlice = createSlice({
     },
 })
 
-export const { } = wishlistSlice.actions
+export const { assignWishlistId }  = wishlistSlice.actions
 
 export const wishlistSelector = (state: any) => state.wishlist
 
