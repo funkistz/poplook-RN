@@ -312,6 +312,8 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     useEffect(() => {
         if (route.params.category_id == 264) {
             navigation.setOptions({ title: route.params.category_name });
+        } else {
+            navigation.setOptions({ title: route.params.category_name });
         }
     }, [])
 
