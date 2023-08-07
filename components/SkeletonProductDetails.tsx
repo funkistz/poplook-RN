@@ -8,7 +8,7 @@ export default function SkeletonProductDetails() {
 
     return (
         <>
-            <Flex flex={1} flexDirection="column" backgroundColor={'white'}>
+            <Flex flex={1} flexDirection="column" backgroundColor={'white'} safeAreaBottom>
                 <ScrollView flex={1}>
                     <Skeleton w={'100%'} h={(760 * win.width / 506)} startColor="muted.300" />
 
