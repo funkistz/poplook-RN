@@ -152,7 +152,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         <Center>
             <ScrollView w='100%'>
 
-                {videos.map((item: any) => {
+                {videos && videos.map((item: any) => {
 
                     return <TouchableOpacity onPress={() => goToCategory(item)}><Video
                         source={{ uri: item.href }}
