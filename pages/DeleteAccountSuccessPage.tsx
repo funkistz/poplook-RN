@@ -9,11 +9,15 @@ import { clearCart } from '../Redux/Slices/Cart';
 import { clearCheckout } from '../Redux/Slices/Checkout';
 import { clearAddress } from '../Redux/Slices/Address';
 import { getWishList } from '../Redux/Slices/Wishlist';
+import { CommonActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function DeleteAccountSuccessPage() {
 
     const { user } = useSelector( userSelector);
+    const session = useSelector((storeState: any) => storeState.session);
     const dispatch = useDispatch()
+    const navigation: any = useNavigation();
 
     useEffect(() => {
 
@@ -24,8 +28,14 @@ export default function DeleteAccountSuccessPage() {
                 dispatch(clearCart())
                 dispatch(clearCheckout())
                 dispatch(clearAddress())
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: session.user != null ? 'Main' : 'My Account' }],
+                    })
+                );
             });
-          }, 9000); 
+          }, 5000); 
       
         return () => clearTimeout(timer);
 

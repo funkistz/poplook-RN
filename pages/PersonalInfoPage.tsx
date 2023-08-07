@@ -18,8 +18,8 @@ export default function PersonalInfoPage({ route, navigation }: { route: any, na
     ];
 
 
-    const [isEnabled, setIsEnabled] = useState(details.newsletter == 1 ? true : false);
-    const [isProtect, setIsProtect] = useState(details.optin == 1 ? true : false);
+    const [isEnabled, setIsEnabled] = useState(details ? details.newsletter == 1 ? true : false : false);
+    const [isProtect, setIsProtect] = useState(details ? details.optin == 1 ? true : false: false);
     const toggleSwitch = async () => {
         setIsEnabled(!isEnabled)
         const params: any = {
