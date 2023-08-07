@@ -12,12 +12,30 @@ import AuthService from '../Services/AuthService';
 import { customerDetails } from '../Redux/Slices/Sessions';
 import { getCart } from '../Redux/Slices/Cart';
 import { assignDeviceType } from '../Redux/Slices/Sessions';
+import ProductService from '../Services/ProductService';
+// import { getColors, getSizes } from '../Redux/Slices/Filter';
+import Video from 'react-native-video';
 
 const win = Dimensions.get('window');
 const styles = StyleSheet.create({
     image: {
         width: '200',
         height: win.height,
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    videoPlayer: {
+        aspectRatio: 3/3
+    },
+    videoStyle: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
     },
 });
 
@@ -26,6 +44,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     const dispatch = useDispatch()
     const session = useSelector((storeState: any) => storeState.session);
     const [banners, setBanners] = useState<any[]>([]);
+    const [videos, setVideos] = useState<any>([]);
 
     useEffect(() => {
 
@@ -38,6 +57,8 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         const unsubscribe = navigation.addListener('focus', () => {
             console.log('session', session);
             dispatch(getWishList())
+            // dispatch(getColors())
+            // dispatch(getSizes())
             if (session.intro == false || session.intro == undefined) {
                 navigation.reset({
                     index: 0,
@@ -50,9 +71,21 @@ export default function HomePage({ route, navigation }: { route: any, navigation
             const fetchData2 = async () => {
                 const response = await BannerService.getBanners();
                 const json = await response.json();
+
                 setBanners(json.data);
+
             }
+
             fetchData2().catch(console.error);
+
+            const fetchVideo = async () => {
+                const response = await BannerService.getBannersVideo();
+                const json = await response.json();
+
+                setVideos(json.data);
+
+            }
+            fetchVideo().catch(console.error);
         });
 
 
@@ -118,12 +151,27 @@ export default function HomePage({ route, navigation }: { route: any, navigation
     return (
         <Center>
             <ScrollView w='100%'>
+
+                {videos.map((item: any) => {
+
+                    return <TouchableOpacity onPress={() => goToCategory(item)}><Video
+                        source={{ uri: item.href }}
+                        style={styles.videoPlayer}
+                        controls={false}
+                        autoplay={true}
+                        repeat={true} 
+                        resizeMode="cover" 
+                    />
+                    </TouchableOpacity>
+                })} 
+                
                 {banners &&
                     <Flex direction="column">
                         {Object.keys(banners).map((key: any) => {
 
                             return <Center key={key}>
                                 {
+                                    
                                     banners[key].data.map((banner: any, key2: any) => {
 
                                         const href: string = banner.href;
