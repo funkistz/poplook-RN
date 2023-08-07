@@ -84,7 +84,7 @@ const CartService = {
         const params = {
             // id_cart: cartId,
             payment: paymentType,
-            // message: message,
+            message: message,
             // gift: cartId.toString(),
             // gift_message: cartId.toString(),
             // is_store_customer: cartId.toString(),
