@@ -117,12 +117,30 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     const checkVersion = (res: any) => {
         if (res > IOS_VERSION) {
-            navigation.reset({
-                index: 0,
-                routes: [{
-                    name: 'ForceUpdatePage',
-                }]
-            });
+            forceUpdate()
+            // navigation.reset({
+            //     index: 0,
+            //     routes: [{
+            //         name: 'ForceUpdatePage',
+            //     }]
+            // });
+        }
+    }
+
+    const forceUpdate = () => {
+        Alert.alert('New update, better app!', 'Please continue to update the app to enjoy the latest and greatest.', [
+            {
+                text: 'Update',
+                onPress: () => submit()
+            },
+        ]);
+    }
+
+    const submit = () => {
+        if(Platform.OS == 'ios') {
+            Linking.openURL('https://apps.apple.com/us/app/poplook/id1081245738?platform=iphone')
+        } else {
+            Linking.openURL('https://play.google.com/store/apps/details?id=com.tiseno.poplook&hl=en&gl=US')
         }
     }
 

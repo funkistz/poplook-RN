@@ -29,7 +29,7 @@ export default function ProductCard() {
                         style={styles.search}
                         _text={{ fontSize: 14, fontWeight: 600 }}
                         onPress={submit}
-                    >Update
+                    >UPDATE
                     </Button>
                 </View>
             </Flex>
