@@ -80,6 +80,7 @@ export default function DeliveryReturnsPage({ route }: { route: any }) {
                         injectedJavaScript={injectedJavaScript}
                         style={{ height: win.height - 105, backgroundColor: 'white'}}
                         startInLoadingState={true}
+                        scrollEnabled={true}
                     />
                 </ScrollView>
             </View>
