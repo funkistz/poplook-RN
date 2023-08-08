@@ -152,18 +152,26 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         <Center>
             <ScrollView w='100%'>
 
-                {videos && videos.map((item: any) => {
+                {videos && 
 
-                    return <TouchableOpacity onPress={() => goToCategory(item)}><Video
-                        source={{ uri: item.href }}
-                        style={styles.videoPlayer}
-                        controls={false}
-                        autoplay={true}
-                        repeat={true} 
-                        resizeMode="cover" 
-                    />
-                    </TouchableOpacity>
-                })} 
+                    <Center>
+
+                        {videos.map((item: any) => {
+
+                            <TouchableOpacity onPress={() => goToCategory(item)}>
+                                <Video
+                                    source={{ uri: item.href }}
+                                    style={styles.videoPlayer}
+                                    controls={false}
+                                    autoplay={true}
+                                    repeat={true} 
+                                    resizeMode="cover" 
+                                />
+                            </TouchableOpacity>
+                        })} 
+
+                    </Center>
+                }
                 
                 {banners &&
                     <Flex direction="column">
