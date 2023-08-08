@@ -20,11 +20,11 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
 
     useEffect(() => {
 
-        console.log('hai' ,route.params.id)
+        console.log('route.params' ,route.params.id)
 
         const orderHistoryDetails = async () => {
             const response = await OrderHistoryService.orderHistoryDetails(orderId);
-            const json = await response.json();
+            const json = await response.data;
 
             console.log('successpage' ,json)
 
