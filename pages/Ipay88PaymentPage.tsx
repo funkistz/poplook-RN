@@ -94,7 +94,7 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
 
         if (json.code == 200 && json.data) {
 
-            if (json.data.payment_state == '18') {
+            if (json.data.payment_state == '18' || json.data.payment_state == '34') {
 
                 const param = {
                     id: orderId
