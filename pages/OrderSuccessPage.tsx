@@ -115,7 +115,7 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
                 <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
                     <Text paddingBottom={3} style={styles.bold}>Description</Text>
                     {products.map((item: any, index: any) => {
-                        return <ProductDetail product={item}></ProductDetail>
+                        return <ProductDetail product={item} key={index}></ProductDetail>
                     })}
                 </VStack>
                 <VStack style={styles.border} _dark={{ borderColor: "grey" }} py={3}>
