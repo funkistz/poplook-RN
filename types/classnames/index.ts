@@ -12,6 +12,7 @@ declare module '@env' {
     export const WEB_URL: string;
     export const MODULE_API: string;
     export const API_KEY: string;
+    export const X_API_KEY: string;
     export const IOS_VERSION: string;
     export const ANDROID_VERSION: string;
 }
