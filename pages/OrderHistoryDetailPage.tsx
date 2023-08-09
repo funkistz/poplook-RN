@@ -96,7 +96,7 @@ export default function OrderHistoryDetailPage({ route} : { route: any }) {
                 <VStack style={styles.border} _dark={{ borderColor: "#ccc" }} py={3}>
                     <Text paddingBottom={3} style={styles.bold}>Description</Text>
                     {products.map((item: any, index: any) => {
-                        return <ProductDetail product={item}></ProductDetail>
+                        return <ProductDetail product={item} key={index}></ProductDetail>
                     })}
                 </VStack>
                 <VStack style={styles.border} _dark={{ borderColor: "#ccc" }} py={3}>
