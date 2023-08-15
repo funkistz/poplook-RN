@@ -1,6 +1,6 @@
 import { StyleSheet, KeyboardAvoidingView} from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import { Flex, HStack, ScrollView, Button, Spacer, Stack, View, AlertDialog } from 'native-base';
+import { Flex, HStack, ScrollView, Button, Spacer, Stack, View, AlertDialog, Checkbox, Text, Box } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useIsFocused } from '@react-navigation/native';
@@ -33,6 +33,8 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const ischeckout = route.params.param.is_checkout;
 
     const [isOpen, setIsOpen] = useState(false);
+    const [defaultAddress ,setDefaultAddress] = useState(false)
+
     const onClose = async () => {
         
         dispatch(deleteAddress(addressId));
@@ -322,6 +324,12 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                     errors={errors}
                                 />
 
+                                <Box bg="#fff" mt={4} mb={4}>
+                                    <Checkbox value='defaultAddress' isChecked={defaultAddress} onChange={setDefaultAddress} style={styles.checkbox} size='lg'>
+                                        <Text color={'black'} fontSize={15}>Set as Default Address</Text>
+                                    </Checkbox>
+                                </Box>
+
                                 {isUpdate &&
                                     <HStack>
                                         <Spacer></Spacer>
@@ -388,5 +396,9 @@ const styles = StyleSheet.create({
     container: {
         padding: 25,
         paddingTop: 15
+    },
+    checkbox: {
+        borderColor: 'black',
+        backgroundColor: 'white'
     },
 })
