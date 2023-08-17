@@ -17,7 +17,7 @@ const initialState: WishlistState = {
 
 export const getWishList: any = createAsyncThunk(
     "wishlist/get",
-    async (_: void, { getState, rejectWithValue }) => {
+    async (_: void, { getState, rejectWithValue, dispatch }) => {
         try {
             const state: any = getState();
             const id_customer = state.session.user.id_customer;
@@ -26,6 +26,7 @@ export const getWishList: any = createAsyncThunk(
             let data = await response.data
 
             if (data.code == 200) {
+                dispatch(assignWishlistId(data.data.id_wishlist));
                 return data
             } else {
                 return rejectWithValue(data)
@@ -78,25 +79,27 @@ export const addToWishlist: any = createAsyncThunk(
         try {
             const state: any = getState();
             const user = state.session.user;
-            const id_wishlist = state.wishlist.id_wishlist;
+            const id_wishlist = state.wishlist.id_wishlist == '' ? 0 : state.wishlist.id_wishlist;
 
             const params = {
                 id_product: id_product,
                 id_product_attribute: id_product_attribute,
                 quantity: 1,
                 id_wishlist: id_wishlist,
-                id_customer: user.id_customer.toString(),
+                id_customer: user.id_customer.toString()
             }
 
             const response = await WishlistService.addToWishlist(id_wishlist, params);
             let data = await response.data
 
-            console.log('ADD WISH' ,data)
-
             if (response.status == 201) {
                 if (data.code == 201) {
-                    dispatch(getWishList())
-                    dispatch(assignWishlistId(data.data.id_wishlist));
+
+                    if (id_wishlist == 0) {
+                        dispatch(assignWishlistId(data.data.id_wishlist));
+                    }
+
+                    await dispatch(getWishList())
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -121,8 +124,6 @@ export const delWishlist: any = createAsyncThunk(
             const response = await WishlistService.deleteWishlist(user.id_customer, id_wishlist, id_product, id_product_attribute);
             let data = await response.data
 
-            console.log('DELETE WISH' ,data)
-
             if (response.status == 200) {
                 if (data.code == 200) {
                     dispatch(getWishList())
@@ -146,9 +147,10 @@ export const wishlistSlice = createSlice({
         assignWishlistId: (state, action) => {
 
             const temp: any = {};
-            temp.id_wishlist = action.payload == '' ? '0' : action.payload;
+            temp.id_wishlist = action.payload
 
             state = { ...state, ...temp }
+
             return state;
         },
         clearCart: (state) => {
@@ -212,7 +214,7 @@ export const wishlistSlice = createSlice({
                 temp.id_product = [];
                 state = { ...state, ...temp }
                 return state;
-                // GeneralService.toast({ description: payload.message });
+                
             })
 
             .addCase(delWishlist.fulfilled, (state, { payload }) => {
