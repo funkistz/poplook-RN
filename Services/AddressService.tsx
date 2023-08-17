@@ -31,8 +31,14 @@ const AddressService = {
     async deleteAddress(addressId: String) {
 
         return await api.delete('address/' + addressId);
+    },
 
-    }
+    async setDefaultAddress(params: any) {
+
+        return await api.post('address/set_default_address/', params);
+    },
+
+
 }
 
 export default AddressService;
