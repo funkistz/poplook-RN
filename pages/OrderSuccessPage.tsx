@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import OrderHistoryService from '../Services/OrderHistoryService';
 import ProductDetail from '../components/ProductDetail';
 import Address from '../components/Address';
+import * as StoreReview from 'react-native-store-review';
 
 export default function OrderSuccessPage({ route, navigation } : { route: any, navigation: any }) {
 
@@ -36,6 +37,8 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
             setGiftMessages(json.data.order_details);
         }
         orderHistoryDetails().catch(console.error);
+
+        StoreReview.requestReview();
 
     }, [])
 

@@ -157,7 +157,7 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <TabStack />
+          <TabStack navigation={undefined} />
         </GestureHandlerRootView>
       </PersistGate>
     </Provider>
