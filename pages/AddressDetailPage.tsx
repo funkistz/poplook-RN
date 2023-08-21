@@ -133,15 +133,6 @@ export default function AddressDetailPage({ route }: { route: any }) {
         }
     }
 
-    const handleCheckboxChange = () => {
-        setDefaultAddress(defaultAddress);
-    
-        if (defaultAddress) {
-          // Call your API here
-          console.log('DEFAULTADDRESS', defaultAddress)
-        }
-    };
-
     return (
         <>
             {address.data && <Formik
@@ -333,12 +324,6 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                     errors={errors}
                                 />
 
-                                <Box bg="#fff" mt={4} mb={4}>
-                                    <Checkbox value='defaultAddress' isChecked={defaultAddress} onChange={handleCheckboxChange} style={styles.checkbox} size='lg'>
-                                        <Text color={'black'} fontSize={15}>Set as Default Address</Text>
-                                    </Checkbox>
-                                </Box>
-
                                 {isUpdate &&
                                     <HStack>
                                         <Spacer></Spacer>
@@ -405,9 +390,5 @@ const styles = StyleSheet.create({
     container: {
         padding: 25,
         paddingTop: 15
-    },
-    checkbox: {
-        borderColor: 'black',
-        backgroundColor: 'white'
-    },
+    }
 })

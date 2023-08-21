@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { HStack, Text, VStack, Spacer, View, Box, Checkbox, Badge, Radio } from 'native-base';
+import { HStack, Text, VStack, Spacer, View } from 'native-base';
 import { StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AddressEditModal from './Modals/AddressEdit';
@@ -15,7 +15,6 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const navigation: any = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
-    const [defaultAddress, setDefaultAddress] = useState('');
 
     const editAddressPage = (addressId: any) => {
 
@@ -46,37 +45,21 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
     return (
         <>
             <View style={{ backgroundColor: 'white' }}>
-                <HStack width={'100%'} style={styles.border} _dark={{ borderColor: "grey" }}>
-
-                    <VStack justifyContent={'center'} marginX={3}>
-                        <Checkbox value='defaultAddress' size='sm' style={styles.checkbox}></Checkbox>
-                    </VStack>
-
-                    <VStack marginY={2}>
-                    
-                        <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
-                        <Text style={styles.normal}>{address.address1} {address.address2}</Text>
-                        <Text style={styles.normal}>{address.postcode} {address.city}</Text>
-                        {address && address.state &&
-                            <Text style={styles.normal}>{address.state}</Text>
-                        }
+                <VStack style={styles.border} _dark={{ borderColor: "grey" }} marginX={3} marginTop={2}>
+                    <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
+                    <Text style={styles.normal}>{address.address1} {address.address2}</Text>
+                    <Text style={styles.normal}>{address.postcode} {address.city}</Text>
+                    {address && address.state &&
+                        <Text style={styles.normal}>{address.state}</Text>
+                    }
+                    <HStack>
                         <Text style={styles.normal} marginBottom={2}>{address.country}</Text>
-                        <HStack justifyContent={'space-between'} width={'80%'}>
-                            <Badge variant={'outline'} alignSelf="center" colorScheme="green" _text={{ fontSize : 11 , color: '#1cad48'}}>
-                                DEFAULT
-                            </Badge>
-                            <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
-                                <Text color={'#1cad48'} fontSize={14} paddingRight={3} fontWeight={'600'}>EDIT</Text>
-                            </TouchableOpacity>
-                        </HStack>
-                        <HStack>
-                       
-                        </HStack>
-
-                    </VStack>
-                </HStack>
-                
-            
+                        <Spacer />
+                        <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
+                            <Text color={'#1cad48'} fontSize={14} paddingRight={3} fontWeight={'600'}>EDIT</Text>
+                        </TouchableOpacity>
+                    </HStack>
+                </VStack>
                 <AddressEditModal
                     visible={isModalVisible}
                     onToggle={toggleModal}
@@ -103,9 +86,5 @@ const styles = StyleSheet.create({
     border: {
         borderBottomWidth: 1,
         borderColor: '#ccc',
-    },
-    checkbox: {
-        borderColor: 'black',
-        backgroundColor: 'white'
-    },
+    }
 });
