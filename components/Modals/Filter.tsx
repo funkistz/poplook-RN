@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { Center, Button, Container, Divider, Flex, Heading, HStack, IconButton, Spacer, Stack, Text, VStack, FormControl, Input, ScrollView, Icon, FlatList, Box, SectionList } from 'native-base';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import { black } from 'react-native-paper/lib/typescript/src/styles/themes/v2/colors';
+import { useSelector } from 'react-redux';
 
 export default function FilterModal({ visible, onToggle, submitBtn, sortData, attributeData, colorData, sortClick, attributeClick, clearAllClick, selectedSort, selectedAttribute, selectedColor }:
     {
@@ -17,13 +17,42 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
     //     // return (sizeSelected != id_product_attribute) ? '#000' : '#fff';
     // }
 
+    const sizes = useSelector((storeState: any) => storeState.filter.sizes);
+    const colors = useSelector((storeState: any) => storeState.filter.colors);
+
+    const [section1, setSection1] = useState([]);
+    const [section2, setSection2] = useState([]);
+    const [section3, setSection3] = useState([]);
+
     // Action
     const submit = () => {
         submitBtn(true)
     }
 
+    const categorizeData = () => {
+
+        const section1Data: any = [];
+        const section2Data: any = [];
+        const section3Data: any = [];
+    
+        sizes.forEach((item: any) => {
+            if (item.section === 1) {
+                section1Data.push(item);
+            } else if (item.section === 2) {
+                section2Data.push(item);
+            } else if (item.section === 3) {
+                section3Data.push(item);
+            }
+        });
+
+        setSection1(section1Data);
+        setSection2(section2Data);
+        setSection3(section3Data);
+    };
+
+
     useEffect(() => {
-        // console.log('useEffect Modal Filter...........')
+        categorizeData()
     }, [])
 
 
@@ -80,8 +109,36 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
                             </View>
 
                             <Text fontSize={16} color={'muted.700'} ml={3} my={3}>Select Size: </Text>
+
+                            <Text fontSize={14} color={'muted.700'} ml={3} mb={1}>Women</Text>
                             <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-                                {attributeData.map((item: any, index: any) => {
+                                {section1.map((item: any, index: any) => {
+                                    return <Box w={'25%'} px={1} key={index}>
+                                        <Button size='sm' variant="outline"
+                                            style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
+                                            onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })} _pressed={{backgroundColor: "white" }} >
+                                            <Text style={selectedAttribute.includes(item.id_combination) ? styles.TextClicked : styles.Text}> {item.name}</Text>
+                                        </Button>
+                                    </Box>
+                                })}
+                            </View>
+
+                            <Text fontSize={14} color={'muted.700'} ml={3} mt={2} mb={1}>Kids</Text>
+                            <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                                {section2.map((item: any, index: any) => {
+                                    return <Box w={'25%'} px={1} key={index}>
+                                        <Button size='sm' variant="outline"
+                                            style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
+                                            onPress={() => attributeClick({ data: item.id_combination, type: 'attribute' })} _pressed={{backgroundColor: "white" }} >
+                                            <Text style={selectedAttribute.includes(item.id_combination) ? styles.TextClicked : styles.Text}> {item.name}</Text>
+                                        </Button>
+                                    </Box>
+                                })}
+                            </View>
+
+                            <Text fontSize={14} color={'muted.700'} ml={3} mt={2} mb={1}>Shoes</Text>
+                            <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                                {section3.map((item: any, index: any) => {
                                     return <Box w={'25%'} px={1} key={index}>
                                         <Button size='sm' variant="outline"
                                             style={selectedAttribute.includes(item.id_combination) ? styles.btnClicked : styles.btn}
@@ -94,7 +151,7 @@ export default function FilterModal({ visible, onToggle, submitBtn, sortData, at
 
                             <Text fontSize={16} color={'muted.700'} ml={3} my={3}>Select Color: </Text>
                             <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-                                {colorData.map((item: any, index: any) => {
+                                {colors.map((item: any, index: any) => {
                                     return <Box w={'25%'} px={1} key={index}>
                                         <Button size='sm' variant="outline"
                                             style={selectedColor.includes(item.id_combination) ? styles.btnClicked : styles.btn}

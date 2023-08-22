@@ -13,7 +13,7 @@ import { customerDetails } from '../Redux/Slices/Sessions';
 import { getCart } from '../Redux/Slices/Cart';
 import { assignDeviceType } from '../Redux/Slices/Sessions';
 import ProductService from '../Services/ProductService';
-// import { getColors, getSizes } from '../Redux/Slices/Filter';
+import { getColors, getSizes } from '../Redux/Slices/Filter';
 import Video from 'react-native-video';
 
 const win = Dimensions.get('window');
@@ -57,8 +57,8 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         const unsubscribe = navigation.addListener('focus', () => {
             console.log('session', session);
             dispatch(getWishList())
-            // dispatch(getColors())
-            // dispatch(getSizes())
+            dispatch(getColors())
+            dispatch(getSizes())
             if (session.intro == false || session.intro == undefined) {
                 navigation.reset({
                     index: 0,
