@@ -13,6 +13,7 @@ import { addressSelectedSlice } from './Slices/AdressSelected';
 import { checkoutSelector, checkoutSlice } from './Slices/Checkout';
 import { infosSlice } from './Slices/Infos';
 import { wishlistSlice } from './Slices/Wishlist';
+import { filterSlice } from './Slices/Filter';
 
 const persistConfig = {
     key: 'root',
@@ -30,6 +31,7 @@ const reducers = combineReducers({
     checkout: checkoutSlice.reducer,
     infos: infosSlice.reducer,
     wishlist: wishlistSlice.reducer,
+    filter: filterSlice.reducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)
