@@ -132,7 +132,7 @@ export const deleteAddress: any = createAsyncThunk(
 )
 
 export const setDefaultAddress: any = createAsyncThunk(
-    "address/add",
+    "address/default",
     async ({ id_address, value }: any, { getState, rejectWithValue }) => {
         try {
             const state: any = getState();
