@@ -131,6 +131,33 @@ export const deleteAddress: any = createAsyncThunk(
     }
 )
 
+export const setDefaultAddress: any = createAsyncThunk(
+    "address/add",
+    async ({ id_address, value }: any, { getState, rejectWithValue }) => {
+        try {
+            const state: any = getState();
+            const id_customer = state.session.user.id_customer;
+
+            const response = await AddressService.setDefaultAddress({ id_address, value });
+            let data = await response.data
+
+            if (response.status == 200) {
+                if (data.code == 200) {
+
+                    return data
+                } else {
+                    return rejectWithValue(data)
+                }
+            } else {
+                return rejectWithValue(data)
+            }
+        } catch (e: any) {
+            console.log("Error", e.response.data)
+            rejectWithValue(e.response.data)
+        }
+    }
+)
+
 export const addressSlice = createSlice({
     name: 'address',
     initialState,
@@ -230,11 +257,16 @@ export const addressSlice = createSlice({
             
             GeneralService.toast({ description: payload.message });
 
+        }).addCase(setDefaultAddress.fulfilled, (state, { payload }) => {
+            GeneralService.toast({ description: payload.message });
+        }).addCase(setDefaultAddress.pending, (state, { payload }) => {
+        }).addCase(setDefaultAddress.rejected, (state, { payload }) => {
+            
+            GeneralService.toast({ description: payload.message });
+
         })
     },
 })
-
-
 
 
 // Action creators are generated for each case reducer function
