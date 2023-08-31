@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { HStack, Text, VStack, Spacer, View, Box, Checkbox, Badge, Radio } from 'native-base';
-import { StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { HStack, Text, VStack, Spacer, View } from 'native-base';
+import { StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AddressEditModal from './Modals/AddressEdit';
 import { useSelector, useDispatch } from 'react-redux';
@@ -44,15 +44,30 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
 
     return (
         <>
-            <VStack>
-                <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
-                <Text style={styles.normal}>{address.address1} {address.address2}</Text>
-                <Text style={styles.normal}>{address.postcode} {address.city}</Text>
-                {address && address.state &&
-                    <Text style={styles.normal}>{address.state}</Text>
-                }
-                
-            </VStack>
+            <View style={{ backgroundColor: 'white' }}>
+                <VStack style={styles.border} _dark={{ borderColor: "grey" }} marginX={3} marginTop={2}>
+                    <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
+                    <Text style={styles.normal}>{address.address1} {address.address2}</Text>
+                    <Text style={styles.normal}>{address.postcode} {address.city}</Text>
+                    {address && address.state &&
+                        <Text style={styles.normal}>{address.state}</Text>
+                    }
+                    <HStack>
+                        <Text style={styles.normal} marginBottom={2}>{address.country}</Text>
+                        <Spacer />
+                        <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
+                            <Text color={'#1cad48'} fontSize={14} paddingRight={3} fontWeight={'600'}>EDIT</Text>
+                        </TouchableOpacity>
+                    </HStack>
+                </VStack>
+                <AddressEditModal
+                    visible={isModalVisible}
+                    onToggle={toggleModal}
+                    isCheckout={true}
+                    id={address.id_address}
+                />
+            </View>
+
 
             <HStack justifyContent={'space-between'} width={'85%'}>
                 {/* <Checkbox
@@ -93,9 +108,5 @@ const styles = StyleSheet.create({
     border: {
         borderBottomWidth: 1,
         borderColor: '#ccc',
-    },
-    checkbox: {
-        borderColor: 'black',
-        backgroundColor: 'white'
-    },
+    }
 });

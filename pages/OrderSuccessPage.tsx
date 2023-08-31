@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { Text, ScrollView, View, HStack, Spacer, VStack, Divider, Button, Flex } from "native-base";
 import { useSelector } from 'react-redux';
 import OrderHistoryService from '../Services/OrderHistoryService';
 import ProductDetail from '../components/ProductDetail';
 import Address from '../components/Address';
+import * as StoreReview from 'react-native-store-review';
+import InAppReview from 'react-native-in-app-review';
 
 export default function OrderSuccessPage({ route, navigation } : { route: any, navigation: any }) {
 
@@ -36,6 +38,13 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
             setGiftMessages(json.data.order_details);
         }
         orderHistoryDetails().catch(console.error);
+
+        if (Platform.OS === "ios") {
+            StoreReview.requestReview();
+        } else {
+            InAppReview.RequestInAppReview();
+        }
+
 
     }, [])
 
