@@ -45,14 +45,14 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
     return (
         <>
             <View style={{ backgroundColor: 'white' }}>
-                <VStack style={styles.border} _dark={{ borderColor: "grey" }} marginX={3} marginTop={2}>
+                <VStack>
                     <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
                     <Text style={styles.normal}>{address.address1} {address.address2}</Text>
                     <Text style={styles.normal}>{address.postcode} {address.city}</Text>
                     {address && address.state &&
                         <Text style={styles.normal}>{address.state}</Text>
                     }
-                    <HStack>
+                    <HStack justifyContent={'space-between'} width={'92%'}>
                         <Text style={styles.normal} marginBottom={2}>{address.country}</Text>
                         <Spacer />
                         <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
@@ -69,8 +69,8 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
             </View>
 
 
-            <HStack justifyContent={'space-between'} width={'85%'}>
-                {/* <Checkbox
+            {/* <HStack justifyContent={'space-between'} width={'85%'}>
+                <Checkbox
                     value='1'
                     key={item.id_address}
                     isChecked={item.id_address === selectedOption}
@@ -78,12 +78,12 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
                     style={styles.checkbox}
                     accessibilityLabel="Default Address"
                 ><Text style={styles.default}>Default Address</Text>
-                </Checkbox> */}
+                </Checkbox>
                 <Text style={styles.normal}>{address.country}</Text>
                 <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
                     <Text color={'#1cad48'} fontSize={14} fontWeight={'600'}>EDIT</Text>
                 </TouchableOpacity>
-            </HStack>
+            </HStack> */}
                 
             <AddressEditModal
                 visible={isModalVisible}
