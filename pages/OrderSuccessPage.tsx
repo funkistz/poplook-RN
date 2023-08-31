@@ -39,11 +39,11 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
         }
         orderHistoryDetails().catch(console.error);
 
-        if (Platform.OS === "ios") {
-            StoreReview.requestReview();
-        } else {
-            InAppReview.RequestInAppReview();
-        }
+        // if (Platform.OS === "ios") {
+        //     StoreReview.requestReview();
+        // } else {
+        //     InAppReview.RequestInAppReview();
+        // }
 
 
     }, [])
