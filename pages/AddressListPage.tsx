@@ -133,7 +133,7 @@ export default function AddressListPage({ route, onToggle }: any) {
                                         <AddressList address={item} key={index} isCheckout={isCheckout}></AddressList>
                                     </TouchableOpacity>
                                     
-                                    <HStack justifyContent={'space-between'} width={'88%'}>
+                                    {/* <HStack justifyContent={'space-between'} width={'88%'}>
                                     <Checkbox
                                         value='1'
                                         key={item.id_address}
@@ -146,7 +146,7 @@ export default function AddressListPage({ route, onToggle }: any) {
                                     <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(item.id_address) : editAddressPage(item.id_address)}>
                                         <Text color={'#1cad48'} fontSize={14} fontWeight={'600'}>EDIT</Text>
                                     </TouchableOpacity>
-                                    </HStack>
+                                    </HStack> */}
 
                                 </VStack>
                             </HStack>

@@ -333,12 +333,6 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                     errors={errors}
                                 />
 
-                                <Box bg="#fff" mt={4} mb={4}>
-                                    <Checkbox value='defaultAddress' isChecked={defaultAddress} onChange={handleCheckboxChange} style={styles.checkbox} size='lg'>
-                                        <Text color={'black'} fontSize={15}>Set as Default Address</Text>
-                                    </Checkbox>
-                                </Box>
-
                                 {isUpdate &&
                                     <HStack>
                                         <Spacer></Spacer>

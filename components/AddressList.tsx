@@ -20,17 +20,55 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
         setModalVisible(!isModalVisible);
     };
 
+    const editAddressPage = (addressId: any) => {
+
+        const param = {
+            id: addressId,
+            is_update: true,
+            isCheckout: isCheckout
+        }
+
+        navigation.navigate('AddressDetailPage', { screen: 'AddressDetailPage', param: param });
+    }
+
+    const editAddressExPage = (addressId: any) => {
+
+        const param = {
+            id: addressId,
+            is_update: true,
+            isCheckout: isCheckout
+        }
+
+        navigation.navigate('AddressDetailExPage', { screen: 'AddressDetailExPage', param: param, isCheckout: true });
+    }
+
     return (
         <>
-            <VStack marginY={2}>
+            <VStack>
                 <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
                 <Text style={styles.normal}>{address.address1} {address.address2}</Text>
                 <Text style={styles.normal}>{address.postcode} {address.city}</Text>
                 {address && address.state &&
                     <Text style={styles.normal}>{address.state}</Text>
                 }
-                <Text style={styles.normal}>{address.country}</Text>
+                
             </VStack>
+
+            <HStack justifyContent={'space-between'} width={'85%'}>
+                {/* <Checkbox
+                    value='1'
+                    key={item.id_address}
+                    isChecked={item.id_address === selectedOption}
+                    onChange={() => handleSelectOption(item.id_address)}
+                    style={styles.checkbox}
+                    accessibilityLabel="Default Address"
+                ><Text style={styles.default}>Default Address</Text>
+                </Checkbox> */}
+                <Text style={styles.normal}>{address.country}</Text>
+                <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
+                    <Text color={'#1cad48'} fontSize={14} fontWeight={'600'}>EDIT</Text>
+                </TouchableOpacity>
+            </HStack>
                 
             <AddressEditModal
                 visible={isModalVisible}
