@@ -141,7 +141,7 @@ export default function TabStack({ navigation }: { navigation: any }) {
                       <>
                           <Box>
                               <Center>
-                                  <Image style={{ width: 100, height: 29 }} source={{uri: "https://poplook.com/assets/img/logo.png"}} alt='Poplook Logo' size="sm" />
+                                  <Image style={{ width: 100, height: 29 }} source={{uri: "https://poplook.com/assets/img/PL_BS14_BLK_WEB_LOGO.png"}} alt='Poplook Logo' size="sm" />
                               </Center>
                           </Box>
                       </>
