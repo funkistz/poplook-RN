@@ -3,7 +3,7 @@
     <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Poplook Logo" translatesAutoresizingMaskIntoConstraints="NO" id="mfH-lJ-Qdq">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Poplook Logo Birthday" translatesAutoresizingMaskIntoConstraints="NO" id="mfH-lJ-Qdq">
                                 <rect key="frame" x="91" y="342" width="248" height="248"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="248" id="4NB-vb-mPI"/>
@@ -40,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Poplook Logo" width="164.33332824707031" height="33.333332061767578"/>
+        <image name="Poplook Logo Birthday" width="164.33332824707031" height="33.333332061767578"/>
     </resources>
 </document>
