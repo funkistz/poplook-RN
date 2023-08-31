@@ -25,6 +25,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     const currency = useSelector((storeState: any) => storeState.session.country.currency_sign);
     const cartId = useSelector((storeState: any) => storeState.cart.id_cart);
+    const giftWrap = useSelector((storeState: any) => storeState.cart.gift_wrap);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
     const country = useSelector((storeState: any) => storeState.session.country);
     const user = useSelector((storeState: any) => storeState.session.user);
@@ -47,7 +48,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const text_message = useSelector((storeState: any) => storeState.checkout.message);
     const free_order = useSelector((storeState: any) => storeState.checkout.free_order);
 
-    const [gift, setGift] = React.useState(gift_option ? '1' : '0');
+    const [gift, setGift] = React.useState(giftWrap ? '1' : '0');
     const [message, setMessage] = React.useState('');
     const [paymentType, setPaymentType] = React.useState('');
     const [paymentChild, setPaymentChild] = React.useState('');
@@ -91,7 +92,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
             }
 
             const param = {
-                gift: gift_option,
+                gift: giftWrap ? '1' : '0',
                 gift_wrap_id: gift_wrap_id ? gift_wrap_id[0] : '',
                 gift_message: gift_message,
                 address_id: address ? address.id : ''

@@ -6,14 +6,16 @@ export interface CartState {
     id_cart: Number | null,
     total_item: 0,
     cartLoading: boolean,
-    data: {} | null
+    data: {} | null,
+    gift_wrap: boolean
 }
 
 const initialState: CartState = {
     id_cart: null,
     total_item: 0,
     cartLoading: false,
-    data: {}
+    data: {},
+    gift_wrap: false
 }
 
 export const getCart: any = createAsyncThunk(
@@ -169,6 +171,7 @@ export const cartSlice = createSlice({
                     temp.id_cart = payload.data.id_cart;
                     temp.data = payload.data;
                     temp.total_item = payload.data.totalItemInCart;
+                    temp.gift_wrap = payload.data.gift_wrap_exist;
                     state = { ...state, ...temp }
                 }
                 return state;
@@ -182,6 +185,8 @@ export const cartSlice = createSlice({
                     // temp.id_cart = null;
                     temp.data = {};
                     temp.total_item = 0;
+                    temp.gift_wrap = false;
+                
 
                     state = { ...state, ...temp }
                     return state;
