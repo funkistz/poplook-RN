@@ -1,30 +1,25 @@
-import { StyleSheet, View, Dimensions } from 'react-native';
-import React, { useEffect, useState, useCallback } from 'react';
-import BannerService from '../Services/BannerService';
-import { Flex, Center, Image, Box, HStack, IconButton, Icon, FlatList, ScrollView, Text, Button, Badge } from 'native-base';
+import { StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { Flex, HStack, ScrollView, Text, Button, Badge } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { addToCart, clearCart, getCart } from '../Redux/Slices/Cart';
+import { getCart } from '../Redux/Slices/Cart';
 import CartList from '../components/Cart/CartList';
-import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
 
 export default function CartPage({ route, navigation }: { route: any, navigation: any }) {
 
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+    const isFocused = useIsFocused();
+
     const cart = useSelector((storeState: any) => storeState.cart);
     const user = useSelector((storeState: any) => storeState.session.user);
     const session = useSelector((storeState: any) => storeState.session);
-    const isFocused = useIsFocused();
-
+    
     useEffect(() => {
 
         if (isFocused) {
-            // persistor.purge().then(() => {
             dispatch(getCart());
-            // });
-
-            console.log('cart cart', cart);
         }
 
     }, [isFocused])
@@ -37,7 +32,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
 
     return (
         <>
-            <Flex flex={1} flexDirection="column" backgroundColor='white' margin={0} >
+            <Flex flex={1} flexDirection="column" backgroundColor='white'>
 
                 {cart && cart.data && cart.data.cart_messages &&
                     <>
@@ -59,9 +54,9 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                                 })
                                 }
                             </ScrollView>
-                            <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
+                            <HStack px="1" py="1" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                                 <HStack alignItems="center" w="40%">
-                                    <Text fontSize="15" color="black" pl={2} bold> SubTotal</Text>
+                                    <Text fontSize="14" color="black" pl={2} bold> SubTotal</Text>
                                 </HStack>
                                 <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
                                     <Text color='black' bold>{session.country.currency_sign} {cart.data.totalProductsWt}</Text>
@@ -69,7 +64,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                             </HStack>
                             <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                                 <HStack alignItems="center" w="40%">
-                                    <Text fontSize="15" color="black" pl={2} bold> Shipping</Text>
+                                    <Text fontSize="14" color="black" pl={2} bold> Shipping</Text>
                                 </HStack>
                                 <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
                                     <Text color='black' bold>{Number(cart.data.shipping_price) == 0 ? 'Free Shipping' : session.country.currency_sign + ' ' + cart.data.shipping_price}</Text>
@@ -77,7 +72,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                             </HStack>
                             <HStack px="1" py="2" bg={'gray.100'} justifyContent="space-between" alignItems="center" w="100%" maxW="100%">
                                 <HStack alignItems="center" w="40%">
-                                    <Text fontSize="15" color="black" pl={2} bold> TOTAL PAYABLE</Text>
+                                    <Text fontSize="14" color="black" pl={2} bold> TOTAL PAYABLE</Text>
                                 </HStack>
                                 <HStack justifyContent="flex-end" w="30%" alignItems={'center'} mr={3}>
                                     <Text color='black' bold>{session.country.currency_sign} {(Number(cart.data.totalProductsWt) + Number(cart.data.shipping_price)).toFixed(2)}</Text>
@@ -99,14 +94,11 @@ export default function CartPage({ route, navigation }: { route: any, navigation
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 20
-    },
     footer: {
         backgroundColor: '#1cad48'
     },
     bold: {
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center'

@@ -1,7 +1,6 @@
-import { StyleSheet, View, Dimensions, TouchableOpacity, TouchableHighlight, Animated } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import BannerService from '../Services/BannerService';
-import { Flex, Center, Image, Box, HStack, IconButton, FlatList, ScrollView, VStack, Skeleton, Text, Icon, Select, Button, Backdrop } from 'native-base';
+import { Box, HStack, FlatList, Text, Backdrop } from 'native-base';
 import ProductService from '../Services/ProductService';
 import ProductCard from '../components/Products/ProductCard';
 import Spinner from '../components/Spinner';
@@ -260,7 +259,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
     // useEffect
     useEffect(() => {
 
-        console.log('dataroute', route.params.category_name)
         // Init Data
         getSize().catch(console.error)
         getColor().catch(console.error)
