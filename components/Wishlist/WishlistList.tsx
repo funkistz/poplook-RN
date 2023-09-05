@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, HStack, IconButton, Icon, StatusBar, Text, Center, Flex, VStack, Image, AspectRatio, View, Button } from 'native-base';
+import React from 'react';
+import { Box, HStack, IconButton, Icon, Text, Flex, Image, AspectRatio, View, Button } from 'native-base';
 import { StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getWishList, delWishlist, addToCart } from '../../Redux/Slices/Wishlist';
@@ -13,6 +13,7 @@ export default function WishlistList({ product, currency }: any) {
 
     const { navigate } = useNavigation<any>();
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+
     const wishlist = useSelector((storeState: any) => storeState.wishlist);
 
     const goToProductPage = () => {
@@ -30,6 +31,7 @@ export default function WishlistList({ product, currency }: any) {
             id_product_attribute: product.id_product_attribute,
             quantity: product.quantity
         }
+
         await dispatch(addToCart(params))
         await dispatch(getWishList())
     }
@@ -44,6 +46,7 @@ export default function WishlistList({ product, currency }: any) {
     }
 
     const alertDelete = (product: any) => {
+
         Alert.alert('Remove product from  wishlist?', '', [
             {
                 text: 'Cancel',
@@ -57,6 +60,7 @@ export default function WishlistList({ product, currency }: any) {
     }
 
     const alertAddtoCart = (product: any) => {
+
         Alert.alert('Add Product to cart?', '', [
             {
                 text: 'Cancel',
@@ -125,7 +129,6 @@ const styles = StyleSheet.create({
         padding: 10
     },
     btnAddtoCart: {
-        // height: 20,
         backgroundColor: '#1cad48',
         width: '50%',
         flexDirection: 'row'

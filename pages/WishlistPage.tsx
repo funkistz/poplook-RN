@@ -1,18 +1,19 @@
 import { useIsFocused } from "@react-navigation/native";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { Button, Center, Flex, ScrollView, Text } from "native-base";
+import { Center, Flex, ScrollView, Text } from "native-base";
 import { useEffect } from "react";
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import WishlistList from "../components/Wishlist/WishlistList";
-import { getWishList, delWishlist } from "../Redux/Slices/Wishlist";
+import { getWishList } from "../Redux/Slices/Wishlist";
 
 
 export default function WishlistPage ({ route , navigation} : { route: any,  navigation: any }) {
-    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-    const wishlist = useSelector((storeState: any) => storeState.wishlist);
 
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const isFocused = useIsFocused();
+
+    const wishlist = useSelector((storeState: any) => storeState.wishlist);
 
     useEffect(() => {
 
@@ -56,12 +57,3 @@ export default function WishlistPage ({ route , navigation} : { route: any,  nav
         }
     </>
 }
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 20
-    },
-    footer: {
-        backgroundColor: '#1cad48'
-    }
-})
