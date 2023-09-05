@@ -88,14 +88,14 @@ export default function CartList({ product }: any) {
                         </AspectRatio>
                     </Box>
                     <Box flexGrow={1} width={1} pl={4}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text color='black' bold fontSize={13} w={'87%'}>{product.name}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text color='black' bold fontSize={13} w={'88%'}>{product.name}</Text>
                             <IconButton
                                 justifyContent={'flex-end'}
+                                alignItems={'flex-start'}
                                 size={'xs'}
                                 onPress={() => alertDelete(product)}
                                 w={'12%'}
-                                mb={3}
                                 icon={<Icon name="x" size={18} color="grey" />}
                             />
                         </View>
@@ -121,7 +121,7 @@ export default function CartList({ product }: any) {
                             </Box> */}
                         </HStack>
 
-                        <HStack justifyContent={'flex-end'}>
+                        <HStack>
                             <Box w={'25%'} mr={2}>
                                 <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"}>Update</Button>
                             </Box>
