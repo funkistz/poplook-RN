@@ -1,11 +1,13 @@
-import { StyleSheet } from 'react-native';
-import React, { useEffect } from 'react';
-import { Flex, HStack, ScrollView, Text, Button, Badge } from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { Flex, HStack, ScrollView, Text, Button, Badge, Backdrop } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getCart } from '../Redux/Slices/Cart';
 import CartList from '../components/Cart/CartList';
 import { useIsFocused } from '@react-navigation/native';
+import BottomSheet from '@gorhom/bottom-sheet';
+import CartUpdate from '../components/Cart/CartUpdate';
 
 export default function CartPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -15,6 +17,15 @@ export default function CartPage({ route, navigation }: { route: any, navigation
     const cart = useSelector((storeState: any) => storeState.cart);
     const user = useSelector((storeState: any) => storeState.session.user);
     const session = useSelector((storeState: any) => storeState.session);
+
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    const snapPoints = useMemo(() => ['50%'], []);
+    const handleSheetChanges = useCallback((index: number) => {
+        if (index == -1) {
+            setBackdropVisible(false)
+        }
+    }, []);
+    const [backdropVisible, setBackdropVisible] = useState(false);
     
     useEffect(() => {
 
@@ -27,6 +38,13 @@ export default function CartPage({ route, navigation }: { route: any, navigation
 
     const checkoutPage = () => {
         user ? navigation.navigate('CheckoutExPage', { screen: 'CheckoutExPage' }) : navigation.navigate('LoginPage', { screen: 'LoginPage' });
+    }
+
+    const updateCart = async () => {
+
+        bottomSheetRef.current?.snapToIndex(0);
+        setBackdropVisible(true);
+        
     }
 
 
@@ -50,7 +68,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                         {cart.data.product_list.length > 0 && <>
                             <ScrollView flex={1}>
                                 {cart.data.product_list.map((product: any, index: any) => {
-                                    return <CartList key={index} product={product}></CartList>
+                                    return <CartList key={index} product={product} openUpdateCart={updateCart}></CartList>
                                 })
                                 }
                             </ScrollView>
@@ -88,7 +106,33 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                 }
             </Flex>
 
-        </>
+            <BottomSheet
+                ref={bottomSheetRef}
+                index={-1}
+                snapPoints={snapPoints}
+                onChange={handleSheetChanges}
+                enablePanDownToClose
+                backdropComponent={() => (
+                    <>
+                        {backdropVisible && <Backdrop
+                            onPress={() => {
+                                setBackdropVisible(false);
+                                bottomSheetRef.current?.close();
+                            }}
+                            opacity={0.5} 
+                        />}
+                    </>
+                )}
+                >
+                <View style={styles.contentContainer}>
+                    {cart.data.product_list.map((product: any, index: any) => {
+                        return <CartUpdate key={index} product={product} openUpdateCart={updateCart}></CartUpdate>
+                    })
+                    }
+                </View>
+            </BottomSheet>
+
+        </> 
 
     );
 }
@@ -102,5 +146,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center'
-    }
+    },
+    contentContainer: {
+        flex: 1,
+        // alignItems: 'center',
+        padding: 15
+    },
 })

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, HStack, IconButton, StatusBar, Text, Center, Flex, VStack, Image, AspectRatio, Button } from 'native-base';
+import React, { useEffect } from 'react';
+import { Box, HStack, IconButton, StatusBar, Text, Center, Flex, VStack, Image, AspectRatio, Button, Backdrop } from 'native-base';
 import { StyleSheet, Dimensions, TouchableOpacity, Alert, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { delToCart, getCart } from '../../Redux/Slices/Cart';
@@ -11,7 +11,7 @@ import { addToWishlist, delWishlist } from '../../Redux/Slices/Wishlist';
 
 const win = Dimensions.get('window');
 
-export default function CartList({ product }: any) {
+export default function CartList({ product, openUpdateCart }: any) {
 
     const { navigate } = useNavigation<any>();
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
@@ -76,6 +76,11 @@ export default function CartList({ product }: any) {
         await dispatch(getCart())
     }
 
+    const updateCart = () => {
+
+        openUpdateCart()
+    }
+
     return (
         <>
             <TouchableOpacity onPress={goToProductPage}>
@@ -123,7 +128,7 @@ export default function CartList({ product }: any) {
 
                         <HStack>
                             <Box w={'25%'} mr={2}>
-                                <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"}>Update</Button>
+                                <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => updateCart()}>Update</Button>
                             </Box>
                             <Box w={'50%'} >
                                 <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => addtoWishlist(product.id_product, product.id_product_attribute, product.quantity)}>Move to Wishlist</Button>
