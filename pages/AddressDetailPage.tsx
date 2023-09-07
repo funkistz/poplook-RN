@@ -1,6 +1,6 @@
-import { StyleSheet, KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, KeyboardAvoidingView, Alert } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import { Flex, HStack, ScrollView, Button, Spacer, Stack, View, AlertDialog, Checkbox, Text, Box } from 'native-base';
+import { Flex, HStack, ScrollView, Button, Spacer, Stack, View, AlertDialog } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useIsFocused } from '@react-navigation/native';
@@ -21,35 +21,53 @@ export default function AddressDetailPage({ route }: { route: any }) {
     const states = useSelector((storeState: any) => storeState.infos.states.map((state: any) => { return { label: state.name, value: state.id } }));
     const country = useSelector((storeState: any) => storeState.session.country);
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
-
-    const navigation: any = useNavigation();
     const address = useSelector((storeState: any) => storeState.address_selected);
     const addressUser = useSelector((storeState: any) => storeState.address);
-    const { isCheckout } = route.params;
 
+    const navigation: any = useNavigation();
     const isFocused = useIsFocused();
+    const [isOpen, setIsOpen] = useState(false);
+    
+    const { isCheckout } = route.params;
     const addressId = route.params.param.id;
     const isUpdate = route.params.param.is_update;
     const ischeckout = route.params.param.is_checkout;
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [defaultAddress ,setDefaultAddress] = useState(false)
+    const openAlert = async () => {
+        
+        if (address.data.is_default === "1") {
+            alert()
+        } else {
+            setIsOpen(!isOpen)
+        }
+        
+    };
+
+    const alert = () => {
+        Alert.alert('', 'You cannot delete default address.', [
+            {
+                text: 'OK',
+                style: 'cancel'
+            },
+        ]);
+    }
 
     const onClose = async () => {
+
+        setIsOpen(false);
+    };
+
+    const onDelete = async () => {
         
         dispatch(deleteAddress(addressId));
         await dispatch(getAddressList());
         setIsOpen(false);
         navigation.goBack();
     };
+
     const cancelRef = useRef(null);
 
     useEffect(() => {
-
-        // console.log('addressId addressId', addressId);
-        // console.log('addresspage', address);
-        // console.log('states', states);
-        // console.log('countries', countries);
 
         if (isFocused) {
             if (addressId) {
@@ -152,11 +170,11 @@ export default function AddressDetailPage({ route }: { route: any }) {
                 onSubmit={
                     async (values) => {
                         if (isUpdate) {
-                            console.log('UPDATE', JSON.stringify({ ...values, id_address: addressId }))
+                            // console.log('UPDATE', JSON.stringify({ ...values, id_address: addressId }))
                             dispatch(updateAddress({ id_address: addressId , ...values }));
                             await dispatch(getAddressList());
                         } else {
-                            console.log('ADD', JSON.stringify(values))
+                            // console.log('ADD', JSON.stringify(values))
                             dispatch(addAddress(values));
                             await dispatch(getAddressList());
                         }
@@ -201,10 +219,10 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                 </AlertDialog.Body>
                                 <AlertDialog.Footer>
                                     <Button.Group space={2}>
-                                        <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+                                        <Button variant="outlined" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
                                             Cancel
                                         </Button>
-                                        <Button colorScheme="danger" onPress={onClose}>
+                                        <Button colorScheme="danger" onPress={onDelete}>
                                             Delete
                                         </Button>
                                     </Button.Group>
@@ -324,7 +342,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                     errors={errors}
                                 />
 
-                                {isUpdate &&
+                                {(isUpdate && (address.data.is_default === "0")) &&
                                     <HStack>
                                         <Spacer></Spacer>
                                         <Button
@@ -334,7 +352,7 @@ export default function AddressDetailPage({ route }: { route: any }) {
                                             variant='link'
                                             style={styles.button_delete}
                                             colorScheme="danger"
-                                            onPress={() => setIsOpen(!isOpen)}
+                                            onPress={openAlert}
                                             _text={{ fontSize: 14, fontWeight: 600 }}>DELETE ADDRESS
                                         </Button>
                                     </HStack>
