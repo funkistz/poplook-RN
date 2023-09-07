@@ -1,3 +1,4 @@
+import APIService from "./ApiService";
 import api from "./AxiosService";
 
 const CartService = {
@@ -110,6 +111,20 @@ const CartService = {
 
         return await api.get(url,  { params : params } )
         
+    },
+
+    async changeAddress(cartId: String | Number, addressId: String) {
+
+        const params = {
+            id_cart: String(cartId),
+            id_address_delivery: String(addressId),
+            id_address_billing: String(addressId)
+        };
+
+        const url = 'Carts/updateOrderSummary';
+
+        return APIService.getMethod(url, params);
+
     },
 
     async addVoucher(cartId: String | Number, params: any) {
