@@ -13,7 +13,6 @@ import { isAtomeAppInstalled } from 'react-native-atome-paylater';
 import PaymentService from '../Services/PaymentService';
 import GeneralService from '../Services/GeneralService';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import VoucherService from '../Services/VoucherService';
 import CmsService from '../Services/CmsService';
 import CmsModal from '../components/Modals/Cms';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -83,7 +82,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 setMessage('1')
                 setLeaveMessage(text_message)
             }
-            console.log('');
+            
             if (gift_option) {
                 // setGift('1')
                 if (gift_message) {
@@ -181,7 +180,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     }
 
     const toggleAddressModal = () => {
-        console.log('toggleAddressModal');
 
         navigation.navigate('AddressListExPage', { screen: 'AddressListExPage', isCheckout: true });
     };
