@@ -101,16 +101,6 @@ export const getCartStep1: any = createAsyncThunk(
                         id_address = data.data.address_delivery ? data.data.address_delivery.id : null;
 
                     } else if (data.data.address_list) {
-
-                        const addressData = data.data.address_list
-
-                        for (let i = 0; i < addressData.length; i++) {
-                            if (addressData[i].is_default == "1") {
-                                id_address = addressData[i].id_address
-                            }
-                        }
-
-                    } else if (data.data.address_list) {
                         const dataAddress = data.data.address_list.length > 0 ? data.data.address_list[0].id_address : null;
                         id_address = dataAddress
                     }
@@ -308,28 +298,12 @@ export const checkoutSlice = createSlice({
         builder.addCase(getCartStep1.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
-
-            let id_address = null;
-
-            if (payload.data.address_list) {
-
-                const addressData = payload.data.address_list
-
-                for (let i = 0; i < addressData.length; i++) {
-                    if (addressData[i].is_default == "1") {
-                        id_address = addressData[i].id_address
-                    }
-                }
-
-            } else if (payload.data.address_list) {
-                const dataAddress = payload.data.address_list.length > 0 ? payload.data.address_list[0].id_address : null;
-                id_address = dataAddress
-            }
+            const dataAddress = payload.data.address_list.length > 0 ? payload.data.address_list[0].id_address : null;
 
             if (payload.data) {
                 temp.id_cart = payload.data.id_cart;
                 temp.id_gift = Object.keys(payload.data.gift_wrap.product_val);
-                temp.address = payload.data.address_delivery ? payload.data.address_delivery : id_address;
+                temp.address = payload.data.address_delivery ? payload.data.address_delivery : dataAddress;
                 temp.product = payload.data.product_list;
                 temp.total_price = payload.data.totalPriceWt;
                 temp.total_product = payload.data.totalProductsWt;
