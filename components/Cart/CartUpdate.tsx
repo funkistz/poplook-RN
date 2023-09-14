@@ -1,21 +1,18 @@
-import React, { useEffect } from 'react';
-import { Box, HStack, IconButton, StatusBar, Text, Center, Flex, VStack, Image, AspectRatio, Button, Backdrop } from 'native-base';
-import { StyleSheet, Dimensions, TouchableOpacity, Alert, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Box, HStack, Text, Center, Flex, VStack, Image, AspectRatio, Button, Backdrop, ScrollView } from 'native-base';
+import { StyleSheet, Dimensions, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { delToCart, getCart } from '../../Redux/Slices/Cart';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
-import Icon from 'react-native-vector-icons/Feather';
-import GeneralService from '../../Services/GeneralService';
-import { addToWishlist, delWishlist } from '../../Redux/Slices/Wishlist';
+import SizeList from '../Products/SizeList';
 
 const win = Dimensions.get('window');
 
-export default function CartUpdate({ product, openUpdateCart }: any) {
+export default function CartUpdate({ product }: any) {
 
     const { navigate } = useNavigation<any>();
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-
+    
     const cart = useSelector((storeState: any) => storeState.cart);
     const session = useSelector((storeState: any) => storeState.session);
 
@@ -28,80 +25,63 @@ export default function CartUpdate({ product, openUpdateCart }: any) {
         navigate('ProductDetailPage', params);
     }
 
+    const price = () => {
+        const oldPrice = parseFloat(product.price_without_reduction)
+        const newPrice = parseFloat(product.price)
+        if (oldPrice > newPrice) {
+            return <>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text color={'gray.400'} strikeThrough fontSize={14}>{session.country.currency_sign} {product.price_without_reduction}</Text><Text style={{ color: 'red' }} bold fontSize={13}> {session.country.currency_sign} {product.price}</Text>
+                </View>
+            </>
+        } else {
+            return <Text color='black' bold fontSize={14}>{session.country.currency_sign} {product.price}</Text>
+        }
+    }
+
     useEffect(() => {
 
-        console.log('PRODUCT SHEET', product)
-
     }, [])
-
-    const deleteCart = async (product: any) => {
-
-        const params = {
-            id_cart: cart.id_cart,
-            id_product: product.id_product,
-            id_product_attribute: product.id_product_attribute,
-        }
-
-
-        await dispatch(delToCart(params))
-        await dispatch(getCart())
-    }
-
-
-    const alertDelete = (product: any) => {
-
-        Alert.alert('Remove product from  cart?', '', [
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
-            {
-                text: 'OK',
-                onPress: () => deleteCart(product)
-            },
-        ]);
-    }
-
-    const addtoWishlist = async (id_product: any, id_product_attribute: any, quantity: any) => {
-
-        if (session.user == null) {
-            return GeneralService.toast({ description: 'To use Wishlist function, please log in to your account.' });
-        }
-
-        const params = {
-            id_product: id_product,
-            id_product_attribute: id_product_attribute,
-            quantity: quantity
-        }
-
-        await dispatch(addToWishlist(params));
-        await dispatch(getCart())
-    }
-
-    const updateCart = () => {
-
-        openUpdateCart()
-    }
 
     return (
         <>
             <TouchableOpacity onPress={goToProductPage}>
                 <Flex style={styles.container}>
                     <Box w={100}>
-                        <AspectRatio ratio={2 / 3}>
-                            <Image resizeMode="cover" source={{
-                                uri: product.image_url
-                            }} alt="image" />
-                        </AspectRatio>
+                        {product && product.image_url &&
+                            <AspectRatio ratio={2 / 3}>
+                                <Image resizeMode="cover" source={{
+                                    uri: product.image_url[0]
+                                }} alt="image" />
+                            </AspectRatio>
+                        }
+                        <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
+                        <View>
+                            <SizeList attribute={product.attribute_list} setSizeSelected={''} sizeSelected={''}></SizeList>
+                        </View>
                     </Box>
                     <Box flexGrow={1} width={1} pl={4}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text color='black' bold fontSize={13} w={'88%'}>{product.name}</Text>
+                        <View style={{ flexDirection: 'column' }}>
+                            <Text color='black' bold fontSize={14} w={'88%'}>{product.name}</Text>
+
+                            {price()}
+
+                            <Text color={'black'} fontSize={13} mt={3}>Colours</Text>
+                            <ScrollView horizontal={true}>
+                                <HStack mb={2} mt={2}>
+                                    {product.color_related && product.color_related.map((res: any) => {
+                                        return <TouchableOpacity>
+                                            <Image style={styles.tinyLogo} source={{ uri: res.image_color_url }} />
+                                        </TouchableOpacity>
+                                    })}
+                                </HStack>
+                            </ScrollView>
+
+                            
+    
+                        
+                        
                         </View>
-
-                        {product.price_wt > 0 && <Text color='black' bold fontSize={13}>{session.country.currency_sign} {product.price_wt}</Text>}
-
-                    
                     </Box>
                 </Flex>
             </TouchableOpacity>
@@ -116,5 +96,13 @@ const styles = StyleSheet.create({
     },
     delete: {
         backgroundColor: 'white',
+    },
+    tinyLogo: {
+        width: 38,
+        height: 38,
+        borderRadius: 40,
+        marginHorizontal: 2,
+        borderColor: '#ccc',
+        borderWidth: 1,
     }
 });
