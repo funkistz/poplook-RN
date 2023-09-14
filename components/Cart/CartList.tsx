@@ -76,9 +76,9 @@ export default function CartList({ product, openUpdateCart }: any) {
         await dispatch(getCart())
     }
 
-    const updateCart = () => {
+    const updateCart = (id : any) => {
 
-        openUpdateCart()
+        openUpdateCart(id)
     }
 
     return (
@@ -128,7 +128,7 @@ export default function CartList({ product, openUpdateCart }: any) {
 
                         <HStack>
                             <Box w={'25%'} mr={2}>
-                                <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => updateCart()}>Update</Button>
+                                <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => updateCart(product.id_product)}>Update</Button>
                             </Box>
                             <Box w={'50%'} >
                                 <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => addtoWishlist(product.id_product, product.id_product_attribute, product.quantity)}>Move to Wishlist</Button>
