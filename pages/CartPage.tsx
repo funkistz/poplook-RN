@@ -8,6 +8,7 @@ import CartList from '../components/Cart/CartList';
 import { useIsFocused } from '@react-navigation/native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CartUpdate from '../components/Cart/CartUpdate';
+import ProductService from '../Services/ProductService';
 
 export default function CartPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -17,6 +18,8 @@ export default function CartPage({ route, navigation }: { route: any, navigation
     const cart = useSelector((storeState: any) => storeState.cart);
     const user = useSelector((storeState: any) => storeState.session.user);
     const session = useSelector((storeState: any) => storeState.session);
+
+    const [item, setItem] = useState<any>({});
 
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ['50%'], []);
@@ -40,11 +43,22 @@ export default function CartPage({ route, navigation }: { route: any, navigation
         user ? navigation.navigate('CheckoutExPage', { screen: 'CheckoutExPage' }) : navigation.navigate('LoginPage', { screen: 'LoginPage' });
     }
 
-    const updateCart = async () => {
+    const updateCart = async (id: any) => {
 
         bottomSheetRef.current?.snapToIndex(0);
         setBackdropVisible(true);
-        
+
+        const params = {
+            product_id: id,
+            id_shop: session.country.id_shop,
+            lang: 1,
+            full: 1,
+        }
+
+        const response = await ProductService.getProduct(params);
+        const json = await response.json();
+        setItem(json.data)
+     
     }
 
 
@@ -125,10 +139,7 @@ export default function CartPage({ route, navigation }: { route: any, navigation
                 )}
                 >
                 <View style={styles.contentContainer}>
-                    {cart.data.product_list.map((product: any, index: any) => {
-                        return <CartUpdate key={index} product={product} openUpdateCart={updateCart}></CartUpdate>
-                    })
-                    }
+                    <CartUpdate product={item} ></CartUpdate>
                 </View>
             </BottomSheet>
 
