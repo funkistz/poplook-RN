@@ -97,7 +97,7 @@ export default function OrderHistoryListPage() {
                                     <Text style={styles.normal}>{item.carrier}</Text>
                                 </VStack>
                             </HStack>
-                            {item.valid && item.valid == '0' ? (
+                            {(item.valid && item.valid == '0') && (item.order_state != 'Staff Purchase (KIV)') ? (
                                 <HStack borderBottomWidth="1" _dark={{ borderColor: "#ccc" }} borderColor="muted.100" justifyContent="center">
                                     <Button
                                         mb={5}
