@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, HStack, Text, Center, Flex, VStack, Image, AspectRatio, Button, Backdrop, ScrollView } from 'native-base';
-import { StyleSheet, Dimensions, TouchableOpacity, View } from 'react-native';
+import { Box, HStack, Text, Flex, VStack, Image, AspectRatio, Button, Backdrop, ScrollView } from 'native-base';
+import { StyleSheet, Dimensions, TouchableOpacity, View, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
@@ -39,6 +39,11 @@ export default function CartUpdate({ product }: any) {
         }
     }
 
+    const getTextColor = (id_product_attribute: any) => {
+
+        return ('' != id_product_attribute) ? '#000' : '#fff';
+    }
+
     useEffect(() => {
 
     }, [])
@@ -55,15 +60,35 @@ export default function CartUpdate({ product }: any) {
                                 }} alt="image" />
                             </AspectRatio>
                         }
-                        <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
+
                         <View>
-                            <SizeList attribute={product.attribute_list} setSizeSelected={''} sizeSelected={''}></SizeList>
+                        {/* <ScrollView> */}
+                            <Text color={'black'} bold mt={5} mb={2}>Select Size: </Text>
+                            
+                            {/* <SizeList attribute={product.attribute_list} setSizeSelected={''} sizeSelected={''}></SizeList> */}
+                            
+                                <Flex direction="row">
+                                {product.attribute_list && product.attribute_list.length > 0 && product.attribute_list.map((res: any, index: any) => {
+                                    return <Button key={index} style={styles.chip} variant="outline" size='sm'
+                                        backgroundColor={('' == res.id_product_attribute) ? '#000' : '#fff'}
+                                        borderColor={('' == res.id_product_attribute) ? '#000' : '#ccc'}
+                                        width={Platform.OS == "ios" ? res.attribute_name.includes("Year") ? (win.width / 5) : (win.width/ 6 - 2.5) :  res.attribute_name.includes("Year") ? (win.width / 5) + 2: (win.width/ 6 - 2.5)}
+                                        _text={{ color: getTextColor(res.id_product_attribute), fontSize: 13 }}
+                                        isDisabled={res.quantity <= 0 ? true : false}
+                                        >
+                                        {res.attribute_name}
+                                    </Button>
+                                })}
+                                </Flex>
+                                {/* </ScrollView> */}
                         </View>
                     </Box>
+
+                    
                     <Box flexGrow={1} width={1} pl={4}>
                         <View style={{ flexDirection: 'column' }}>
                             <Text color='black' bold fontSize={14} w={'88%'}>{product.name}</Text>
-
+                            
                             {price()}
 
                             <Text color={'black'} fontSize={13} mt={3}>Colours</Text>
@@ -76,15 +101,12 @@ export default function CartUpdate({ product }: any) {
                                     })}
                                 </HStack>
                             </ScrollView>
-
-                            
-    
-                        
-                        
-                        </View>
+                        </View> 
                     </Box>
+                    
                 </Flex>
             </TouchableOpacity>
+            
         </>
     );
 }
@@ -104,5 +126,15 @@ const styles = StyleSheet.create({
         marginHorizontal: 2,
         borderColor: '#ccc',
         borderWidth: 1,
-    }
+    },
+    chip: {
+        marginRight: 8,
+        color: '#000',
+        // width: (win.width / 5) + 2,
+        // borderColor: '#ccc',
+        borderRadius: 8,
+        // height: 30,
+        // padding: 0,
+        marginBottom: 8,
+    },
 });

@@ -94,15 +94,16 @@ export default function CartList({ product, openUpdateCart }: any) {
                     </Box>
                     <Box flexGrow={1} width={1} pl={4}>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text color='black' bold fontSize={13} w={'88%'}>{product.name}</Text>
-                            <IconButton
-                                justifyContent={'flex-end'}
-                                alignItems={'flex-start'}
-                                size={'xs'}
-                                onPress={() => alertDelete(product)}
-                                w={'12%'}
-                                icon={<Icon name="x" size={18} color="grey" />}
-                            />
+                            <Text color='black' bold fontSize={13} w={'86%'}>{product.name}</Text>
+                            <View style={styles.closeIcon}>
+                                <IconButton
+                                    justifyContent={'center'}
+                                    alignItems={'center'}
+                                    size={'xs'}
+                                    onPress={() => alertDelete(product)}
+                                    icon={<Icon name="x" size={16} color="black" />}
+                                />
+                            </View>
                         </View>
 
                         {product.price_wt > 0 && <Text color='black' bold fontSize={13}>{session.country.currency_sign} {product.price_wt}</Text>}
@@ -127,10 +128,10 @@ export default function CartList({ product, openUpdateCart }: any) {
                         </HStack>
 
                         <HStack>
-                            <Box w={'25%'} mr={2}>
+                            {/* <Box w={'25%'} mr={2}>
                                 <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => updateCart(product.id_product)}>Update</Button>
-                            </Box>
-                            <Box w={'50%'} >
+                            </Box> */}
+                            <Box w={'45%'} >
                                 <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => addtoWishlist(product.id_product, product.id_product_attribute, product.quantity)}>Move to Wishlist</Button>
                             </Box>
                         </HStack>
@@ -150,5 +151,18 @@ const styles = StyleSheet.create({
     },
     delete: {
         backgroundColor: 'white',
+    },
+    text: {
+        fontSize: 16,
+        marginBottom: 10,
+        color: 'black'
+    },
+    closeIcon: {
+        width: 28,
+        height: 28,
+        backgroundColor: '#eee',
+        borderRadius: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
