@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { HStack, Text, VStack, Spacer, View } from 'native-base';
-import { StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { HStack, Text, VStack, Checkbox, Badge, Radio } from 'native-base';
+import { StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AddressEditModal from './Modals/AddressEdit';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
-import { persistor } from '../Redux/app';
-import { clearAddress } from '../Redux/Slices/AdressSelected';
+import { getAddressList, setDefaultAddress } from '../Redux/Slices/Address';
 
 const win = Dimensions.get('window');
 
@@ -15,9 +14,22 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const navigation: any = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
+    };
+
+    const handleCheckBoxPress = async (id: any) => {
+
+        setIsChecked(!isChecked);
+
+        const params = {
+            id_address: id,
+            value: 1
+        }
+        await dispatch(setDefaultAddress(params))
+        dispatch(getAddressList())
     };
 
     const editAddressPage = (addressId: any) => {
@@ -44,46 +56,32 @@ export default function AddressList({ address, isCheckout }: { address: any, isC
 
     return (
         <>
-            <View style={{ backgroundColor: 'white' }}>
-                <VStack>
-                    <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
-                    <Text style={styles.normal}>{address.address1} {address.address2}</Text>
-                    <Text style={styles.normal}>{address.postcode} {address.city}</Text>
-                    {address && address.state &&
-                        <Text style={styles.normal}>{address.state}</Text>
-                    }
-                    <HStack justifyContent={'space-between'} width={'92%'}>
-                        <Text style={styles.normal} marginBottom={2}>{address.country}</Text>
-                        <Spacer />
-                        <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
-                            <Text color={'#1cad48'} fontSize={14} paddingRight={3} fontWeight={'600'}>EDIT</Text>
-                        </TouchableOpacity>
-                    </HStack>
-                </VStack>
-                <AddressEditModal
-                    visible={isModalVisible}
-                    onToggle={toggleModal}
-                    isCheckout={true}
-                    id={address.id_address}
-                />
-            </View>
+            <VStack marginY={2}>
+                <Text style={styles.bold}>{address.firstname} {address.lastname} | {address.phone}</Text>
+                <Text style={styles.normal}>{address.address1} {address.address2}</Text>
+                <Text style={styles.normal}>{address.postcode} {address.city}</Text>
+                {address && address.state &&
+                    <Text style={styles.normal}>{address.state}</Text>
+                }
+                <Text style={styles.normal}>{address.country}</Text>
+            </VStack>
 
-
-            {/* <HStack justifyContent={'space-between'} width={'85%'}>
+            <HStack justifyContent={'space-between'} width={'88%'}>
                 <Checkbox
+                    size="md"
                     value='1'
-                    key={item.id_address}
-                    isChecked={item.id_address === selectedOption}
-                    onChange={() => handleSelectOption(item.id_address)}
+                    isChecked={address.is_default === "1"}
+                    onChange={() => handleCheckBoxPress(address.id_address)}
                     style={styles.checkbox}
                     accessibilityLabel="Default Address"
+                    isDisabled={address.is_default === "1"}
                 ><Text style={styles.default}>Default Address</Text>
                 </Checkbox>
-                <Text style={styles.normal}>{address.country}</Text>
+
                 <TouchableOpacity onPress={() => isCheckout ? editAddressExPage(address.id_address) : editAddressPage(address.id_address)}>
                     <Text color={'#1cad48'} fontSize={14} fontWeight={'600'}>EDIT</Text>
                 </TouchableOpacity>
-            </HStack> */}
+            </HStack>
                 
             <AddressEditModal
                 visible={isModalVisible}
@@ -108,5 +106,13 @@ const styles = StyleSheet.create({
     border: {
         borderBottomWidth: 1,
         borderColor: '#ccc',
+    },
+    checkbox: {
+        borderColor: 'black',
+        backgroundColor: 'white'
+    },
+    default: {
+        fontSize: 14,
+        color: 'grey'
     }
 });

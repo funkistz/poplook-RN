@@ -123,7 +123,7 @@ export default function SettingPage({ route }: { route: any }) {
 
     const goToLoginPage = () => {
 
-        navigation.navigate('LoginPage', { screen: 'LoginPage' });
+        navigation.push('LoginPage', { screen: 'LoginPage' });
     }
 
     return (

@@ -97,7 +97,9 @@ export const getCartStep1: any = createAsyncThunk(
                     let id_address = null;
 
                     if (data.data.address_delivery) {
+
                         id_address = data.data.address_delivery ? data.data.address_delivery.id : null;
+
                     } else if (data.data.address_list) {
                         const dataAddress = data.data.address_list.length > 0 ? data.data.address_list[0].id_address : null;
                         id_address = dataAddress
@@ -296,7 +298,8 @@ export const checkoutSlice = createSlice({
         builder.addCase(getCartStep1.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
-            const dataAddress = payload.data.address_list.length > 0 ? payload.data.address_list[0] : null;
+            const dataAddress = payload.data.address_list.length > 0 ? payload.data.address_list[0].id_address : null;
+
             if (payload.data) {
                 temp.id_cart = payload.data.id_cart;
                 temp.id_gift = Object.keys(payload.data.gift_wrap.product_val);
