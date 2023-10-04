@@ -323,6 +323,16 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                         atome()
                     } else if (paymentType == '3') {
                         ipay(data)
+                    } else if (paymentType == '17') {
+                        
+                        const param = {
+                            id: orderId
+                        };
+        
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'OrderSuccessPage', params: param }]
+                        });
                     }
                 } else if (shopId == '2') {
                     if (paymentType == '4') {
