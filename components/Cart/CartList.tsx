@@ -8,6 +8,7 @@ import { ThunkDispatch } from '@reduxjs/toolkit';
 import Icon from 'react-native-vector-icons/Feather';
 import GeneralService from '../../Services/GeneralService';
 import { addToWishlist, delWishlist } from '../../Redux/Slices/Wishlist';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const win = Dimensions.get('window');
 
@@ -94,8 +95,8 @@ export default function CartList({ product, openUpdateCart }: any) {
                     </Box>
                     <Box flexGrow={1} width={1} pl={4}>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text color='black' bold fontSize={13} w={'86%'}>{product.name}</Text>
-                            <View style={styles.closeIcon}>
+                            <Text color='black' bold fontSize={14} w={'100%'}>{product.name}</Text>
+                            {/* <View style={styles.closeIcon}>
                                 <IconButton
                                     justifyContent={'center'}
                                     alignItems={'center'}
@@ -103,7 +104,7 @@ export default function CartList({ product, openUpdateCart }: any) {
                                     onPress={() => alertDelete(product)}
                                     icon={<Icon name="x" size={16} color="black" />}
                                 />
-                            </View>
+                            </View> */}
                         </View>
 
                         {product.price_wt > 0 && <Text color='black' bold fontSize={13}>{session.country.currency_sign} {product.price_wt}</Text>}
@@ -117,23 +118,23 @@ export default function CartList({ product, openUpdateCart }: any) {
                                 <Text color='black' fontSize={12}>Ref No: {product.reference}</Text>
                                 <Text color='black' fontSize={12}>Quantity: {product.quantity}</Text>
                             </Box>
-                            {/* <Box w={'30%'} style={{flex: 1, justifyContent: 'flex-end',alignItems: 'center',}}>
-                                <IconButton 
-                                    size={'sm'}
-                                    onPress={() => alertDelete(product)} 
-                                    style={styles.delete}
-                                    icon={<IonIcon name="trash-outline" size={22} color="black" />}
-                                />
-                            </Box> */}
                         </HStack>
 
                         <HStack>
                             {/* <Box w={'25%'} mr={2}>
                                 <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => updateCart(product.id_product)}>Update</Button>
                             </Box> */}
-                            <Box w={'45%'} >
-                                <Button variant="outline" bg="transparent" _text={{ color: "black" }} size="xs" borderColor={"#ccc"} onPress={() => addtoWishlist(product.id_product, product.id_product_attribute, product.quantity)}>Move to Wishlist</Button>
+                            <Box w={'80%'}>
+                                <Button style={styles.btnAddtoCart} variant="outline" bg="transparent" _text={{ color: "black", fontSize: 11 }} size="xs" borderColor={"#ccc"} onPress={() => addtoWishlist(product.id_product, product.id_product_attribute, product.quantity)}>Move to Wishlist</Button>
                             </Box>
+                            <Box w={'20%'} px={1}>
+                            <IconButton
+                                size={'sm'}
+                                onPress={() => alertDelete(product)}
+                                style={styles.delete}
+                                icon={<IonIcon name="trash-outline" size={21} color="black" />}
+                            />
+                        </Box>
                         </HStack>
                     </Box>
                 </Flex>
@@ -164,5 +165,9 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    btnAddtoCart: {
+        width: '60%',
+        flexDirection: 'row'
+    },
 });
