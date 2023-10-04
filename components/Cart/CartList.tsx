@@ -95,7 +95,7 @@ export default function CartList({ product, openUpdateCart }: any) {
                     </Box>
                     <Box flexGrow={1} width={1} pl={4}>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text color='black' bold fontSize={14} w={'100%'}>{product.name}</Text>
+                            <Text color='black' bold fontSize={14} w={'96%'}>{product.name}</Text>
                             {/* <View style={styles.closeIcon}>
                                 <IconButton
                                     justifyContent={'center'}
