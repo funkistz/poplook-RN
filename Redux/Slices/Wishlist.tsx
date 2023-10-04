@@ -41,8 +41,10 @@ export const addToCart: any = createAsyncThunk(
     "wishlist/addCart",
     async ({ id_product, id_product_attribute, quantity }: any, { getState, rejectWithValue, dispatch }) => {
         try {
+
             const state: any = getState();
             const user = state.session.user;
+            const cart = state.cart;
             const id_wishlist = state.wishlist.id_wishlist;
 
             const params = {
@@ -51,7 +53,7 @@ export const addToCart: any = createAsyncThunk(
                 quantity: quantity.toString(),
                 id_wishlist: id_wishlist,
                 id_customer: user.id_customer.toString(),
-                id_cart: user.id_cart
+                id_cart: cart.id_cart
             }
 
             const response = await WishlistService.addToCart(id_wishlist, params);
