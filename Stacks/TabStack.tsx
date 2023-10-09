@@ -55,6 +55,10 @@ const TabNavigator = () => {
           iconName = focused
             ? 'home'
             : 'home-outline';
+        } else if (route.name === 'Banner') {
+          iconName = focused
+            ? 'bookmark'
+            : 'bookmark-outline';
         } else if (route.name === 'Categories') {
           iconName = focused
             ? 'grid'
@@ -77,6 +81,7 @@ const TabNavigator = () => {
       lazy: true
     })}>
       <Tab.Screen name="Home" children={props => <AppStack initialRoute='HomePage' {...props} />} />
+      <Tab.Screen name="Banner" children={props => <AppStack initialRoute='NewBannerPage' {...props} />} />
       <Tab.Screen name="Categories" children={props => <AppStack initialRoute='CategoriesPage' {...props} />} />
 
       {totalItem > 0 &&
