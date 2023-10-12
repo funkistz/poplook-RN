@@ -302,6 +302,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         outStock(json.message)
                     }
                 } else {
+                    setIsLoading(false)
                     GeneralService.toast({ description: 'Please select payment type' });
                 }
             } else if (paymentType == '0') {

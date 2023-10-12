@@ -328,6 +328,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
                         ipay(data)
                     }
                 } else {
+                    setIsLoading(false)
                     GeneralService.toast({ description: 'Please select payment type' });
                 }
             } else {
