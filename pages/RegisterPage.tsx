@@ -16,9 +16,6 @@ import AuthService from '../Services/AuthService';
 import moment from 'moment';
 import BottomSheet from '@gorhom/bottom-sheet';
 
-
-
-
 export default function RegisterPage({ visible, onToggle }: any) {
 
     useEffect(() => {
@@ -123,13 +120,14 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     const data = {
                                         firstname: values.firstname,
                                         lastname: values.lastname,
-                                        birthday: format(date, 'yyyy-MM-dd'),
+                                        birthday: date != null ? format(date, 'yyyy-MM-dd') : '0000-00-00',
                                         email: values.email,
                                         password: values.password,
                                         newsletter: newsletter ? 1 : 0,
                                         optin: optin ? 1 : 0,
                                         id_lang: 1
                                     }
+
                                     const response = await AuthService.register('0', shopId , data);
                                     const json = await response.json();
 
@@ -200,7 +198,7 @@ export default function RegisterPage({ visible, onToggle }: any) {
                                     />
 
                                     <View style={{marginVertical: 5}}>
-                                        <Text color='#666'>Date of Birth*</Text>
+                                        <Text color='#666'>Date of Birth</Text>
 
                                         <Button onPress={showMode} 
                                             style={{borderWidth: 1, borderColor: 'black', width: '100%', borderRadius: 5,marginTop: 5, backgroundColor: 'white'}} 
