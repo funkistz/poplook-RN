@@ -139,10 +139,10 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         console.log('atome', json.data)
 
         if (json.code == '200' && json.data) {
+
             setIsLoading(false)
             setUrl(json.data.redirect_url);
             setAppUrl(json.data.app_payment_url);
-
             setReferenceId(json.data.reference_id);
             await AsyncStorage.setItem('referenceId', json.data.reference_id);
 
@@ -194,6 +194,9 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         console.log('repayIpay', json);
 
         if (json.code == '200') {
+
+            setIsLoading(false)
+
             const params = {
                 form: json.data.results,
                 order_id: data.id_order,
@@ -221,6 +224,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         console.log('repayEghl', json.data);
 
+        setIsLoading(false)
+
         const param = {
             form: json.data.results,
             order_id: data.id_order,
@@ -243,6 +248,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         console.log('repayEnets', json.data)
 
+        setIsLoading(false)
+
         const param = {
             form: json.data.results,
             order_id: data.id_order,
@@ -263,6 +270,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const json = await response.json();
 
         console.log('repayIpayUSD', json.data);
+
+        setIsLoading(false)
 
         const param = {
             form: json.data.results,
@@ -286,6 +295,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         console.log('repayPaypal', json.data);
 
+        setIsLoading(false)
+
         const param = {
             form: json.data.results,
             order_id: data.id_order,
@@ -305,6 +316,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
 
         if (paymentType && termAgree) {
+
+            setIsLoading(true)
 
             setPaymentChoose(paymentType);
             await AsyncStorage.setItem('paymentChoose', paymentType.toString());
@@ -540,8 +553,8 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
 
                     <Box backgroundColor='#ffffff'>
-                        {isLoading ? <ActivityIndicator /> : null}
-                        <Button style={styles.button} onPress={() => redirectPayment()}>NEXT</Button>
+                        {/* {isLoading ? <ActivityIndicator /> : null} */}
+                        <Button style={styles.button} onPress={() => redirectPayment()} isLoading={isLoading} isLoadingText="NEXT">NEXT</Button>
                     </Box>
                 </>
             }

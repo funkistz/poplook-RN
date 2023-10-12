@@ -278,12 +278,16 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         if (paymentType && termAgree) {
 
+            setIsLoading(true)
+
             if (paymentType == '2' || paymentType == '8') {
                 if (paymentChild) {
                     const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
                     const json = await response.data;
 
                     if (json.code == 200 && json.data) {
+
+                        setIsLoading(false)
 
                         dispatch(clearCart())
                         dispatch(clearLeaveMessage())
@@ -306,6 +310,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                 if (json.code == 200 && json.data) {
 
+                    setIsLoading(false)
+
                     dispatch(clearCart())
                     dispatch(clearLeaveMessage())
 
@@ -325,6 +331,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
                 if (json.code == 200 && json.data) {
 
+                    setIsLoading(false)
+
                     dispatch(clearCart())
                     dispatch(clearLeaveMessage())
 
@@ -343,6 +351,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 const json = await response.data;
 
                 if (json.code == 200 && json.data) {
+
+                    setIsLoading(false)
 
                     dispatch(clearCart())
                     dispatch(clearLeaveMessage())
@@ -988,7 +998,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                     </View>
                 </ScrollView>
 
-                {isLoading ? <ActivityIndicator /> : null}
+                {/* {isLoading ? <ActivityIndicator /> : null} */}
 
                 <HStack style={{ marginHorizontal: 20 }}>
                     <Text style={styles.total}>Total :</Text>
@@ -997,7 +1007,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 </HStack>
 
                 <HStack style={{ height: 50, paddingVertical: 5, marginHorizontal: 20, marginVertical: 10 }}>
-                    <Button w={'100%'} style={styles.footer} onPress={() => cartStep4()}>PLACE ORDER</Button>
+                    <Button w={'100%'} style={styles.footer} onPress={() => cartStep4()} isLoading={isLoading} isLoadingText="PLACE ORDER">PLACE ORDER</Button>
                 </HStack>
             </Flex >
         </>
