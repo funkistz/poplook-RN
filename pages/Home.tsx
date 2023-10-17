@@ -1,7 +1,7 @@
 import { StyleSheet, View, Dimensions, Platform, Alert, Linking } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
-import { Flex, Center, Image, Link, Text } from 'native-base';
+import { Flex, Center, Image, Link } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { ScrollView } from 'native-base';
 import { WEB_URL, API_KEY, IOS_VERSION } from "@env"
@@ -22,20 +22,13 @@ const styles = StyleSheet.create({
         width: '200',
         height: win.height,
     },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     videoPlayer: {
         aspectRatio: 3/3
     },
-    videoStyle: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        width: win.width,
     },
 });
 
@@ -170,13 +163,11 @@ export default function HomePage({ route, navigation }: { route: any, navigation
         <Center>
             <ScrollView w='100%'>
 
-                {videos && 
+                {videos && videos.map((item: any) => {
 
-                    <Center>
-
-                        {videos.map((item: any) => {
-
-                            <TouchableOpacity onPress={() => goToCategory(item)}>
+                    return <>
+                        <TouchableOpacity onPress={() => goToCategory(item)}>
+                            <View style={styles.container}>
                                 <Video
                                     source={{ uri: item.href }}
                                     style={styles.videoPlayer}
@@ -185,11 +176,11 @@ export default function HomePage({ route, navigation }: { route: any, navigation
                                     repeat={true} 
                                     resizeMode="cover" 
                                 />
-                            </TouchableOpacity>
-                        })} 
+                            </View>
+                        </TouchableOpacity>
+                    </>
+                })} 
 
-                    </Center>
-                }
                 
                 {banners &&
                     <Flex direction="column">
