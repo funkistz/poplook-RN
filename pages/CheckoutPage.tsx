@@ -781,7 +781,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                         <Spacer />
 
                                         <HStack>
-                                            <Text color='black' mt={2} mr={3} bold>RM {res.reduction_amount}</Text>
+                                            <Text color='black' mt={2} mr={3} bold>{currency} {res.reduction_amount}</Text>
                                             <TouchableOpacity style={{ paddingHorizontal: 8, paddingVertical: 5, }} onPress={() => alertDeleteVoucher(res.id_cart_rule)}>
                                                 <IonIcon name="trash-outline" size={26} color="black" />
                                             </TouchableOpacity>
@@ -795,7 +795,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                         <Spacer />
 
                                         <HStack>
-                                            <Text color='black' mt={2} mr={3} bold>RM {res.value_real}</Text>
+                                            <Text color='black' mt={2} mr={3} bold>{currency} {res.value_real}</Text>
                                             <TouchableOpacity style={{ paddingHorizontal: 8, paddingVertical: 5, }} onPress={() => alertDeleteVoucher(res.id_cart_rule)}>
                                                 <IonIcon name="trash-outline" size={26} color="black" />
                                             </TouchableOpacity>
