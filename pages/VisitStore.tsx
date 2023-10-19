@@ -52,7 +52,7 @@ export default function VisitStorePage({ route } : { route: any }) {
 
     return (
         <>  
-            <ScrollView p={6}>
+            <ScrollView p={6} backgroundColor={'white'}>
                 <View style={{ flex: 1, paddingVertical: 5, marginBottom: 10 }}>
                 {stores.map((item: any, index: any) => {
                     return <>
