@@ -933,7 +933,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                                     </Select>
 
                                                     : ''}
-                                                <Text color="black">{paymentType}</Text>
                                             </Box>
                                         </HStack>
 
