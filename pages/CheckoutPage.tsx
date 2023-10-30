@@ -346,6 +346,27 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                         routes: [{ name: 'OrderSuccessPage', params: param }]
                     });
                 }
+
+            } else if (paymentType == '7') {
+                const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
+                const json = await response.data;
+
+                if (json.code == 200 && json.data) {
+
+                    setIsLoading(false)
+
+                    dispatch(clearCart())
+                    dispatch(clearLeaveMessage())
+
+                    const param = {
+                        id: json.data.id_order
+                    };
+    
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'OrderSuccessPage', params: param }]
+                    });
+                }
             
             } else {
                 const response = await CartService.cartStep4(cartId, paymentSelected(), leaveMessage);
@@ -468,6 +489,8 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                 return 'free_order';
             } else if (paymentType == '17') {
                 return 'staff_purchase';
+            } else if (paymentType == '7') {
+                return 'payment_to_store';
             } else if (paymentType == '8') {
                 if (paymentChild == '538') {
                     return 'tng'
@@ -910,7 +933,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                                     </Select>
 
                                                     : ''}
-
+                                                <Text color="black">{paymentType}</Text>
                                             </Box>
                                         </HStack>
 
