@@ -1,4 +1,5 @@
 import APIService from "./ApiService";
+import api from "./AxiosService";
 
 const BannerService = {
 
@@ -18,7 +19,15 @@ const BannerService = {
 
         return APIService.getMethod('banners/visit_our_store/visit_our_store_mobile');
 
-    }
+    },
+
+    async getMobileBanners() {
+
+        const url = 'home_banner/mobile' ;
+
+        return await api.get(url)
+
+    },
 }
 
 export default BannerService;
