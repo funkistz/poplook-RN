@@ -35,6 +35,7 @@ import FollowUsPage from '../pages/FollowUsPage';
 import DeliveryReturnsPage from '../pages/DeliveryReturnsPage';
 import { Image, Center, Box } from 'native-base';
 import NewBannerPage from '../pages/NewBannerPage';
+import BannerPage from '../pages/BannerPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +101,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='FollowUsPage' component={FollowUsPage} options={{ title: 'Follow Us' }} />
             <Stack.Screen name='DeliveryReturnsPage' component={DeliveryReturnsPage} options={{ title: 'Delivery & Returns' }} />
             <Stack.Screen name='NewBannerPage' component={NewBannerPage} options={{ title: 'New Banner' }} />
+            <Stack.Screen name='BannerPage' component={BannerPage} options={{ title: 'Banner' }} />
         </Stack.Navigator>
     )
 }

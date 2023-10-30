@@ -17,6 +17,7 @@ import { getColors, getSizes } from '../Redux/Slices/Filter';
 import Video from 'react-native-video';
 
 const win = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     image: {
         width: '200',
@@ -117,7 +118,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     const checkVersion = (res: any) => {
         if (res > IOS_VERSION) {
-            forceUpdate()
+            // forceUpdate()
             // navigation.reset({
             //     index: 0,
             //     routes: [{
