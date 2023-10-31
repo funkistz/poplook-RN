@@ -96,7 +96,7 @@ export default function HomePage({ route, navigation }: { route: any, navigation
 
     useFocusEffect(
         React.useCallback(() => {
-            // getCurrentIdCart()
+            getCurrentIdCart()
             getVersion().catch(console.error);
         }, [])
     );

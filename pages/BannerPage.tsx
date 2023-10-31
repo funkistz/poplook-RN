@@ -19,6 +19,7 @@ import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
 import Slider2 from '../components/Slider2';
 import AutoImage from '../components/AutoImage';
 import Carousel from 'react-native-snap-carousel';
+import MyImageCarousel from '../components/Carousel2';
 
 const win = Dimensions.get('window');
 
@@ -67,23 +68,12 @@ export default function BannerPage({ navigation }: { navigation: any }) {
 
     }
 
-    const renderItem = ({ item } : any) => (
-        <View style={{ width: 100 }}>
-            <Image source={{ uri: 'https://api.poplook.com/' + item.href }} alt="image" style={{ width: win.width, height: 100 }}/>
-        </View>
-    );
-
-    const _renderItem = ({item, index} : any) => {
+    const renderItem = ({item, index} : any) => {
         
         return (
             <View> 
                 <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
-                    {/* <Center w={layout.width / 3} bg="grey" borderRadius={10} shadow={1}> */}
-                    <Image source={{ uri: 'https://api.poplook.com/' + item.href }} alt="image" style={{ width: win.width, height: 200 }}/>
-                    {/* </Center> */}
-                    {/* <View style={{padding: 10}}>
-                        <Text color='black' alignSelf={'center'}>{item.name}</Text>
-                    </View> */}
+                    <Image source={{ uri: 'https://api.poplook.com/' + item.href }} alt="image" style={{ width: win.width, height: 250 }}/>
                 </TouchableOpacity>
             </View>
         );
@@ -96,52 +86,51 @@ export default function BannerPage({ navigation }: { navigation: any }) {
                 return <Flex style={{ flexDirection: data.flex.direction, flexWrap: data.flex.wrap, justifyContent: data.flex.justifyContent }} key={index}>
                     {data.children.map((item: any, index: any) => {
                         return <Center key={index}>
+
                         {item.block.type == 'block' && 
                             <View style={styles.block}>
                                 <Image source={{ uri: 'https://api.poplook.com/' + item.block.resource.href }} alt="image" key={index} style={{ width: win.width, height: 200 }}/>
                             </View>
                         }
+
                         {item.block.type == 'grid' && 
-                            // <FlatList
-                            //     data={item.block.resource}
-                            //     renderItem={renderItem}
-                            //     numColumns={item.block.columnNo} // Set the number of columns in your grid
-                            // />
-
-
                             <FlatList
                                 data={item.block.resource}
                                 numColumns={item.block.colunmNo} 
                                 renderItem={({ item } : any ) => <>
-                                <View style={{ width: win.width / 3 }}>
-                                    <Image source={{ uri: 'https://api.poplook.com/' + item.href }} alt="image" style={{ width: win.width, height: 100 }}/>
+                                <View style={{ width: win.width / 2 }}>
+                                    <Image source={{ uri: 'https://api.poplook.com/' + item.href }} alt="image" style={{ width: win.width, height: 200 }}/>
                                 </View>
                                 </>
                                 }
                             />
                         }
+
                         {item.block.type == 'slider' && 
-                             <View>
+                            <View>
                                 <Carousel
                                     layout={'default'}
                                     ref={(ref: any) => setCarouselRef(ref)}
                                     data={item.block.resource}
-                                    renderItem={_renderItem}
+                                    renderItem={renderItem}
                                     sliderWidth={Dimensions.get('window').width}
                                     itemWidth={Dimensions.get('window').width}
-                                    // activeSlideAlignment="start"
+                                    activeSlideAlignment="start"
                                     inactiveSlideScale={1}
                                     inactiveSlideOpacity={1}
-                                    // contentContainerCustomStyle={{
-                                    //     overflow: 'hidden',
-                                    //     width: 146 * item.block.resource
-                                    // }}
-                                    // onSnapToItem={(index: any) => {
-                                    // }}
-                                    // removeClippedSubviews={false}
+                                    onSnapToItem={(index: any) => {
+                                    }}
+                                    removeClippedSubviews={false}
                                 />
-                             </View>
+                            </View>
                         }
+
+                        {item.block.type == 'carousel' && 
+                            <View style={styles.container}>
+                                <MyImageCarousel />
+                            </View>
+                        }
+
                         </Center>
                     })}
                 </Flex>
@@ -170,5 +159,11 @@ const styles = StyleSheet.create({
       width: '100%',
       height: 100,
       // resizeMode: 'cover',
+    },
+    container2: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        // backgroundColor: 'white',
     },
 });
