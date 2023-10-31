@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Platform, Alert, Linking } from 'react-native';
+import { StyleSheet, View, Dimensions, Platform, Alert, Linking, useWindowDimensions} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, Text, FlatList } from 'native-base';
@@ -15,12 +15,20 @@ import { assignDeviceType } from '../Redux/Slices/Sessions';
 import ProductService from '../Services/ProductService';
 import { getColors, getSizes } from '../Redux/Slices/Filter';
 import Video from 'react-native-video';
+import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
+import Slider2 from '../components/Slider2';
+import AutoImage from '../components/AutoImage';
+import Carousel from 'react-native-snap-carousel';
 
 const win = Dimensions.get('window');
 
 export default function BannerPage({ navigation }: { navigation: any }) {
 
     const [banners, setBanners] = useState<any>([]);
+
+    const layout = useWindowDimensions();
+
+    const [carouselRef, setCarouselRef] = useState(null);
 
     useEffect(() => {
 
@@ -63,7 +71,23 @@ export default function BannerPage({ navigation }: { navigation: any }) {
         <View style={{ width: 100 }}>
             <Image source={{ uri: 'https://api.poplook.com/' + item.href }} alt="image" style={{ width: win.width, height: 100 }}/>
         </View>
-      );
+    );
+
+    const _renderItem = ({item, index} : any) => {
+        
+        return (
+            <View> 
+                <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
+                    {/* <Center w={layout.width / 3} bg="grey" borderRadius={10} shadow={1}> */}
+                    <Image source={{ uri: 'https://api.poplook.com/' + item.href }} alt="image" style={{ width: win.width, height: 200 }}/>
+                    {/* </Center> */}
+                    {/* <View style={{padding: 10}}>
+                        <Text color='black' alignSelf={'center'}>{item.name}</Text>
+                    </View> */}
+                </TouchableOpacity>
+            </View>
+        );
+    };
 
     return (
         <ScrollView>
@@ -84,13 +108,39 @@ export default function BannerPage({ navigation }: { navigation: any }) {
                             //     numColumns={item.block.columnNo} // Set the number of columns in your grid
                             // />
 
+
                             <FlatList
                                 data={item.block.resource}
-                                numColumns={item.block.columnNo} 
-                                renderItem={({ item } : any ) => <View style={{ width: win.width/3 }}>
+                                numColumns={item.block.colunmNo} 
+                                renderItem={({ item } : any ) => <>
+                                <View style={{ width: win.width / 3 }}>
                                     <Image source={{ uri: 'https://api.poplook.com/' + item.href }} alt="image" style={{ width: win.width, height: 100 }}/>
-                                </View>}
+                                </View>
+                                </>
+                                }
                             />
+                        }
+                        {item.block.type == 'slider' && 
+                             <View>
+                                <Carousel
+                                    layout={'default'}
+                                    ref={(ref: any) => setCarouselRef(ref)}
+                                    data={item.block.resource}
+                                    renderItem={_renderItem}
+                                    sliderWidth={Dimensions.get('window').width}
+                                    itemWidth={Dimensions.get('window').width}
+                                    // activeSlideAlignment="start"
+                                    inactiveSlideScale={1}
+                                    inactiveSlideOpacity={1}
+                                    // contentContainerCustomStyle={{
+                                    //     overflow: 'hidden',
+                                    //     width: 146 * item.block.resource
+                                    // }}
+                                    // onSnapToItem={(index: any) => {
+                                    // }}
+                                    // removeClippedSubviews={false}
+                                />
+                             </View>
                         }
                         </Center>
                     })}
