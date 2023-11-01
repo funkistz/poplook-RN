@@ -118,7 +118,7 @@ export const getCartStep1: any = createAsyncThunk(
                         address_id: id_address
                     }
 
-                    await dispatch(getCartStep2(param))
+                    dispatch(getCartStep2(param))
                     return data
                 } else {
                     return rejectWithValue(data)
@@ -178,59 +178,52 @@ export const getCartStep3: any = createAsyncThunk(
             const state: any = getState();
             const id_cart = state.cart.id_cart;
             const id_address = address_id;
-            // const id_carrier = state.checkout.carrier[0].id_carrier;
             const id_carrier = carrier_id;
+            const products = state.checkout.product
 
             const response = await CartService.cartStep3(id_cart, id_address, id_carrier);
             let data = await response.data
 
             console.log('cartstep3', data)
+    
+            for (let i = 0; i < products.length; i++) {
 
-            if (response.status == 200) {
-                if (data.code == 200) {
-                    return data
-                } else {
-                    return rejectWithValue(data)
-                }
-            } else {
-                const state: any = getState();
-                const products = state.checkout.product
+                if (products[i].active == 0 || products[i].quantity_available <= 0) {
 
-                for (let i = 0; i < products.length; i++) {
+                    const id_product = products[i].id_product
+                    const id_product_attribute = products[i].id_product_attribute
+                    const product_name = products[i].name
 
-                    if (products[i].active == 0 || products[i].quantity_available == 0) {
-
-                        const id_product = products[i].id_product
-                        const id_product_attribute = products[i].id_product_attribute
-
-                        Alert.alert('Item out of stock', data.message + ' and will be remove from your cart.', [
-                            {
-                                text: 'Proceed',
-                                onPress: async () => {
-                                    const params = {
-                                        id_cart: state.checkout.id_cart,
-                                        id_product: id_product,
-                                        id_product_attribute: id_product_attribute,
-                                    }
-
-                                    await dispatch(delToCart(params))
-
-                                    const param = {
-                                        gift: state.checkout.gift_option ? '1' : '0',
-                                        gift_wrap_id: state.checkout.id_gift,
-                                        gift_message: state.checkout.gift_message,
-                                        address_id: state.checkout.address
-                                    }
-        
-                                    await dispatch(getCartStep1(param))
-
+                    Alert.alert('Item out of stock', 'Item ' + product_name + ' have sold out and will be remove from your cart.', [
+                        {
+                            text: 'Proceed',
+                            onPress: async () => {
+                                const params = {
+                                    id_cart: state.checkout.id_cart,
+                                    id_product: id_product,
+                                    id_product_attribute: id_product_attribute,
                                 }
-                            },
-                        ]);
 
-                    }
+                                dispatch(delToCart(params))
+
+                                const param = {
+                                    gift: state.checkout.gift_option ? '1' : '0',
+                                    gift_wrap_id: state.checkout.id_gift,
+                                    gift_message: state.checkout.gift_message,
+                                    address_id: state.checkout.address
+                                }
+    
+                                await dispatch(getCartStep1(param))
+
+                            }
+                        },
+                    ]);
+
                 }
             }
+
+            return data
+            
         } catch (e: any) {
             rejectWithValue(e.response.data)
         }

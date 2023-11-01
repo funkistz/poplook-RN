@@ -238,10 +238,10 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         }
     }
 
-    const outStock = (message: any) => {
+    const outStock = async (message: any) => {
         for (let i = 0; i < product.length; i++) {
     
-            if (product[i].active == 0 || product[i].quantity_available == 0) {
+            if (product[i].active == 0 || product[i].quantity_available <= 0) {
 
                 const id_product = product[i].id_product
                 const id_product_attribute = product[i].id_product_attribute
@@ -265,7 +265,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 address_id: address ? address.id : ''
                             }
 
-                            dispatch(getCartStep1(param))
+                            await dispatch(getCartStep1(param))
                         }
                     },
                 ]);
