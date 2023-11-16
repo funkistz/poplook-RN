@@ -43,13 +43,13 @@ export default function HomePage({ navigation }: { navigation: any }) {
         } else {
 
             const params = {
-                category_id: item.block.resource.categoryId.toString(),
+                category_id: String(item.block.resource.categoryId),
                 category_name: item.name
             };
 
             console.log('title', item.block.resource.categoryId);
 
-            navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: item.block.resource.categoryId.toString() });
+            navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.categoryId) });
 
         }
 
