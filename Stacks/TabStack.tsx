@@ -55,14 +55,18 @@ const TabNavigator = () => {
           iconName = focused
             ? 'home'
             : 'home-outline';
-        } else if (route.name === 'Banner') {
-          iconName = focused
-            ? 'bookmark'
-            : 'bookmark-outline';
+        // } else if (route.name === 'Banner') {
+        //   iconName = focused
+        //     ? 'bookmark'
+        //     : 'bookmark-outline';
         } else if (route.name === 'Categories') {
           iconName = focused
             ? 'grid'
             : 'grid-outline';
+        // } else if (route.name === 'Category') {
+        //   iconName = focused
+        //     ? 'grid'
+        //     : 'grid-outline';
         } else if (route.name === 'Cart') {
           iconName = focused
             ? 'cart'
@@ -81,8 +85,9 @@ const TabNavigator = () => {
       lazy: true
     })}>
       <Tab.Screen name="Home" children={props => <AppStack initialRoute='HomePage' {...props} />} />
-      <Tab.Screen name="Banner" children={props => <AppStack initialRoute='BannerPage' {...props} />} />
+      {/* <Tab.Screen name="Banner" children={props => <AppStack initialRoute='BannerPage' {...props} />} /> */}
       <Tab.Screen name="Categories" children={props => <AppStack initialRoute='CategoriesPage' {...props} />} />
+      {/* <Tab.Screen name="Category" children={props => <AppStack initialRoute='CategoryPage2' {...props} />} /> */}
 
       {totalItem > 0 &&
         <Tab.Screen
