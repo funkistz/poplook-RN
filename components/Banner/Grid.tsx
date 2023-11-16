@@ -14,7 +14,7 @@ const Grid = memo(function Greeting({ item }: any) {
     return (
         <FlatList
             data={item.block.resource}
-            numColumns={item.block.colunmNo} 
+            numColumns={item.block.columnNo} 
             contentContainerStyle={{gap}}
             columnWrapperStyle={{gap}}
             renderItem={({ item } : any ) => <>
