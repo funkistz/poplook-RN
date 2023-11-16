@@ -1,4 +1,5 @@
 import APIService from "./ApiService";
+import api from "./AxiosService";
 
 const CategoryService = {
 
@@ -8,7 +9,15 @@ const CategoryService = {
 
         return APIService.getMethod(url);
 
-    }
+    },
+
+    async getMenus() {
+
+        const url = 'top_menu/mobile' ;
+
+        return await api.get(url)
+
+    },
 }
 
 export default CategoryService;
