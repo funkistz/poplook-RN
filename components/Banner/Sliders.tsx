@@ -3,7 +3,8 @@ import { ScrollView, HStack, VStack, Center, Text } from 'native-base';
 import React, { useState, memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
-import Image from 'react-native-scalable-image';
+import Images from './Image';
+import Videos from './Video';
 
 const win = Dimensions.get('window');
 
@@ -30,12 +31,14 @@ const Sliders = memo(function Greeting({ item, child }: any) {
         return (
             <TouchableOpacity onPress={() => goToCategory(item)} key={index}>
                 <VStack key={index}>
-                    <Center w={layout.width / 3} bg="grey" borderRadius={10} shadow={1} >
-                        <Image
-                            width={layout.width / 3}
-                            source={{uri: 'https://api.poplook.com/' + item.href }}
-                            style={{ borderRadius: 6 }} 
-                        />
+                    <Center w={layout.width / 3} bg="grey" borderRadius={10} shadow={1}>
+                        {item.type == 'image' && 
+                            <Images width={layout.width /3} data={item}></Images>
+                        }
+                        
+                        {item.type == 'video' && 
+                            <Videos width={layout.width /3} height={200} data={item}></Videos>
+                        }
                     </Center>
                 </VStack>
                 <Text pt={2} color='black' fontSize={14}>{item.label}</Text>
@@ -47,11 +50,8 @@ const Sliders = memo(function Greeting({ item, child }: any) {
         <>
             <View style={styles.container}>
 
-                {child && child.map((data: any, index: any) => {
-                        return <Text pl={5} pt={5} color='black' fontSize={16}>{data.block.label}</Text>
-                    }
-                )}
-
+                <Text pl={5} pt={5} color='black' fontSize={16}>{item.block.label}</Text>
+                 
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     <HStack p={3} justifyContent="center">
                         <Carousel
@@ -60,14 +60,14 @@ const Sliders = memo(function Greeting({ item, child }: any) {
                             data={item.block.resource}
                             renderItem={renderItem}
                             sliderWidth={win.width}
-                            itemWidth={win.width * (item.block.slideSize / 100) + item.block.slideGap}
+                            itemWidth={win.width * (item.block.slideSize / 100)}
                             activeSlideAlignment="start"
                             inactiveSlideScale={1}
                             inactiveSlideOpacity={1}
                             onSnapToItem={(index: any) => {
                             }}
                             removeClippedSubviews={false}
-                            contentContainerCustomStyle={{overflow: 'hidden', width: (win.width * (item.block.slideSize / 100) + item.block.slideGap) * (item.block.resource.length)}}
+                            contentContainerCustomStyle={{overflow: 'hidden', width: (win.width * (item.block.slideSize / 100)) * (item.block.resource.length)}}
                         />
                     </HStack>
                 </ScrollView>

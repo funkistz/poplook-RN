@@ -1,6 +1,6 @@
 import { StyleSheet, View, Dimensions } from 'react-native';
 import React from 'react';
-import { Center } from 'native-base';
+import { Center, Text } from 'native-base';
 import { ScrollView } from 'native-base';
 import Sliders from './Sliders';
 import Texts from './Text';
@@ -30,7 +30,7 @@ const Children = ({ item, index, navigation }: { item: any, index: any, navigati
                     }
 
                     {item.block.type == 'slider' && 
-                        <Sliders item={item} children=''></Sliders>
+                        <Sliders item={item}></Sliders>
                     }
 
                     {item.block.type == 'carousel' && 

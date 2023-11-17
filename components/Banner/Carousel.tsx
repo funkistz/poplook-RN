@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 import Image from 'react-native-scalable-image';
 import { Pagination } from 'react-native-snap-carousel';
+import Images from './Image';
+import Videos from './Video';
 
 const win = Dimensions.get('window');
 
@@ -27,10 +29,13 @@ const Carousels = memo(function Greeting({ item }: any) {
         return (
             <View> 
                 <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
-                    <Image
-                        width={win.width} // height will be calculated automatically
-                        source={{uri: 'https://api.poplook.com/' + item.href }}
-                    />
+                        {item.type == 'image' && 
+                            <Images width={win.width} data={item}></Images>
+                        }
+                        
+                        {item.type == 'video' && 
+                            <Videos width={win.width} height={200} data={item}></Videos>
+                        }
                 </TouchableOpacity>
             </View>
         );
