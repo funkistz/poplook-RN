@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Linking, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, Linking, TouchableOpacity, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BannerService from '../Services/BannerService';
 import { Flex, Center, Image, Link, ScrollView } from 'native-base';
@@ -33,25 +33,14 @@ export default function HomePage({ navigation }: { navigation: any }) {
 
     const goToCategory = (item: any) => {
 
-        console.log('item', item);
+        const params = {
+            category_id: String(item.block.resource.categoryId),
+            category_name: item.name
+        };
 
-        console.log('banner', item.block.resource.link);
-        console.log('banner true', item.block.resource.link.includes("process_redirect_url.php"));
+        console.log('title', item.block.resource.categoryId);
 
-        if (item.block.resource.link.includes("process_redirect_url.php")) {
-            Linking.openURL(WEB_URL + item.block.resource.link);
-        } else {
-
-            const params = {
-                category_id: String(item.block.resource.categoryId),
-                category_name: item.name
-            };
-
-            console.log('title', item.block.resource.categoryId);
-
-            navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.categoryId) });
-
-        }
+        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.categoryId) });
 
     }
 

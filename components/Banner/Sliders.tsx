@@ -15,16 +15,16 @@ const Sliders = memo(function Greeting({ item, child }: any) {
     const [carouselRef, setCarouselRef] = useState(null);
 
     const goToCategory = (item: any) => {
-
-        console.log('child', item);
-
+      
         const params = {
-            category_id: item.category_id,
-            category_name: item.name
+            category_id: String(item.categoryId),
+            category_name: ''
         };
 
-        navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: item.name });
-    };
+
+        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.categoryId) });
+
+    }
 
     const renderItem = ({item, index} : any) => {
         

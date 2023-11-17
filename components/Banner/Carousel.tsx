@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import React, { useState, memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
@@ -15,14 +15,16 @@ const Carousels = memo(function Greeting({ item }: any) {
     const [currentImageIndex, setCurrentImageIndex] = useState<any>(0);
 
     const goToCategory = (item: any) => {
-
+      
         const params = {
-            category_id: item.category_id,
-            category_name: item.name
+            category_id: String(item.categoryId),
+            category_name: ''
         };
 
-        navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: item.name });
-    };
+
+        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.categoryId) });
+
+    }
 
     const renderItem = ({item, index} : any) => {
         

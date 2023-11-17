@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { Center, Text } from 'native-base';
 import { ScrollView } from 'native-base';
@@ -22,7 +22,7 @@ const Children = ({ item, index, navigation }: { item: any, index: any, navigati
                     }
 
                     {item.block.type == 'grid' && 
-                    <Grid item={item}></Grid>   
+                        <Grid item={item}></Grid>   
                     }
 
                     {item.block.type == 'text' && 
