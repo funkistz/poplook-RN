@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import CategoryService from '../Services/CategoryService';
 import { Center, Text } from 'native-base';
-import Menus2 from '../components/Menus2';
+import Menus from '../components/Menus';
 
 export default function CategoryPage2({ route, navigation }: { route: any, navigation: any }) {
 
@@ -17,8 +17,8 @@ export default function CategoryPage2({ route, navigation }: { route: any, navig
         const unsubscribe = navigation.addListener('focus', () => {
 
             const getMenus = async () => {
-                const response = await CategoryService.getMenus();
-                let json = await response.data
+                const response = await CategoryService.getCategories();
+                let json = await response.json()
     
                 setCategories(json.data.data);
             }
@@ -57,7 +57,7 @@ export default function CategoryPage2({ route, navigation }: { route: any, navig
     return (
         <Center style={{ height: "100%", width: "100%" }}>
             {!categoriesJson && <Text pt={10} color='black'>Loading...</Text>}
-            {categoriesJson && <Menus2 categories={categoriesJson} ></Menus2>}
+            {categoriesJson && <Menus categories={categoriesJson} ></Menus>}
         </Center>
     );
 }
