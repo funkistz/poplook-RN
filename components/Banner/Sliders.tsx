@@ -8,7 +8,7 @@ import Videos from './Video';
 
 const win = Dimensions.get('window');
 
-const Sliders = memo(function Greeting({ item, child }: any) {
+const Sliders = memo(function Greeting({ item, child, height }: any) {
 
     const navigation: any = useNavigation();
     const layout = useWindowDimensions();
@@ -33,11 +33,11 @@ const Sliders = memo(function Greeting({ item, child }: any) {
                 <VStack key={index}>
                     <Center w={layout.width / 3} bg="grey" borderRadius={10} shadow={1}>
                         {item.type == 'image' && 
-                            <Images width={layout.width /3} data={item}></Images>
+                            <Images width={layout.width /3} data={item} height={height}></Images>
                         }
                         
                         {item.type == 'video' && 
-                            <Videos width={layout.width /3} height={200} data={item}></Videos>
+                            <Videos width={layout.width /3} height={height} data={item}></Videos>
                         }
                     </Center>
                 </VStack>

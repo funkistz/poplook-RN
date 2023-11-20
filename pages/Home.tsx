@@ -33,23 +33,23 @@ export default function HomePage({ navigation }: { navigation: any }) {
 
     const goToCategory = (item: any) => {
 
-        const params = {
-            category_id: String(item.block.resource.categoryId),
-            category_name: item.name
-        };
+            const params = {
+                category_id: String(item.block.resource.categoryId),
+                category_name: item.name
+            };
 
-        console.log('title', item.block.resource.categoryId);
+            console.log('title', item.block.resource.categoryId);
 
-        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.categoryId) });
+            navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.categoryId) });
 
-    }
+        }
 
     return (
         <ScrollView>
             {banners.map((data: any, index: any) => {
 
                 return <Flex style={{ flexDirection: data.flex.direction, flexWrap: data.flex.wrap, justifyContent: data.flex.justifyContent,
-                            paddingTop: data.padding.top, paddingRight: data.padding.right, paddingBottom: data.padding.bottom, paddingLeft: data.padding.left }} 
+                            paddingTop: data.padding.top, paddingRight: data.padding.right, paddingBottom: data.padding.bottom, paddingLeft: data.padding.left, height: data.height }} 
                             key={index}>
                     
 
@@ -74,4 +74,5 @@ export default function HomePage({ navigation }: { navigation: any }) {
 
 const styles = StyleSheet.create({
 });
+
 

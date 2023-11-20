@@ -9,7 +9,7 @@ import Videos from './Video';
 
 const win = Dimensions.get('window');
 
-const Carousels = memo(function Greeting({ item }: any) {
+const Carousels = memo(function Greeting({ item, height }: any) {
 
     const navigation: any = useNavigation();
     const [currentImageIndex, setCurrentImageIndex] = useState<any>(0);
@@ -32,11 +32,11 @@ const Carousels = memo(function Greeting({ item }: any) {
             <View> 
                 <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
                         {item.type == 'image' && 
-                            <Images width={win.width} data={item}></Images>
+                            <Images width={win.width} height={height} data={item}></Images>
                         }
                         
                         {item.type == 'video' && 
-                            <Videos width={win.width} height={200} data={item}></Videos>
+                            <Videos width={win.width} height={height} data={item}></Videos>
                         }
                 </TouchableOpacity>
             </View>

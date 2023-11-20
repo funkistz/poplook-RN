@@ -7,7 +7,7 @@ import Videos from './Video';
 
 const win = Dimensions.get('window');
 
-const Grid = memo(function Greeting({ item }: any) {
+const Grid = memo(function Greeting({ item, height }: any) {
 
     const navigation: any = useNavigation();
     const columnNumber = win.width / (item.block.columnNo);
@@ -34,7 +34,7 @@ const Grid = memo(function Greeting({ item }: any) {
                 <View style={{ width: columnNumber }}>
                     <TouchableOpacity onPress={() => goToCategory(item)}>
                         {item.type == 'image' &&
-                            <Images width={columnNumber} data={item}></Images>
+                            <Images width={columnNumber} data={item} height={height}></Images>
                         }
                         {item.type == 'video' &&
                             <Videos width={columnNumber} height={columnNumber/1.5} data={item}></Videos>

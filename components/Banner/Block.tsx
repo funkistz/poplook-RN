@@ -6,16 +6,16 @@ import Videos from './Video';
 
 const win = Dimensions.get('window');
 
-const Blocks = memo(function Greeting({ item }: any) {
+const Blocks = memo(function Greeting({ item, height }: any) {
 
     return (
         <Center>
             {item.block.resource.type == 'image' && 
-                <Images width={win.width} data={item.block.resource}></Images>
+                <Images data={item.block.resource} width={win.width} height={height}></Images>
             }
 
             {item.block.resource.type == 'video' && 
-                <Videos width={win.width} height={200} data={item.block.resource}></Videos>
+                <Videos data={item.block.resource} width={win.width} height={height}></Videos>
             }
         </Center>
     );
