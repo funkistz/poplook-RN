@@ -21,11 +21,15 @@ const BannerService = {
 
     },
 
-    async getMobileBanners() {
+    async getMobileBanners(shopId: any) {
 
-        const url = 'home_banner/mobile' ;
+        const param = {
+            shop_id: shopId
+        }
 
-        return await api.get(url)
+        const url = 'home_banner/mobile';
+
+        return await api.get(url, { params : param })
 
     },
 }
