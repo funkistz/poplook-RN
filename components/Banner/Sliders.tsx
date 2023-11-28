@@ -5,6 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
 import Images from './Image';
 import Videos from './Video';
+import Texts from './TextWithStyle';
+import TextWithStyle from './TextWithStyle';
 
 const win = Dimensions.get('window');
 
@@ -41,7 +43,7 @@ const Sliders = memo(function Greeting({ item, child, height }: any) {
                         }
                     </Center>
                 </VStack>
-                <Text pt={2} color='black' fontSize={14}>{item.label}</Text>
+                <TextWithStyle data={item.labelObj}></TextWithStyle>
             </TouchableOpacity>
         );
     };
@@ -50,24 +52,24 @@ const Sliders = memo(function Greeting({ item, child, height }: any) {
         <>
             <View style={styles.container}>
 
-                <Text pl={5} pt={5} color='black' fontSize={16}>{item.block.label}</Text>
+                <TextWithStyle data={item.block.labelObj}></TextWithStyle>
                  
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <HStack p={3} justifyContent="center">
+                    <HStack>
                         <Carousel
                             layout={'default'}
                             ref={(ref: any) => setCarouselRef(ref)}
                             data={item.block.resource}
                             renderItem={renderItem}
                             sliderWidth={win.width}
-                            itemWidth={win.width * (item.block.slideSize / 100)}
+                            itemWidth={win.width * (item.block.slideSize / 100) + item.block.slideGap}
                             activeSlideAlignment="start"
                             inactiveSlideScale={1}
                             inactiveSlideOpacity={1}
                             onSnapToItem={(index: any) => {
                             }}
                             removeClippedSubviews={false}
-                            contentContainerCustomStyle={{overflow: 'hidden', width: (win.width * (item.block.slideSize / 100)) * (item.block.resource.length)}}
+                            contentContainerCustomStyle={{overflow: 'hidden', width: (win.width * (item.block.slideSize / 100) + item.block.slideGap + 3) * (item.block.resource.length)}}
                         />
                     </HStack>
                 </ScrollView>
