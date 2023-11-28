@@ -3,12 +3,13 @@ import React from 'react';
 import { Center, Text } from 'native-base';
 import { ScrollView, Flex } from 'native-base';
 import Sliders from './Sliders';
-import Texts from './Text';
+import Texts from './TextWithStyle';
 import Carousels from './Carousel';
 import Grid from './Grid';
 import Blocks from './Block';
 import Navigations from './Navigation';
 import Vimeos from './Vimeo';
+import TextWithStyle from './TextWithStyle';
 
 const win = Dimensions.get('window');
 
@@ -32,7 +33,7 @@ const Children = ({ item, index, navigation }: { item: any, index: any, navigati
         <Center key={index}>
             <ScrollView w='100%'>
                 <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
-                    height: item.height, width: getChildWidth(item.col) }}>
+                    height: item.height, width: getChildWidth(item.col),  }}>
 
                     {item.block.type == 'block' && 
                         <Blocks item={item} height={item.height} width={item.col.value}{...item.col.type}></Blocks> 
@@ -43,7 +44,7 @@ const Children = ({ item, index, navigation }: { item: any, index: any, navigati
                     }
 
                     {item.block.type == 'text' && 
-                        <Texts item={item} height={item.height}></Texts>
+                        <TextWithStyle data={item.block.resource.labelObj}></TextWithStyle>
                     }
 
                     {item.block.type == 'slider' && 

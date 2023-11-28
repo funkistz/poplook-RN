@@ -51,30 +51,22 @@ export default function HomePage({ navigation }: { navigation: any }) {
             {banners.map((data: any, index: any) => {
 
                 return <Flex style={{ flexDirection: data.flex.direction, flexWrap: data.flex.wrap, justifyContent: data.flex.justifyContent,
-                            paddingTop: data.padding.top, paddingRight: data.padding.right, paddingBottom: data.padding.bottom, paddingLeft: data.padding.left, 
-                            height: data.height, backgroundColor: data.backgroundColor }} 
-                            key={index}>
+                    paddingTop: data.padding.top, paddingRight: data.padding.right, paddingBottom: data.padding.bottom, paddingLeft: data.padding.left, 
+                    height: data.height, width: '100%', backgroundColor: data.backgroundColor }} 
+                    key={index}>
 
                             {data.children != null &&
                                 <>
                                     {data.children.map((item: any, index: any) => {
 
-                                        const columnNumber = win.width / (item.block.columnNo)
+                                        return <Children item={item} index={index} navigation={navigation}></Children>
 
-                                        return <>
-                                            <TouchableOpacity onPress={() => goToCategory(item)} key={index}>
-                                                <Children item={item} index={index} navigation={navigation}></Children>
-                                            </TouchableOpacity>
-                                        </>
                                     })}
                                 </>
                             }
-                    
 
-                            
-                        </Flex>
+                    </Flex>
             })}
-            
     
         </ScrollView>
       );
