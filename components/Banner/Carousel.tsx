@@ -1,11 +1,11 @@
-import { StyleSheet, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import React, { useState, memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
-import Image from 'react-native-scalable-image';
 import { Pagination } from 'react-native-snap-carousel';
 import Images from './Image';
 import Videos from './Video';
+import TextWithStyle from './TextWithStyle';
 
 const win = Dimensions.get('window');
 
@@ -21,7 +21,6 @@ const Carousels = memo(function Greeting({ item, height }: any) {
             category_name: ''
         };
 
-
         navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.categoryId) });
 
     }
@@ -29,8 +28,9 @@ const Carousels = memo(function Greeting({ item, height }: any) {
     const renderItem = ({item, index} : any) => {
         
         return (
-            <View> 
-                <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
+            <>
+                <View style={styles.carouselItem}>
+                    <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
                         {item.type == 'image' && 
                             <Images width={win.width} height={height} data={item}></Images>
                         }
@@ -38,14 +38,21 @@ const Carousels = memo(function Greeting({ item, height }: any) {
                         {item.type == 'video' && 
                             <Videos width={win.width} height={height} data={item}></Videos>
                         }
-                </TouchableOpacity>
-            </View>
+
+                        <TextWithStyle data={item.labelObj}></TextWithStyle>
+                        
+                    </TouchableOpacity>  
+                </View>
+            </>
         );
     };
 
     return (
         <>
             <View style={styles.container}>
+
+                <TextWithStyle data={item.block.labelObj}></TextWithStyle>
+
                 <Carousel
                     width={win.width}
                     height={200}
@@ -67,7 +74,7 @@ const Carousels = memo(function Greeting({ item, height }: any) {
                     inactiveDotScale={0.8}
                 />
 
-            </View>
+            </View> 
         </>
     );
 })
@@ -82,6 +89,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 20
     },
     paginationDot: {
         width: 8,
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
     paginationContainer: {
         position: 'absolute',
         bottom: 0,
-        paddingVertical: 10,
+        paddingVertical: 20,
     },
     dot: {
         width: 8,
@@ -103,5 +111,11 @@ const styles = StyleSheet.create({
     },
     inactiveDot: {
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    }
+    },
+    carouselItem: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5
+    },
 })
