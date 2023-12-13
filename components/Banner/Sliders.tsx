@@ -1,12 +1,10 @@
 import { StyleSheet, View, Dimensions, TouchableOpacity, useWindowDimensions } from 'react-native';
 import React, { useState, memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import Carousel from 'react-native-snap-carousel';
 import Images from './Image';
 import Videos from './Video';
 import TextWithStyle from './TextWithStyle';
-
-const win = Dimensions.get('window');
+import { HStack, VStack, ScrollView } from 'native-base';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -14,7 +12,7 @@ const Sliders = memo(function Greeting({ item }: any) {
 
     const navigation: any = useNavigation();
 
-    const slideGap = item.block.slideGap/100;
+    const slideGap = item.block.slideGap;
     const slideSize = item.block.slideSize;
     const length = item.block.resource.length;
     const itemWidth = (screenWidth * slideSize) / 100;
@@ -39,13 +37,14 @@ const Sliders = memo(function Greeting({ item }: any) {
                 <TouchableOpacity onPress={() => goToCategory(item)} key={index}> 
                 
                     {item.type == 'image' && 
-                        <Images data={item} column={100/slideSize}></Images>
+                        <Images data={item} column={(100/slideSize)}></Images>
                     }
                     
                     {item.type == 'video' && 
                         <Videos data={item}></Videos>
                     }
-                        <TextWithStyle data={item.labelObj}></TextWithStyle>
+
+                    <TextWithStyle data={item.labelObj}></TextWithStyle>
 
                 </TouchableOpacity>
             </View>
@@ -59,21 +58,34 @@ const Sliders = memo(function Greeting({ item }: any) {
 
                 <TextWithStyle data={item.block.labelObj}></TextWithStyle>
 
-                <Carousel
-                    slideStyle={{ }}
-                    layout={'default'}
-                    ref={(ref: any) => setCarouselRef(ref)}
-                    data={item.block.resource}
-                    renderItem={renderItem}
-                    sliderWidth={win.width}
-                    itemWidth={itemWidth + slideGap} 
-                    // inactiveSlideScale={1}
-                    inactiveSlideOpacity={1}
-                    activeSlideAlignment="start"
-                    onSnapToItem={(index: any) => {
-                    }}
-                    removeClippedSubviews={false}
-                />
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <HStack>
+
+                        {item.block.resource.map((data: any, index: any) => {
+                            return (
+                                <>
+                                <View style={styles.carouselItem}>
+                                    <TouchableOpacity onPress={() => goToCategory(data)} key={index}> 
+                                        <VStack key={index} w={itemWidth + slideGap}>
+
+                                                {data.type == 'image' && 
+                                                    <Images data={data} column={100/slideSize} ></Images>
+                                                }
+                                                
+                                                {data.type == 'video' && 
+                                                    <Videos data={data}></Videos>
+                                                }
+
+                                            <TextWithStyle data={data.labelObj}></TextWithStyle>
+                                        </VStack>
+                                    </TouchableOpacity>
+                                </View>
+                                </>
+                            );
+                        })}
+                        
+                    </HStack>
+                </ScrollView>
             </View>
         </>
     );
@@ -90,7 +102,6 @@ const styles = StyleSheet.create({
     carouselItem: {
         flex: 1,
         justifyContent: 'flex-start',
-        alignItems: 'flex-start',// Adjust as needed for space gap
-        marginHorizontal: 10
+        alignItems: 'flex-start'
       }
 })
