@@ -1,20 +1,39 @@
-import React, { memo } from 'react';
-import { Dimensions } from 'react-native'
-import { Center, Image } from 'native-base'
+import React, { memo, useState, useEffect} from 'react';
+import { Dimensions, View, useWindowDimensions } from 'react-native'
+import { Image } from 'react-native'
 import AutoImage from 'react-native-scalable-image';
 
-const Images = memo(function Greeting({ width, height, data }: any) {
+const Images = memo(function Greeting({ data, column }: any) {
+
+    const [imageHeights, setImageHeights] = useState<any>([])
+    const layout = useWindowDimensions();
+
+    const url = 'https://api.poplook.com/' + data.href;
+
+    useEffect(() => {
+
+        Image.getSize(url, (width: any, height: any) => {
+
+            let dimension = 0;
+
+            if (column) {
+                dimension = height * (layout.width / width/column);
+            } else {
+                dimension = height * layout.width / width;
+            }
+
+            setImageHeights(dimension);
+
+        });
+
+    }, [imageHeights])
 
     return (
-        <Center>
-            {height == 'auto' &&
-                <AutoImage width={width} source={{ uri: 'https://api.poplook.com/' + data.href }} ></AutoImage>
-            }
-            {height != 'auto' &&
-                <Image style={{ width: width, height: height }} source={{ uri: 'https://api.poplook.com/' + data.href }} alt="image"/>
-            }
-
-        </Center>  
+        <>
+        <View>
+            <AutoImage source={{ uri: url }} height={imageHeights}></AutoImage>
+        </View>
+        </>
     );
 })
 
