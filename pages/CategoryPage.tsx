@@ -3,26 +3,24 @@ import CategoryService from '../Services/CategoryService';
 import { Center, Text } from 'native-base';
 import Menus from '../components/Menus';
 
-export default function CategoryPage2({ route, navigation }: { route: any, navigation: any }) {
+export default function CategoryPage2({ navigation }: {navigation: any }) {
 
     const [categories, setCategories] = useState<any>(null);
-    const [menus, setMenus] = useState<any>(null);
 
     const categoriesTemp = JSON.stringify(categories);
     const categoriesJson = useMemo(() => JSON.parse(categoriesTemp), [categoriesTemp])
-
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
 
             const getMenus = async () => {
-                const response = await CategoryService.getCategories();
-                let json = await response.json()
-    
+                const response = await CategoryService.getMenus();
+                let json = await response.data;
+
                 setCategories(json.data.data);
             }
-    
+
             getMenus().catch(console.error);
         });
 

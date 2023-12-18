@@ -1,71 +1,52 @@
-import { StyleSheet, View, useWindowDimensions, Dimensions, Image, Animated, TouchableOpacity } from 'react-native';
+import { StyleSheet, useWindowDimensions, Dimensions } from 'react-native';
 import React, { useState, useEffect, memo } from 'react';
-import { Center, Box, Text, ScrollView, Pressable } from 'native-base';
-import FullWidthImage from 'react-native-fullwidth-image'
-import Tabs from '../components/Tabs';
-import Slider from './Slider';
 import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image'
-import AutoImage from './AutoImage';
+import { Center, ScrollView, Flex } from 'native-base';
+import Tabs from './Tabs';
+import Sliders from './Banner/Sliders';
+import Blocks from './Banner/Block';
 
 const win = Dimensions.get('window');
 
 const Menus = memo(function Greeting({ categories }: { categories: any }) {
 
+    const navigation: any = useNavigation();
+    const layout = useWindowDimensions();
+
     const [routes, setRoutes] = useState<any>();
     const [scenes, setScenes] = useState<any>();
-    const navigation: any = useNavigation();
-    const [imageHeights, setImageHeights] = useState<any>([])
-
-    const goToCategory = (child: any) => {
-
-        console.log('child', child);
-
-        const params = {
-            category_id: child.category_id,
-            category_name: child.name
-        };
-
-        console.log('title', child.name);
-
-        // navigation.navigate('CategoryPage', { params: params, title: child.name });
-        navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: child.name });
-
-
-        return;
-    };
 
     const renderCategory = (category: any) => {
 
         const tabs: any = [];
-        console.log('category', category);
 
-        if (!category.children) {
-            return;
-        }
+        category.block.map(async (data: any, index: any) => {
 
-        category.children.map(async (child: any, index: any) => {
+            <Center key={index}>
 
-            if (child.type == 'banner') {
+                {data.children.map(async (item: any, index: any) => {
 
-                Image.getSize(child.image_url, (width, height) => {
-                    const temp = [...imageHeights.slice(0, index), (height * win.width / width), ...imageHeights.slice(index)];
-                    setImageHeights(temp);
-                });
+                    if (item.block.type == 'block') {
+                        tabs.push(
+                            <Flex style={{ paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left }}
+                                key={index}>
+                                <Blocks item={item}></Blocks>
+                            </Flex>
+                        );
+                    }
 
-                tabs.push(
-                    <TouchableOpacity key={index} onPress={() => goToCategory(child)}>
-                        {/* <FastImage source={{
-                            uri: child.image_url
-                        }}
-                            style={{ width: '100%', height: imageHeights[index] }}
-                        /> */}
-                        <AutoImage imageUri={child.image_url} width={win.width} />
-                    </TouchableOpacity>
-                );
-            } else if (child.type == 'slider') {
-                return tabs.push(<Slider key={index} child={child} />)
-            }
+                    if (item.block.type == 'slider') {
+                        tabs.push(
+                            <Flex style={{ paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left }}
+                                key={index}>
+                                <Sliders item={item}></Sliders>
+                            </Flex>
+                        );
+                    }
+
+                })}
+
+            </Center>
 
         })
 
@@ -74,6 +55,7 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
                 {tabs}
             </ScrollView>
         </Center>
+
     }
 
     useEffect(() => {
@@ -85,58 +67,31 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
 
             temp.push({
                 key: index,
-                title: category.name,
-                type: category.type,
-                id: category.category_id,
+                title: category.name
             });
+
             tempScenes[index] = () => renderCategory(category);
         })
 
-
-        console.log('category', temp);
         setScenes((tempScenes));
         setRoutes(temp);
 
     }, [categories])
 
-    const routesFinal = () => {
+    return (<Center style={{ height: "100%", width: "100%" }}>
 
-        const temp: any = [];
-        const tempScenes: any = {};
+        {routes && scenes &&
+            <>
+                <Tabs routes={routes} scenes={scenes}></Tabs>
 
-        categories.map((category: any) => {
+            </>
+        }
 
-            temp.push({ key: category.category_id.toString(2) + '_cat', title: category.name });
-            tempScenes[category.category_id.toString(2) + '_cat'] = () => renderCategory(category);
-        })
-
-        return temp;
-    }
-
-    const scenesFinal = () => {
-
-        const temp: any = [];
-        const tempScenes: any = {};
-
-        categories.map((category: any) => {
-
-            temp.push({ key: category.category_id.toString(2) + '_cat', title: category.name });
-            tempScenes[category.category_id.toString(2) + '_cat'] = () => renderCategory(category);
-        })
-
-        return tempScenes;
-    }
-
-    return (
-        <Center style={{ height: "100%", width: "100%" }}>
-            {routes && scenes &&
-                <>
-                    <Tabs routes={routes} scenes={scenes} ></Tabs>
-
-                </>
-            }
-        </Center>
+    </Center>
     );
 })
+
+const styles = StyleSheet.create({
+});
 
 export default Menus;

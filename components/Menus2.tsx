@@ -1,16 +1,12 @@
-import { StyleSheet, View, useWindowDimensions, Dimensions, Animated, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, useWindowDimensions, Dimensions, Image, Animated, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, memo } from 'react';
-import { Center, Box, Text, ScrollView, Pressable, HStack, VStack } from 'native-base';
+import { Center, Box, Text, ScrollView, Pressable } from 'native-base';
 import FullWidthImage from 'react-native-fullwidth-image'
-import Tabs from '../components/Tabs';
-import Sliders from './Banner/Sliders';
+import Tabs from './Tabs';
+import Slider from './Slider';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image'
 import AutoImage from './AutoImage';
-import Video from 'react-native-video';
-import Image from 'react-native-scalable-image';
-import Carousel2, { Pagination } from 'react-native-snap-carousel';
-import Children from './Banner/Children';
 
 const win = Dimensions.get('window');
 
@@ -20,40 +16,6 @@ const Menus2 = memo(function Greeting({ categories }: { categories: any }) {
     const [scenes, setScenes] = useState<any>();
     const navigation: any = useNavigation();
     const [imageHeights, setImageHeights] = useState<any>([])
-    const [carouselRef, setCarouselRef] = useState(null);
-    const layout = useWindowDimensions();
-
-    const renderItem = ({item, index} : any) => {
-        
-        return (
-            <View> 
-                <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
-                    <Image
-                        width={win.width}
-                        source={{uri: 'https://api.poplook.com/' + item.href }}
-                    />
-                </TouchableOpacity>
-            </View>
-        );
-    };
-
-    const renderItem2 = ({item, index} : any) => {
-
-        return (
-            <TouchableOpacity onPress={() => goToCategory(item)} key={index}>
-                <VStack key={index}>
-                    <Center w={layout.width / 3} bg="grey" borderRadius={10} shadow={1} >
-                        <Image
-                            width={layout.width / 3}
-                            source={{uri: 'https://api.poplook.com/' + item.href }}
-                            style={{ borderRadius: 6 }} 
-                        />
-                    </Center>
-                </VStack>
-                <Text pl={2} pt={2} color='black' fontSize={14}>{item.label}</Text>
-            </TouchableOpacity>
-        );
-    };
 
     const goToCategory = (child: any) => {
 
@@ -76,81 +38,34 @@ const Menus2 = memo(function Greeting({ categories }: { categories: any }) {
     const renderCategory = (category: any) => {
 
         const tabs: any = [];
-        console.log('category1', category);
+        console.log('category', category);
 
-        // if (!category.block) {
-        //     return;
-        // }
+        if (!category.children) {
+            return;
+        }
 
-        category.block.map(async (child: any, index: any) => {
+        category.children.map(async (child: any, index: any) => {
 
-            // <Flex style={{ flexDirection: data.flex.direction, flexWrap: data.flex.wrap, justifyContent: data.flex.justifyContent,
-            //     paddingTop: data.padding.top, paddingRight: data.padding.right, paddingBottom: data.padding.bottom, paddingLeft: data.padding.left }} 
-            //     key={index}>
+            if (child.type == 'banner') {
 
-            
-                child.children.map(async (item: any, index: any) => {
+                Image.getSize(child.image_url, (width, height) => {
+                    const temp = [...imageHeights.slice(0, index), (height * win.width / width), ...imageHeights.slice(index)];
+                    setImageHeights(temp);
+                });
 
-                    if (item.block.type == 'block') {
-                        if (item.block.resource.type == 'image') {
-                            tabs.push(
-                                <Image
-                                    width={win.width}
-                                    source={{uri: 'https://api.poplook.com/' + item.block.resource.href }}
-                                />
-                            );
-                        }
-                        if (item.block.resource.type == 'video') {
-                            tabs.push(
-                                <Video
-                                    source={{ uri: 'https://api.poplook.com/' + item.block.resource.href }}
-                                    style={{ width: win.width, height: 200 }}
-                                    controls={false}
-                                    autoplay={true}
-                                    repeat={true} 
-                                    resizeMode="cover" 
-                                />
-                            );
-                        }
-                    }
-
-                    if (item.block.type == 'slider') {
-
-                        return tabs.push(
-                            <Sliders item={item} child={child.children}></Sliders>
-                        )
-                        // <View style={styles.container}>
-
-                        //     {child.children.map((data: any, index: any) => {
-                        //             return <Text pl={5} pt={5} color='black' fontSize={16}>{data.block.label}</Text>
-                        //         }
-                        //     )}
-
-                        //     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        //         <HStack p={3} justifyContent="center">
-                        //             <Carousel2
-                        //                 layout={'default'}
-                        //                 ref={(ref: any) => setCarouselRef(ref)}
-                        //                 data={item.block.resource}
-                        //                 renderItem={renderItem2}
-                        //                 sliderWidth={win.width}
-                        //                 itemWidth={win.width * (item.block.slideSize / 100) + item.block.slideGap}
-                        //                 activeSlideAlignment="start"
-                        //                 inactiveSlideScale={1}
-                        //                 inactiveSlideOpacity={1}
-                        //                 onSnapToItem={(index: any) => {
-                        //                 }}
-                        //                 removeClippedSubviews={false}
-                        //                 contentContainerCustomStyle={{overflow: 'hidden', width: (win.width * (item.block.slideSize / 100) + item.block.slideGap) * (item.block.resource.length)}}
-                        //             />
-                        //         </HStack>
-                        //     </ScrollView>
-                        // </View>
-                        // )
-                            
-                    }
-
-                })
+                tabs.push(
+                    <TouchableOpacity key={index} onPress={() => goToCategory(child)}>
+                        {/* <FastImage source={{
+                            uri: child.image_url
+                        }}
+                            style={{ width: '100%', height: imageHeights[index] }}
+                        /> */}
+                        <AutoImage imageUri={child.image_url} width={win.width} />
+                    </TouchableOpacity>
+                );
+            } else if (child.type == 'slider') {
+                return tabs.push(<Slider key={index} child={child} />)
+            }
 
         })
 
@@ -166,21 +81,19 @@ const Menus2 = memo(function Greeting({ categories }: { categories: any }) {
         const temp: any = [];
         const tempScenes: any = {};
 
-        console.log('categorymula2', categories);
-
         categories.map((category: any, index: any) => {
 
             temp.push({
                 key: index,
                 title: category.name,
-                // type: category.type,
-                // id: category.category_id,
+                type: category.type,
+                id: category.category_id,
             });
             tempScenes[index] = () => renderCategory(category);
         })
 
 
-        console.log('category2', temp);
+        console.log('category', temp);
         setScenes((tempScenes));
         setRoutes(temp);
 
@@ -225,13 +138,5 @@ const Menus2 = memo(function Greeting({ categories }: { categories: any }) {
         </Center>
     );
 })
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-    },
-});
 
 export default Menus2;

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import CategoryService from '../Services/CategoryService';
 import { Center, Box, Text } from 'native-base';
-import Menus from '../components/Menus';
+import Menus from '../components/Menus2';
 
 export default function CategoriesPage({ route, navigation }: { route: any, navigation: any }) {
 
