@@ -3,12 +3,12 @@ import { Dimensions, View, useWindowDimensions } from 'react-native'
 import { Image } from 'react-native'
 import AutoImage from 'react-native-scalable-image';
 
-const Images = memo(function Greeting({ data, column }: any) {
+const Images = memo(function Greeting({ data, column, width, height }: any) {
 
     const [imageHeights, setImageHeights] = useState<any>([])
     const layout = useWindowDimensions();
 
-    const url = 'https://api.poplook.com/' + data.href;
+    const url = data.href.includes('https') ? data.href : 'https://api.poplook.com/' + data.href;
 
     useEffect(() => {
 
@@ -31,7 +31,7 @@ const Images = memo(function Greeting({ data, column }: any) {
     return (
         <>
         <View>
-            <AutoImage source={{ uri: url }} height={imageHeights}></AutoImage>
+            <AutoImage source={{ uri: url }} height={height ? height : imageHeights} width={width ? width : ''}></AutoImage>
         </View>
         </>
     );

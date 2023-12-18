@@ -1,27 +1,78 @@
-import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
-import React, { useState, memo } from 'react';
+import { StyleSheet, View, Dimensions, TouchableOpacity, useWindowDimensions, Image } from 'react-native';
+import React, { useState, useEffect, memo } from 'react';
+import { VStack, HStack, Text, Center } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 import { Pagination } from 'react-native-snap-carousel';
 import Images from './Image';
 import Videos from './Video';
 import TextWithStyle from './TextWithStyle';
+import AutoImage from 'react-native-scalable-image';
 
 const win = Dimensions.get('window');
 
-const Carousels = memo(function Greeting({ item, height }: any) {
+const Carousels = memo(function Greeting({ item }: any) {
 
     const navigation: any = useNavigation();
+    const layout = useWindowDimensions();
     const [currentImageIndex, setCurrentImageIndex] = useState<any>(0);
+    const [carouselItems, setCarouselItems] = useState<any>([]);
+
+    const widthItem = item.col;
+    const heightItem = item.height;
+    const length = item.block.resource.length;
+    const [imageHeight, setImageHeight] = useState<any>([])
+
+    useEffect(() => {
+
+        if (item) {
+            item.block.resource.map((image: any) => {
+
+                const url = 'https://api.poplook.com/' + image.href;
+
+                Image.getSize(url, (width: any, height: any) => {
+
+                    setImageHeight(height * win.width / width);
+
+                });
+
+            })
+        }
+
+    }, [item])
 
     const goToCategory = (item: any) => {
-      
+
         const params = {
-            category_id: String(item.categoryId),
-            category_name: ''
+            category_id: String(item.linkData.id),
+            category_name: item.linkData.name
         };
 
-        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.categoryId) });
+        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) });
+
+    }
+
+    const getChildWidth = (col: any) => {
+
+        if (col.type == '%') {
+            return (col.value / 100) * layout.width;
+        } else if (col.type == 'px') {
+            return imageHeight * (col.value / 375);
+        } else if (col.type == 'auto') {
+            return imageHeight;
+        } else {
+            return imageHeight;
+        }
+
+    }
+
+    const getChildHeight = (height: any) => {
+
+        if (height != 'auto') {
+            return layout.height * (height / 667);
+        } else {
+            return imageHeight;
+        }
 
     }
 
@@ -31,12 +82,13 @@ const Carousels = memo(function Greeting({ item, height }: any) {
             <>
                 <View style={styles.carouselItem}>
                     <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
+
                         {item.type == 'image' && 
-                            <Images width={win.width} height={height} data={item}></Images>
+                            <Images data={item} width={getChildWidth(widthItem)} height={getChildHeight(heightItem)}></Images>  
                         }
                         
                         {item.type == 'video' && 
-                            <Videos width={win.width} height={height} data={item}></Videos>
+                            <Videos data={item}></Videos>
                         }
 
                         <TextWithStyle data={item.labelObj}></TextWithStyle>
@@ -49,13 +101,13 @@ const Carousels = memo(function Greeting({ item, height }: any) {
 
     return (
         <>
-            <View style={styles.container}>
+            <View style={{ width: getChildWidth(widthItem), height: getChildHeight(heightItem) }}>
 
                 <TextWithStyle data={item.block.labelObj}></TextWithStyle>
 
                 <Carousel
-                    width={win.width}
-                    height={200}
+                    width={layout.width}
+                    height={getChildHeight(heightItem)}
                     loop={true}
                     data={item.block.resource}
                     renderItem={renderItem}
@@ -65,7 +117,7 @@ const Carousels = memo(function Greeting({ item, height }: any) {
                 />
 
                 <Pagination
-                    dotsLength={item.block.resource.length}
+                    dotsLength={length}
                     activeDotIndex={currentImageIndex}
                     containerStyle={styles.paginationContainer}
                     dotStyle={styles.dot}
@@ -82,30 +134,22 @@ const Carousels = memo(function Greeting({ item, height }: any) {
 export default Carousels;
 
 const styles = StyleSheet.create({
-    image: {
-        borderRadius: 6,
-    },
     container: {
         flex: 1,
-        alignItems: 'center',
+        flexDirection: 'row',
         justifyContent: 'center',
-        marginBottom: 20
-    },
-    paginationDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginHorizontal: 2,
-        backgroundColor: 'blue',
+        position: 'absolute',
+        bottom: 30
     },
     paginationContainer: {
         position: 'absolute',
-        bottom: 0,
-        paddingVertical: 20,
+        alignSelf: 'center',
+        marginTop: 150
+
     },
     dot: {
-        width: 8,
-        height: 8,
+        width: 20,
+        height: 4,
         borderRadius: 4,
         backgroundColor: 'rgba(0, 0, 0, 2.0)'
     },
@@ -113,9 +157,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
     },
     carouselItem: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 5
+        flex: 1
     },
 })

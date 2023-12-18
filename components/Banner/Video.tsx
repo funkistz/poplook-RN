@@ -1,37 +1,36 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import Video from 'react-native-video';
-import { Center } from 'native-base';
+import { Dimensions } from 'react-native';
 
-const Videos = memo(function Greeting({ width, height, data }: any) {
+const win = Dimensions.get('window');
 
-    const ratio = 2;
+const Videos = memo(function Greeting({ data }: any) {
+
+    const [videoDimension, setVideoDimension] = useState<any>(null);
+
+    const onLoad = (data: any) => {
+
+        const details = {
+          width: data.naturalSize.width,
+          height: data.naturalSize.height,
+        };
+
+        const dimension = details.height * (win.width/details.width)
+        setVideoDimension(dimension);
+    };
 
     return (
-        <Center>
-            {height == 'auto' &&
-                <Video
-                    source={{ uri: 'https://api.poplook.com/' + data.href }}
-                    style={{ width: width, height: height, aspectRatio: ratio }}
-                    controls={false}
-                    autoplay={true}
-                    repeat={true} 
-                    resizeMode="cover"
-                />
-            }
-
-            {height != 'auto' &&
-                <Video
-                    source={{ uri: 'https://api.poplook.com/' + data.href }}
-                    style={{ width: width, height: height }}
-                    controls={false}
-                    autoplay={true}
-                    repeat={true} 
-                    resizeMode="cover"
-                />
-            }       
-        </Center>
-        
+        <Video
+            source={{ uri: 'https://api.poplook.com/' + data.href }}
+            style={{ width: win.width, height: videoDimension }}
+            controls={false}
+            autoplay={true}
+            repeat={true} 
+            resizeMode="cover"
+            onLoad={onLoad}
+        />            
     );
+
 })
 
 export default Videos;

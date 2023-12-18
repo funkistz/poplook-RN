@@ -1,5 +1,5 @@
-import { StyleSheet, View, Dimensions, Alert, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { StyleSheet, View, Dimensions, useWindowDimensions, Image } from 'react-native';
+import React, { useEffect , useState} from 'react';
 import { Center, Text } from 'native-base';
 import { ScrollView, Flex } from 'native-base';
 import Sliders from './Sliders';
@@ -15,32 +15,61 @@ const win = Dimensions.get('window');
 
 const Children = ({ item, index, navigation }: { item: any, index: any, navigation: any }) => {
 
+    const [imageHeight, setImageHeight] = useState<any>([])
+    const layout = useWindowDimensions();
+
+    useEffect(() => {
+
+        if (item.block.resource.length > 0) {
+            item.block.resource.map((image: any) => {
+
+                const url = image.href;
+
+                Image.getSize(url, (width: any, height: any) => {
+
+                    setImageHeight(height * win.width / width);
+
+                });
+
+            })
+        }
+
+    }, [item])
+
     const getChildWidth = (col: any) => {
 
         if (col.type == '%') {
-            return col.value + '%';
+            return (col.value / 100) * layout.width;
         } else if (col.type == 'px') {
-            return col.value + 'px';
+            return imageHeight * (col.value / 375);
         } else if (col.type == 'auto') {
-            return 'auto';
+            return imageHeight;
         } else {
-            return 'auto';
+            return imageHeight;
         }
+    }
 
+    const getChildHeight = (height: any) => {
+
+        if (height != 'auto') {
+            return layout.height * (height / 667);
+        } else {
+            return imageHeight;
+        }
     }
 
     return (
         <Center key={index}>
             <ScrollView w='100%'>
                 <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
-                    height: item.height, width: getChildWidth(item.col),  }}>
+                    height: item.height, width: getChildWidth(item.col) }}>
 
                     {item.block.type == 'block' && 
-                        <Blocks item={item} height={item.height} width={item.col.value}{...item.col.type}></Blocks> 
+                        <Blocks item={item}></Blocks> 
                     }
 
                     {item.block.type == 'grid' && 
-                        <Grid item={item} height={item.height}></Grid>   
+                        <Grid item={item}></Grid>   
                     }
 
                     {item.block.type == 'text' && 
@@ -48,20 +77,16 @@ const Children = ({ item, index, navigation }: { item: any, index: any, navigati
                     }
 
                     {item.block.type == 'slider' && 
-                        <Sliders item={item} height={item.height}></Sliders>
+                        <Sliders item={item}></Sliders>
                     }
 
                     {item.block.type == 'carousel' && 
-                        <Carousels item={item} children='' height={item.height}></Carousels>
+                        <Carousels item={item}></Carousels> 
                     }
 
-                    {item.block.type == 'navigation_list' && 
-                        <Navigations item={item} height={item.height}></Navigations>
+                    {item.block.type == 'product_list' && 
+                        <Sliders item={item}></Sliders>
                     }
-
-                    {/* {item.block.type == 'vimeo' && 
-                        <Vimeos item={item} height={item.height}></Vimeos>
-                    } */}
 
                 </Flex>
             </ScrollView>

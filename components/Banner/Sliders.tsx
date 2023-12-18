@@ -1,10 +1,12 @@
-import { StyleSheet, View, Dimensions, TouchableOpacity, useWindowDimensions } from 'react-native';
-import React, { useState, memo } from 'react';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image } from 'react-native';
+import React, { memo, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Images from './Image';
 import Videos from './Video';
 import TextWithStyle from './TextWithStyle';
 import { HStack, VStack, ScrollView } from 'native-base';
+import HTMLView from 'react-native-htmlview';
+import { layout } from 'native-base/lib/typescript/theme/styled-system';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -17,40 +19,50 @@ const Sliders = memo(function Greeting({ item }: any) {
     const length = item.block.resource.length;
     const itemWidth = (screenWidth * slideSize) / 100;
 
-    const [carouselRef, setCarouselRef] = useState(null);
+    const [imageHeight, setImageHeight] = useState<any>([])
+
+    useEffect(() => {
+
+        if (item) {
+            item.block.resource.map((image: any) => {
+
+                const url = 'https://api.poplook.com/' + image.href;
+
+                Image.getSize(url, (width: any, height: any) => {
+
+                    setImageHeight(height *screenWidth / width);
+
+                });
+
+            })
+        }
+
+    }, [item])
 
     const goToCategory = (item: any) => {
 
-        const params = {
-            category_id: String(item.linkData.id),
-            category_name: item.linkData.name
-        };
+        if (item.linkData.type == 'category') {
 
-        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) });
+            const params = {
+                category_id: String(item.linkData.id),
+                category_name: item.linkData.name
+            };
+    
+            navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) });
+
+        }
+
+        if (item.linkData.type == 'product') {
+
+            const params = {
+                product_id: String(item.linkData.id)
+            };
+    
+            navigation.navigate('ProductDetailPage', params);
+
+        } 
 
     }
-
-    const renderItem = ({item, index} : any) => {
-        return (
-            <>
-            <View style={styles.carouselItem}>
-                <TouchableOpacity onPress={() => goToCategory(item)} key={index}> 
-                
-                    {item.type == 'image' && 
-                        <Images data={item} column={(100/slideSize)}></Images>
-                    }
-                    
-                    {item.type == 'video' && 
-                        <Videos data={item}></Videos>
-                    }
-
-                    <TextWithStyle data={item.labelObj}></TextWithStyle>
-
-                </TouchableOpacity>
-            </View>
-            </>
-        )
-    };
 
     return (
         <>
@@ -68,15 +80,22 @@ const Sliders = memo(function Greeting({ item }: any) {
                                     <TouchableOpacity onPress={() => goToCategory(data)} key={index}> 
                                         <VStack key={index} w={itemWidth + slideGap}>
 
-                                                {data.type == 'image' && 
-                                                    <Images data={data} column={100/slideSize} ></Images>
-                                                }
-                                                
-                                                {data.type == 'video' && 
-                                                    <Videos data={data}></Videos>
-                                                }
+                                            {data.type == 'image' && 
+                                                <Images data={data} column={100/slideSize} ></Images>
+                                            }
+                                            
+                                            {data.type == 'video' && 
+                                                <Videos data={data}></Videos>
+                                            }
 
-                                            <TextWithStyle data={data.labelObj}></TextWithStyle>
+                                            {item.block.type == 'slider' &&
+                                                <TextWithStyle data={data.labelObj}></TextWithStyle>
+                                            }
+
+                                            {item.block.type == 'product_list' && 
+                                                <HTMLView value={data.labelObj.content}/>
+                                            }
+                                            
                                         </VStack>
                                     </TouchableOpacity>
                                 </View>
