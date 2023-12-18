@@ -8,6 +8,7 @@ declare module 'react-native-select-dropdown';
 declare module 'react-native-snap-carousel';
 declare module 'react-native-video';
 declare module 'react-native-image-auto-height';
+declare module 'react-native-htmlview';
 declare module '@env' {
     export const API_URL: string;
     export const WEB_URL: string;
