@@ -67,8 +67,9 @@ const Sliders = memo(function Greeting({ item }: any) {
             <View style={styles.container}>
 
                 <TextWithStyle data={item.block.labelObj}></TextWithStyle>
-
+                
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    
                     <HStack>
 
                         {item.block.resource.map((data: any, index: any) => {
@@ -89,7 +90,7 @@ const Sliders = memo(function Greeting({ item }: any) {
                                             
                                         </VStack>
 
-                                        <VStack key={index} w={itemWidth}>
+                                        <VStack key={index} w={itemWidth} mt={1}>
 
                                             { item.block.type == 'slider' &&
                                                 <TextWithStyle data={data.labelObj}></TextWithStyle>
@@ -102,8 +103,6 @@ const Sliders = memo(function Greeting({ item }: any) {
                                             </>
                                                 
                                             }
-
-                                            
 
                                         </VStack>
                                         
