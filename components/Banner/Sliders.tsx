@@ -1,12 +1,10 @@
 import { StyleSheet, View, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { HStack, VStack, ScrollView, Text } from 'native-base';
 import React, { memo, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Images from './Image';
 import Videos from './Video';
 import TextWithStyle from './TextWithStyle';
-import { HStack, VStack, ScrollView } from 'native-base';
-import HTMLView from 'react-native-htmlview';
-import { layout } from 'native-base/lib/typescript/theme/styled-system';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -74,29 +72,41 @@ const Sliders = memo(function Greeting({ item }: any) {
                     <HStack>
 
                         {item.block.resource.map((data: any, index: any) => {
+
                             return (
                                 <>
                                 <View style={styles.carouselItem}>
                                     <TouchableOpacity onPress={() => goToCategory(data)} key={index}> 
                                         <VStack key={index} w={itemWidth + slideGap}>
 
-                                            {data.type == 'image' && 
-                                                <Images data={data} column={100/slideSize} ></Images>
+                                            { data.type == 'image' && 
+                                                <Images data={data} column={100/slideSize}></Images>
                                             }
                                             
-                                            {data.type == 'video' && 
+                                            { data.type == 'video' && 
                                                 <Videos data={data}></Videos>
-                                            }
-
-                                            {item.block.type == 'slider' &&
-                                                <TextWithStyle data={data.labelObj}></TextWithStyle>
-                                            }
-
-                                            {item.block.type == 'product_list' && 
-                                                <HTMLView value={data.labelObj.content}/>
                                             }
                                             
                                         </VStack>
+
+                                        <VStack key={index} w={itemWidth}>
+
+                                            { item.block.type == 'slider' &&
+                                                <TextWithStyle data={data.labelObj}></TextWithStyle>
+                                            }
+
+                                            { item.block.type == 'product_list' &&
+                                            <>
+                                                <Text style={{ fontStyle: data.nameObj.fontStyle, fontSize: data.nameObj.size, fontWeight: data.nameObj.bold, color: data.nameObj.color, letterSpacing: data.nameObj.letterSpacing, textAlign: data.nameObj.align, textDecorationLine: data.nameObj.textDecoration, textTransform: data.nameObj.transform }}>{data.nameObj.content}</Text>
+                                                <Text style={{ fontStyle: data.priceObj.fontStyle, fontSize: data.priceObj.size, fontWeight: data.priceObj.bold, color: data.priceObj.color, letterSpacing: data.priceObj.letterSpacing, textAlign: data.priceObj.align, textDecorationLine: data.priceObj.textDecoration, textTransform: data.priceObj.transform }}>{data.priceObj.content}</Text>
+                                            </>
+                                                
+                                            }
+
+                                            
+
+                                        </VStack>
+                                        
                                     </TouchableOpacity>
                                 </View>
                                 </>
@@ -122,5 +132,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'flex-start'
-      }
+    }
 })
