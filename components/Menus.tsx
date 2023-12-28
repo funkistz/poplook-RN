@@ -16,6 +16,19 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
     const [routes, setRoutes] = useState<any>();
     const [scenes, setScenes] = useState<any>();
 
+    const getChildWidth = (col: any) => {
+
+        if (col.type == '%') {
+            return (col.value / 100) * layout.width;
+        } else if (col.type == 'px') {
+            return layout.width * (col.value / 375);
+        } else if (col.type == 'auto') {
+            return layout.width;
+        } else {
+            return layout.width;
+        }
+    }
+
     const renderCategory = (category: any) => {
 
         const tabs: any = [];
@@ -28,8 +41,8 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
 
                     if (item.block.type == 'block') {
                         tabs.push(
-                            <Flex style={{ paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left }}
-                                key={index}>
+                            <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
+                                height: item.height, width: getChildWidth(item.col) }} key={index}>
                                 <Blocks item={item}></Blocks>
                             </Flex>
                         );
@@ -37,8 +50,8 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
 
                     if (item.block.type == 'slider') {
                         tabs.push(
-                            <Flex style={{ paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left }}
-                                key={index}>
+                            <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
+                                height: item.height, width: getChildWidth(item.col) }} key={index}>
                                 <Sliders item={item}></Sliders>
                             </Flex>
                         );
@@ -67,7 +80,7 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
 
             temp.push({
                 key: index,
-                title: category.name
+                data: category.resource.labelObj
             });
 
             tempScenes[index] = () => renderCategory(category);

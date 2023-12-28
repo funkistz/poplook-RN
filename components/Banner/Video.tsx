@@ -22,7 +22,7 @@ const Videos = memo(function Greeting({ data }: any) {
     return (
         <Video
             source={{ uri: 'https://api.poplook.com/' + data.href }}
-            style={{ width: win.width, height: videoDimension }}
+            style={{ width: videoDimension, height: videoDimension }}
             controls={false}
             autoplay={true}
             repeat={true} 

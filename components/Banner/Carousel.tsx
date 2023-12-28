@@ -1,6 +1,6 @@
 import { StyleSheet, View, Dimensions, TouchableOpacity, useWindowDimensions, Image } from 'react-native';
 import React, { useState, useEffect, memo } from 'react';
-import { VStack, HStack, Text, Center } from 'native-base';
+import { VStack, HStack, Text, Center, ScrollView } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 import { Pagination } from 'react-native-snap-carousel';
@@ -84,7 +84,7 @@ const Carousels = memo(function Greeting({ item }: any) {
                     <TouchableOpacity key={index} onPress={() => goToCategory(item)}>
 
                         {item.type == 'image' && 
-                            <Images data={item} width={getChildWidth(widthItem)} height={getChildHeight(heightItem)}></Images>  
+                            <Images data={item} width={getChildWidth(widthItem)}></Images>  
                         }
                         
                         {item.type == 'video' && 
@@ -101,18 +101,22 @@ const Carousels = memo(function Greeting({ item }: any) {
 
     return (
         <>
-            <View style={{ width: getChildWidth(widthItem), height: getChildHeight(heightItem) }}>
+        <ScrollView>
+            <VStack h={imageHeight}>
 
                 <TextWithStyle data={item.block.labelObj}></TextWithStyle>
 
                 <Carousel
-                    width={layout.width}
-                    height={getChildHeight(heightItem)}
+                    width={getChildWidth(widthItem)}
                     loop={true}
                     data={item.block.resource}
                     renderItem={renderItem}
                     onSnapToItem={(index) => {
                         setCurrentImageIndex(index)
+                    }}
+                    panGestureHandlerProps={{
+                        activeOffsetX: [-10, 10],
+                        failOffsetY: [-10, 10],
                     }}
                 />
 
@@ -126,7 +130,8 @@ const Carousels = memo(function Greeting({ item }: any) {
                     inactiveDotScale={0.8}
                 />
 
-            </View> 
+            </VStack> 
+            </ScrollView>
         </>
     );
 })

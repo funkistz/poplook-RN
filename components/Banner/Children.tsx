@@ -13,7 +13,7 @@ import TextWithStyle from './TextWithStyle';
 
 const win = Dimensions.get('window');
 
-const Children = ({ item, index, navigation }: { item: any, index: any, navigation: any }) => {
+const Children = ({ item, index }: { item: any, index: any }) => {
 
     const [imageHeight, setImageHeight] = useState<any>([])
     const layout = useWindowDimensions();
@@ -49,50 +49,35 @@ const Children = ({ item, index, navigation }: { item: any, index: any, navigati
         }
     }
 
-    const getChildHeight = (height: any) => {
+    return <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
+        height: item.height, width: getChildWidth(item.col) }}>
 
-        if (height != 'auto') {
-            return layout.height * (height / 667);
-        } else {
-            return imageHeight;
+        {item.block.type == 'block' && 
+            <Blocks item={item}></Blocks> 
         }
-    }
 
-    return (
-        <Center key={index}>
-            <ScrollView w='100%'>
-                <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
-                    height: item.height, width: getChildWidth(item.col) }}>
+        {item.block.type == 'grid' && 
+            <Grid item={item}></Grid>   
+        }
 
-                    {item.block.type == 'block' && 
-                        <Blocks item={item}></Blocks> 
-                    }
+        {item.block.type == 'text' && 
+            <TextWithStyle data={item.block.resource.labelObj}></TextWithStyle>
+        }
 
-                    {item.block.type == 'grid' && 
-                        <Grid item={item}></Grid>   
-                    }
+        {item.block.type == 'slider' && 
+            <Sliders item={item}></Sliders>
+        }
 
-                    {item.block.type == 'text' && 
-                        <TextWithStyle data={item.block.resource.labelObj}></TextWithStyle>
-                    }
+        {item.block.type == 'carousel' && 
+            <Carousels item={item}></Carousels> 
+        }
 
-                    {item.block.type == 'slider' && 
-                        <Sliders item={item}></Sliders>
-                    }
+        {item.block.type == 'product_list' && 
+            <Sliders item={item}></Sliders>
+        }
 
-                    {item.block.type == 'carousel' && 
-                        <Carousels item={item}></Carousels> 
-                    }
+    </Flex>
 
-                    {item.block.type == 'product_list' && 
-                        <Sliders item={item}></Sliders>
-                    }
-
-                </Flex>
-            </ScrollView>
-        </Center>
-        
-    );
 }
 
 const styles = StyleSheet.create({

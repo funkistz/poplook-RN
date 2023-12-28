@@ -6,6 +6,7 @@ import { useColorModeValue, Pressable, Text, ScrollView, HStack } from 'native-b
 import { Animated, useWindowDimensions, TouchableOpacity, StyleSheet } from 'react-native';
 import FullWidthImage from 'react-native-fullwidth-image'
 import { useNavigation } from '@react-navigation/native';
+import TextWithStyle from '../components/Banner/TextWithStyle';
 
 export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
 
@@ -63,10 +64,11 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
             return (
               <TouchableOpacity key={i} onPress={() => { onIndexChange(i); }}>
                 <Box p={4} borderBottomWidth="3" borderColor={borderColor} bg="red">
-                  <Animated.Text style={{
+                  <TextWithStyle data={route.data}></TextWithStyle>
+                  {/* <Animated.Text style={{
                     color,
                     opacity
-                  }}>{route.title}</Animated.Text>
+                  }}>{route.title}</Animated.Text> */}
                 </Box>
               </TouchableOpacity>
             );
