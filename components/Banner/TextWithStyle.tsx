@@ -27,12 +27,12 @@ const TextWithStyle = memo(function Greeting({ data }: any) {
                         { data.icon.isShow && 
                             <>
                                 <Image source={{ uri : url }} style={{ width: data.icon.size, height : data.icon.size }} />
-                                <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size - 15), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, paddingLeft: data.icon.gap, lineHeight: (data.size * 1.0) }} >{data.content}</Text> 
+                                <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, paddingLeft: data.icon.gap, lineHeight: (data.size * 1.0) }} >{data.content}</Text> 
                             </>
                         }
 
                         { !data.icon.isShow && 
-                            <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size - 15), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, lineHeight: (data.size * 1.0) }} >{data.content}</Text>   
+                            <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, lineHeight: (data.size * 1.0) }} >{data.content}</Text>   
                         }        
                     </HStack>
                 }
@@ -42,13 +42,13 @@ const TextWithStyle = memo(function Greeting({ data }: any) {
                     <HStack>
                         { data.icon.isShow && 
                             <>
-                                <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size - 15), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, paddingRight: data.icon.gap, lineHeight: (data.size * 1.0) }}>{data.content}</Text>
+                                <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, paddingRight: data.icon.gap, lineHeight: (data.size * 1.0) }}>{data.content}</Text>
                                 <Image source={{ uri : url }} style={{ width: data.icon.size, height : data.icon.size }} />
                             </>
                         }
 
                         { !data.icon.isShow && 
-                            <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size - 15), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, lineHeight: (data.size * 1.0) }}>{data.content}</Text>
+                            <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, lineHeight: (data.size * 1.0) }}>{data.content}</Text>
                         }
 
                     </HStack>

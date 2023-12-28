@@ -67,7 +67,7 @@ const Sliders = memo(function Greeting({ item }: any) {
             <View style={styles.container}>
 
                 <TextWithStyle data={item.block.labelObj}></TextWithStyle>
-                
+              
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     
                     <HStack>
@@ -90,18 +90,17 @@ const Sliders = memo(function Greeting({ item }: any) {
                                             
                                         </VStack>
 
-                                        <VStack key={index} w={itemWidth} mt={1}>
+                                        <VStack key={index} w={itemWidth}>
 
                                             { item.block.type == 'slider' &&
                                                 <TextWithStyle data={data.labelObj}></TextWithStyle>
                                             }
 
                                             { item.block.type == 'product_list' &&
-                                            <>
-                                                <Text style={{ fontStyle: data.nameObj.fontStyle, fontSize: data.nameObj.size, fontWeight: data.nameObj.bold, color: data.nameObj.color, letterSpacing: data.nameObj.letterSpacing, textAlign: data.nameObj.align, textDecorationLine: data.nameObj.textDecoration, textTransform: data.nameObj.transform }}>{data.nameObj.content}</Text>
-                                                <Text style={{ fontStyle: data.priceObj.fontStyle, fontSize: data.priceObj.size, fontWeight: data.priceObj.bold, color: data.priceObj.color, letterSpacing: data.priceObj.letterSpacing, textAlign: data.priceObj.align, textDecorationLine: data.priceObj.textDecoration, textTransform: data.priceObj.transform }}>{data.priceObj.content}</Text>
-                                            </>
-                                                
+                                                <>
+                                                    <TextWithStyle data={data.nameObj}></TextWithStyle>
+                                                    <TextWithStyle data={data.priceObj}></TextWithStyle>
+                                                </>  
                                             }
 
                                         </VStack>
