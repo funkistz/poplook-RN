@@ -43,7 +43,7 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
                         tabs.push(
                             <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
                                 height: item.height, width: getChildWidth(item.col) }} key={index}>
-                                <Blocks item={item}></Blocks>
+                                <Blocks item={item} type={'menu'}></Blocks>
                             </Flex>
                         );
                     }
@@ -52,7 +52,7 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
                         tabs.push(
                             <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
                                 height: item.height, width: getChildWidth(item.col) }} key={index}>
-                                <Sliders item={item}></Sliders>
+                                <Sliders item={item} type={'menu'}></Sliders>
                             </Flex>
                         );
                     }

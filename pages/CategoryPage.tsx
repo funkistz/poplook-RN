@@ -3,7 +3,7 @@ import CategoryService from '../Services/CategoryService';
 import { Center, Text } from 'native-base';
 import Menus from '../components/Menus';
 
-export default function CategoryPage2({ navigation }: {navigation: any }) {
+export default function CategoryPage2({ route, navigation }: { route: any, navigation: any }){
 
     const [categories, setCategories] = useState<any>(null);
 

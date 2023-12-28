@@ -78,11 +78,11 @@ export default function HomePage({ navigation }: { navigation: any }) {
                                         height: item.height, width: getChildWidth(item.col) }} key={index}>
 
                                         {item.block.type == 'block' && 
-                                            <Blocks item={item}></Blocks> 
+                                            <Blocks item={item} type={'banner'}></Blocks> 
                                         }
 
                                         {item.block.type == 'grid' && 
-                                            <Grid item={item}></Grid>   
+                                            <Grid item={item} type={'banner'}></Grid>   
                                         }
 
                                         {item.block.type == 'text' && 
@@ -90,15 +90,15 @@ export default function HomePage({ navigation }: { navigation: any }) {
                                         }
 
                                         {item.block.type == 'slider' && 
-                                            <Sliders item={item}></Sliders>
+                                            <Sliders item={item} type={'banner'}></Sliders>
                                         }
 
                                         {item.block.type == 'carousel' && 
-                                            <Carousels item={item}></Carousels> 
+                                            <Carousels item={item} type={'banner'}></Carousels> 
                                         }
 
                                         {item.block.type == 'product_list' && 
-                                            <Sliders item={item}></Sliders>
+                                            <Sliders item={item} type={'banner'}></Sliders>
                                         }
 
                                         {/* <Children item={item} index={index} navigation={navigation}></Children> */}
