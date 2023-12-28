@@ -103,7 +103,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='DeliveryReturnsPage' component={DeliveryReturnsPage} options={{ title: 'Delivery & Returns' }} />
             <Stack.Screen name='NewBannerPage' component={NewBannerPage} options={{ title: 'New Banner' }} />
             <Stack.Screen name='BannerPage' component={BannerPage} options={{ title: 'Banner' }} />
-            <Stack.Screen name='CategoryPage2' component={CategoryPage2} options={{ title: 'Category' }} />
+            <Stack.Screen name='CategoryPage2' component={CategoryPage2} options={{ title: 'Categories' }} />
         </Stack.Navigator>
     )
 }
