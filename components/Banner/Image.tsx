@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect} from 'react';
-import { Dimensions, View, useWindowDimensions } from 'react-native'
+import { useWindowDimensions } from 'react-native'
 import { Image } from 'react-native'
 import AutoImage from 'react-native-scalable-image';
 
@@ -29,11 +29,7 @@ const Images = memo(function Greeting({ data, column, width, height }: any) {
     }, [imageHeights])
 
     return (
-        <>
-        <View>
-            <AutoImage source={{ uri: url }} height={height ? height : imageHeights} width={width ? width : ''}></AutoImage>
-        </View>
-        </>
+        <AutoImage source={{ uri: url }} height={height ? height : imageHeights} width={width ? width : ''}></AutoImage>
     );
 })
 
