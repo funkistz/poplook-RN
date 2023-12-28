@@ -8,7 +8,7 @@ import TextWithStyle from './TextWithStyle';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const Sliders = memo(function Greeting({ item }: any) {
+const Sliders = memo(function Greeting({ item, type }: any) {
 
     const navigation: any = useNavigation();
 
@@ -46,7 +46,7 @@ const Sliders = memo(function Greeting({ item }: any) {
                 category_name: item.linkData.name
             };
     
-            navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) });
+            type == 'banner' ? navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) }) : navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) })
 
         }
 

@@ -7,7 +7,7 @@ import Videos from './Video';
 
 const win = Dimensions.get('window');
 
-const Blocks = memo(function Greeting({ item }: any) {
+const Blocks = memo(function Greeting({ item, type }: any) {
 
     const navigation: any = useNavigation();
     const [imageHeight, setImageHeight] = useState<any>({})
@@ -34,7 +34,7 @@ const Blocks = memo(function Greeting({ item }: any) {
             category_name: item.block.resource.linkData.name
         };
 
-        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.linkData.id) });
+        type == 'banner' ? navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.linkData.id) }) : navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: String(item.block.resource.linkData.id) })
 
     }
 

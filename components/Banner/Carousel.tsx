@@ -11,7 +11,7 @@ import AutoImage from 'react-native-scalable-image';
 
 const win = Dimensions.get('window');
 
-const Carousels = memo(function Greeting({ item }: any) {
+const Carousels = memo(function Greeting({ item, type }: any) {
 
     const navigation: any = useNavigation();
     const layout = useWindowDimensions();
@@ -48,7 +48,7 @@ const Carousels = memo(function Greeting({ item }: any) {
             category_name: item.linkData.name
         };
 
-        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) });
+        type == 'banner' ? navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) }) : navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) })
 
     }
 

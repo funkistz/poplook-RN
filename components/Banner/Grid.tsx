@@ -7,7 +7,7 @@ import Videos from './Video';
 
 const win = Dimensions.get('window');
 
-const Grid = memo(function Greeting({ item }: any) {
+const Grid = memo(function Greeting({ item, type }: any) {
 
     const navigation: any = useNavigation();
 
@@ -24,7 +24,7 @@ const Grid = memo(function Greeting({ item }: any) {
             category_name: item.linkData.name
         };
 
-        navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) });
+        type == 'banner' ? navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) }) : navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: String(item.linkData.id) });
 
     }
 
