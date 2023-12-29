@@ -63,13 +63,16 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
 
             return (
               <TouchableOpacity key={i} onPress={() => { onIndexChange(i); }}>
-                <Box p={4} borderBottomWidth="3" borderColor={borderColor} bg="red">
-                  <TextWithStyle data={route.data}></TextWithStyle>
-                  {/* <Animated.Text style={{
-                    color,
-                    opacity
-                  }}>{route.title}</Animated.Text> */}
-                </Box>
+                {route.active &&
+                   <Box p={4} borderBottomWidth="3" borderColor={borderColor} bg="red">
+                   <TextWithStyle data={route.data}></TextWithStyle>
+                   {/* <Animated.Text style={{
+                     color,
+                     opacity
+                   }}>{route.title}</Animated.Text> */}
+                 </Box>
+                }
+               
               </TouchableOpacity>
             );
           })

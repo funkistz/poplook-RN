@@ -1,7 +1,7 @@
 import { StyleSheet, useWindowDimensions, Dimensions } from 'react-native';
 import React, { useState, useEffect, memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Center, ScrollView, Flex } from 'native-base';
+import { Center, ScrollView, Flex, Text } from 'native-base';
 import Tabs from './Tabs';
 import Sliders from './Banner/Sliders';
 import Blocks from './Banner/Block';
@@ -80,7 +80,8 @@ const Menus = memo(function Greeting({ categories }: { categories: any }) {
 
             temp.push({
                 key: index,
-                data: category.resource.labelObj
+                data: category.resource.labelObj,
+                active: category.active
             });
 
             tempScenes[index] = () => renderCategory(category);

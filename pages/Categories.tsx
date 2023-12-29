@@ -22,7 +22,6 @@ export default function CategoriesPage({ route, navigation }: { route: any, navi
                 const json = await response.json();
 
                 console.log('tempCat', json.data);
-                // console.log('tempCat', json.data);
 
                 setCategories(json.data);
             }
