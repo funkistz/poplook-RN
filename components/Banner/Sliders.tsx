@@ -66,7 +66,7 @@ const Sliders = memo(function Greeting({ item, type }: any) {
         <>
             <View style={styles.container}>
 
-                <TextWithStyle data={item.block.labelObj}></TextWithStyle>
+                <TextWithStyle data={item.block.labelObj} type={type} position={'title'}></TextWithStyle>
               
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     
@@ -93,7 +93,7 @@ const Sliders = memo(function Greeting({ item, type }: any) {
                                         <VStack key={index} w={itemWidth}>
 
                                             { item.block.type == 'slider' &&
-                                                <TextWithStyle data={data.labelObj}></TextWithStyle>
+                                                <TextWithStyle data={data.labelObj} type={type} position={'label'}></TextWithStyle>
                                             }
 
                                             { item.block.type == 'product_list' &&
