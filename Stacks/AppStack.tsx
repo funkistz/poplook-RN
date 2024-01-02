@@ -37,6 +37,7 @@ import { Image, Center, Box } from 'native-base';
 import NewBannerPage from '../pages/NewBannerPage';
 import BannerPage from '../pages/BannerPage';
 import CategoryPage2 from '../pages/CategoryPage';
+import CustomPage from '../pages/CustomPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -104,6 +105,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='NewBannerPage' component={NewBannerPage} options={{ title: 'New Banner' }} />
             <Stack.Screen name='BannerPage' component={BannerPage} options={{ title: 'Banner' }} />
             <Stack.Screen name='CategoryPage2' component={CategoryPage2} options={{ title: 'Categories' }} />
+            <Stack.Screen name='CustomPage' component={CustomPage} options={{ title: '' }} />
         </Stack.Navigator>
     )
 }
