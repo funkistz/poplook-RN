@@ -32,6 +32,18 @@ const BannerService = {
         return await api.get(url, { params : param })
 
     },
+
+    async getCustomPage(link: any) {
+
+        const param = {
+            url: link
+        }
+
+        const url = 'custom_page';
+
+        return await api.get(url, { params : param })
+
+    },
 }
 
 export default BannerService;
