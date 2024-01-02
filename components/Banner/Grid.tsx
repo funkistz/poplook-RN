@@ -1,7 +1,7 @@
-import { Dimensions, View, TouchableOpacity } from 'react-native';
-import { FlatList } from 'native-base';
+import { Dimensions, View, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { FlatList, Flex } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import Images from './Image';
 import Videos from './Video';
 
@@ -17,6 +17,9 @@ const Grid = memo(function Greeting({ item, type }: any) {
     const availableSpace = win.width - (columnNumber - 1) * gap;
     const itemSize = ((availableSpace + gap) / columnNumber);
 
+    const dataArray = [item.block.resource];
+    const layout = useWindowDimensions();
+    
     const goToCategory = (item: any) => {
 
         const params = {
@@ -28,10 +31,10 @@ const Grid = memo(function Greeting({ item, type }: any) {
 
     }
 
-    const renderItem = ({item} : any ) => {
+    const renderItem = ({data} : any ) => {
         return (
             <View style={{ width: itemSize }}>
-                <TouchableOpacity onPress={() => goToCategory(item)}>
+                <TouchableOpacity onPress={() => goToCategory(data)}>
 
                     {item.type == 'image' &&
                         <Images data={item} column={columnNumber}></Images>
@@ -47,14 +50,43 @@ const Grid = memo(function Greeting({ item, type }: any) {
     };
 
     return (
-        <FlatList
-            data={item.block.resource}
-            numColumns={item.block.columnNo} 
-            key={item.block.columnNo}
-            renderItem={renderItem}
-            contentContainerStyle={{gap}}
-            columnWrapperStyle={{gap}}
-        />  
+        <View>
+
+            {columnNumber > 1 &&
+                <FlatList
+                    data={item.block.resource}
+                    numColumns={item.block.columnNo} 
+                    key={item.block.columnNo}
+                    renderItem={renderItem}
+                    contentContainerStyle={{gap}}
+                    columnWrapperStyle={{gap}}
+                /> 
+            }
+
+            {columnNumber == 1 &&
+                <Flex>
+
+                    {item.block.resource.map((item: any, index: any) => {  
+
+                        return <TouchableOpacity onPress={() => goToCategory(item)} key={index}>
+        
+                            {item.type == 'image' && 
+                                <Images data={item}></Images>
+                            }
+            
+                            {item.type == 'video' && 
+                                <Videos data={item}></Videos>
+                            }
+            
+                        </TouchableOpacity>
+
+                    })}         
+                   
+                </Flex>
+            }
+          
+        </View>
+        
     );
 })
 

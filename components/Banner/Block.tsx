@@ -28,13 +28,35 @@ const Blocks = memo(function Greeting({ item, type }: any) {
     }, [item])
 
     const goToCategory = (item: any) => {
+        
+        if (item.block.resource.linkData.type == 'category') {
 
-        const params = {
-            category_id: String(item.block.resource.linkData.id),
-            category_name: item.block.resource.linkData.name
-        };
+            const params = {
+                category_id: String(item.block.resource.linkData.id),
+                category_name: item.block.resource.linkData.name
+            };
+    
+            type == 'banner' ? navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.linkData.id) }) : navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: String(item.block.resource.linkData.id) })
 
-        type == 'banner' ? navigation.navigate('Home', { screen: 'CategoryPage', params: params, title: String(item.block.resource.linkData.id) }) : navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: String(item.block.resource.linkData.id) })
+        } else if (item.block.resource.linkData.type == 'product') {
+
+            const params = {
+                product_id: String(item.block.resource.linkData.id)
+            };
+    
+            navigation.navigate('ProductDetailPage', params);
+
+        } else if (item.block.resource.linkData.type == 'page') {
+
+            const params = {
+                page_id: String(item.block.resource.linkData.id),
+                page_name: item.block.resource.linkData.name,
+                page_url: item.block.resource.linkData.url
+            };
+            
+            type == 'banner' ? navigation.navigate('Home', { screen: 'CustomPage', params: params, title: String(item.block.resource.linkData.name) }) : navigation.navigate('CustomPage', { screen: 'CategoryPage', params: params, title: String(item.block.resource.linkData.name) })
+            
+        }
 
     }
 

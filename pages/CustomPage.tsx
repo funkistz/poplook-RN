@@ -93,8 +93,6 @@ export default function CustomPage({ route, navigation } : { route: any, navigat
                                             <Sliders item={item} type={'menu'}></Sliders>
                                         }
 
-                                        {/* <Children item={item} index={index} navigation={navigation}></Children> */}
-
                                     </Flex>
 
                                 })}
