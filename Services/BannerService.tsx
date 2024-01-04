@@ -44,6 +44,19 @@ const BannerService = {
         return await api.get(url, { params : param })
 
     },
+
+    async getTopBanners(categoryId: any, shopId: any) {
+
+        const param = {
+            categoryId: categoryId,
+            shop_id: shopId
+        }
+
+        const url = 'top_banner/mobile';
+
+        return await api.get(url, { params : param })
+
+    }
 }
 
 export default BannerService;
