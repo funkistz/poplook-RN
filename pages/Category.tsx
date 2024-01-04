@@ -1,6 +1,6 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, HStack, FlatList, Text, Backdrop } from 'native-base';
+import { Box, HStack, FlatList, Text, Backdrop, Flex, View, ScrollView } from 'native-base';
 import ProductService from '../Services/ProductService';
 import ProductCard from '../components/Products/ProductCard';
 import Spinner from '../components/Spinner';
@@ -14,10 +14,19 @@ import { addToWishlist, delWishlist, getWishList } from '../Redux/Slices/Wishlis
 import BottomSheet from '@gorhom/bottom-sheet';
 import SizeList from '../components/Products/SizeList';
 import { useFocusEffect } from '@react-navigation/native';
+import BannerService from '../Services/BannerService';
+import Blocks from '../components/Banner/Block';
+import Grid from '../components/Banner/Grid';
+import TextWithStyle from '../components/Banner/TextWithStyle';
+import Sliders from '../components/Banner/Sliders';
+import Carousels from '../components/Banner/Carousel';
 
 export default function CategoryPage({ route, navigation }: { route: any, navigation: any }) {
 
     const [isFocus, setIsFocus] = useState(false);
+
+    const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
+    const layout = useWindowDimensions();
 
     useFocusEffect(
         React.useCallback(() => {
@@ -315,6 +324,42 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         }
     }, [])
 
+    const [topBanners, setTopBanners] = useState<any>([]);
+
+    useEffect(() => {
+
+        const unsubscribe = navigation.addListener('focus', () => {
+
+            const getTopBanners = async () => {
+                const response = await BannerService.getTopBanners(route.params.category_id, shopId);
+                let json = await response.data
+
+                console.log('TOP BANNER' ,json)
+    
+                setTopBanners(json.data.data);
+            }
+    
+            getTopBanners().catch(console.error);
+
+        });
+
+        return unsubscribe;
+        
+    }, [])
+
+    const getChildWidth = (col: any) => {
+
+        if (col.type == '%') {
+            return (col.value / 100) * layout.width;
+        } else if (col.type == 'px') {
+            return layout.width * (col.value / 375);
+        } else if (col.type == 'auto') {
+            return layout.width;
+        } else {
+            return layout.width;
+        }
+    }
+
     return (
         <>
             {isFocus &&
@@ -335,26 +380,86 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                     />
 
                     <View style={{ flex: 1, backgroundColor: 'white' }}>
+                        
                         {(product.isSuccess && listSizeColor.length > 0) &&
                             <>
+                                
                                 <Filter clicked={toggleModal} removeItem={clickRemoveItem} product={combine} listSizeColor={listSizeColor} />
+                        
+
+                                
 
                                 {product.count > 1 &&
+                                
                                     <>
                                         {(product.items.length > 1) &&
                                             <>
+                                                <ScrollView>
+                                                {topBanners.map((data: any, index: any) => {
+
+                                                return <Flex style={{ flexDirection: data.flex.direction, flexWrap: data.flex.wrap, justifyContent: data.flex.justifyContent,
+                                                    paddingTop: data.padding.top, paddingRight: data.padding.right, paddingBottom: data.padding.bottom, paddingLeft: data.padding.left, 
+                                                    height: data.height, width: '100%', backgroundColor: data.backgroundColor }} 
+                                                    key={index}>
+
+                                                        {data.children != null &&
+                                                            <>
+                                                                {data.children.map((item: any, index: any) => {
+
+                                                                    return <Flex style={{ backgroundColor: item.backgroundColor, paddingTop: item.padding.top, paddingRight: item.padding.right, paddingBottom: item.padding.bottom, paddingLeft: item.padding.left, 
+                                                                        height: item.height, width: getChildWidth(item.col) }} key={index}>
+
+                                                                        {item.block.type == 'block' && 
+                                                                            <Blocks item={item} type={'banner'}></Blocks> 
+                                                                        }
+
+                                                                        {item.block.type == 'grid' && 
+                                                                            <Grid item={item} type={'banner'}></Grid>   
+                                                                        }
+
+                                                                        {item.block.type == 'text' && 
+                                                                            <TextWithStyle data={item.block.resource.labelObj}></TextWithStyle>
+                                                                        }
+
+                                                                        {item.block.type == 'slider' && 
+                                                                            <Sliders item={item} type={'banner'}></Sliders>
+                                                                        }
+
+                                                                        {item.block.type == 'carousel' && 
+                                                                            <Carousels item={item} type={'banner'}></Carousels> 
+                                                                        }
+
+                                                                        {item.block.type == 'product_list' && 
+                                                                            <Sliders item={item} type={'banner'}></Sliders>
+                                                                        }
+
+                                                                        {/* <Children item={item} index={index} navigation={navigation}></Children> */}
+
+                                                                    </Flex>
+
+                                                                })}
+                                                            </>
+                                                        }
+
+                                                    </Flex>
+                                                })}
                                                 <FlatList
                                                     numColumns={2}
                                                     data={product.items}
-                                                    // mb={10}
-                                                    renderItem={({ item }) => <Box w="50%">
+                                                    renderItem={({ item }) => 
+                                                    <>
+                                                    <Box w="50%">
                                                         <ProductCard product={item} openWishlist={addtoWishlist}></ProductCard>
-                                                    </Box>}
+                                                    </Box></>}
                                                     keyExtractor={(item: any) => item.id_product}
                                                     onEndReached={scrollMore}
                                                     onEndReachedThreshold={0.1}
                                                     ListFooterComponent={() => <Spinner spin={product.isLoading}></Spinner>}
                                                 />
+                                                </ScrollView>
+                                                
+                                                
+                                                
                                             </>
                                         }
 
