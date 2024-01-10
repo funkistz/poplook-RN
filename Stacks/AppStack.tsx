@@ -35,7 +35,6 @@ import FollowUsPage from '../pages/FollowUsPage';
 import DeliveryReturnsPage from '../pages/DeliveryReturnsPage';
 import { Image, Center, Box } from 'native-base';
 import NewBannerPage from '../pages/NewBannerPage';
-import BannerPage from '../pages/BannerPage';
 import CategoryPage2 from '../pages/CategoryPage';
 import CustomPage from '../pages/CustomPage';
 
@@ -103,7 +102,6 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             <Stack.Screen name='FollowUsPage' component={FollowUsPage} options={{ title: 'Follow Us' }} />
             <Stack.Screen name='DeliveryReturnsPage' component={DeliveryReturnsPage} options={{ title: 'Delivery & Returns' }} />
             <Stack.Screen name='NewBannerPage' component={NewBannerPage} options={{ title: 'New Banner' }} />
-            <Stack.Screen name='BannerPage' component={BannerPage} options={{ title: 'Banner' }} />
             <Stack.Screen name='CategoryPage2' component={CategoryPage2} options={{ title: 'Categories' }} />
             <Stack.Screen name='CustomPage' component={CustomPage} options={{ title: '' }} />
         </Stack.Navigator>
