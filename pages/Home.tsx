@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { assignDeviceType } from '../Redux/Slices/Sessions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import { IOS_VERSION } from "@env"
+import { IOS_VERSION, ANDROID_VERSION } from "@env"
 import { customerDetails } from '../Redux/Slices/Sessions';
 import BannerService from '../Services/BannerService';
 import { ScrollView } from 'native-base';
@@ -82,11 +82,17 @@ export default function HomePage({ navigation }: { navigation: any }) {
         checkVersion(version)
     }
 
-
     const checkVersion = (res: any) => {
-        if (res > IOS_VERSION) {
-            forceUpdate()
+        if (Platform.OS == 'ios') {
+            if (res > IOS_VERSION) {
+                forceUpdate()
+            }
+        } else {
+            if (res > ANDROID_VERSION) {
+                forceUpdate()
+            }
         }
+        
     }
 
     const forceUpdate = () => {

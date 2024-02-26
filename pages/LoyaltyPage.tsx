@@ -241,7 +241,7 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
                     <>
                         <View style={styles.spend}>
                             <Text color='black' fontSize={14}>Spend </Text>
-                            <Text color='black' bold fontSize={14}>{session.country.currency_sign} {data.spendmore} </Text>
+                            <Text color='black' bold fontSize={14}>{session.country.currency_sign} {Number.isInteger(data.spendmore) ? data.spendmore : data.spendmore.toFixed(2)} </Text>
                             <Text color='black' fontSize={14}>to level up! </Text>
                         </View>
 
@@ -269,7 +269,7 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
 
                         <View style={styles.spend}>
                             <Text color='black' fontSize={14}>Spend </Text>
-                            <Text color='black' bold fontSize={14}>{session.country.currency_sign} {data.spendmore} </Text>
+                            <Text color='black' bold fontSize={14}>{session.country.currency_sign} {Number.isInteger(data.spendmore) ? data.spendmore : data.spendmore.toFixed(2)} </Text>
                             <Text color='black' fontSize={14}>to level up! </Text>
                         </View>
 

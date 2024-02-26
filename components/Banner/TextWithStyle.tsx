@@ -69,12 +69,12 @@ const TextWithStyle = memo(function Greeting({ data, type, position }: any) {
                             { data.icon.isShow && 
                                 <>
                                     <Image source={{ uri : url }} style={{ width: data.icon.size, height : data.icon.size }} />
-                                    <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, paddingLeft: data.icon.gap, paddingBottom: position == 'title' ? 15 : 0, paddingTop: position == 'label' ? 10 : 0, lineHeight: (data.size * 1.0) }} >{data.content}</Text> 
+                                    <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: (data.content.includes('RM') || data.content.includes('SGD') || data.content.includes('USD')) ? 'none' : data.transform, paddingLeft: data.icon.gap, paddingBottom: position == 'title' ? 15 : 0, paddingTop: position == 'label' ? 10 : 0, lineHeight: (data.size * 1.0) }} >{data.content}</Text> 
                                 </>
                             }
 
                             { !data.icon.isShow && 
-                                <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, paddingBottom: position == 'title' ? 15 : 0, paddingTop: position == 'label' ? 10 : 0, lineHeight: (data.size * 1.0) }} >{data.content}</Text>   
+                                <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: (data.content.includes('RM') || data.content.includes('SGD') || data.content.includes('USD')) ? 'none' : data.transform, paddingBottom: position == 'title' ? 15 : 0, paddingTop: position == 'label' ? 10 : 0, lineHeight: (data.size * 1.0) }} >{data.content}</Text>   
                             }        
                         </HStack>
                     }
@@ -84,13 +84,13 @@ const TextWithStyle = memo(function Greeting({ data, type, position }: any) {
                         <HStack>
                             { data.icon.isShow && 
                                 <>
-                                    <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, paddingRight: data.icon.gap, paddingBottom: position == 'title' ? 15 : 0, paddingTop: position == 'label' ? 10 : 0, lineHeight: (data.size * 1.0) }}>{data.content}</Text>
+                                    <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: (data.content.includes('RM') || data.content.includes('SGD') || data.content.includes('USD')) ? 'none' : data.transform, paddingRight: data.icon.gap, paddingBottom: position == 'title' ? 15 : 0, paddingTop: position == 'label' ? 10 : 0, lineHeight: (data.size * 1.0) }}>{data.content}</Text>
                                     <Image source={{ uri : url }} style={{ width: data.icon.size, height : data.icon.size }} />
                                 </>
                             }
 
                             { !data.icon.isShow && 
-                                <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: data.transform, paddingBottom: position == 'title' ? 15 : 0, paddingTop: position == 'label' ? 10 : 0, lineHeight: (data.size * 1.0) }}>{data.content}</Text>
+                                <Text style={{ fontStyle: data.fontStyle, fontSize: (data.size), fontWeight: data.bold, color: data.color, letterSpacing: data.letterSpacing, textAlign: data.align, textDecorationLine: data.textDecoration, fontFamily: data.fontFamily, textTransform: (data.content.includes('RM') || data.content.includes('SGD') || data.content.includes('USD')) ? 'none' : data.transform, paddingBottom: position == 'title' ? 15 : 0, paddingTop: position == 'label' ? 10 : 0, lineHeight: (data.size * 1.0) }}>{data.content}</Text>
                             }
 
                         </HStack>

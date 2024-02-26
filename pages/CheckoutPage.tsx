@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert, ActivityIndicator, AppState, Dimensions } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, ImageBackground, Alert, ActivityIndicator, AppState, Dimensions, Platform } from 'react-native';
 import { Text, ScrollView, View, HStack, Button, Spacer, Box, AspectRatio, Radio, Input, Divider, Checkbox, Link, VStack, Select, CheckIcon, Flex, TextArea } from "native-base";
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "@reduxjs/toolkit";
@@ -876,7 +876,11 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                     </HStack>
                                 </Box>
                                 <TextArea marginY={3} value={giftMessage}
-                                    onChangeText={text => setGiftMessage(text)} autoCompleteType={undefined} placeholder="Message on card" color={'black'} />
+                                    onChangeText={text => setGiftMessage(text)} 
+                                    keyboardType={Platform.OS === 'ios' ? 'ascii-capable' : 'visible-password'}
+                                    autoCompleteType={undefined} 
+                                    placeholder="Message on card" 
+                                    color={'black'} />
                             </VStack>
                         </> : null}
 
@@ -902,8 +906,9 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
                                 <TextArea marginY={3}
                                     value={leaveMessage}
                                     onChangeText={text => { setLeaveMessage(text) }}
-                                    autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} />
-
+                                    keyboardType={Platform.OS === 'ios' ? 'ascii-capable' : 'visible-password'}
+                                    autoCompleteType={undefined} placeholder={'Type something here'} color={'black'} 
+                                />
                             </VStack>
                         </> : null}
 

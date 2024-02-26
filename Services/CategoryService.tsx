@@ -11,11 +11,15 @@ const CategoryService = {
 
     },
 
-    async getMenus() {
+    async getMenus(shopId: any) {
+
+        const param = {
+            shop_id: shopId
+        }
 
         const url = 'top_menu/mobile' ;
 
-        return await api.get(url)
+        return await api.get(url, { params : param })
 
     },
 }

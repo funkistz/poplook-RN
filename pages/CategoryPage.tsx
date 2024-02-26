@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import CategoryService from '../Services/CategoryService';
 import { Center, Text } from 'native-base';
 import Menus from '../components/Menus';
+import { useSelector } from 'react-redux';
 
 export default function CategoryPage2({ route, navigation }: { route: any, navigation: any }){
 
@@ -9,13 +10,14 @@ export default function CategoryPage2({ route, navigation }: { route: any, navig
 
     const categoriesTemp = JSON.stringify(categories);
     const categoriesJson = useMemo(() => JSON.parse(categoriesTemp), [categoriesTemp])
+    const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
 
             const getMenus = async () => {
-                const response = await CategoryService.getMenus();
+                const response = await CategoryService.getMenus(shopId);
                 let json = await response.data;
 
                 setCategories(json.data.data);
@@ -53,7 +55,7 @@ export default function CategoryPage2({ route, navigation }: { route: any, navig
     };
 
     return (
-        <Center style={{ height: "100%", width: "100%" }}>
+        <Center style={{ height: "100%", width: "100%", backgroundColor: "white" }}>
             {!categoriesJson && <Text pt={10} color='black'>Loading...</Text>}
             {categoriesJson && <Menus categories={categoriesJson} ></Menus>}
         </Center>
