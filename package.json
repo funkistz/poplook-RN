@@ -55,6 +55,7 @@
     "react-native-inappbrowser-reborn": "^3.7.0",
     "react-native-insider": "^5.5.2-nh",
     "react-native-insta-pagination-dots": "^1.0.5",
+    "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-pager-view": "6.0.1",
     "react-native-paper": "^5.6.0",
     "react-native-popover-view": "^5.1.7",

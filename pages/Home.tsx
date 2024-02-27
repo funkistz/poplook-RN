@@ -6,23 +6,27 @@ import { useFocusEffect } from '@react-navigation/native';
 import { IOS_VERSION, ANDROID_VERSION } from "@env"
 import { customerDetails } from '../Redux/Slices/Sessions';
 import BannerService from '../Services/BannerService';
-import { ScrollView } from 'native-base';
+import { Center, ScrollView } from 'native-base';
 import BlockCreator from '../components/Banner/BlockCreator';
 import AuthService from '../Services/AuthService';
 import { getWishList } from '../Redux/Slices/Wishlist';
 import { getColors, getSizes } from '../Redux/Slices/Filter';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const win = Dimensions.get('window');
 
 export default function HomePage({ navigation }: { navigation: any }) {
 
     const [banners, setBanners] = useState<any>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const shopId = useSelector((storeState: any) => storeState.session.country.id_shop);
     const session = useSelector((storeState: any) => storeState.session);
     const dispatch = useDispatch()
 
     useEffect(() => {
+
+        setIsLoading(true)
 
         if (Platform.OS === "ios") {
             dispatch(assignDeviceType('ios'));
@@ -50,6 +54,7 @@ export default function HomePage({ navigation }: { navigation: any }) {
                 let json = await response.data
 
                 setBanners(json.data.data);
+                setIsLoading(false)
             }
 
             getBanners().catch(console.error);
@@ -115,17 +120,29 @@ export default function HomePage({ navigation }: { navigation: any }) {
     return (
         <ScrollView w='100%'>
 
-            {banners.map((data: any, index: any) => {
+            {!isLoading && banners.map((data: any, index: any) => {
 
                 return <BlockCreator data={data} key={index} />
 
             })}
+
+            {isLoading &&
+                <Spinner
+                    visible={true}
+                    color="white"
+                />
+            }
 
         </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    spinnerText: {
+        color: 'black',  // Text color
+        fontSize: 14,    // Text font size
+        fontFamily: 'space-mono',  // Custom font family
+    },
 });
 
 
