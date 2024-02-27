@@ -60,7 +60,7 @@ export const getFilterList = createAsyncThunk(
             }
         } catch (err:any) {
             const message = err.response.data.message || err.toString();
-            console.log('Error Message: ', message )
+            
             return rejectWithValue(message);
         }
     },
@@ -72,7 +72,7 @@ export const productListSlice = createSlice({
     reducers: {
         reset: (state, action) => {
 
-            // console.log('Start Reset....');
+            // 
             const temp: any = {
                 page: 1,
                 count: 0,
@@ -101,7 +101,7 @@ export const productListSlice = createSlice({
             };
 
             state = { ...state, ...temp }
-            // console.log('Result Scroll: ', state)
+            // 
 
             return state;
         },
@@ -117,14 +117,14 @@ export const productListSlice = createSlice({
             if(findIndexAttribute) {
                 const index = newSize.indexOf(data)
                 newSize.splice(index, 1);
-                console.log(newSize)
+                
             }
 
             const findIndexColor = JSONData.color.includes(data)
             if(findIndexColor) {
                 const index = newColor.indexOf(data)
                 newColor.splice(index, 1);
-                console.log(newColor)
+                
             }
             
             const temp: any = {
@@ -133,7 +133,7 @@ export const productListSlice = createSlice({
             };
 
             state = { ...state, ...temp }
-            console.log('Result RemoveItem: ', state)
+            
 
             return state;
         },
@@ -156,7 +156,7 @@ export const productListSlice = createSlice({
                 message: ''
             };
             state = {...state, ...temp};
-            // console.log('Start Pending Filter.............', state)
+            // 
             return state;
         
             
@@ -179,13 +179,13 @@ export const productListSlice = createSlice({
                 message: ''
             };
             state = {...state, ...temp};
-            // console.log('Start Fulfill Filter.............', state)
+            // 
             return state;
         })
         .addCase(getFilterList.rejected, (state , {payload}) => {
-            console.log('Start Rejected Filter.............')
+            
             const JSONData = JSON.parse(JSON.stringify(state));
-            console.log('State Filter: ',JSONData)
+            
 
             return state;
         })

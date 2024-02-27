@@ -30,8 +30,7 @@ export default function AddressListPage({ route, onToggle }: any) {
     }, [isFocused])
 
     useEffect(() => {
-
-        console.log('navigation comeback')
+        
         // dispatch(getAddressList());
 
     }, [navigation])

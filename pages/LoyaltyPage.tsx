@@ -46,9 +46,10 @@ export default function LoyaltyPage({ route, navigation }: { route: any, navigat
     }]);
 
     const fetchLoyalty = async () => {
+        
         const response = await LoyaltyService.getLoyalty(user.id_customer);
         const json = await response.json();
-        console.log('json', json);
+        
         Animated.timing(animatedValue, {
             toValue: (json.data.percentage / 100) * 100,
             duration: 1000,

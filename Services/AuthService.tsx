@@ -15,8 +15,6 @@ const AuthService = {
             shop: data.id_shop
         };
 
-        console.log('PARAMSLOGIN' ,params)
-
         const url = 'login';
 
         return await api.post(url, params); 

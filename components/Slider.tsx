@@ -17,8 +17,6 @@ const Slider = memo(function Greeting({ child }: any) {
 
     const goToCategory = (child: any) => {
 
-        console.log('child', child);
-
         const params = {
             category_id: child.category_id,
             category_name: child.name

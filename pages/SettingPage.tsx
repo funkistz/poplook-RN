@@ -99,7 +99,7 @@ export default function SettingPage({ route }: { route: any }) {
         Alert.alert('Are you sure want to logout?', '', [
             {
                 text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
+                onPress: () => '',
                 style: 'cancel',
             },
             {

@@ -52,9 +52,9 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     useEffect(() => {
 
         const init = async () => {
+
             const installed = await isAtomeAppInstalled();
             setResult(installed ? 'Yes' : 'No')
-            console.log('install ke tak', installed);
         };
         init().catch(console.error);
 
@@ -88,7 +88,7 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
     const handleAppStateChange = async (nextAppState: any) => {
 
         if (nextAppState === 'background' || nextAppState === 'inactive') {
-            console.log('back')
+            //
         } else if (nextAppState === 'active') {
 
             const refId = await AsyncStorage.getItem('referenceId');
@@ -136,8 +136,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
-        console.log('atome', json.data)
-
         if (json.code == '200' && json.data) {
 
             setIsLoading(false)
@@ -155,8 +153,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         const response = await PaymentService.getPaymentInfo(refId);
         const json = await response.json();
-
-        console.log('paymentinfo', json.status)
 
         setTransId(json.paymentTransaction);
         setAmount(json.amount);
@@ -191,8 +187,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const response = await PaymentService.repayIpay(data.id_order, user.id_customer, paymentId(), payment);
         const json = await response.json();
 
-        console.log('repayIpay', json);
-
         if (json.code == '200') {
 
             setIsLoading(false)
@@ -222,8 +216,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const response = await PaymentService.repayEghl(data.id_order, user.id_customer);
         const json = await response.json();
 
-        console.log('repayEghl', json.data);
-
         setIsLoading(false)
 
         const param = {
@@ -246,8 +238,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
         const response = await PaymentService.repayEnets(data.id_order, user.id_customer);
         const json = await response.json();
 
-        console.log('repayEnets', json.data)
-
         setIsLoading(false)
 
         const param = {
@@ -268,8 +258,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         const response = await PaymentService.repayIpayUsd(data.id_order, user.id_customer, paymentId());
         const json = await response.json();
-
-        console.log('repayIpayUSD', json.data);
 
         setIsLoading(false)
 
@@ -292,8 +280,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         const response = await PaymentService.repayPaypal(data.id_order, user.id_customer, paymentId());
         const json = await response.json();
-
-        console.log('repayPaypal', json.data);
 
         setIsLoading(false)
 
@@ -376,8 +362,6 @@ export default function RepayPage({ route, navigation }: { route: any, navigatio
 
         const response = await CartService.cartStep5(cartId, orderId, status, paymentMethod, transId, amount);
         const json = await response.data;
-
-        console.log('cartstep5', json)
 
         if (json.code == 200 && json.data) {
 

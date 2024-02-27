@@ -19,16 +19,11 @@ const Menus2 = memo(function Greeting({ categories }: { categories: any }) {
 
     const goToCategory = (child: any) => {
 
-        console.log('child', child);
-
         const params = {
             category_id: child.category_id,
             category_name: child.name
         };
 
-        console.log('title', child.name);
-
-        // navigation.navigate('CategoryPage', { params: params, title: child.name });
         navigation.navigate('Categories', { screen: 'CategoryPage', params: params, title: child.name });
 
 
@@ -38,7 +33,6 @@ const Menus2 = memo(function Greeting({ categories }: { categories: any }) {
     const renderCategory = (category: any) => {
 
         const tabs: any = [];
-        console.log('category', category);
 
         if (!category.children) {
             return;
@@ -92,8 +86,6 @@ const Menus2 = memo(function Greeting({ categories }: { categories: any }) {
             tempScenes[index] = () => renderCategory(category);
         })
 
-
-        console.log('category', temp);
         setScenes((tempScenes));
         setRoutes(temp);
 

@@ -174,7 +174,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 const index = newColor.indexOf(params.data)
                 newColor.splice(index, 1);
                 setColor(newColor);
-                console.log('color:', color)
             } else {
                 setColor([...color, params.data])
             }
@@ -192,7 +191,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         const indexOfAttribute = attribute.findIndex((el: any) => el == item)
         if (indexOfAttribute !== -1) {
             const filter = attribute.filter((el: any) => el !== item)
-            // console.log('attribute Filter: ', filter)
             setAttribute([...filter])
             setCombine([...filter, ...color])
             const temp: any = {
@@ -212,7 +210,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         const indexOfColor = color.findIndex((el: any) => el == item)
         if (indexOfColor !== -1) {
             const filter = color.filter((el: any) => el !== item)
-            // console.log('attribute color: ', filter)
+
             setColor([...filter])
             setCombine([...attribute, ...filter])
 
@@ -333,8 +331,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
             const getTopBanners = async () => {
                 const response = await BannerService.getTopBanners(route.params.category_id, shopId);
                 let json = await response.data
-
-                console.log('TOP BANNER' ,json)
     
                 setTopBanners(json.data.data);
             }
@@ -394,7 +390,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                                     <>
                                         {(product.items.length > 1) &&
                                             <>
-                                                <ScrollView>
                                                 {topBanners.map((data: any, index: any) => {
 
                                                 return <Flex style={{ flexDirection: data.flex.direction, flexWrap: data.flex.wrap, justifyContent: data.flex.justifyContent,
@@ -455,11 +450,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                                                     onEndReached={scrollMore}
                                                     onEndReachedThreshold={0.1}
                                                     ListFooterComponent={() => <Spinner spin={product.isLoading}></Spinner>}
-                                                />
-                                                </ScrollView>
-                                                
-                                                
-                                                
+                                                />  
                                             </>
                                         }
 
@@ -523,7 +514,6 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                             </>
 
                         )}
-                    // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
                     >
 
                         {attributeList.length == 0 &&

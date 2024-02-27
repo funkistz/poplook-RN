@@ -108,7 +108,6 @@ export const cartSlice = createSlice({
     reducers: {
         assignCartId: (state, action) => {
 
-            console.log('assignCartId');
             const temp: any = {};
             temp.id_cart = action.payload;
 
@@ -116,8 +115,7 @@ export const cartSlice = createSlice({
             return state;
         },
         clearCart: (state) => {
-
-            console.log('clearcart', state);
+            
             const temp: any = {};
             temp.id_cart = null;
             temp.data = {};

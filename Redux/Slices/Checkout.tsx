@@ -89,7 +89,7 @@ export const getCartStep1: any = createAsyncThunk(
             const response = await CartService.cartStep1(id_cart, id_gift, message, gift_value);
             let data = await response.data
 
-            console.log('cartstep1', data)
+            
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -143,7 +143,7 @@ export const getCartStep2: any = createAsyncThunk(
             const response = await CartService.cartStep2(id_cart, id_address);
             let data = await response.data
 
-            console.log('cartstep2', data)
+            
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -184,7 +184,7 @@ export const getCartStep3: any = createAsyncThunk(
             const response = await CartService.cartStep3(id_cart, id_address, id_carrier);
             let data = await response.data
 
-            console.log('cartstep3', data)
+            
     
             for (let i = 0; i < products.length; i++) {
 
@@ -263,7 +263,6 @@ export const checkoutSlice = createSlice({
     reducers: {
         clearCheckout: (state) => {
 
-            console.log('clearcheckout');
             const temp: any = initialState;
 
             state = { ...state, ...temp }
@@ -279,7 +278,6 @@ export const checkoutSlice = createSlice({
         },
         clearLeaveMessage: (state) => {
 
-            console.log('clearleavemessage');
             const temp: any = {};
             temp.message = null;
 
@@ -310,8 +308,6 @@ export const checkoutSlice = createSlice({
 
                 state = { ...state, ...temp }
             }
-
-            console.log('STATE STEP 1', state)
 
             return state;
         }).addCase(getCartStep1.pending, (state, { payload }) => {

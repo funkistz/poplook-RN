@@ -36,9 +36,7 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
     }
 
     useEffect(() => {
-        console.log('user:', details)
-        console.log('id:', id)
-        console.log('session:', details.id_customer)
+
         if(id == 0) {
             navigation.setOptions({ title: 'Update ' + route.params.params.title});
         } else if(id == 1) {
@@ -64,9 +62,10 @@ export default function PersonalInfoDetailPage({ route, navigation }: { route: a
         const json = await response.data;
 
         if(json.code == 200) {
+            
             GeneralService.toast({ description: json.message });
             dispatch(profile(json.data))
-            console.log('result: ', details)
+            
             navigation.goBack();
             resetForm();
             

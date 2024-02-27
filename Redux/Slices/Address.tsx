@@ -24,13 +24,10 @@ export const getAddressList: any = createAsyncThunk(
     async (_: void, { getState, rejectWithValue }) => {
         try {
             const state: any = getState();
-            console.log('stateaddress', state);
             const id_customer = state.session.user.id_customer;
 
             const response = await AddressService.getAddressList();
             let data = await response.data
-
-            console.log("addresslistBARU", data)
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -43,7 +40,6 @@ export const getAddressList: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -71,7 +67,6 @@ export const addAddress: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -98,7 +93,6 @@ export const updateAddress: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -125,7 +119,6 @@ export const deleteAddress: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
             rejectWithValue(e.response.data)
         }
     }
@@ -152,7 +145,7 @@ export const setDefaultAddress: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
+            
             rejectWithValue(e.response.data)
         }
     }
@@ -164,7 +157,6 @@ export const addressSlice = createSlice({
     reducers: {
         clearAddress: (state) => {
 
-            // console.log('clearaddress');
             const temp: any = {};
             temp.data = null;
 
@@ -183,7 +175,6 @@ export const addressSlice = createSlice({
                 state = { ...state, ...temp }
             }
 
-            // console.log('statekai', state);
             return state;
         }).addCase(getAddressList.pending, (state, { payload }) => {
 
@@ -191,14 +182,14 @@ export const addressSlice = createSlice({
 
             if (payload.code == 404) {
                 const temp: any = {};
-                // temp.id_cart = null;
+                 temp.id_cart = null;
                 temp.data = null;
 
                 state = { ...state, ...temp }
                 return state;
             }
 
-            // GeneralService.toast({ description: payload.message });
+             GeneralService.toast({ description: payload.message });
         }).addCase(addAddress.fulfilled, (state, { payload }) => {
             GeneralService.toast({ description: payload.message });
             const temp: any = {};
@@ -269,7 +260,7 @@ export const addressSlice = createSlice({
 })
 
 
-// Action creators are generated for each case reducer function
+ //Action creators are generated for each case reducer function
 export const { clearAddress } = addressSlice.actions
 
 export const addressSelector = (state: any) => state.address

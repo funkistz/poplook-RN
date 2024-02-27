@@ -28,10 +28,10 @@ export default function FaqPage({ route , navigation} : { route: any,  navigatio
 
 
     const fetchData = async () => {
+
         const response = await LoyaltyService.getFaqRewards();
         const json = await response.json();
-        console.log('JSON: ', json.data)
-
+        
         for (let i = 0; i < json.data.length; i++) {
 
             if (json.data[i].link_rewrite == 'poplook-rewards') {

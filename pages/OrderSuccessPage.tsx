@@ -22,13 +22,9 @@ export default function OrderSuccessPage({ route, navigation } : { route: any, n
 
     useEffect(() => {
 
-        console.log('route.params' ,route.params.id)
-
         const orderHistoryDetails = async () => {
             const response = await OrderHistoryService.orderHistoryDetails(orderId);
             const json = await response.data;
-
-            console.log('successpage' ,json)
 
             setDetails(json.data);
             setShipping(json.data.shipping_details);

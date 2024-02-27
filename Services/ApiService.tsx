@@ -1,37 +1,7 @@
 import { store } from '../Redux/app';
 import { API_URL, API_KEY, IOS_VERSION } from "@env"
 
-// import axios from 'axios';
-// import { store } from '../Redux/app';
-// store.subscribe(listener)
-
-// function select(state: any) {
-//     return state.auth.tokens.authentication_token
-// }
-
-// function listener() {
-//     let token = select(store.getState())
-//     axios.defaults.headers.common['Authorization'] = token;
-// }
-
 const api_test = 'https://poplook.com/webapi/';
-
-const injectExtraParamsOld = (params: any, isString = true) => {
-    let data: any = {
-        ...params,
-        apikey: API_KEY,
-        id_lang: 1,
-        id_shop: 1,
-        device_type: 'apps',
-        api_version: 'apps'
-    };
-
-    if (isString) {
-        data = new URLSearchParams(data).toString();
-    }
-
-    return data;
-}
 
 const APIService = {
 
@@ -70,8 +40,6 @@ const APIService = {
 
         data = await this.injectParams(data, false)
 
-        console.log('url', api_test + url + '?' + new URLSearchParams(data));
-
         return await fetch(api_test + url + '?' + new URLSearchParams(data))
     },
 
@@ -87,8 +55,6 @@ const APIService = {
             headers: myHeaders,
             body: params
         };
-
-        console.log('url', api_test + url, options);
 
         return await fetch(api_test + url, options);
     },
@@ -106,8 +72,6 @@ const APIService = {
             body: params
         };
 
-        console.log('options options', options);
-
         return await fetch(api_test + url, options);
     },
 
@@ -123,8 +87,6 @@ const APIService = {
             headers: myHeaders,
             body: params
         };
-
-        // console.log('url', api_test + url, options);
 
         return await fetch(api_test + url, options);
     },

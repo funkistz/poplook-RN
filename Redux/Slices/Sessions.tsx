@@ -110,7 +110,7 @@ export const customerDetails: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
+            
             rejectWithValue(e.response.data)
         }
     }
@@ -122,7 +122,7 @@ export const sessionSlice = createSlice({
     reducers: {
         changeCountry: (state, action) => {
 
-            console.log('changeCountry', action.payload);
+            
             const temp: any = {};
             temp.country = action.payload;
 
@@ -139,7 +139,7 @@ export const sessionSlice = createSlice({
             const getData = async () => {
                 try {
                     const value = await AsyncStorage.getItem('id_shop')
-                    console.log('getData', value);
+                    
 
                     if (value !== null) {
                         // value previously stored
@@ -167,7 +167,7 @@ export const sessionSlice = createSlice({
         },
         logout: (state) => {
 
-            console.log('logout');
+            
             const temp: any = {};
             temp.user = null;
             temp.isSuccess = null;
@@ -179,14 +179,14 @@ export const sessionSlice = createSlice({
             return state;
         },
         intro: (state, action) => {
-            console.log('action intro', action.payload)
+            
             const temp: any = {};
             temp.intro = action.payload;
             state = { ...state, ...temp }
             return state;
         },
         assignDeviceType: (state, action) => {
-            console.log('assignDeviceType', action.payload)
+            
             const temp: any = {};
             temp.device_type = action.payload;
             state = { ...state, ...temp }
@@ -194,7 +194,7 @@ export const sessionSlice = createSlice({
         },
         assignToken: (state, action) => {
 
-            console.log('assignToken', action.payload);
+            
             const temp: any = {};
             temp.token = action.payload;
 

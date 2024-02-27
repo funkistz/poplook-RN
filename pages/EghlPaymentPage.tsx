@@ -23,7 +23,6 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
     const [status, setSatus] = React.useState('');
 
     const handleNavigationStateChange = (navState: any) => {
-        console.log('changeurl', navState)
 
         const _url = navState.url
 
@@ -50,7 +49,6 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
         }
 
         if (params.status) {
-            console.log('status', params.status)
 
             setSatus(params.status);
             cartStep5(params.status)
@@ -67,7 +65,6 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
         }
 
         if (params.TxnStatus) {
-            console.log('status', params.TxnStatus)
 
             setSatus(params.TxnStatus);
             cartStep5(params.TxnStatus)
@@ -86,8 +83,6 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
 
     const cartStep5 = async (data: any) => {
 
-        console.log('txnstatus', data)
-
         let newStatus = ''
 
         if (data == '1') {
@@ -96,11 +91,8 @@ export default function EghlPaymentPage({ route, navigation }: { route: any, nav
             newStatus = '1';
         }
 
-        console.log(orderId, newStatus, paymentType, transId, amount)
         const response = await CartService.cartStep5(cartId, orderId, newStatus, paymentType, transId, amount);
         const json = await response.data;
-
-        console.log('cartstep5', json)
 
         if (json.code == 200 && json.data) {
 

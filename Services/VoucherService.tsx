@@ -9,8 +9,7 @@ const VoucherService = {
     },
 
     async delValidateVoucher(params:any) {
-        console.log('params', params)
-
+        
         return APIService.deleteMethod('carts/removeVoucher', params);
 
     }

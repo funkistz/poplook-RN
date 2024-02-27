@@ -8,7 +8,6 @@ import ProductCard from '../components/Products/ProductCard';
 export default function ProductListPage({ route, navigation }: { route: any, navigation: any }) {
 
     const [products, setProducts] = useState([]);
-    console.log('route', route);
 
     useEffect(() => {
 
@@ -24,15 +23,10 @@ export default function ProductListPage({ route, navigation }: { route: any, nav
             const response = await ProductService.getProducts(filter);
             const json = await response.json();
 
-            console.log('data', json.data);
             setProducts(json.data);
         }
         fetchData().catch(console.error);
 
-
-        //   return () => {
-        //     second
-        //   }
     }, [])
 
     const goToProductPage = (banner: any) => {

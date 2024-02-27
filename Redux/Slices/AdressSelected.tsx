@@ -40,30 +40,13 @@ export const getAddressOne: any = createAsyncThunk(
     }
 )
 
-// export const clearAddress: any = createAsyncThunk(
-//     "addressOne/clear",
-//     async (_void: any,  { getState, rejectWithValue }) => {
-//         try {
-//             const state: any = getState();
-//             state.address_selected = null;
-
-//             return state;
-
-//         } catch (e: any) {
-//             console.log("Error", e.response.data)
-//             rejectWithValue(e.response.data)
-//         }
-//     }
-// )
-
-
 export const addressSelectedSlice = createSlice({
     name: 'address_selected',
     initialState,
     reducers: {
         clearAddress: (state) => {
 
-            console.log('clear address');
+            
             const temp: any = {};
             temp.id_address = null;
             temp.data = null;
@@ -76,20 +59,20 @@ export const addressSelectedSlice = createSlice({
         builder.addCase(getAddressOne.fulfilled, (state, { payload }) => {
 
             const temp: any = {};
-            console.log('payloaddnyagulfiladdressone', payload)
+            
             if (payload.data) {
                 temp.id_cart = payload.data.id_cart;
                 temp.data = payload.data;
                 state = { ...state, ...temp }
             }
 
-            console.log('getaddressonestate', state);
+            
             return state;
         }).addCase(getAddressOne.pending, (state, { payload }) => {
 
 
         }).addCase(getAddressOne.rejected, (state, { payload }) => {
-            console.log('payload', payload);
+            
             // GeneralService.toast({ description: payload.message });
         })
     },

@@ -11,7 +11,7 @@ const InfoService = {
         const param = {
             shop: shopId
         };
-        console.log('url' ,APIService.getMethod('infos/countries', param))
+        
         return APIService.getMethod('infos/countries', param);
     },
 

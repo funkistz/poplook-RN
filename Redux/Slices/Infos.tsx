@@ -23,8 +23,6 @@ export const getCountries: any = createAsyncThunk(
         try {
             const response = await InfoService.getCountries();
             let data = await response.json()
-            console.log("data", data)
-
             if (response.status == 200) {
                 if (data.code == 200) {
 
@@ -36,7 +34,7 @@ export const getCountries: any = createAsyncThunk(
                 return rejectWithValue(data)
             }
         } catch (e: any) {
-            console.log("Error", e.response.data)
+            
             rejectWithValue(e.response.data)
         }
     }
@@ -49,7 +47,6 @@ export const getAddressCountries: any = createAsyncThunk(
 
             const response = await InfoService.countryList(id_shop);
             let data = await response.json();
-            // console.log('getAddressCountries', data);
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -64,7 +61,7 @@ export const getAddressCountries: any = createAsyncThunk(
 
 
         } catch (e: any) {
-            console.log("Error", e.response.data)
+            
             rejectWithValue(e.response.data)
         }
     }
@@ -77,7 +74,6 @@ export const getStates: any = createAsyncThunk(
 
             const response = await InfoService.stateList(code, id_shop);
             let data = await response.json();
-            // console.log('getStates', JSON.stringify(data));
 
             if (response.status == 200) {
                 if (data.code == 200) {
@@ -92,7 +88,7 @@ export const getStates: any = createAsyncThunk(
 
 
         } catch (e: any) {
-            console.log("Error", e.response.data)
+            
             rejectWithValue(e.response.data)
         }
     }
@@ -104,7 +100,7 @@ export const infosSlice = createSlice({
     reducers: {
         clearCountries: (state) => {
 
-            console.log('clear countries');
+            
             const temp: any = {};
             temp.countries = null;
 
@@ -121,12 +117,12 @@ export const infosSlice = createSlice({
                 state = { ...state, ...temp }
             }
 
-            // console.log('stategetcountries', state);
+            // 
             return state;
         }).addCase(getCountries.pending, (state, { payload }) => {
 
         }).addCase(getCountries.rejected, (state, { payload }) => {
-            // console.log('payload', payload);
+            // 
             // GeneralService.toast({ description: payload.message });
         }).addCase(getAddressCountries.fulfilled, (state, { payload }) => {
 
@@ -140,7 +136,7 @@ export const infosSlice = createSlice({
         }).addCase(getAddressCountries.pending, (state, { payload }) => {
 
         }).addCase(getAddressCountries.rejected, (state, { payload }) => {
-            // console.log('payload', payload);
+            // 
             GeneralService.toast({ description: payload.message });
         }).addCase(getStates.fulfilled, (state, { payload }) => {
 
@@ -154,7 +150,7 @@ export const infosSlice = createSlice({
         }).addCase(getStates.pending, (state, { payload }) => {
 
         }).addCase(getStates.rejected, (state, { payload }) => {
-            // console.log('payload', payload);
+            // 
             GeneralService.toast({ description: payload.message });
         })
     },

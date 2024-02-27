@@ -40,7 +40,6 @@ export const getSearch: any = createAsyncThunk(
                 sort_options: sort ,
                 tier: user == null ? 1: user.tier,
             }
-            // console.log('params: ', params)
 
             const res = await SearchService.getProducts(params);
             let data = await res.json()
@@ -56,7 +55,7 @@ export const getSearch: any = createAsyncThunk(
             }
         } catch (err:any) {
             const message = err.response.data.message || err.toString();
-            console.log('Error Message: ', message )
+            
             return rejectWithValue(err);
         }
     },
@@ -88,14 +87,14 @@ export const searchSlice = createSlice({
 
         },
         scroll : (state, action) => {
-            // console.log('Enter Scroll Search.......')
+            // 
             const JSONData = JSON.parse(JSON.stringify(state));
             const temp: any = {
                 page: JSONData.page + 1,
             };
 
             state = { ...state, ...temp }
-            // console.log('Result Scroll Search:', state)
+            
             return state;
             
         },
@@ -117,7 +116,6 @@ export const searchSlice = createSlice({
             };
             state = {...state, ...temp};
 
-            // console.log('Pending State GetList: ', state)
             return state;
         
         })
@@ -139,16 +137,12 @@ export const searchSlice = createSlice({
             };
             state = {...state, ...temp};
 
-            // console.log('Fulfill State GetList: ', state)
             return state;
 
         })
         .addCase(getSearch.rejected, (state, {payload}) => {
-            console.log('Start Rejected.............')
+            
             const JSONData = JSON.parse(JSON.stringify(state));
-            console.log('State Reject: ',JSONData)
-            console.log('State payload: ',payload)
-
             return state;
 
         })

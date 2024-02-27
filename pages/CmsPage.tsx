@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CmsService from '../Services/CmsService';
 import WebView from 'react-native-webview';
-import { View } from 'react-native';
 
 export default function CmsPage({ route, navigation }: { route: any, navigation: any}) {
 
@@ -10,10 +9,10 @@ export default function CmsPage({ route, navigation }: { route: any, navigation:
 
     useEffect(() => {
         navigation.setOptions({ title: route.params.params.title});
+
         const getDetails = async () => {
             const response = await CmsService.getCmsDetails(key);
             const json = await response.json();
-            // console.log('res: ', json.data[0].content)
             setCms(json.data[0]);
             
         }

@@ -18,13 +18,6 @@ const NetsuiteAPIService = {
 
     async getMethod(url: any, data: any = {}) {
 
-        // data.id_shop = 1;
-        // data.id_lang = 1;
-        // data.apikey = config.api_key;
-        // data.api_version = 'apps';
-
-        console.log('url', MODULE_API + url + '?' + new URLSearchParams(data));
-
         return await fetch(MODULE_API + url + '?' + new URLSearchParams(data))
     },
 
@@ -38,8 +31,6 @@ const NetsuiteAPIService = {
             headers: myHeaders,
             body: injectExtraParams(data)
         };
-
-        console.log('url', MODULE_API + url, options);
 
         return await fetch(MODULE_API + url, options);
     },
@@ -55,8 +46,6 @@ const NetsuiteAPIService = {
             body: injectExtraParams(data)
         };
 
-        console.log('url', MODULE_API + url, options);
-
         return await fetch(MODULE_API + url, options);
     },
 
@@ -70,8 +59,6 @@ const NetsuiteAPIService = {
             headers: myHeaders,
             body: injectExtraParams(data)
         };
-
-        console.log('url', MODULE_API + url, options);
 
         return await fetch(MODULE_API + url, options);
     },

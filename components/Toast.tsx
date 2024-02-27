@@ -22,7 +22,6 @@ export const useCustomToast = () => {
 
 export function createToast({ title = '', description, placement = 'bottom', type = 'normal' }: any) {
 
-    console.log('trying toast...');
     const toast = useToast();
 
     return (

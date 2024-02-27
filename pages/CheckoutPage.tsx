@@ -74,7 +74,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const win = Dimensions.get('window');
 
     useEffect(() => {
-        console.log('from navigation text_message', text_message);
 
         const unsubscribe = navigation.addListener('focus', () => {
 
@@ -135,7 +134,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const init = async () => {
             const installed = await isAtomeAppInstalled();
             setResult(installed ? 'Yes' : 'No')
-            console.log('install ke tak', installed);
         };
         init().catch(console.error);
 
@@ -149,7 +147,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
     useEffect(() => {
         if (gift != gift_option) {
-            console.log('from gift', gift);
+
             const param = {
                 gift: gift,
                 gift_wrap_id: gift_wrap_id ? gift_wrap_id[0] : '',
@@ -166,7 +164,7 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
     const handleAppStateChange = async (nextAppState: any) => {
 
         if (nextAppState === 'background' || nextAppState === 'inactive') {
-            console.log('back')
+            //
         } else if (nextAppState === 'active') {
 
             const refId = await AsyncStorage.getItem('referenceId');
@@ -422,8 +420,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await CartService.cartStep5(cartId, orderId, status, paymentMethod, transId, amount);
         const json = await response.data;
 
-        console.log('cartstep5', json)
-
         if (json.code == 200 && json.data) {
 
             if (json.data.payment_state == '42' || json.data.payment_state == '18') {
@@ -557,9 +553,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await PaymentService.atome(cartId);
         const json = await response.json();
 
-        console.log('atome', json)
-
-
         if (json.code == '200' && json.data) {
             setIsLoading(false)
             setUrl(json.data.redirect_url);
@@ -576,8 +569,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         const response = await PaymentService.getPaymentInfo(refId);
         const json = await response.json();
-
-        console.log('paymentinfo', json)
 
         setTransId(json.paymentTransaction);
         setAmount(json.amount);
@@ -610,8 +601,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await PaymentService.payIpay(data.id_cart, user.id_customer, paymentId(), payment);
         const json = await response.json();
 
-        console.log('payIpay', json);
-
         if (json.code == '200') {
             const params = {
                 form: json.data.results,
@@ -637,8 +626,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         const response = await PaymentService.payIpayUsd(data.id_cart, user.id_customer, paymentId());
         const json = await response.json();
-
-        console.log('IpayUsd', json);
 
         if (json.code == '200') {
             const params = {
@@ -666,8 +653,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await PaymentService.eghl(cartId, data.id_order);
         const json = await response.json();
 
-        console.log('redirectEghl', json.data);
-
         const param = {
             form: json.data.results,
             order_id: data.id_order,
@@ -688,8 +673,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
         const response = await PaymentService.enets(cartId, data.id_order);
         const json = await response.json();
 
-        console.log('redirectEnets', json.data)
-
         const param = {
             form: json.data.results,
             order_id: data.id_order,
@@ -708,8 +691,6 @@ export default function CheckoutPage({ route, navigation }: { route: any, naviga
 
         const response = await PaymentService.paypal(data.id_cart, user.id_customer, paymentId());
         const json = await response.json();
-
-        console.log('paypal', json);
 
         if (json.code == '200') {
             const params = {

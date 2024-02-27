@@ -157,7 +157,6 @@ export const wishlistSlice = createSlice({
         },
         clearCart: (state) => {
 
-            console.log('clearcart');
             const temp: any = {};
             temp.data = null;
 

@@ -4,9 +4,6 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 export default function AppBar({ navigation }: any) {
 
-
-    console.log('options', navigation);
-
     const goBack = () => {
         navigation.goBack();
     }

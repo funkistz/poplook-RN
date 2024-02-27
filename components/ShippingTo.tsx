@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Box, HStack, IconButton, Icon, Spacer, Text, CheckIcon, VStack } from 'native-base';
-import { countrySelector, getCountries } from '../Redux/Slices/Infos';
+import { Spacer, Text, VStack } from 'native-base';
+import { getCountries } from '../Redux/Slices/Infos';
 import { logout, userSelector } from '../Redux/Slices/Sessions';
 import { useDispatch, useSelector } from 'react-redux';
-import SearchableDropdown from 'react-native-searchable-dropdown';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { changeCountry } from '../Redux/Slices/Sessions';
 import { clearCart } from '../Redux/Slices/Cart';
@@ -44,11 +43,9 @@ export default function ShippingTo() {
 
     useEffect(() => {
 
-        console.log('value', value);
-        console.log('country', country.country_name);
         if (value) {
+
             let selectedCountry = countries.find((o: any) => o.country_name === value);
-            console.log('selectedCountry', selectedCountry);
             dispatch(changeCountry(selectedCountry));
 
             if(session.user != null) {

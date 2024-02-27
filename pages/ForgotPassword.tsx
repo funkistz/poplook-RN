@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Text, Input, Icon, Button, ScrollView, Toast, Box } from "native-base";
+import { Text, Button } from "native-base";
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import AuthService from '../Services/AuthService';
@@ -12,9 +12,11 @@ import { useNavigation } from '@react-navigation/native';
 export default function ForgotPassword() {
     const id_shop = useSelector((storeState: any) => storeState.session.country.id_shop);
     const navigation: any = useNavigation();
+
     useEffect(() => {
-        console.log('session:', id_shop)
+        
     }, [])
+
     return (
         <>
             <View style={styles.container}>
@@ -32,8 +34,8 @@ export default function ForgotPassword() {
                             }
                             const response = await AuthService.forgotPassword(values);
                             const json = await response.json();
-                            console.log('json', json)
-                            if(json.code == 200) {
+
+                            if (json.code == 200) {
                                 navigation.navigate('LoginPage', { screen: 'LoginPage' });
                             }
 

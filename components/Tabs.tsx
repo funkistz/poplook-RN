@@ -16,8 +16,6 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
 
   const onIndexChange = (index: any) => {
 
-    console.log('onIndexChange', routes[index]);
-
     if (routes[index].type == 'link') {
       goToCategory(routes[index].id, routes[index].title);
     } else {
@@ -45,7 +43,6 @@ export default function Tabs({ routes, scenes }: { routes: any, scenes: any }) {
           props.navigationState.routes.map((route: any, i: any) => {
 
             if (route.type == 'link') {
-              // console.log('rendertabbar', route);
             }
 
             const opacity = props.position.interpolate({

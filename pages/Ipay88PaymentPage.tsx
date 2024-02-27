@@ -23,7 +23,6 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
     const [status, setSatus] = React.useState('');
 
     const handleNavigationStateChange = (navState: any) => {
-        console.log('changeurl', navState)
 
         const _url = navState.url
 
@@ -42,7 +41,6 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
         }
 
         if (params.status) {
-            console.log('status', params.status)
 
             setSatus(params.status);
             cartStep5(params.status)
@@ -85,12 +83,8 @@ export default function Ipay88PaymentPage({ route, navigation }: { route: any, n
 
     const cartStep5 = async (status: any) => {
 
-        console.log('txnstatus', status)
-
         const response = await CartService.cartStep5(cartId, orderId, status, paymentType, transId, amount);
         const json = await response.data;
-
-        console.log('cartstep5', json)
 
         if (json.code == 200 && json.data) {
 

@@ -40,8 +40,7 @@ const TabNavigator = () => {
   const sessions = useSelector((storeState: any) => storeState.session);
   const totalItem = useSelector((storeState: any) => storeState.cart.total_item);
   const cart = useSelector((storeState: any) => storeState.cart);
-  console.log('cart', cart);
-
+  
   return (
 
 

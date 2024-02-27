@@ -169,12 +169,14 @@ export default function AddressDetailPage({ route }: { route: any }) {
                 }}
                 onSubmit={
                     async (values) => {
+
                         if (isUpdate) {
-                            // console.log('UPDATE', JSON.stringify({ ...values, id_address: addressId }))
+
                             dispatch(updateAddress({ id_address: addressId , ...values }));
                             await dispatch(getAddressList());
+                            
                         } else {
-                            // console.log('ADD', JSON.stringify(values))
+
                             dispatch(addAddress(values));
                             await dispatch(getAddressList());
                         }
