@@ -557,16 +557,8 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                 inactiveDotOpacity={0.6}
                                                 inactiveDotScale={0.8}
                                             />
-
                                             
                                         </>}
-                                        {/* <SliderBox
-                                            LoaderComponent={() => <></>}
-                                            sliderBoxHeight={imageHeight}
-                                            resizeMethod={'resize'}
-                                            resizeMode={'cover'}
-                                            ImageComponent={(props: any) => <SliderItem imageHeight={imageHeight} {...props} />}
-                                            images={images} /> */}
                                     </VStack>
 
                                     <VStack px={4} pt={4} backgroundColor={'white'} >
@@ -629,58 +621,56 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                     {details &&
                                                         <>
                                                             <View style={{ marginHorizontal: 20 }}>
-                                                                <ScrollView>
-                                                                    <AutoHeightWebView
-                                                                        source={{ html: htmlContent(details) }}
-                                                                        injectedJavaScript={injectedJavaScript}
-                                                                        onMessage={handleWebViewMessage}
-                                                                        style={{ width: '100%'}}
-                                                                        startInLoadingState={true}
-                                                                        scrollEnabled={false}
-                                                                    />
-                                                                    <HStack>
-                                                                        <View>
-                                                                            {shownHere &&
-                                                                                <>
-                                                                                    <Text fontSize={15} color={'black'} mt={4}>Shown here with:</Text>
-                                                                                    <View>
-                                                                                        {shownHere.map((res: any) => {
-                                                                                            return <Chip
-                                                                                                key={res.id_product + '_' + 2}
-                                                                                                icon={() => null}
-                                                                                                mode='outlined'
-                                                                                                style={styles.shown}
-                                                                                                onPress={() => selectProductId(res.id_product)}
-                                                                                            >
-                                                                                                <Text style={styles.shownText}>{res.name}</Text>
-                                                                                            </Chip>
-                                                                                        })}
-                                                                                    </View>
-                                                                                </>
-                                                                            }
+                                                                <AutoHeightWebView
+                                                                    source={{ html: htmlContent(details) }}
+                                                                    injectedJavaScript={injectedJavaScript}
+                                                                    onMessage={handleWebViewMessage}
+                                                                    style={{ width: '100%'}}
+                                                                    startInLoadingState={true}
+                                                                    scrollEnabled={false}
+                                                                />
+                                                                <HStack>
+                                                                    <View>
+                                                                        {shownHere &&
+                                                                            <>
+                                                                                <Text fontSize={15} color={'black'} mt={4}>Shown here with:</Text>
+                                                                                <View>
+                                                                                    {shownHere.map((res: any) => {
+                                                                                        return <Chip
+                                                                                            key={res.id_product + '_' + 2}
+                                                                                            icon={() => null}
+                                                                                            mode='outlined'
+                                                                                            style={styles.shown}
+                                                                                            onPress={() => selectProductId(res.id_product)}
+                                                                                        >
+                                                                                            <Text style={styles.shownText}>{res.name}</Text>
+                                                                                        </Chip>
+                                                                                    })}
+                                                                                </View>
+                                                                            </>
+                                                                        }
 
-                                                                            {motherDaughter &&
-                                                                                <>
-                                                                                    <Text fontSize={15} color={'black'}>Shop Mother & Daughter:</Text>
-                                                                                    <View>
-                                                                                        {motherDaughter.map((res: any) => {
-                                                                                            return <Chip
-                                                                                                key={res.id_product + '_' + 3}
-                                                                                                icon={() => null}
-                                                                                                mode='outlined'
-                                                                                                style={styles.shown}
-                                                                                                onPress={() => selectProductId(res.id_product)}
-                                                                                            >
-                                                                                                <Text style={styles.shownText}>{res.name}</Text>
-                                                                                            </Chip>
-                                                                                        })}
-                                                                                    </View>
-                                                                                </>
-                                                                            }
-                                                                            <Text color={'black'}>Reference Number: {reference}</Text>
-                                                                        </View>
-                                                                    </HStack>
-                                                                </ScrollView>
+                                                                        {motherDaughter &&
+                                                                            <>
+                                                                                <Text fontSize={15} color={'black'}>Shop Mother & Daughter:</Text>
+                                                                                <View>
+                                                                                    {motherDaughter.map((res: any) => {
+                                                                                        return <Chip
+                                                                                            key={res.id_product + '_' + 3}
+                                                                                            icon={() => null}
+                                                                                            mode='outlined'
+                                                                                            style={styles.shown}
+                                                                                            onPress={() => selectProductId(res.id_product)}
+                                                                                        >
+                                                                                            <Text style={styles.shownText}>{res.name}</Text>
+                                                                                        </Chip>
+                                                                                    })}
+                                                                                </View>
+                                                                            </>
+                                                                        }
+                                                                        <Text color={'black'}>Reference Number: {reference}</Text>
+                                                                    </View>
+                                                                </HStack>
                                                             </View>
                                                         </>
                                                     }
@@ -706,15 +696,13 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                     {measurements &&
                                                         <>
                                                             <View style={{ marginHorizontal: 20 }}>
-                                                                <ScrollView>
-                                                                    <AutoHeightWebView
-                                                                        source={{ html: htmlContent(measurements) }}
-                                                                        injectedJavaScript={injectedJavaScript}
-                                                                        style={{ width: '100%'}}
-                                                                        startInLoadingState={true}
-                                                                        scrollEnabled={false}
-                                                                    />
-                                                                </ScrollView>
+                                                                <AutoHeightWebView
+                                                                    source={{ html: htmlContent(measurements) }}
+                                                                    injectedJavaScript={injectedJavaScript}
+                                                                    style={{ width: '100%'}}
+                                                                    startInLoadingState={true}
+                                                                    scrollEnabled={false}
+                                                                />
                                                             </View>
                                                         </>
                                                     }
@@ -739,16 +727,14 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                     {care &&
                                                         <>
                                                             <View style={{ marginHorizontal: 20 }}>
-                                                                <ScrollView>
-                                                                    <AutoHeightWebView
-                                                                        source={{ html: htmlContent(care) }}
-                                                                        injectedJavaScript={injectedJavaScript}
-                                                                        onMessage={handleWebViewMessage}
-                                                                        style={{ width: '100%'}}
-                                                                        startInLoadingState={true}
-                                                                        scrollEnabled={false}
-                                                                    />
-                                                                </ScrollView>
+                                                                <AutoHeightWebView
+                                                                    source={{ html: htmlContent(care) }}
+                                                                    injectedJavaScript={injectedJavaScript}
+                                                                    onMessage={handleWebViewMessage}
+                                                                    style={{ width: '100%'}}
+                                                                    startInLoadingState={true}
+                                                                    scrollEnabled={false}
+                                                                />
                                                             </View>
                                                         </>
                                                     }
