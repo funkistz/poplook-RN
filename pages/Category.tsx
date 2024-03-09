@@ -1,6 +1,6 @@
-import { StyleSheet, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, HStack, FlatList, Text, Backdrop, Flex, View, ScrollView } from 'native-base';
+import { Box, HStack, FlatList, Text, Backdrop, Flex, View, ScrollView, Button } from 'native-base';
 import ProductService from '../Services/ProductService';
 import ProductCard from '../components/Products/ProductCard';
 import Spinner from '../components/Spinner';
@@ -20,6 +20,8 @@ import Grid from '../components/Banner/Grid';
 import TextWithStyle from '../components/Banner/TextWithStyle';
 import Sliders from '../components/Banner/Sliders';
 import Carousels from '../components/Banner/Carousel';
+import ListComponent from '../components/Products/ListComponent';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 export default function CategoryPage({ route, navigation }: { route: any, navigation: any }) {
 
@@ -141,13 +143,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         if (!product.isLoading) {
             if (product.items.length < product.count) {
                 dispatch(scroll(product));
-                const params = {
-                    categoryId: route.params.category_id,
-                    product_attribute: attribute,
-                    color: color,
-                    sort_option: sort.toString(),
-                }
-                dispatch(getFilterList(params))
+                getData()
             }
         }
     }
@@ -174,6 +170,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                 const index = newColor.indexOf(params.data)
                 newColor.splice(index, 1);
                 setColor(newColor);
+                
             } else {
                 setColor([...color, params.data])
             }
@@ -191,6 +188,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         const indexOfAttribute = attribute.findIndex((el: any) => el == item)
         if (indexOfAttribute !== -1) {
             const filter = attribute.filter((el: any) => el !== item)
+            
             setAttribute([...filter])
             setCombine([...filter, ...color])
             const temp: any = {
@@ -210,7 +208,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         const indexOfColor = color.findIndex((el: any) => el == item)
         if (indexOfColor !== -1) {
             const filter = color.filter((el: any) => el !== item)
-
+            
             setColor([...filter])
             setCombine([...attribute, ...filter])
 
@@ -262,6 +260,56 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
         await dispatch(addToWishlist(params));
     }
 
+    const getData = async () => {
+
+        const params = {
+            categoryId: route.params.category_id,
+            product_attribute: attribute,
+            color: color,
+            sort_option: sort.toString(),
+        }
+
+        dispatch(getFilterList(params))
+    }
+
+    const ITEMS_PER_PAGE = 20;
+    const MAX_VISIBLE_PAGES = 3;
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalPages = Math.ceil(product.count / ITEMS_PER_PAGE);
+
+    const dataToShow = product.items.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+    
+    const handlePrevious = () => {
+        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    };
+    
+    const handleNext = () => {
+        setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+        if (!product.isLoading) {
+            if (product.items.length < product.count) {
+                dispatch(scroll(product));
+                getData()
+            }
+        }
+    };
+
+    const handlePagePress = (pageNumber: any) => {
+        setCurrentPage(pageNumber);
+      if (!product.isLoading) {
+        if (product.items.length < product.count) {
+            dispatch(scroll(product));
+            getData()
+        }
+    }
+    };
+
+    const getVisiblePages = () => {
+        const startPage = Math.max(currentPage - Math.floor(MAX_VISIBLE_PAGES / 2), 1);
+        const endPage = Math.min(startPage + MAX_VISIBLE_PAGES - 1, totalPages);
+        return [...Array(endPage - startPage + 1).keys()].map((i) => startPage + i);
+    };
+
 
     // useEffect
     useEffect(() => {
@@ -281,14 +329,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
 
     useEffect(() => {
         if (submit) {
-            const params = {
-                categoryId: route.params.category_id,
-                product_attribute: attribute,
-                color: color,
-                sort_option: sort.toString(),
-            }
-
-            dispatch(getFilterList(params))
+            getData().catch(console.error)
 
         }
     }, [isModalFilter])
@@ -331,6 +372,8 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
             const getTopBanners = async () => {
                 const response = await BannerService.getTopBanners(route.params.category_id, shopId);
                 let json = await response.data
+
+                
     
                 setTopBanners(json.data.data);
             }
@@ -355,6 +398,16 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
             return layout.width;
         }
     }
+
+    const renderPageIndicator = (pageIndex: any) => (
+        <View
+          style={[
+            styles.pageIndicator,
+            { backgroundColor: currentPage === pageIndex + 1 ? 'blue' : 'gray' },
+          ]}
+          key={pageIndex}
+        />
+      );
 
     return (
         <>
@@ -390,6 +443,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                                     <>
                                         {(product.items.length > 1) &&
                                             <>
+                                                {/* <ScrollView> */}
                                                 {topBanners.map((data: any, index: any) => {
 
                                                 return <Flex style={{ flexDirection: data.flex.direction, flexWrap: data.flex.wrap, justifyContent: data.flex.justifyContent,
@@ -440,17 +494,53 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                                                 })}
                                                 <FlatList
                                                     numColumns={2}
-                                                    data={product.items}
-                                                    renderItem={({ item }) => 
-                                                    <>
-                                                    <Box w="50%">
-                                                        <ProductCard product={item} openWishlist={addtoWishlist}></ProductCard>
-                                                    </Box></>}
+                                                    data={dataToShow}
+                                                    renderItem={({ item } : any) => (
+                                                        <ListComponent item={item} addtoWishlist={addtoWishlist}/>
+                                                    )}
                                                     keyExtractor={(item: any) => item.id_product}
-                                                    onEndReached={scrollMore}
-                                                    onEndReachedThreshold={0.1}
+                                                    // ListFooterComponent={renderFooter}
+                                                    disableVirtualization
+                                                    // onEndReached={scrollMore}
+                                                    onEndReachedThreshold={0.5}
+                                                    // onEndReached={scrollMore}
+                                                    // onEndReachedThreshold={0.1}
                                                     ListFooterComponent={() => <Spinner spin={product.isLoading}></Spinner>}
-                                                />  
+                                                />
+                                                 <View style={styles.pagination}>
+                                                    <TouchableOpacity
+                                                    style={styles.paginationButton}
+                                                    onPress={handlePrevious}
+                                                    disabled={currentPage === 1}
+                                                    >
+                                                    <Text style={styles.paginationButtonText}><Icon name={'caretleft'} size={24} color="#333"/></Text>
+                                                    </TouchableOpacity>
+                                                    <Text style={styles.pageNumberText}>{` ${currentPage} of ${totalPages}`}</Text>
+                                                    {/* {getVisiblePages().map((pageNumber) => (
+                                                        <TouchableOpacity
+                                                            disabled={product.isLoading}
+                                                            key={pageNumber}
+                                                            style={[
+                                                            styles.pageNumberButton,
+                                                            { backgroundColor: currentPage === pageNumber ? '#ccc' : 'white' },
+                                                            ]}
+                                                            onPress={() => handlePagePress(pageNumber)}
+                                                        >
+                                                            <Text style={styles.pageNumberText}>{pageNumber}</Text>
+                                                        </TouchableOpacity>
+                                                        ))} */}
+                                                    <TouchableOpacity
+                                                    style={styles.paginationButton}
+                                                    onPress={handleNext}
+                                                    disabled={currentPage === totalPages}
+                                                    >
+                                                    <Text style={styles.paginationButtonText}><Icon name={'caretright'} size={24} color="#333"/></Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                                {/* </ScrollView> */}
+                                                
+                                                
+                                                
                                             </>
                                         }
 
@@ -514,6 +604,7 @@ export default function CategoryPage({ route, navigation }: { route: any, naviga
                             </>
 
                         )}
+                    // backgroundStyle={{shadowColor: '#ccc', shadowOpacity: 0.5}}
                     >
 
                         {attributeList.length == 0 &&
@@ -544,4 +635,52 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 15
     },
+    footer: {
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    pagination2: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        alignItems: 'center',
+      },
+      pageIndicatorsContainer: {
+        flexDirection: 'row',
+      },
+      pageIndicator: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginHorizontal: 5,
+      },
+      pagination: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 3,
+        marginHorizontal: 60,
+        alignItems: 'center',
+        backgroundColor: 'white',
+      },
+      paginationButton: {
+        padding: 10,
+        backgroundColor: 'white',
+        borderRadius: 5,
+      },
+      paginationButtonText: {
+        color: 'black',
+        padding: 3
+      },
+      pageNumberButton: {
+        padding: 10,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        borderColor: 'black'
+      },
+      pageNumberText: {
+        color: 'black',
+        fontSize: 12
+      },
 });
