@@ -115,14 +115,14 @@ export default function TabStack({ navigation }: { navigation: any }) {
     <NativeBaseProvider theme={themed}>
       <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Main" component={TabNavigator} />
-          <Stack.Screen name='EghlPaymentPage' component={EghlPaymentPage} options={{ title: 'Payment' }} />
-          <Stack.Screen name='Ipay88PaymentPage' component={Ipay88PaymentPage} options={{ title: 'Payment' }} />
-          <Stack.Screen name='AddressDetailExPage' component={AddressDetailPage} options={{ title: 'Add New Address', headerShown: true }} />
-          <Stack.Screen name='CheckoutExPage' component={CheckoutPage} options={{ title: 'Order Confirmation', headerShown: true }} />
-          <Stack.Screen name='AddressListExPage' component={AddressListPage} options={{ title: 'My Addresses', headerShown: true }} />
-          <Stack.Screen name='ForceUpdatePage' component={ForceUpdatePage} options={{ title: 'Force Update', headerShown: true }} />
-          <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation', headerShown: true }} />
+          <Stack.Screen name="Main" component={TabNavigator} options={{ animation: 'none' }}/>
+          <Stack.Screen name='EghlPaymentPage' component={EghlPaymentPage} options={{ title: 'Payment', animation: 'none'  }} />
+          <Stack.Screen name='Ipay88PaymentPage' component={Ipay88PaymentPage} options={{ title: 'Payment', animation: 'none'  }} />
+          <Stack.Screen name='AddressDetailExPage' component={AddressDetailPage} options={{ title: 'Add New Address', headerShown: true, animation: 'none'  }} />
+          <Stack.Screen name='CheckoutExPage' component={CheckoutPage} options={{ title: 'Order Confirmation', headerShown: true , animation: 'none' }} />
+          <Stack.Screen name='AddressListExPage' component={AddressListPage} options={{ title: 'My Addresses', headerShown: true, animation: 'none'  }} />
+          <Stack.Screen name='ForceUpdatePage' component={ForceUpdatePage} options={{ title: 'Force Update', headerShown: true, animation: 'none'  }} />
+          <Stack.Screen name='OrderSuccessPage' component={OrderSuccessPage} options={{ title: 'Order Confirmation', headerShown: true , animation: 'none' }} />
           <Stack.Screen name='ProductDetailPage' component={ProductDetailPage} 
               options={{
                 headerTintColor: 'black',
@@ -130,7 +130,8 @@ export default function TabStack({ navigation }: { navigation: any }) {
                 // headerLeft: () => (<LeftHeader navigation={navigation}></LeftHeader>),
                 headerBackTitle: '',
                 headerShown: true,
-                title: ''
+                title: '',
+                animation: 'none' 
               }}
           /> 
           {/* <Stack.Screen name='IntroPage' component={IntroPage} options={{ title: 'Poplook', headerShown: true }} /> */}

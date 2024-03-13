@@ -52,6 +52,7 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
             headerRight: () => (<RightHeader navigation={navigation}></RightHeader>),
             headerBackTitle: ''
             // headerLeft: () => (<LeftHeader navigation={navigation}></LeftHeader>)
+            
         }}>
 
             <Stack.Screen
@@ -70,40 +71,40 @@ export default function AppStack({ route, navigation, initialRoute }: { route: a
                 }}
             />
 
-            <Stack.Screen name='CategoryPage' component={CategoryPage} options={{ title: route.params ? route.params.title : 'Category' }} />
-            <Stack.Screen name='CategoriesPage' component={CategoriesPage} options={{ title: 'Categories' }} />
-            <Stack.Screen name='ProductListPage' component={ProductListPage} options={{ title: 'Product' }} />
+            <Stack.Screen name='CategoryPage' component={CategoryPage} options={{ title: route.params ? route.params.title : 'Category', animation: 'none' }} />
+            <Stack.Screen name='CategoriesPage' component={CategoriesPage} options={{ title: 'Categories', animation: 'none' }} />
+            <Stack.Screen name='ProductListPage' component={ProductListPage} options={{ title: 'Product', animation: 'none' }} />
             {/* <Stack.Screen name='ProductDetailPage' component={ProductDetailPage} options={{ title: '' }} /> */}
-            <Stack.Screen name='SettingPage' component={SettingPage} options={{ title: 'Setting' }} />
-            <Stack.Screen name='LoginPage' component={LoginPage} options={{ title: 'Login' }} />
-            <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{ title: 'Forgot Password' }} />
-            <Stack.Screen name='CmsPage' component={CmsPage} />
-            <Stack.Screen name='SearchPage' component={SearchPage} options={{ title: 'Search' }} />
-            <Stack.Screen name='RegisterPage' component={RegisterPage} options={{ title: 'Register' }} />
-            <Stack.Screen name='CartPage' component={CartPage} options={{ title: 'Cart' }} />
-            <Stack.Screen name='OrderHistoryListPage' component={OrderHistoryListPage} options={{ title: 'Order History' }} />
-            <Stack.Screen name='OrderHistoryDetailPage' component={OrderHistoryDetailPage} options={{ title: 'Order Details' }} />
-            <Stack.Screen name='PersonalInfoPage' component={PersonalInfoPage} options={{ title: 'Personal Information' }} />
-            <Stack.Screen name='PersonalInfoDetailPage' component={PersonalInfoDetailPage} options={{ title: 'Update Email' }} />
-            <Stack.Screen name='AddressListPage' component={AddressListPage} options={{ title: 'My Addresses' }} />
-            <Stack.Screen name='AddressDetailPage' component={AddressDetailPage} options={{ title: 'Add New Address' }} />
-            <Stack.Screen name='CheckoutPage' component={CheckoutPage} options={{ title: 'Order Confirmation' }} />
-            <Stack.Screen name='RepayPage' component={RepayPage} options={{ title: 'Payment' }} />
-            <Stack.Screen name='StoreCreditPage' component={StoreCreditPage} options={{ title: 'Store Credit' }} />
-            <Stack.Screen name='LoyaltyPage' component={LoyaltyPage} options={{ title: 'Loyalty' }} />
-            <Stack.Screen name='RewardsPage' component={RewardsPage} options={{ title: 'Rewards' }} />
-            <Stack.Screen name='FaqPage' component={FaqPage} options={{ title: 'FAQ' }} />
-            <Stack.Screen name='WishlistPage' component={WishlistPage} options={{ title: 'Wishlist' }} />
-            <Stack.Screen name='CustomerServicePage' component={CustomerServicePage} options={{ title: 'Customer Service' }} />
-            <Stack.Screen name='CustomerServiceDetailsPage' component={CustomerServiceDetailsPage} options={{ title: 'Customer Service' }} />
-            <Stack.Screen name='DeleteAccountPage' component={DeleteAccountPage} options={{ title: 'Delete My Account' }} />
-            <Stack.Screen name='DeleteAccountSuccessPage' component={DeleteAccountSuccessPage} options={{ title: 'Confirmation Delete Account' }} />
-            <Stack.Screen name='VisitStorePage' component={VisitStorePage} options={{ title: 'Visit Our Stores' }} />
-            <Stack.Screen name='FollowUsPage' component={FollowUsPage} options={{ title: 'Follow Us' }} />
-            <Stack.Screen name='DeliveryReturnsPage' component={DeliveryReturnsPage} options={{ title: 'Delivery & Returns' }} />
-            <Stack.Screen name='NewBannerPage' component={NewBannerPage} options={{ title: 'New Banner' }} />
-            <Stack.Screen name='CategoryPage2' component={CategoryPage2} options={{ title: 'Categories' }} />
-            <Stack.Screen name='CustomPage' component={CustomPage} options={{ title: '' }} />
+            <Stack.Screen name='SettingPage' component={SettingPage} options={{ title: 'Setting', animation: 'none' }} />
+            <Stack.Screen name='LoginPage' component={LoginPage} options={{ title: 'Login', animation: 'none' }} />
+            <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{ title: 'Forgot Password', animation: 'none' }} />
+            <Stack.Screen name='CmsPage' component={CmsPage} options={{ animation: 'none' }}/>
+            <Stack.Screen name='SearchPage' component={SearchPage} options={{ title: 'Search', animation: 'none' }} />
+            <Stack.Screen name='RegisterPage' component={RegisterPage} options={{ title: 'Register', animation: 'none' }} />
+            <Stack.Screen name='CartPage' component={CartPage} options={{ title: 'Cart', animation: 'none' }} />
+            <Stack.Screen name='OrderHistoryListPage' component={OrderHistoryListPage} options={{ title: 'Order History', animation: 'none' }} />
+            <Stack.Screen name='OrderHistoryDetailPage' component={OrderHistoryDetailPage} options={{ title: 'Order Details', animation: 'none' }} />
+            <Stack.Screen name='PersonalInfoPage' component={PersonalInfoPage} options={{ title: 'Personal Information', animation: 'none' }} />
+            <Stack.Screen name='PersonalInfoDetailPage' component={PersonalInfoDetailPage} options={{ title: 'Update Email', animation: 'none'}} />
+            <Stack.Screen name='AddressListPage' component={AddressListPage} options={{ title: 'My Addresses', animation: 'none' }} />
+            <Stack.Screen name='AddressDetailPage' component={AddressDetailPage} options={{ title: 'Add New Address', animation: 'none' }} />
+            <Stack.Screen name='CheckoutPage' component={CheckoutPage} options={{ title: 'Order Confirmation', animation: 'none' }} />
+            <Stack.Screen name='RepayPage' component={RepayPage} options={{ title: 'Payment', animation: 'none'}} />
+            <Stack.Screen name='StoreCreditPage' component={StoreCreditPage} options={{ title: 'Store Credit', animation: 'none' }} />
+            <Stack.Screen name='LoyaltyPage' component={LoyaltyPage} options={{ title: 'Loyalty', animation: 'none' }} />
+            <Stack.Screen name='RewardsPage' component={RewardsPage} options={{ title: 'Rewards', animation: 'none' }} />
+            <Stack.Screen name='FaqPage' component={FaqPage} options={{ title: 'FAQ', animation: 'none' }} />
+            <Stack.Screen name='WishlistPage' component={WishlistPage} options={{ title: 'Wishlist', animation: 'none' }} />
+            <Stack.Screen name='CustomerServicePage' component={CustomerServicePage} options={{ title: 'Customer Service', animation: 'none' }} />
+            <Stack.Screen name='CustomerServiceDetailsPage' component={CustomerServiceDetailsPage} options={{ title: 'Customer Service', animation: 'none' }} />
+            <Stack.Screen name='DeleteAccountPage' component={DeleteAccountPage} options={{ title: 'Delete My Account', animation: 'none' }} />
+            <Stack.Screen name='DeleteAccountSuccessPage' component={DeleteAccountSuccessPage} options={{ title: 'Confirmation Delete Account', animation: 'none' }} />
+            <Stack.Screen name='VisitStorePage' component={VisitStorePage} options={{ title: 'Visit Our Stores', animation: 'none' }} />
+            <Stack.Screen name='FollowUsPage' component={FollowUsPage} options={{ title: 'Follow Us', animation: 'none' }} />
+            <Stack.Screen name='DeliveryReturnsPage' component={DeliveryReturnsPage} options={{ title: 'Delivery & Returns', animation: 'none' }} />
+            <Stack.Screen name='NewBannerPage' component={NewBannerPage} options={{ title: 'New Banner', animation: 'none' }} />
+            <Stack.Screen name='CategoryPage2' component={CategoryPage2} options={{ title: 'Categories', animation: 'none' }} />
+            <Stack.Screen name='CustomPage' component={CustomPage} options={{ title: '', animation: 'none' }} />
         </Stack.Navigator>
     )
 }
