@@ -625,7 +625,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                                     source={{ html: htmlContent(details) }}
                                                                     injectedJavaScript={injectedJavaScript}
                                                                     onMessage={handleWebViewMessage}
-                                                                    style={{ width: '100%'}}
+                                                                    style={{ width: '100%', opacity: 0.99 }}
                                                                     startInLoadingState={true}
                                                                     scrollEnabled={false}
                                                                 />
@@ -699,7 +699,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                                 <AutoHeightWebView
                                                                     source={{ html: htmlContent(measurements) }}
                                                                     injectedJavaScript={injectedJavaScript}
-                                                                    style={{ width: '100%'}}
+                                                                    style={{ width: '100%', opacity: 0.99 }}
                                                                     startInLoadingState={true}
                                                                     scrollEnabled={false}
                                                                 />
@@ -731,7 +731,7 @@ export default function ProductDetailPage({ route, navigation, product_id }: any
                                                                     source={{ html: htmlContent(care) }}
                                                                     injectedJavaScript={injectedJavaScript}
                                                                     onMessage={handleWebViewMessage}
-                                                                    style={{ width: '100%'}}
+                                                                    style={{ width: '100%', opacity: 0.99 }}
                                                                     startInLoadingState={true}
                                                                     scrollEnabled={false}
                                                                 />
