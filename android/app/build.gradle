@@ -100,10 +100,10 @@ android {
         applicationId 'com.tiseno.poplook'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 700037
-        versionName '7.0.37'
+        versionCode 700038
+        versionName '7.0.38'
         manifestPlaceholders = ['partner': 'poplook']
-        versionCode 700037
+        versionCode 700038
     }
 
     splits {
